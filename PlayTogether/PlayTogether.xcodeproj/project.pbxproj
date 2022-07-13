@@ -21,6 +21,8 @@
 		4096A2C8287F638300F1E27C /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2C7287F638300F1E27C /* Then */; };
 		4096A2CB287F642400F1E27C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2CA287F642400F1E27C /* Moya */; };
 		4096A2CD287F642400F1E27C /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2CC287F642400F1E27C /* RxMoya */; };
+		4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */; };
+		4096A2D1287F712800F1E27C /* ColorAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2D0287F712800F1E27C /* ColorAssets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		4096A2B4287F602500F1E27C /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		4096A2B8287F60D900F1E27C /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4096A2BC287F627E00F1E27C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		4096A2D0287F712800F1E27C /* ColorAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorAssets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 			children = (
 				4096A2A2287F5F4100F1E27C /* Assets.xcassets */,
 				4096A2A4287F5F4100F1E27C /* LaunchScreen.storyboard */,
+				4096A2D0287F712800F1E27C /* ColorAssets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -145,6 +150,7 @@
 		4096A2BA287F617400F1E27C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -230,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4096A2A6287F5F4100F1E27C /* LaunchScreen.storyboard in Resources */,
+				4096A2D1287F712800F1E27C /* ColorAssets.xcassets in Resources */,
 				4096A2A3287F5F4100F1E27C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
