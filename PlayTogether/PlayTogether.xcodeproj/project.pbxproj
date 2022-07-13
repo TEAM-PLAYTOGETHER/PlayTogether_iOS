@@ -23,6 +23,7 @@
 		4096A2CD287F642400F1E27C /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2CC287F642400F1E27C /* RxMoya */; };
 		4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */; };
 		4096A2D1287F712800F1E27C /* ColorAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2D0287F712800F1E27C /* ColorAssets.xcassets */; };
+		4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2D7287F745300F1E27C /* UIFont+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,11 @@
 		4096A2BC287F627E00F1E27C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		4096A2D0287F712800F1E27C /* ColorAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorAssets.xcassets; sourceTree = "<group>"; };
+		4096A2D3287F741B00F1E27C /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		4096A2D4287F741B00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		4096A2D5287F741B00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		4096A2D6287F741B00F1E27C /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		4096A2D7287F745300F1E27C /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 		4096A2AF287F5F8B00F1E27C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4096A2D2287F739900F1E27C /* Fonts */,
 				4096A2A2287F5F4100F1E27C /* Assets.xcassets */,
 				4096A2A4287F5F4100F1E27C /* LaunchScreen.storyboard */,
 				4096A2D0287F712800F1E27C /* ColorAssets.xcassets */,
@@ -151,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */,
+				4096A2D7287F745300F1E27C /* UIFont+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -161,6 +169,17 @@
 				4096A2BC287F627E00F1E27C /* BaseViewController.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		4096A2D2287F739900F1E27C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				4096A2D6287F741B00F1E27C /* Pretendard-Bold.otf */,
+				4096A2D5287F741B00F1E27C /* Pretendard-Medium.otf */,
+				4096A2D3287F741B00F1E27C /* Pretendard-Regular.otf */,
+				4096A2D4287F741B00F1E27C /* Pretendard-SemiBold.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,6 +273,7 @@
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
+				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
