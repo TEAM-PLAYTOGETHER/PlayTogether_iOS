@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		401B853A287FD57E003B69D3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 401B8539287FD57E003B69D3 /* RxCocoa */; };
+		401B853C287FD57E003B69D3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853B287FD57E003B69D3 /* RxSwift */; };
+		401B853F287FD5B5003B69D3 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853E287FD5B5003B69D3 /* Moya */; };
+		401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B8540287FD5B5003B69D3 /* RxMoya */; };
 		4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A299287F5F3F00F1E27C /* AppDelegate.swift */; };
 		4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */; };
 		4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29D287F5F3F00F1E27C /* OnboardingViewController.swift */; };
@@ -15,12 +19,6 @@
 		4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2B4287F602500F1E27C /* OnboardingViewModel.swift */; };
 		4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2B8287F60D900F1E27C /* TabBarController.swift */; };
 		4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2BC287F627E00F1E27C /* BaseViewController.swift */; };
-		4096A2C0287F634F00F1E27C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2BF287F634F00F1E27C /* RxCocoa */; };
-		4096A2C2287F634F00F1E27C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2C1287F634F00F1E27C /* RxSwift */; };
-		4096A2C5287F636C00F1E27C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2C4287F636C00F1E27C /* SnapKit */; };
-		4096A2C8287F638300F1E27C /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2C7287F638300F1E27C /* Then */; };
-		4096A2CB287F642400F1E27C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2CA287F642400F1E27C /* Moya */; };
-		4096A2CD287F642400F1E27C /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4096A2CC287F642400F1E27C /* RxMoya */; };
 		4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */; };
 		4096A2D1287F712800F1E27C /* ColorAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2D0287F712800F1E27C /* ColorAssets.xcassets */; };
 		4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A2D7287F745300F1E27C /* UIFont+Extension.swift */; };
@@ -28,6 +26,8 @@
 		4096A2DE287F765F00F1E27C /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DA287F765F00F1E27C /* Pretendard-Regular.otf */; };
 		4096A2DF287F765F00F1E27C /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */; };
 		4096A2E0287F765F00F1E27C /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */; };
+		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
+		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,12 +55,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4096A2CD287F642400F1E27C /* RxMoya in Frameworks */,
-				4096A2C5287F636C00F1E27C /* SnapKit in Frameworks */,
-				4096A2C2287F634F00F1E27C /* RxSwift in Frameworks */,
-				4096A2C0287F634F00F1E27C /* RxCocoa in Frameworks */,
-				4096A2CB287F642400F1E27C /* Moya in Frameworks */,
-				4096A2C8287F638300F1E27C /* Then in Frameworks */,
+				401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */,
+				401B853A287FD57E003B69D3 /* RxCocoa in Frameworks */,
+				40B77844287FD51600096802 /* Then in Frameworks */,
+				401B853C287FD57E003B69D3 /* RxSwift in Frameworks */,
+				401B853F287FD5B5003B69D3 /* Moya in Frameworks */,
+				40B77847287FD53200096802 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,12 +203,12 @@
 			);
 			name = PlayTogether;
 			packageProductDependencies = (
-				4096A2BF287F634F00F1E27C /* RxCocoa */,
-				4096A2C1287F634F00F1E27C /* RxSwift */,
-				4096A2C4287F636C00F1E27C /* SnapKit */,
-				4096A2C7287F638300F1E27C /* Then */,
-				4096A2CA287F642400F1E27C /* Moya */,
-				4096A2CC287F642400F1E27C /* RxMoya */,
+				40B77843287FD51600096802 /* Then */,
+				40B77846287FD53200096802 /* SnapKit */,
+				401B8539287FD57E003B69D3 /* RxCocoa */,
+				401B853B287FD57E003B69D3 /* RxSwift */,
+				401B853E287FD5B5003B69D3 /* Moya */,
+				401B8540287FD5B5003B69D3 /* RxMoya */,
 			);
 			productName = PlayTogether;
 			productReference = 4096A296287F5F3F00F1E27C /* PlayTogether.app */;
@@ -239,10 +239,10 @@
 			);
 			mainGroup = 4096A28D287F5F3F00F1E27C;
 			packageReferences = (
-				4096A2BE287F634F00F1E27C /* XCRemoteSwiftPackageReference "RxSwift" */,
-				4096A2C3287F636C00F1E27C /* XCRemoteSwiftPackageReference "SnapKit" */,
-				4096A2C6287F638300F1E27C /* XCRemoteSwiftPackageReference "Then" */,
-				4096A2C9287F642400F1E27C /* XCRemoteSwiftPackageReference "Moya" */,
+				40B77842287FD51600096802 /* XCRemoteSwiftPackageReference "Then" */,
+				40B77845287FD53200096802 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				401B8538287FD57E003B69D3 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				401B853D287FD5B5003B69D3 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = 4096A297287F5F3F00F1E27C /* Products */;
 			projectDirPath = "";
@@ -350,7 +350,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -404,7 +403,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -492,7 +490,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4096A2BE287F634F00F1E27C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		401B8538287FD57E003B69D3 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
 			requirement = {
@@ -500,23 +498,7 @@
 				kind = branch;
 			};
 		};
-		4096A2C3287F636C00F1E27C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
-			requirement = {
-				branch = develop;
-				kind = branch;
-			};
-		};
-		4096A2C6287F638300F1E27C /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devxoul/Then";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		4096A2C9287F642400F1E27C /* XCRemoteSwiftPackageReference "Moya" */ = {
+		401B853D287FD5B5003B69D3 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
 			requirement = {
@@ -524,38 +506,54 @@
 				kind = branch;
 			};
 		};
+		40B77842287FD51600096802 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		40B77845287FD53200096802 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4096A2BF287F634F00F1E27C /* RxCocoa */ = {
+		401B8539287FD57E003B69D3 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4096A2BE287F634F00F1E27C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = 401B8538287FD57E003B69D3 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
 		};
-		4096A2C1287F634F00F1E27C /* RxSwift */ = {
+		401B853B287FD57E003B69D3 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4096A2BE287F634F00F1E27C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = 401B8538287FD57E003B69D3 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
-		4096A2C4287F636C00F1E27C /* SnapKit */ = {
+		401B853E287FD5B5003B69D3 /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4096A2C3287F636C00F1E27C /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
-		};
-		4096A2C7287F638300F1E27C /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4096A2C6287F638300F1E27C /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
-		};
-		4096A2CA287F642400F1E27C /* Moya */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4096A2C9287F642400F1E27C /* XCRemoteSwiftPackageReference "Moya" */;
+			package = 401B853D287FD5B5003B69D3 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
 		};
-		4096A2CC287F642400F1E27C /* RxMoya */ = {
+		401B8540287FD5B5003B69D3 /* RxMoya */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4096A2C9287F642400F1E27C /* XCRemoteSwiftPackageReference "Moya" */;
+			package = 401B853D287FD5B5003B69D3 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		40B77843287FD51600096802 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40B77842287FD51600096802 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		40B77846287FD53200096802 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40B77845287FD53200096802 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
