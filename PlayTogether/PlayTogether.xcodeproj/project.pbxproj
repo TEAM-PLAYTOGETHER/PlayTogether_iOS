@@ -28,6 +28,7 @@
 		4096A2E0287F765F00F1E27C /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */; };
 		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
+		B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B630459D28828D9F0095F694 /* ChoiceCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		4096A2DA287F765F00F1E27C /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		B630459D28828D9F0095F694 /* ChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 		4096A2B1287F5FDC00F1E27C /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				B630459C28828D980095F694 /* View */,
 				4096A2B2287F5FFE00F1E27C /* ViewController */,
 				4096A2B3287F601000F1E27C /* ViewModel */,
 			);
@@ -184,6 +187,14 @@
 				4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		B630459C28828D980095F694 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B630459D28828D9F0095F694 /* ChoiceCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,6 +288,7 @@
 			files = (
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
+				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
@@ -419,6 +431,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XK2FZR7MVH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -446,6 +459,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XK2FZR7MVH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
