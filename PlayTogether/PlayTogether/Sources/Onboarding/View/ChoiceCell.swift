@@ -14,13 +14,11 @@ class ChoiceCell: UICollectionViewCell {
     // MARK: - Properties
     
     let titleLabel = UILabel().then {
-        $0.text = "개설"
         $0.font = UIFont(name: "Pretendard-Bold", size: 16)
         $0.textColor = .ptGray01
     }
     
     let subTitleLabel = UILabel().then {
-        $0.text = "번개를 열 동아리나 단체를 개설해요!"
         $0.font = UIFont(name: "Pretendard-Medium", size: 14)
         $0.textColor = .ptGray01
     }
@@ -47,6 +45,8 @@ class ChoiceCell: UICollectionViewCell {
             }
         }
     }
+    
+    let viewModel = OnboardingViewModel()
     
     
     // MARK: - Lifecycle
@@ -81,7 +81,7 @@ class ChoiceCell: UICollectionViewCell {
     }
     
     func setupLayouts() {
-        contentView.layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 10
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).offset(26)

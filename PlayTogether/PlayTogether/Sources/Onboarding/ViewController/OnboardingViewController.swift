@@ -53,7 +53,7 @@ class OnboardingViewController: BaseViewController {
         $0.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
     
-    
+    var index: Int = 0
     let viewModel = OnboardingViewModel()
     
     // MARK: - Lifecyle
@@ -149,6 +149,10 @@ extension OnboardingViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChoiceCell", for: indexPath) as? ChoiceCell else { return UICollectionViewCell() }
+        let data = viewModel.configureCellData(indexPath.row)
+        cell.titleLabel.text = data[0]
+        cell.subTitleLabel.text = data[1]
+        
         return cell
     }
     

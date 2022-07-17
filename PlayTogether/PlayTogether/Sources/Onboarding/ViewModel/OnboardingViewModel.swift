@@ -15,9 +15,6 @@ struct OnboardingViewModel {
 
 
 extension OnboardingViewModel {
-    var numberOfItemsInSection: Int {
-        return 2
-    }
     
     func numberOfItemsInSection(_ section: Int) -> Int {
         return section
@@ -30,5 +27,14 @@ extension OnboardingViewModel {
     
     func cellWasTapped(_ count: Int) -> Bool {
         return count == 1
+    }
+    
+    func configureCellData(_ index: Int) -> [String] {
+        switch index {
+        case 0:
+            return ["개설", "번개를 열 동아리나 단체를 개설해요!"]
+        default:
+            return ["참여", "개설된 동아리나 단체에 참여해요!"]
+        }
     }
 }
