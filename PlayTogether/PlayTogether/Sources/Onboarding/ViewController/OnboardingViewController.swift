@@ -71,6 +71,7 @@ class OnboardingViewController: BaseViewController {
     }
     
     @objc private func nextButtonDidTap() {
+        
     }
     
     private func configureNaigationvBar() {

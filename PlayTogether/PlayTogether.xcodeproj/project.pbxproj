@@ -33,6 +33,7 @@
 		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
 		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
+		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
 		B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B630459D28828D9F0095F694 /* ChoiceCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
 		B630459D28828D9F0095F694 /* ChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +132,7 @@
 		4096A298287F5F3F00F1E27C /* PlayTogether */ = {
 			isa = PBXGroup;
 			children = (
+				B616A80D2886A20B00E1ABCF /* Utils */,
 				4096A2AD287F5F7C00F1E27C /* Application */,
 				4096A2AF287F5F8B00F1E27C /* Resources */,
 				4096A2BA287F617400F1E27C /* Extensions */,
@@ -236,6 +239,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		B616A80D2886A20B00E1ABCF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		B630459C28828D980095F694 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,6 +346,7 @@
 			files = (
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
+				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
