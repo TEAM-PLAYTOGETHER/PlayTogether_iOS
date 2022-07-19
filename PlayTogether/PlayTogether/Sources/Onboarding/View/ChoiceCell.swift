@@ -6,24 +6,19 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 
 class ChoiceCell: UICollectionViewCell {
-    
-    // MARK: - Properties
-    
-    let titleLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-Bold", size: 16)
+    private let titleLabel = UILabel().then {
+        $0.font = .pretendardBold(size: 16)
         $0.textColor = .ptGray01
     }
     
-    let subTitleLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-Medium", size: 14)
+    private let subTitleLabel = UILabel().then {
+        $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptGray01
     }
     
-    lazy var iconImageView = UIImageView().then {
+    private lazy var iconImageView = UIImageView().then {
         $0.image = UIImage(named: "icn_select")
         $0.backgroundColor = .white
         $0.contentMode = .scaleAspectFit
@@ -46,59 +41,49 @@ class ChoiceCell: UICollectionViewCell {
         }
     }
     
-    let viewModel = OnboardingViewModel()
-    
-    
-    // MARK: - Lifecycle
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        configureCell()
         setupViews()
         setupLayouts()
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    // MARK: - Functions
-    
-    private func configureCell() {
+    func configureCell(_ data: [String]) {
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.ptGray01.cgColor
+        
+        titleLabel.text = data.first
+        subTitleLabel.text = data.last
     }
     
-    func setupViews() {
+    private func setupViews() {
+        contentView.layer.cornerRadius = 10
+        
         contentView.addSubview(titleLabel)
         contentView.addSubview(subTitleLabel)
         contentView.addSubview(iconImageView)
     }
     
-    func setupLayouts() {
-        contentView.layer.cornerRadius = 10
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(contentView).offset(26)
-            make.top.equalTo(contentView).offset(22)
+    private func setupLayouts() {
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(26)
+            $0.top.equalToSuperview().offset(22)
         }
         
-        subTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.leading)
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+        subTitleLabel.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
         }
         
-        iconImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(contentView)
-            make.trailing.equalTo(contentView).offset(-26)
-            make.top.equalTo(contentView).offset(19)
-            make.bottom.equalTo(contentView).offset(-19)
-//            make.width.height.equalTo(48)
+        iconImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-26)
+            $0.top.bottom.equalToSuperview().inset(19)
         }
     }
     

@@ -6,168 +6,143 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 
 class OnboardingViewController: BaseViewController {
-    
-    // MARK: - Properties
-    
-    let headerView = UIView().then {
-        $0.backgroundColor = .black
-    }
-    
-    let progressbar = UIProgressView().then {
+    private let progressbar = UIProgressView().then {
         $0.progress = 0.33
         $0.progressTintColor = .ptGreen
         $0.backgroundColor = .ptGray03
+        $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    let headerLabel = UILabel().then {
+    private let headerLabel = UILabel().then {
         $0.text = "번개를\n시작해볼까요?"
-        $0.font = UIFont(name: "Pretendard-Medium", size: 22)
+        $0.font = .pretendardMedium(size: 22)
         $0.textColor = .ptBlack01
         $0.numberOfLines = 0
     }
     
-    let orderLabel = UILabel().then {
+    private let orderLabel = UILabel().then {
         $0.text = "개설과 참여 중 선택해주세요"
-        $0.font = UIFont(name: "Pretendard-Regular", size: 14)
+        $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
     }
     
-    lazy var choiceCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    private lazy var choiceCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    ).then {
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        let width = 335 * (view.frame.width / 375)
+        let height = 86 * (view.frame.height / 812)
+        collectionViewFlowLayout.itemSize = CGSize(width: width, height: height)
+        
+        $0.collectionViewLayout = collectionViewFlowLayout
         $0.backgroundColor = .white
+        $0.delegate = self
+        $0.dataSource = self
+        $0.register(ChoiceCell.self, forCellWithReuseIdentifier: "ChoiceCell")
     }
     
-    lazy var nextButton = UIButton().then {
+    private lazy var nextButton = UIButton().then {
         $0.setTitle("다음", for: .normal)
         $0.setTitleColor(.ptGray01, for: .normal)
-        $0.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 16)
+        $0.titleLabel?.font = .pretendardSemiBold(size: 16)
         $0.backgroundColor = .ptGray03
         $0.layer.borderColor = UIColor.ptGray02.cgColor
         $0.layer.borderWidth = 1.0
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
         $0.isEnabled = false
-        $0.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)    // Rx
     }
-    
-    var index: Int = 0
-    let viewModel = OnboardingViewModel()
-    
-    // MARK: - Lifecyle
+
+    private let viewModel = OnboardingViewModel()
+    private lazy var cellIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
     }
     
-    
-    
-    // MARK: - Selector
-    
-    @objc func nextButtonDidTap() {
-        print("DEBUG: nextButton did tapped")
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        configureNaigationvBar()
     }
     
+    @objc private func nextButtonDidTap() {
+    }
     
-    // MARK: - Functions
+    private func configureNaigationvBar() {
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .ptBlack01
+    }
     
     override func setupViews() {
-        view.addSubview(headerView)
+        view.backgroundColor = .white
+        
         view.addSubview(progressbar)
         view.addSubview(headerLabel)
         view.addSubview(orderLabel)
         view.addSubview(choiceCollectionView)
         view.addSubview(nextButton)
-    }
+    }   
     
     override func setupLayouts() {
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(view).inset(0)
-            make.height.equalTo(97)
+        progressbar.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+            $0.height.equalTo(4)
         }
         
-        progressbar.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view).offset(0)
-            make.top.equalTo(headerView.snp.bottom).offset(0)
-            make.height.equalTo(4)
+        headerLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(progressbar.snp.bottom).offset(24)
         }
         
-        headerLabel.snp.makeConstraints { make in
-            make.leading.equalTo(view).offset(20)
-            make.top.equalTo(progressbar.snp.bottom).offset(24)
+        orderLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(headerLabel.snp.bottom).offset(8)
         }
         
-        orderLabel.snp.makeConstraints { make in
-            make.leading.equalTo(view).offset(20)
-            make.top.equalTo(headerLabel.snp.bottom).offset(8)
-        }
-        
-        choiceCollectionView.snp.makeConstraints { make in
+        choiceCollectionView.snp.makeConstraints {
             let height = ((view.frame.height / 812) * 86) * 2 + 10
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
-            make.top.equalTo(orderLabel.snp.bottom).offset(28)
-            make.height.equalTo(height)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(orderLabel.snp.bottom).offset(28)
+            $0.height.equalTo(height)
         }
         
-        nextButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view).inset(20)
-            make.bottom.equalTo(view).inset(40)
-            make.height.equalTo(56 * view.frame.height/812)
+        nextButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(56 * view.frame.height/812)
         }
     }
     
     override func setupBinding() {
-        choiceCollectionView.delegate = self
-        choiceCollectionView.dataSource = self
-        choiceCollectionView.register(ChoiceCell.self, forCellWithReuseIdentifier: "ChoiceCell")
     }
 }
 
-
-// MARK: - UICollectionVeiw Delegate & FlowLayout
-
-extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = choiceCollectionView.frame.width
-        let height = view.frame.height
-        return viewModel.sizeForItemAt(width, height)
-    }
-}
-
-
-// MARK: - UICollectionViewDataSource
-
-extension OnboardingViewController: UICollectionViewDataSource {
-    
+extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numberOfItemsInSection(2)
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChoiceCell", for: indexPath) as? ChoiceCell else { return UICollectionViewCell() }
-        let data = viewModel.configureCellData(indexPath.row)
-        cell.titleLabel.text = data[0]
-        cell.subTitleLabel.text = data[1]
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "ChoiceCell",
+            for: indexPath
+        ) as? ChoiceCell else { return UICollectionViewCell() }
         
+        indexPath.row == 0 ? cell.configureCell(["개설", "번개를 열 동아리나 단체를 개설해요!"]) : cell.configureCell(["참여", "개설된 동아리나 단체에 참여해요!"])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if let items = collectionView.indexPathsForSelectedItems {
-            if viewModel.cellWasTapped(items.count) {
-                nextButton.isEnabled = true
-                nextButton.setTitleColor(.ptBlack01, for: .normal)
-                nextButton.backgroundColor = .ptGreen
-                nextButton.layer.borderColor = UIColor.ptBlack01.cgColor
-            }
-        }
-        
-        print("DEBUG: Cell is clicked by \(indexPath.row)")
+        nextButton.isEnabled = true
+        nextButton.setTitleColor(.ptBlack01, for: .normal)
+        nextButton.backgroundColor = .ptGreen
+        nextButton.layer.borderColor = UIColor.ptBlack01.cgColor
+        cellIndex = indexPath.row
     }
-
 }
