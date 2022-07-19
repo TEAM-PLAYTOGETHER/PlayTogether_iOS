@@ -29,6 +29,7 @@
 		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
 		B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B630459D28828D9F0095F694 /* ChoiceCell.swift */; };
+		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		B630459D28828D9F0095F694 /* ChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCell.swift; sourceTree = "<group>"; };
+		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 			children = (
 				4096A2CE287F67E600F1E27C /* UIColor+Extension.swift */,
 				4096A2D7287F745300F1E27C /* UIFont+Extension.swift */,
+				40EDB67F288495F600996AA0 /* UIImage+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
+				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
