@@ -11,6 +11,10 @@
 		401B853C287FD57E003B69D3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853B287FD57E003B69D3 /* RxSwift */; };
 		401B853F287FD5B5003B69D3 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853E287FD5B5003B69D3 /* Moya */; };
 		401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B8540287FD5B5003B69D3 /* RxMoya */; };
+		404169902886A54700812B37 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4041698F2886A54700812B37 /* HomeViewController.swift */; };
+		404169932886A56C00812B37 /* ThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169922886A56C00812B37 /* ThunViewController.swift */; };
+		404169972886A67400812B37 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169962886A67400812B37 /* ChatViewController.swift */; };
+		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
 		4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A299287F5F3F00F1E27C /* AppDelegate.swift */; };
 		4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */; };
 		4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29D287F5F3F00F1E27C /* OnboardingViewController.swift */; };
@@ -34,6 +38,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4041698F2886A54700812B37 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		404169922886A56C00812B37 /* ThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunViewController.swift; sourceTree = "<group>"; };
+		404169962886A67400812B37 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		4096A296287F5F3F00F1E27C /* PlayTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4096A299287F5F3F00F1E27C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +81,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4041698E2886A4F700812B37 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				4041698F2886A54700812B37 /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		404169912886A55D00812B37 /* Thun */ = {
+			isa = PBXGroup;
+			children = (
+				404169922886A56C00812B37 /* ThunViewController.swift */,
+			);
+			path = Thun;
+			sourceTree = "<group>";
+		};
+		404169942886A66400812B37 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				404169962886A67400812B37 /* ChatViewController.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		404169952886A66A00812B37 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				404169982886A68600812B37 /* MyPageViewController.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
 		4096A28D287F5F3F00F1E27C = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +154,10 @@
 		4096A2AE287F5F8200F1E27C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4041698E2886A4F700812B37 /* Home */,
+				404169912886A55D00812B37 /* Thun */,
+				404169942886A66400812B37 /* Chat */,
+				404169952886A66A00812B37 /* MyPage */,
 				4096A2BB287F626600F1E27C /* Common */,
 				4096A2B1287F5FDC00F1E27C /* Onboarding */,
 			);
@@ -301,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
+				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
@@ -308,6 +353,9 @@
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
+				404169902886A54700812B37 /* HomeViewController.swift in Sources */,
+				404169992886A68600812B37 /* MyPageViewController.swift in Sources */,
+				404169972886A67400812B37 /* ChatViewController.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
