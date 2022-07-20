@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Then
 
 final class TabBarController: UITabBarController {
     private let homeViewController = HomeViewController().then {
