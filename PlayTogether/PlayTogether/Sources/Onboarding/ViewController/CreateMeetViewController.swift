@@ -97,18 +97,6 @@ class CreateMeetViewController: BaseViewController {
         print("DEBUG: NextButton did tap")
     }
     
-    private func limitText(_ textField: UITextField, _ maxNumber: Int) {
-        textField.rx.text.orEmpty
-            .observe(on: MainScheduler.asyncInstance)
-            .asDriver(onErrorJustReturn: "")
-            .map{ $0.count <= maxNumber }
-            .drive(onNext: { isEditable in
-                if !isEditable {
-                    textField.deleteBackward()
-                }
-            }).disposed(by: disposeBag)
-    }
-    
     override func setupViews() {
         view.backgroundColor = .white
         
@@ -179,8 +167,17 @@ class CreateMeetViewController: BaseViewController {
                 self.backButtonDidTap()
             }.disposed(by: disposeBag)
         
-        limitText(titleTextField, 15)
-        limitText(introduceTextField, 15)
+        titleTextField.rx.text.orEmpty.asDriver()
+            .drive(onNext: { [weak self] in
+                guard $0.count > 15 else { return }
+                self?.titleTextField.text = String(self?.titleTextField.text?.dropLast() ?? "")
+            }).disposed(by: disposeBag)
+        
+        introduceTextField.rx.text.orEmpty.asDriver()
+            .drive(onNext: { [weak self] in
+                guard $0.count > 15 else { return }
+                self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
+            }).disposed(by: disposeBag)
     }
 }
 
