@@ -75,16 +75,9 @@ class CreateMeetViewController: BaseViewController {
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
         $0.isEnabled = false
-        $0.rx.tap
-            .bind {
-                self.nextButtonDidTap()
-            }
-            .disposed(by: disposeBag)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: self, action: nil)
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -92,13 +85,11 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private func configureNavbar() {
-        let backIcon = UIImage.ptImage(.backIcon)
-        let leftButtonItem = UIBarButtonItem(image: backIcon, style: .plain, target: self, action: #selector(backButtonDidTap))
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
-    @objc private func backButtonDidTap() {
+    private func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -108,9 +99,10 @@ class CreateMeetViewController: BaseViewController {
     
     private func limitText(_ textField: UITextField, _ maxNumber: Int) {
         textField.rx.text.orEmpty
-            .map { $0.count <= maxNumber }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { isEditable in
+            .observe(on: MainScheduler.asyncInstance)
+            .asDriver(onErrorJustReturn: "")
+            .map{ $0.count <= maxNumber }
+            .drive(onNext: { isEditable in
                 if !isEditable {
                     textField.deleteBackward()
                 }
@@ -133,7 +125,7 @@ class CreateMeetViewController: BaseViewController {
     override func setupLayouts() {
         progressbar.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.height.equalTo(4)
         }
         
@@ -177,6 +169,16 @@ class CreateMeetViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        nextButton.rx.tap
+            .bind {
+                self.nextButtonDidTap()
+            }.disposed(by: disposeBag)
+        
+        leftButtonItem.rx.tap
+            .bind {
+                self.backButtonDidTap()
+            }.disposed(by: disposeBag)
+        
         limitText(titleTextField, 15)
         limitText(introduceTextField, 15)
     }
