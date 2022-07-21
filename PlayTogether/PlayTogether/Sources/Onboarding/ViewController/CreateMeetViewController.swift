@@ -158,13 +158,13 @@ class CreateMeetViewController: BaseViewController {
     
     override func setupBinding() {
         nextButton.rx.tap
-            .bind {
-                self.nextButtonDidTap()
+            .bind { [weak self] in
+                self?.nextButtonDidTap()
             }.disposed(by: disposeBag)
         
         leftButtonItem.rx.tap
-            .bind {
-                self.backButtonDidTap()
+            .bind { [weak self] in
+                self?.backButtonDidTap()
             }.disposed(by: disposeBag)
         
         titleTextField.rx.text.orEmpty.asDriver()
