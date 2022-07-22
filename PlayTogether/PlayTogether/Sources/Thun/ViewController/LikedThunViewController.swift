@@ -13,7 +13,7 @@ class LikedThunViewController: BaseViewController {
 
     private lazy var tableView = UITableView().then {
         $0.register(ThunListTableViewCell.self, forCellReuseIdentifier: ThunListTableViewCell.identifier)
-        $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
         $0.delegate = self
@@ -29,8 +29,7 @@ class LikedThunViewController: BaseViewController {
     
     override func setupLayouts() {
         tableView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -42,7 +41,7 @@ extension LikedThunViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ThunListTableViewCell.identifier, for: indexPath) as! ThunListTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ThunListTableViewCell.identifier, for: indexPath) as? ThunListTableViewCell else { return UITableViewCell() }
         return cell
     }
 }
