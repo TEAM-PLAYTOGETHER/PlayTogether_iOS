@@ -15,6 +15,7 @@
 		404169932886A56C00812B37 /* ThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169922886A56C00812B37 /* ThunViewController.swift */; };
 		404169972886A67400812B37 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169962886A67400812B37 /* ChatViewController.swift */; };
 		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
+		4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4066E499288B3CF700FC9090 /* CALayer+Extension.swift */; };
 		4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A299287F5F3F00F1E27C /* AppDelegate.swift */; };
 		4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */; };
 		4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29D287F5F3F00F1E27C /* OnboardingViewController.swift */; };
@@ -44,6 +45,7 @@
 		404169922886A56C00812B37 /* ThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunViewController.swift; sourceTree = "<group>"; };
 		404169962886A67400812B37 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		4066E499288B3CF700FC9090 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		4096A296287F5F3F00F1E27C /* PlayTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4096A299287F5F3F00F1E27C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				4096A2D7287F745300F1E27C /* UIFont+Extension.swift */,
 				40EDB67F288495F600996AA0 /* UIImage+Extension.swift */,
 				B6397F422887104800046843 /* UITextField+Extension.swift */,
+				4066E499288B3CF700FC9090 /* CALayer+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
+				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
