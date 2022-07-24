@@ -10,7 +10,6 @@ import SnapKit
 import Then
 
 final class ThunViewController: BaseViewController {
-    
     private let SubmittedThunVC = SubmittedThunViewController()
     private let OpenedThunVC = OpenedThunViewController()
     private let LikedThunVC = LikedThunViewController()
@@ -36,7 +35,6 @@ final class ThunViewController: BaseViewController {
             )
         }
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNaigationvBar()
@@ -59,7 +57,6 @@ final class ThunViewController: BaseViewController {
         }
     }
     override func setupBinding() {}
-    
     private func configureNaigationvBar() {
         let navigationBarController = navigationController?.navigationBar
         navigationBarController?.isTranslucent = false
@@ -68,8 +65,7 @@ final class ThunViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "backIcon"), style: .plain, target: self, action: #selector(backButtonDidTap))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "searchIcon"), style: .plain, target: self, action: #selector(searchButtonDidTap))
     }
-    
-    @objc func changeValue(control: UISegmentedControl) {
+    @objc func changeValue(control: UnderlineSegmentedControl) {
         currentPage = control.selectedSegmentIndex
     }
     @objc func backButtonDidTap() {
@@ -79,9 +75,7 @@ final class ThunViewController: BaseViewController {
         print("searchBtn")
     }
 }
-
 extension ThunViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = dataViewControllers.firstIndex(of: viewController),
               index - 1 >= 0 else { return nil }
@@ -89,10 +83,10 @@ extension ThunViewController: UIPageViewControllerDataSource, UIPageViewControll
     }
     func pageViewController(
         _ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = dataViewControllers.firstIndex(of: viewController),
-                index + 1 < dataViewControllers.count else { return nil }
-        return dataViewControllers[index + 1]
-    }
+            guard let index = dataViewControllers.firstIndex(of: viewController),
+                  index + 1 < dataViewControllers.count else { return nil }
+            return dataViewControllers[index + 1]
+        }
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let viewController = pageViewController.viewControllers?[0], let index = dataViewControllers.firstIndex(of: viewController) else { return }
         currentPage = index

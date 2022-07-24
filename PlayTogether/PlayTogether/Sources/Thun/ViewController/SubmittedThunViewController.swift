@@ -10,7 +10,6 @@ import SnapKit
 import Then
 
 class SubmittedThunViewController: BaseViewController {
-
     private lazy var tableView = UITableView().then {
         $0.register(ThunListTableViewCell.self, forCellReuseIdentifier: ThunListTableViewCell.identifier)
         $0.separatorStyle = .none
@@ -24,7 +23,6 @@ class SubmittedThunViewController: BaseViewController {
     override func setupViews() {
         view.addSubview(tableView)
         tableView.tableHeaderView = headerView
-        
     }
     override func setupLayouts() {
         tableView.snp.makeConstraints {
@@ -32,9 +30,7 @@ class SubmittedThunViewController: BaseViewController {
         }
     }
 }
-
 extension SubmittedThunViewController : UITableViewDataSource, UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }

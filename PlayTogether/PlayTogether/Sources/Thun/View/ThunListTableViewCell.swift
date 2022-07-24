@@ -41,7 +41,6 @@ class ThunListTableViewCell: UITableViewCell {
         $0.setTitle(" \(ThunDataModel.shared.like)", for: .normal)
         $0.titleLabel?.font = UIFont.pretendardMedium(size: 14)
     }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -54,13 +53,11 @@ class ThunListTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     private func setupCellStyle() {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 10
         contentView.backgroundColor = .ptBlack01
         selectionStyle = .none
-        backgroundColor = .clear
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20))
     }
     private func setupViews() {
