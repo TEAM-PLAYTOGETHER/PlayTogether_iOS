@@ -28,4 +28,8 @@ enum ImageCase: String {
     case chatInactive = "chatInactive"
     case mypageActive = "mypageActive"
     case mypageInactive = "mypageInactive"
+    
+    case eatIcon = "eatIcon"
+    case goIcon = "goIcon"
+    case doIcon = "doIcon"
 }
