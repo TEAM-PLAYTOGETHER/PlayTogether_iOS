@@ -9,6 +9,8 @@ import RxSwift
 import UIKit
 
 final class HomeViewController: BaseViewController {
+    private lazy var disposeBag = DisposeBag()
+    
     private let leftBarItem = UIButton().then {
         $0.setTitle("SOPT", for: .normal)
         $0.setTitleColor(.ptGreen, for: .normal)
@@ -91,6 +93,34 @@ final class HomeViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
+    private lazy var layout = UICollectionViewFlowLayout().then {
+        let widthSize = UIScreen.main.bounds.width * 0.76
+        let heightSize = UIScreen.main.bounds.height * 0.16
+        $0.minimumInteritemSpacing = 10
+        $0.scrollDirection = .horizontal
+        $0.itemSize = CGSize(width: widthSize, height: heightSize)
+    }
+    
+    private lazy var hotCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: layout
+    ).then {
+        $0.backgroundColor = .white
+        $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
+        $0.showsHorizontalScrollIndicator = false
+        $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+    
+    private lazy var newCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: layout
+    ).then {
+        $0.backgroundColor = .white
+        $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
+        $0.showsHorizontalScrollIndicator = false
+        $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+    
     override func setupViews() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
@@ -109,6 +139,9 @@ final class HomeViewController: BaseViewController {
         contentView.addSubview(doLabel)
         contentView.addSubview(devideView)
         contentView.addSubview(hotLabel)
+        contentView.addSubview(hotCollectionView)
+        contentView.addSubview(newLabel)
+        contentView.addSubview(newCollectionView)
     }
     
     override func setupLayouts() {
@@ -120,7 +153,8 @@ final class HomeViewController: BaseViewController {
         }
         
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -129,8 +163,8 @@ final class HomeViewController: BaseViewController {
         }
         
         categoryLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(40)
             $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
         }
         
         eatButton.snp.makeConstraints {
@@ -173,5 +207,51 @@ final class HomeViewController: BaseViewController {
             $0.top.equalTo(devideView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(20)
         }
+        
+        hotCollectionView.snp.makeConstraints {
+            $0.top.equalTo(hotLabel.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.16)
+        }
+        
+        newLabel.snp.makeConstraints {
+            $0.top.equalTo(hotCollectionView.snp.bottom).offset(48)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        newCollectionView.snp.makeConstraints {
+            $0.top.equalTo(newLabel.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.16)
+            $0.bottom.equalToSuperview().offset(-(tabBarHeight+48))
+        }
+    }
+    
+    override func setupBinding() {
+        let tempData = ["1", "2", "3"] // TODO: 서버 연동 후 제거 예정
+        
+        Observable.of(tempData)
+            .bind(to: hotCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                guard let cell = self.hotCollectionView.dequeueReusableCell(
+                    withReuseIdentifier: "HomeCollectionViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? HomeCollectionViewCell else { return UICollectionViewCell() }
+                
+                cell.setupData(title: "테스트 제목테스트 제목테스트 제목", thunType: ThunType.eat, persons: "3/6", dateAndPlace: "2022.03.10 신촌 14:00")
+                return cell
+            }
+            .disposed(by: disposeBag)
+        
+        Observable.of(tempData)
+            .bind(to: newCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                guard let cell = self.hotCollectionView.dequeueReusableCell(
+                    withReuseIdentifier: "HomeCollectionViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? HomeCollectionViewCell else { return UICollectionViewCell() }
+
+                cell.setupData(title: "테스트 제목테스트 제목테스트 제목", thunType: ThunType.eat, persons: "3/6", dateAndPlace: "2022.03.10 신촌 14:00")
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
 }
