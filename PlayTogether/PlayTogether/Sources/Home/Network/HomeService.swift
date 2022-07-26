@@ -28,21 +28,11 @@ extension HomeService: TargetType {
     }
     
     var method: Moya.Method {
-        switch self {
-        case .hotThunRequest:
-            return .get
-        case .newThunRequest:
-            return .get
-        }
+        return .get
     }
     
     var task: Task {
-        switch self {
-        case .hotThunRequest:
-            return .requestPlain
-        case .newThunRequest:
-            return .requestPlain
-        }
+        return .requestPlain
     }
     
     var headers: [String: String]? {
