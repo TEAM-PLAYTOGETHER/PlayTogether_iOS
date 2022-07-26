@@ -12,8 +12,15 @@ import RxMoya
 
 final class HomeViewModel {
     private lazy var disposeBag = DisposeBag()
+    var hotThunList = BehaviorSubject<[HomeResponseList?]>.init(value: Array.init())
+    var newThunList = BehaviorSubject<[HomeResponseList?]>.init(value: Array.init())
     
-    func fetchHotThunList(completion: @escaping (Observable<[HomeResponseList?]>) -> Void) {
+    init () {
+        self.fetchHotThunList { self.hotThunList.onNext($0) }
+        self.fetchNewThunList { self.newThunList.onNext($0) }
+    }
+    
+    func fetchHotThunList(completion: @escaping ([HomeResponseList?]) -> Void) {
         let provider = MoyaProvider<HomeService>()
         provider.rx.request(.hotThunRequest)
             .subscribe { result in
@@ -21,7 +28,7 @@ final class HomeViewModel {
                 case let .success(response):
                     let responseData = try? response.map(HomeResponse.self)
                     guard let data = responseData?.data else { return }
-                    completion(Observable<[HomeResponseList?]>.of(data))
+                    completion(data)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -29,7 +36,7 @@ final class HomeViewModel {
             .disposed(by: disposeBag)
     }
     
-    func fetchNewThunList(completion: @escaping (Observable<[HomeResponseList?]>) -> Void) {
+    func fetchNewThunList(completion: @escaping ([HomeResponseList?]) -> Void) {
         let provider = MoyaProvider<HomeService>()
         provider.rx.request(.newThunRequest)
             .subscribe { result in
@@ -37,7 +44,7 @@ final class HomeViewModel {
                 case let .success(response):
                     let responseData = try? response.map(HomeResponse.self)
                     guard let data = responseData?.data else { return }
-                    completion(Observable<[HomeResponseList?]>.of(data))
+                    completion(data)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

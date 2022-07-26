@@ -229,8 +229,8 @@ final class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        viewModel.fetchHotThunList {
-            $0.bind(to: self.hotCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+        viewModel.hotThunList
+            .bind(to: self.hotCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
                 guard let cell = self.hotCollectionView.dequeueReusableCell(
                     withReuseIdentifier: "HomeCollectionViewCell",
                     for: IndexPath(row: row, section: 0)
@@ -243,10 +243,9 @@ final class HomeViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
-        }
         
-        viewModel.fetchNewThunList {
-            $0.bind(to: self.newCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+        viewModel.newThunList
+            .bind(to: self.newCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
                 guard let cell = self.newCollectionView.dequeueReusableCell(
                     withReuseIdentifier: "HomeCollectionViewCell",
                     for: IndexPath(row: row, section: 0)
@@ -259,6 +258,5 @@ final class HomeViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
-        }
     }
 }
