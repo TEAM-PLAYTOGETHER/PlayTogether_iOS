@@ -13,7 +13,7 @@ final class HomeViewController: BaseViewController {
     private let viewModel = HomeViewModel()
     
     private let leftBarItem = UIButton().then {
-        $0.setTitle("SOPT", for: .normal)
+        $0.setTitle("SOPT", for: .normal) // TODO: 추후 삭제 예정
         $0.setTitleColor(.ptGreen, for: .normal)
         $0.setImage(.ptImage(.showIcon), for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 20)
