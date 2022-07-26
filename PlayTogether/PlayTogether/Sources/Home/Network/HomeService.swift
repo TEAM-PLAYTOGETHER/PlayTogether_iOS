@@ -48,7 +48,7 @@ extension HomeService: TargetType {
     var headers: [String: String]? {
         let token = APIConstants.token
         return [
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             "Authorization": token
         ]
     }
