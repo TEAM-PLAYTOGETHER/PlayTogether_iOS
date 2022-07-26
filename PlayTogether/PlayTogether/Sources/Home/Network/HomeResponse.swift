@@ -15,17 +15,17 @@ struct HomeResponse: Decodable {
 struct HomeResponseList: Decodable {
     let lightID: Int
     let category: String
-    let lightMemberCnt: Int
+    let nowMemberCount: Int
     let title, date, time: String
-    let peopleCnt: Int
+    let totalMemberCount: Int
     let place: String
 
     enum CodingKeys: String, CodingKey {
         case lightID = "light_id"
         case category
-        case lightMemberCnt = "LightMemberCnt"
+        case nowMemberCount = "LightMemberCnt"
         case title, date, time
-        case peopleCnt = "people_cnt"
+        case totalMemberCount = "people_cnt"
         case place
     }
 }

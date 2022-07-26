@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum ThunType: String {
-    case eat = "먹을래"
-    case go = "갈래"
-    case `do` = "할래"
-}
-
 final class HomeCollectionViewCell: UICollectionViewCell {
     private lazy var titleLabel = UILabel().then {
         $0.font = .pretendardSemiBold(size: 20)
@@ -88,14 +82,12 @@ private extension HomeCollectionViewCell {
 
 extension HomeCollectionViewCell {
     func setupData(
-        title: String,
-        thunType: ThunType,
-        persons: String,
-        dateAndPlace: String
+        _ title: String, _ category: String, _ nowMemberCount: Int,
+        _ totalMemberCount: Int, _ date: String, _ place: String, _ time: String
     ) {
         titleLabel.text = title
-        categoryLabel.text = thunType.rawValue
-        personsLabel.text = persons
-        dateAndPlaceLabel.text = dateAndPlace
+        categoryLabel.text = category
+        personsLabel.text = "\(nowMemberCount)/\(totalMemberCount)"
+        dateAndPlaceLabel.text = "\(date) \(place) \(time)"
     }
 }

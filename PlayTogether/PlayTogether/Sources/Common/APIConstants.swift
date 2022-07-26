@@ -6,6 +6,7 @@
 //
 
 struct APIConstants {
+    // 추후 key로 숨길 예정
     static let baseUrl = "http://13.125.232.150:3000/api"
     
     // 추후 삭제 예정

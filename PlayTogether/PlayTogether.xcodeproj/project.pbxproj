@@ -20,6 +20,7 @@
 		409451AF28905A9000F21717 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AE28905A9000F21717 /* HomeService.swift */; };
 		409451B128905AEC00F21717 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B028905AEC00F21717 /* APIConstants.swift */; };
 		409451B328905D7D00F21717 /* HomeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B228905D7D00F21717 /* HomeResponse.swift */; };
+		409451B828905FDE00F21717 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B728905FDE00F21717 /* HomeViewModel.swift */; };
 		4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A299287F5F3F00F1E27C /* AppDelegate.swift */; };
 		4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */; };
 		4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4096A29D287F5F3F00F1E27C /* OnboardingViewController.swift */; };
@@ -60,6 +61,7 @@
 		409451AE28905A9000F21717 /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		409451B028905AEC00F21717 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		409451B228905D7D00F21717 /* HomeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeResponse.swift; sourceTree = "<group>"; };
+		409451B728905FDE00F21717 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		4096A296287F5F3F00F1E27C /* PlayTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4096A299287F5F3F00F1E27C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4096A29B287F5F3F00F1E27C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,9 +112,10 @@
 		4041698E2886A4F700812B37 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				409451A9288F37C700F21717 /* View */,
+				409451B628905FCB00F21717 /* ViewModel */,
 				409451AD28905A7D00F21717 /* Network */,
 				409451AA288F37CE00F21717 /* Cell */,
-				409451A9288F37C700F21717 /* View */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -166,6 +169,14 @@
 				409451B228905D7D00F21717 /* HomeResponse.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		409451B628905FCB00F21717 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				409451B728905FDE00F21717 /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		4096A28D287F5F3F00F1E27C = {
@@ -446,6 +457,7 @@
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				DDF2C4052887A96800C10F67 /* OpenedThunViewController.swift in Sources */,
+				409451B828905FDE00F21717 /* HomeViewModel.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
 				404169902886A54700812B37 /* HomeViewController.swift in Sources */,
 				DD05287B288871F80051044C /* ThunDataModel.swift in Sources */,

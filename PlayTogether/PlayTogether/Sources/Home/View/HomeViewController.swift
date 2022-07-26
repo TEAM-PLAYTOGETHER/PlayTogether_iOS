@@ -10,6 +10,7 @@ import UIKit
 
 final class HomeViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
+    private let viewModel = HomeViewModel()
     
     private let leftBarItem = UIButton().then {
         $0.setTitle("SOPT", for: .normal)
@@ -218,7 +219,7 @@ final class HomeViewController: BaseViewController {
             $0.top.equalTo(hotCollectionView.snp.bottom).offset(48)
             $0.leading.equalToSuperview().offset(20)
         }
-
+        
         newCollectionView.snp.makeConstraints {
             $0.top.equalTo(newLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
@@ -228,30 +229,36 @@ final class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        let tempData = ["1", "2", "3"] // TODO: 서버 연동 후 제거 예정
-        
-        Observable.of(tempData)
-            .bind(to: hotCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+        viewModel.fetchHotThunList {
+            $0.bind(to: self.hotCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
                 guard let cell = self.hotCollectionView.dequeueReusableCell(
                     withReuseIdentifier: "HomeCollectionViewCell",
                     for: IndexPath(row: row, section: 0)
-                ) as? HomeCollectionViewCell else { return UICollectionViewCell() }
+                ) as? HomeCollectionViewCell,
+                      let item = item
+                else { return UICollectionViewCell() }
                 
-                cell.setupData(title: "테스트 제목테스트 제목테스트 제목", thunType: ThunType.eat, persons: "3/6", dateAndPlace: "2022.03.10 신촌 14:00")
+                cell.setupData(item.title, item.category, item.nowMemberCount,
+                               item.totalMemberCount, item.date, item.place, item.time)
                 return cell
             }
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
+        }
         
-        Observable.of(tempData)
-            .bind(to: newCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
-                guard let cell = self.hotCollectionView.dequeueReusableCell(
+        viewModel.fetchNewThunList {
+            $0.bind(to: self.newCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                guard let cell = self.newCollectionView.dequeueReusableCell(
                     withReuseIdentifier: "HomeCollectionViewCell",
                     for: IndexPath(row: row, section: 0)
-                ) as? HomeCollectionViewCell else { return UICollectionViewCell() }
-
-                cell.setupData(title: "테스트 제목테스트 제목테스트 제목", thunType: ThunType.eat, persons: "3/6", dateAndPlace: "2022.03.10 신촌 14:00")
+                ) as? HomeCollectionViewCell,
+                      let item = item
+                else { return UICollectionViewCell() }
+                
+                cell.setupData(item.title, item.category, item.nowMemberCount,
+                               item.totalMemberCount, item.date, item.place, item.time)
                 return cell
             }
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
+        }
     }
 }
