@@ -43,6 +43,7 @@ final class TabBarController: UITabBarController {
 private extension TabBarController {
     private func setupTabBar() {
         tabBar.backgroundColor = .white
+        tabBar.layer.applyShadow()
         
         UITabBarItem.appearance().setTitleTextAttributes(
             [
