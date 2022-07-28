@@ -9,37 +9,44 @@ import RxSwift
 import RxCocoa
 
 final class CreateMeetViewModel {
-    
-    let input: Input
-
-    private let titleText: BehaviorSubject<String>
-    private let introduceText: BehaviorSubject<String>
-    
-    struct Input {
+    struct input {
         var meetingTitleText: Observable<String>
         var introduceText: Observable<String>
     }
     
-    struct Output {
+    struct RegularExpressionInput {
+        var meetingTitleText: Observable<String>
+    }
+    
+    struct RegularExpressionOutput {
         var titleTextCheck: Driver<Bool>
+    }
+    
+    struct ButtonOutput {
         var isEnableNextButton: Driver<Bool>
     }
     
-    init() {
-        self.input = Input(meetingTitleText: titleText.asObserver(), introduceText: introduceText.asObserver())
-    }
     
     // 정규식 -> Bool
     
     // 버튼 활성화 -> Bool
     
-    func vailableText() {
+    func regularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
+        let output = input.meetingTitleText.map {
+            let pattern = "^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]$"
+            
+            guard let _ = $0.range(of: pattern, options: .regularExpression)
+            else { return false }
+            
+            return true
+        }.asDriver(onErrorJustReturn: false)
         
+        return RegularExpressionOutput(titleTextCheck: output)
     }
     
-    func checkNextButtonStatus(input: Input) -> Output {
-        let isEnableNextButton = Observable.combineLatest(input.meetingTitleCheck, input.introduceTextCheck) { $0 && $1 }
-            .asDriver(onErrorJustReturn: false)
-        return Output(isEnableNextButton: isEnableNextButton)
-    }
+//    func checkNextButtonStatus(input: Input) -> Output {
+//        let isEnableNextButton = Observable.combineLatest(input.meetingTitleCheck, input.introduceTextCheck) { $0 && $1 }
+//            .asDriver(onErrorJustReturn: false)
+//        return Output(isEnableNextButton: isEnableNextButton)
+//    }
 }

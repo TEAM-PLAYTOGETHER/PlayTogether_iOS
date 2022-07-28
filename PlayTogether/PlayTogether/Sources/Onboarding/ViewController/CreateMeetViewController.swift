@@ -171,10 +171,10 @@ class CreateMeetViewController: BaseViewController {
                 self?.backButtonDidTap()
             }.disposed(by: disposeBag)
     
-        titleTextField.rx.text
-            .orEmpty
-            .bind(to: viewModel.input.meetingTitleText)
-            .disposed(by: disposeBag)
+//        titleTextField.rx.text
+//            .orEmpty
+//            .bind(to: viewModel.input.meetingTitleText)
+//            .disposed(by: disposeBag)
         
         titleTextField.rx.text
             .orEmpty
@@ -185,10 +185,10 @@ class CreateMeetViewController: BaseViewController {
                 }
             }).disposed(by: disposeBag)
         
-        introduceTextField.rx.text
-            .orEmpty
-            .bind(to: viewModel.Input.introduceText)
-            .disposed(by: disposeBag)
+//        introduceTextField.rx.text
+//            .orEmpty
+//            .bind(to: viewModel.Input.introduceText)
+//            .disposed(by: disposeBag)
         
         introduceTextField.rx.text
             .orEmpty
@@ -198,15 +198,23 @@ class CreateMeetViewController: BaseViewController {
                     return
                 }
             }).disposed(by: disposeBag)
-
-        let output = viewModel.checkNextButtonStatus(input: input)
         
-        output.isEnableNextButton
-            .drive(onNext: { [weak self] in
-                self?.nextButton.isEnabled = $0
-                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
-                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
-            }).disposed(by: disposeBag)
+        let input = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
+        
+        let output = viewModel.regularExpressionCheck(input: input)
+        
+        output.titleTextCheck
+            .drive(onNext: {
+                print($0)
+            })
+            .disposed(by: disposeBag)
+        
+//        output.isEnableNextButton
+//            .drive(onNext: { [weak self] in
+//                self?.nextButton.isEnabled = $0
+//                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
+//                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+//            }).disposed(by: disposeBag)
     }
 }
 
