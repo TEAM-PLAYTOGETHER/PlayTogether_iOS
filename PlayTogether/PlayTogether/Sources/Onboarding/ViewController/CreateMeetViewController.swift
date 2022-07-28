@@ -44,9 +44,7 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private let noticeTitleLabel = UILabel().then {
-        $0.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
         $0.font = .pretendardMedium(size: 12)
-        $0.textColor = .ptGray02
     }
     
     private let introduceLabel = UILabel().then {
@@ -170,11 +168,6 @@ class CreateMeetViewController: BaseViewController {
             .bind { [weak self] in
                 self?.backButtonDidTap()
             }.disposed(by: disposeBag)
-    
-        titleTextField.rx.text
-            .orEmpty
-            .bind(to: viewModel.input.meetingTitleText)
-            .disposed(by: disposeBag)
         
         titleTextField.rx.text
             .orEmpty
@@ -187,21 +180,33 @@ class CreateMeetViewController: BaseViewController {
         
         introduceTextField.rx.text
             .orEmpty
-            .bind(to: viewModel.Input.introduceText)
-            .disposed(by: disposeBag)
-        
-        introduceTextField.rx.text
-            .orEmpty
             .subscribe(onNext: { [weak self] in
                 guard $0.count < 16 else {
                     self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
                     return
                 }
             }).disposed(by: disposeBag)
-
-        let output = viewModel.checkNextButtonStatus(input: input)
         
-        output.isEnableNextButton
+        titleTextField.rx.text
+            .bind(to: viewModel.input.meetingTitleText)
+            .disposed(by: disposeBag)
+        
+        introduceTextField.rx.text
+            .bind(to: viewModel.input.introduceText)
+            .disposed(by: disposeBag)
+        
+        viewModel.output.isValidText
+            .drive(onNext: { [weak self] in
+                guard self?.titleTextField.text?.isEmpty == false else {
+                    self?.noticeTitleLabel.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
+                    self?.noticeTitleLabel.textColor = .ptGray02
+                    return
+                }
+                self?.noticeTitleLabel.text = $0 ? "사용 가능한 동아리명입니다" : "한글, 영문, 숫자만 사용 가능합니다"
+                self?.noticeTitleLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
+            }).disposed(by: disposeBag)
+        
+        viewModel.output.isEnableNextButton
             .drive(onNext: { [weak self] in
                 self?.nextButton.isEnabled = $0
                 self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
@@ -209,13 +214,6 @@ class CreateMeetViewController: BaseViewController {
             }).disposed(by: disposeBag)
     }
 }
-
-
-//guard $0.count < 16 else { "^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]$"
-//    self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
-//    return
-//}
-//$0.isEmpty ? self?.fillIntroduceCheck.onNext(false) : self?.fillIntroduceCheck.onNext(true)
 
 
 
