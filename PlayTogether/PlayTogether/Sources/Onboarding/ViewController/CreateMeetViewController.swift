@@ -31,7 +31,7 @@ class CreateMeetViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    private let titleTextField = UITextField().then {
+    private lazy var titleTextField = UITextField().then {
         $0.placeholder = "동아리명 입력"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
@@ -40,6 +40,7 @@ class CreateMeetViewController: BaseViewController {
         $0.layer.cornerRadius = 10
         $0.autocorrectionType = .no
         $0.addLeftPadding()
+        
     }
     
     private let noticeTitleLabel = UILabel().then {
@@ -54,7 +55,7 @@ class CreateMeetViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    private let introduceTextField = UITextField().then {
+    private lazy var introduceTextField = UITextField().then {
         $0.placeholder = "한 줄 소개 입력(15자 이내)"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
@@ -67,17 +68,16 @@ class CreateMeetViewController: BaseViewController {
     
     private lazy var nextButton = UIButton().then {
         $0.setTitle("다음", for: .normal)
-        $0.setTitleColor(.ptGray01, for: .normal)
         $0.titleLabel?.font = .pretendardSemiBold(size: 16)
-        $0.backgroundColor = .ptGray03
-        $0.layer.borderColor = UIColor.ptGray02.cgColor
         $0.layer.borderWidth = 1.0
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
-        $0.isEnabled = false
+        $0.setTitleColor(.ptBlack01, for: .normal)
+        $0.setTitleColor(.ptGray01, for: .disabled)
     }
     
-    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: self, action: nil)
+    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CreateMeetViewController.self, action: nil)
+    let viewModel = CreateMeetViewModel()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -94,9 +94,13 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private func nextButtonDidTap() {
-        print("DEBUG: NextButton did tap")
+        guard let title = titleTextField.text else { return }
+        guard let introduce = introduceTextField.text else { return }
+        OnboardingDataModel.shared.meetingTitle = title
+        OnboardingDataModel.shared.introduceMessage = introduce
+        print("DEBUG: titleTextField.text: \(title), introduceTextField.text: \(introduce))")
     }
-    
+        
     override func setupViews() {
         view.backgroundColor = .white
         
@@ -166,18 +170,53 @@ class CreateMeetViewController: BaseViewController {
             .bind { [weak self] in
                 self?.backButtonDidTap()
             }.disposed(by: disposeBag)
+    
+        titleTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.input.meetingTitleText)
+            .disposed(by: disposeBag)
         
-        titleTextField.rx.text.orEmpty.asDriver()
-            .drive(onNext: { [weak self] in
-                guard $0.count > 15 else { return }
-                self?.titleTextField.text = String(self?.titleTextField.text?.dropLast() ?? "")
+        titleTextField.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
+                guard $0.count < 16 else {
+                    self?.titleTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
+                    return
+                }
             }).disposed(by: disposeBag)
         
-        introduceTextField.rx.text.orEmpty.asDriver()
+        introduceTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.Input.introduceText)
+            .disposed(by: disposeBag)
+        
+        introduceTextField.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
+                guard $0.count < 16 else {
+                    self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
+                    return
+                }
+            }).disposed(by: disposeBag)
+
+        let output = viewModel.checkNextButtonStatus(input: input)
+        
+        output.isEnableNextButton
             .drive(onNext: { [weak self] in
-                guard $0.count > 15 else { return }
-                self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
+                self?.nextButton.isEnabled = $0
+                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
+                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
             }).disposed(by: disposeBag)
     }
 }
+
+
+//guard $0.count < 16 else { "^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]$"
+//    self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
+//    return
+//}
+//$0.isEmpty ? self?.fillIntroduceCheck.onNext(false) : self?.fillIntroduceCheck.onNext(true)
+
+
+
 
