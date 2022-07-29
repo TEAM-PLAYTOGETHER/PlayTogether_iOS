@@ -40,7 +40,6 @@ class CreateMeetViewController: BaseViewController {
         $0.layer.cornerRadius = 10
         $0.autocorrectionType = .no
         $0.addLeftPadding()
-        
     }
     
     private let noticeTitleLabel = UILabel().then {
@@ -172,19 +171,15 @@ class CreateMeetViewController: BaseViewController {
         titleTextField.rx.text
             .orEmpty
             .subscribe(onNext: { [weak self] in
-                guard $0.count < 16 else {
-                    self?.titleTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
-                    return
-                }
+                guard $0.count > 15 else { return }
+                self?.titleTextField.text = String(self?.titleTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
         introduceTextField.rx.text
             .orEmpty
             .subscribe(onNext: { [weak self] in
-                guard $0.count < 16 else {
-                    self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
-                    return
-                }
+                guard $0.count > 15 else { return }
+                self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
         let input = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
