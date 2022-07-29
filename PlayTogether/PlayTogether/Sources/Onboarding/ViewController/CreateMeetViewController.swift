@@ -187,30 +187,31 @@ class CreateMeetViewController: BaseViewController {
                 }
             }).disposed(by: disposeBag)
         
-        titleTextField.rx.text
-            .bind(to: viewModel.input.meetingTitleText)
-            .disposed(by: disposeBag)
+        let input = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
+        let output = viewModel.regularExpressionCheck(input: input)
+        var isTitleValid = false
         
-        introduceTextField.rx.text
-            .bind(to: viewModel.input.introduceText)
-            .disposed(by: disposeBag)
-        
-        viewModel.output.isValidText
+        output.titleTextCheck
             .drive(onNext: { [weak self] in
                 guard self?.titleTextField.text?.isEmpty == false else {
                     self?.noticeTitleLabel.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
                     self?.noticeTitleLabel.textColor = .ptGray02
                     return
                 }
+                isTitleValid = $0
                 self?.noticeTitleLabel.text = $0 ? "사용 가능한 동아리명입니다" : "한글, 영문, 숫자만 사용 가능합니다"
                 self?.noticeTitleLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
             }).disposed(by: disposeBag)
         
-        viewModel.output.isEnableNextButton
+        let isTextEmpty = CreateMeetViewModel.Input(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable(),
+                                                        introduceText: introduceTextField.rx.text.orEmpty.asObservable())
+        let isTextEmptyOutput = viewModel.isTextEmpty(input: isTextEmpty)
+        
+        isTextEmptyOutput.isTextEmpty
             .drive(onNext: { [weak self] in
-                self?.nextButton.isEnabled = $0
-                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
-                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+                self?.nextButton.isEnabled = $0 && isTitleValid
+                self?.nextButton.backgroundColor = $0 && isTitleValid ? .ptGreen : .ptGray03
+                self?.nextButton.layer.borderColor = $0 && isTitleValid ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
             }).disposed(by: disposeBag)
     }
 }

@@ -1,52 +1,48 @@
 //
-//  CreateMeetViewModel.swift
+//  CreateMeetViewModelTest.swift
 //  PlayTogether
 //
-//  Created by 이지석 on 2022/07/23.
+//  Created by 이지석 on 2022/07/29.
 //
 
 import RxSwift
 import RxCocoa
 
 final class CreateMeetViewModel {
-    let input: Input
-    let output: Output
     
     struct Input {
-        var meetingTitleText: AnyObserver<String?>
-        var introduceText: AnyObserver<String?>
+        var meetingTitleText: Observable<String>
+        var introduceText: Observable<String>
     }
     
-    struct Output {
-        var isValidText: Driver<Bool>
-        var isEnableNextButton: Driver<Bool>
+    struct RegularExpressionInput {
+        var meetingTitleText: Observable<String>
     }
     
-    init() {
-        let titleText = BehaviorSubject<String?>(value: nil)
-        let introduceText = BehaviorSubject<String?>(value: nil)
-        
-        let isValidText = titleText
-            .map(isValidText)
-            .asDriver(onErrorJustReturn: false)
-        
-        let isEnableNextButton = Observable.combineLatest(titleText, introduceText)
-            .map(isEnableNextButton)
-            .asDriver(onErrorJustReturn: false)
-        
-        self.input = Input(meetingTitleText: titleText.asObserver(), introduceText: introduceText.asObserver())
-        self.output = Output(isValidText: isValidText, isEnableNextButton: isEnableNextButton)
+    struct RegularExpressionOutput {
+        var titleTextCheck: Driver<Bool>
     }
-}
+    
+    struct textEmptyOutput {
+        var isTextEmpty: Driver<Bool>
+    }
+    
+    func regularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
+        let output = input.meetingTitleText.map {
+            let pattern = "^[0-9a-zA-Zㄱ-ㅎ가-핳ㅏ-ㅣ\\s]*$"
+            guard let _ = $0.range(of: pattern, options: .regularExpression)
+            else { return false }
 
-private func isValidText(title: String?) -> Bool {
-    let pattern = "^[0-9a-zA-Z가-핳\\s]*$" // 이거 끝내고 커밋,
-    guard let title = title, !title.isEmpty else { return false }
-    guard let _ = title.range(of: pattern, options: .regularExpression) else { return false }
-    return true
-}
-
-private func isEnableNextButton(title: String?, introduce: String?) -> Bool {
-    guard let title = title, let introduce = introduce else { return false }
-    return isValidText(title: title) && !title.isEmpty && !introduce.isEmpty
+            return true
+        }.asDriver(onErrorJustReturn: false)
+        
+        return RegularExpressionOutput(titleTextCheck: output)
+    }
+    
+    func isTextEmpty(input: Input) -> textEmptyOutput {
+        let output = Observable.combineLatest(input.meetingTitleText, input.introduceText) { !$0.isEmpty && !$1.isEmpty }
+            .asDriver(onErrorJustReturn: false)
+        return textEmptyOutput(isTextEmpty: output)
+    }
+    
 }
