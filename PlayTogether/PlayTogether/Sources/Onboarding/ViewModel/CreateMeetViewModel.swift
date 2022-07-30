@@ -24,12 +24,12 @@ final class CreateMeetViewModel {
     }
     
     struct textEmptyOutput {
-        var isTextEmpty: Driver<Bool>
+        var textFieldEmptyCheck: Driver<Bool>
     }
     
     func regularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
         let output = input.meetingTitleText.map {
-            let pattern = "^[0-9a-zA-Zㄱ-ㅎ가-핳ㅏ-ㅣ\\s]*$"
+            let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-핳\\s]*$"
             guard let _ = $0.range(of: pattern, options: .regularExpression)
             else { return false }
 
@@ -42,7 +42,7 @@ final class CreateMeetViewModel {
     func isTextEmpty(input: Input) -> textEmptyOutput {
         let output = Observable.combineLatest(input.meetingTitleText, input.introduceText) { !$0.isEmpty && !$1.isEmpty }
             .asDriver(onErrorJustReturn: false)
-        return textEmptyOutput(isTextEmpty: output)
+        return textEmptyOutput(textFieldEmptyCheck: output)
     }
     
 }

@@ -31,7 +31,7 @@ class CreateMeetViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    private lazy var titleTextField = UITextField().then {
+    private let titleTextField = UITextField().then {
         $0.placeholder = "동아리명 입력"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
@@ -52,7 +52,7 @@ class CreateMeetViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    private lazy var introduceTextField = UITextField().then {
+    private let introduceTextField = UITextField().then {
         $0.placeholder = "한 줄 소개 입력(15자 이내)"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
@@ -86,16 +86,11 @@ class CreateMeetViewController: BaseViewController {
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
-    private func backButtonDidTap() {
-        navigationController?.popViewController(animated: true)
-    }
-    
     private func nextButtonDidTap() {
         guard let title = titleTextField.text else { return }
         guard let introduce = introduceTextField.text else { return }
         OnboardingDataModel.shared.meetingTitle = title
         OnboardingDataModel.shared.introduceMessage = introduce
-        print("DEBUG: titleTextField.text: \(title), introduceTextField.text: \(introduce))")
     }
         
     override func setupViews() {
@@ -165,7 +160,7 @@ class CreateMeetViewController: BaseViewController {
         
         leftButtonItem.rx.tap
             .bind { [weak self] in
-                self?.backButtonDidTap()
+                self?.navigationController?.popViewController(animated: true)
             }.disposed(by: disposeBag)
         
         titleTextField.rx.text
@@ -182,11 +177,11 @@ class CreateMeetViewController: BaseViewController {
                 self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
-        let input = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
-        let output = viewModel.regularExpressionCheck(input: input)
+        let regularExpressionInput = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
+        let regularExpressionDriver = viewModel.regularExpressionCheck(input: regularExpressionInput)
         var isTitleValid = false
         
-        output.titleTextCheck
+        regularExpressionDriver.titleTextCheck
             .drive(onNext: { [weak self] in
                 guard self?.titleTextField.text?.isEmpty == false else {
                     self?.noticeTitleLabel.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
@@ -198,19 +193,16 @@ class CreateMeetViewController: BaseViewController {
                 self?.noticeTitleLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
             }).disposed(by: disposeBag)
         
-        let isTextEmpty = CreateMeetViewModel.Input(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable(),
+        let isTextEmptyInput = CreateMeetViewModel.Input(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable(),
                                                         introduceText: introduceTextField.rx.text.orEmpty.asObservable())
-        let isTextEmptyOutput = viewModel.isTextEmpty(input: isTextEmpty)
+        let isTextEmptyDriver = viewModel.isTextEmpty(input: isTextEmptyInput)
         
-        isTextEmptyOutput.isTextEmpty
+        isTextEmptyDriver.textFieldEmptyCheck
             .drive(onNext: { [weak self] in
-                self?.nextButton.isEnabled = $0 && isTitleValid
-                self?.nextButton.backgroundColor = $0 && isTitleValid ? .ptGreen : .ptGray03
-                self?.nextButton.layer.borderColor = $0 && isTitleValid ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+                let nextButtonState = $0 && isTitleValid
+                self?.nextButton.isEnabled = nextButtonState
+                self?.nextButton.backgroundColor = nextButtonState ? .ptGreen : .ptGray03
+                self?.nextButton.layer.borderColor = nextButtonState ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
             }).disposed(by: disposeBag)
     }
 }
-
-
-
-
