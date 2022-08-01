@@ -74,18 +74,21 @@ final class CreateThunViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
-        $0.register(CreateThunCollectionViewCell.self, forCellWithReuseIdentifier: "CreateThunCollectionViewCell")
+        $0.register(
+            CreateThunCollectionViewCell.self,
+            forCellWithReuseIdentifier: "CreateThunCollectionViewCell"
+        )
         $0.isScrollEnabled = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
     
-    private let dateLabel = UILabel().then {
+    private let whenLabel = UILabel().then {
         $0.text = "언제 열리는 번개인가요?"
         $0.font = .pretendardBold(size: 14)
         $0.textColor = .ptBlack01
     }
     
-    private let dateTextField = UITextField().then {
+    private let whenTextField = UITextField().then {
         $0.textAlignment = .center
         $0.placeholder = "YYYY.MM.DD"
         $0.font = .pretendardRegular(size: 14)
@@ -96,7 +99,7 @@ final class CreateThunViewController: BaseViewController {
         $0.layer.borderColor = UIColor.ptGray03.cgColor
     }
     
-    private let datePicker = UIDatePicker().then {
+    private let whenDatePicker = UIDatePicker().then {
         $0.preferredDatePickerStyle = .wheels
         $0.datePickerMode = .date
         $0.locale = Locale(identifier: "ko-KR")
@@ -107,9 +110,15 @@ final class CreateThunViewController: BaseViewController {
         
         components.day = 0
         let minDate = Calendar.autoupdatingCurrent.date(byAdding: components, to: Date())
-
+        
         $0.minimumDate = minDate
         $0.maximumDate = maxDate
+    }
+    
+    private let timeDatePicker = UIDatePicker().then {
+        $0.preferredDatePickerStyle = .wheels
+        $0.datePickerMode = .time
+        $0.locale = Locale(identifier: "ko-KR")
     }
     
     private let timeLabel = UILabel().then {
@@ -176,6 +185,13 @@ final class CreateThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
+    private let tapGesture = UITapGestureRecognizer(
+        target: CreateThunViewController.self,
+        action: nil
+    ).then {
+        $0.cancelsTouchesInView = false
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -196,8 +212,8 @@ final class CreateThunViewController: BaseViewController {
         contentView.addSubview(titleTextField)
         contentView.addSubview(categoryLabel)
         contentView.addSubview(collectionView)
-        contentView.addSubview(dateLabel)
-        contentView.addSubview(dateTextField)
+        contentView.addSubview(whenLabel)
+        contentView.addSubview(whenTextField)
         contentView.addSubview(timeLabel)
         contentView.addSubview(timeTextField)
         contentView.addSubview(placeLabel)
@@ -210,7 +226,7 @@ final class CreateThunViewController: BaseViewController {
     
     override func setupLayouts() {
         let viewHeight = UIScreen.main.bounds.height
-                
+        
         topView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
@@ -254,19 +270,19 @@ final class CreateThunViewController: BaseViewController {
             $0.height.equalTo(UIScreen.main.bounds.width * 0.2746)
         }
         
-        dateLabel.snp.makeConstraints {
+        whenLabel.snp.makeConstraints {
             $0.top.equalTo(collectionView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
         }
         
-        dateTextField.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(14)
+        whenTextField.snp.makeConstraints {
+            $0.top.equalTo(whenLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(viewHeight * 0.07)
         }
         
         timeLabel.snp.makeConstraints {
-            $0.top.equalTo(dateTextField.snp.bottom).offset(24)
+            $0.top.equalTo(whenTextField.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
         }
         
@@ -309,11 +325,20 @@ final class CreateThunViewController: BaseViewController {
             $0.height.equalTo(17)
             $0.bottom.equalToSuperview().inset(30)
         }
-        
     }
     
     override func setupBinding() {
-        createDatePickerView()
+        createWhenDatePickerView()
+        createTimeDatePickerView()
+        
+        tapGesture.rx.event
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        scrollView.addGestureRecognizer(tapGesture)
         
         Observable.of(["먹을래", "할래", "갈래"])
             .bind(to: self.collectionView.rx.items) { _, row, item -> UICollectionViewCell in
@@ -334,32 +359,62 @@ final class CreateThunViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 }
 
 private extension CreateThunViewController {
-    func createDatePickerView() {
+    func createWhenDatePickerView() {
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
         let acceptButton = UIBarButtonItem(title: "완료", style: .plain, target: target, action: nil)
         
         acceptButton.rx.tap
             .bind { [weak self] in
-                guard let date = self?.datePicker.date else { return }
+                guard let date = self?.whenDatePicker.date else { return }
                 let formatter = DateFormatter()
                 formatter.timeStyle = .none
                 formatter.dateFormat = "yyyy.MM.dd"
                 
-                self?.dateTextField.text = formatter.string(from: date)
+                self?.whenTextField.text = formatter.string(from: date)
                 self?.view.endEditing(true)
             }
             .disposed(by: disposeBag)
-
+        
         let toolBar = UIToolbar().then {
             $0.sizeToFit()
             $0.setItems([cancelButton, flexible, acceptButton], animated: false)
         }
         
-        dateTextField.rx.inputAccessoryView.onNext(toolBar)
-        dateTextField.rx.inputView.onNext(datePicker)
+        whenTextField.rx.inputAccessoryView.onNext(toolBar)
+        whenTextField.rx.inputView.onNext(whenDatePicker)
+    }
+    
+    func createTimeDatePickerView() {
+        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
+        let acceptButton = UIBarButtonItem(title: "완료", style: .plain, target: target, action: nil)
+        
+        acceptButton.rx.tap
+            .bind { [weak self] in
+                guard let date = self?.timeDatePicker.date else { return }
+                let formatter = DateFormatter()
+                formatter.timeStyle = .none
+                formatter.dateFormat = "HH:mm"
+                
+                self?.timeTextField.text = formatter.string(from: date)
+                self?.view.endEditing(true)
+            }
+            .disposed(by: disposeBag)
+        
+        let toolBar = UIToolbar().then {
+            $0.sizeToFit()
+            $0.setItems([cancelButton, flexible, acceptButton], animated: false)
+        }
+        
+        timeTextField.rx.inputAccessoryView.onNext(toolBar)
+        timeTextField.rx.inputView.onNext(timeDatePicker)
     }
 }
