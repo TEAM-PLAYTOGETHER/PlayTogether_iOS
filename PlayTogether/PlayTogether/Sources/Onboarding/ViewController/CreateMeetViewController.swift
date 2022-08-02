@@ -168,6 +168,36 @@ class CreateMeetViewController: BaseViewController {
                 self?.titleTextField.text = String(self?.titleTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
+        titleTextField.rx.controlEvent(.touchDown)
+            .subscribe(onNext: { [weak self] in
+                self?.titleTextField.layer.borderColor = UIColor.ptBlack02.cgColor
+            }).disposed(by: disposeBag)
+
+        titleTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
+            .subscribe(onNext: { [weak self] in
+                guard let textCount = self?.titleTextField.text?.count else { return }
+                guard textCount > 0 else {
+                    self?.titleTextField.layer.borderColor = UIColor.ptGray03.cgColor
+                    return
+                }
+                self?.titleTextField.layer.borderColor = UIColor.ptGray01.cgColor
+            }).disposed(by: disposeBag)
+        
+        introduceTextField.rx.controlEvent(.touchDown)
+            .subscribe(onNext: { [weak self] in
+                self?.introduceTextField.layer.borderColor = UIColor.ptBlack02.cgColor
+            }).disposed(by: disposeBag)
+        
+        introduceTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
+            .subscribe(onNext: { [weak self] in
+                guard let textCount = self?.introduceTextField.text?.count else { return }
+                guard textCount > 0 else {
+                    self?.introduceTextField.layer.borderColor = UIColor.ptGray03.cgColor
+                    return
+                }
+                self?.introduceTextField.layer.borderColor = UIColor.ptGray01.cgColor
+            }).disposed(by: disposeBag)
+        
         introduceTextField.rx.text
             .orEmpty
             .subscribe(onNext: { [weak self] in
@@ -177,7 +207,6 @@ class CreateMeetViewController: BaseViewController {
         
         let regularExpressionInput = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
         let regularExpressionDriver = viewModel.regularExpressionCheck(input: regularExpressionInput)
-        var isTitleValid = false
         
         regularExpressionDriver.titleTextCheck
             .drive(onNext: { [weak self] in
@@ -186,21 +215,19 @@ class CreateMeetViewController: BaseViewController {
                     self?.noticeTitleLabel.textColor = .ptGray02
                     return
                 }
-                isTitleValid = $0
                 self?.noticeTitleLabel.text = $0 ? "사용 가능한 동아리명입니다" : "한글, 영문, 숫자만 사용 가능합니다"
                 self?.noticeTitleLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
             }).disposed(by: disposeBag)
         
         let isTextEmptyInput = CreateMeetViewModel.Input(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable(),
                                                         introduceText: introduceTextField.rx.text.orEmpty.asObservable())
-        let isTextEmptyDriver = viewModel.isTextEmpty(input: isTextEmptyInput)
+        let isTextEmptyDriver = viewModel.isNextButtonEnable(input: isTextEmptyInput)
         
-        isTextEmptyDriver.textFieldEmptyCheck
+        isTextEmptyDriver.nextButtonEnableCheck
             .drive(onNext: { [weak self] in
-                let nextButtonState = $0 && isTitleValid
-                self?.nextButton.isEnabled = nextButtonState
-                self?.nextButton.backgroundColor = nextButtonState ? .ptGreen : .ptGray03
-                self?.nextButton.layer.borderColor = nextButtonState ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+                self?.nextButton.isEnabled = $0
+                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
+                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
             }).disposed(by: disposeBag)
     }
 }

@@ -23,15 +23,14 @@ final class CreateMeetViewModel {
         var titleTextCheck: Driver<Bool>
     }
     
-    struct textEmptyOutput {
-        var textFieldEmptyCheck: Driver<Bool>
+    struct nextButtonEnableOutput {
+        var nextButtonEnableCheck: Driver<Bool>
     }
     
     func regularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
         let output = input.meetingTitleText.map {
             let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-핳\\s]*$"
-            guard let _ = $0.range(of: pattern, options: .regularExpression)
-            else { return false }
+            guard let _ = $0.range(of: pattern, options: .regularExpression) else { return false }
 
             return true
         }.asDriver(onErrorJustReturn: false)
@@ -39,10 +38,13 @@ final class CreateMeetViewModel {
         return RegularExpressionOutput(titleTextCheck: output)
     }
     
-    func isTextEmpty(input: Input) -> textEmptyOutput {
-        let output = Observable.combineLatest(input.meetingTitleText, input.introduceText) { !$0.isEmpty && !$1.isEmpty }
-            .asDriver(onErrorJustReturn: false)
-        return textEmptyOutput(textFieldEmptyCheck: output)
+    func isNextButtonEnable(input: Input) -> nextButtonEnableOutput {
+        let output = Observable.combineLatest(input.meetingTitleText, input.introduceText) {
+            let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-핳\\s]*$"
+            guard let _ = $0.range(of: pattern, options: .regularExpression) else { return false }
+            return !$0.isEmpty && !$1.isEmpty
+        }.asDriver(onErrorJustReturn: false)
+        
+        return nextButtonEnableOutput(nextButtonEnableCheck: output)
     }
-    
 }
