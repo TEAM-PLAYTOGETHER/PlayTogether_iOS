@@ -177,7 +177,8 @@ class CreateMeetViewController: BaseViewController {
 
         titleTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
             .subscribe(onNext: { [weak self] in
-                guard (self?.titleTextField.text!.count)! > 0 else {
+                guard let textCount = self?.titleTextField.text?.count else { return }
+                guard textCount > 0 else {
                     self?.titleTextField.layer.borderColor = UIColor.ptGray03.cgColor
                     return
                 }
@@ -191,7 +192,8 @@ class CreateMeetViewController: BaseViewController {
         
         introduceTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
             .subscribe(onNext: { [weak self] in
-                guard (self?.introduceTextField.text!.count)! > 0 else {
+                guard let textCount = self?.introduceTextField.text?.count else { return }
+                guard textCount > 0 else {
                     self?.introduceTextField.layer.borderColor = UIColor.ptGray03.cgColor
                     return
                 }
