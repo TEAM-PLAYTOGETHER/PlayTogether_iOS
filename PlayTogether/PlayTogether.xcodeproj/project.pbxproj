@@ -292,11 +292,8 @@
 				4096A2D7287F745300F1E27C /* UIFont+Extension.swift */,
 				40EDB67F288495F600996AA0 /* UIImage+Extension.swift */,
 				B6397F422887104800046843 /* UITextField+Extension.swift */,
-<<<<<<< HEAD
 				B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */,
-=======
 				4066E499288B3CF700FC9090 /* CALayer+Extension.swift */,
->>>>>>> 587b7c6da6026972da0b054a6251df3e04ef28b1
 			);
 			path = Extensions;
 			sourceTree = "<group>";
