@@ -43,6 +43,7 @@
 		B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */; };
 		B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B630459D28828D9F0095F694 /* ChoiceCell.swift */; };
 		B6397F432887104800046843 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6397F422887104800046843 /* UITextField+Extension.swift */; };
+		B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */; };
 		DD05287B288871F80051044C /* ThunDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD05287A288871F80051044C /* ThunDataModel.swift */; };
 		DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */; };
 		DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2C4022887A83E00C10F67 /* SubmittedThunViewController.swift */; };
@@ -84,6 +85,7 @@
 		B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewController.swift; sourceTree = "<group>"; };
 		B630459D28828D9F0095F694 /* ChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCell.swift; sourceTree = "<group>"; };
 		B6397F422887104800046843 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewModel.swift; sourceTree = "<group>"; };
 		DD05287A288871F80051044C /* ThunDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunDataModel.swift; sourceTree = "<group>"; };
 		DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
 		DDF2C4022887A83E00C10F67 /* SubmittedThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedThunViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				4096A2B4287F602500F1E27C /* OnboardingViewModel.swift */,
+				B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
+				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				409451AF28905A9000F21717 /* HomeService.swift in Sources */,
