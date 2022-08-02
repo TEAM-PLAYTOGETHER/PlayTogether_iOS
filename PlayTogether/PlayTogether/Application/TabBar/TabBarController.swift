@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Then
 
 final class TabBarController: UITabBarController {
     private let homeViewController = HomeViewController().then {
@@ -42,6 +43,7 @@ final class TabBarController: UITabBarController {
 private extension TabBarController {
     private func setupTabBar() {
         tabBar.backgroundColor = .white
+        tabBar.layer.applyShadow()
         
         UITabBarItem.appearance().setTitleTextAttributes(
             [
