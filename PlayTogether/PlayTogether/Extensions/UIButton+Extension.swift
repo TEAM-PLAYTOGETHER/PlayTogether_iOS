@@ -17,4 +17,10 @@ extension UIButton {
         self.setTitleColor(.ptBlack01, for: .normal)
         self.setTitleColor(.ptGray01, for: .disabled)
     }
+    
+    func isButtonEnableUI(check: Bool) {
+        self.isEnabled = check
+        self.backgroundColor = check ? .ptGreen : .ptGray03
+        self.layer.borderColor = check ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+    }
 }
