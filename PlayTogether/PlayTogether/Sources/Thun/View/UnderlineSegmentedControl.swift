@@ -14,21 +14,26 @@ class UnderlineSegmentedControl: UISegmentedControl {
         $0.backgroundColor = UIColor.ptGreen
         addSubview($0)
     }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         removeBackgroundAndDivider()
     }
+    
     override init(items: [Any]?) {
         super.init(items: items)
         removeBackgroundAndDivider()
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         underlineAnimation()
     }
+    
     required init?(coder: NSCoder) {
         fatalError()
     }
+    
     private func removeBackgroundAndDivider() {
         let image = UIImage()
         setBackgroundImage(image, for: .normal, barMetrics: .default)
@@ -37,6 +42,7 @@ class UnderlineSegmentedControl: UISegmentedControl {
         setDividerImage(image, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
         backgroundColor = .ptBlack01
     }
+    
     private func underlineAnimation() {
         layer.cornerRadius = 0
         let segmentIndex = CGFloat(selectedSegmentIndex)
