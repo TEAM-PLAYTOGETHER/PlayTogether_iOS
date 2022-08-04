@@ -32,6 +32,7 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private let titleTextField = UITextField().then {
+        $0.setupPlaceholderText(title: "동아리명 입력", color: .ptGray01)
         $0.placeholder = "동아리명 입력"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
@@ -43,9 +44,7 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private let noticeTitleLabel = UILabel().then {
-        $0.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
         $0.font = .pretendardMedium(size: 12)
-        $0.textColor = .ptGray02
     }
     
     private let introduceLabel = UILabel().then {
@@ -55,7 +54,7 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private let introduceTextField = UITextField().then {
-        $0.placeholder = "한 줄 소개 입력(15자 이내)"
+        $0.setupPlaceholderText(title: "한 줄 소개 입력(15자 이내)", color: .ptGray01)
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
         $0.layer.borderColor = UIColor.ptGray03.cgColor
@@ -66,18 +65,11 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private lazy var nextButton = UIButton().then {
-        $0.setTitle("다음", for: .normal)
-        $0.setTitleColor(.ptGray01, for: .normal)
-        $0.titleLabel?.font = .pretendardSemiBold(size: 16)
-        $0.backgroundColor = .ptGray03
-        $0.layer.borderColor = UIColor.ptGray02.cgColor
-        $0.layer.borderWidth = 1.0
-        $0.layer.cornerRadius = 10
-        $0.clipsToBounds = true
-        $0.isEnabled = false
+        $0.setupBottomButtonUI(title: "다음")
     }
     
-    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: self, action: nil)
+    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CreateMeetViewController.self, action: nil)
+    let viewModel = CreateMeetViewModel()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -89,14 +81,16 @@ class CreateMeetViewController: BaseViewController {
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
-    private func backButtonDidTap() {
-        navigationController?.popViewController(animated: true)
-    }
-    
     private func nextButtonDidTap() {
-        print("DEBUG: NextButton did tap")
+        guard let title = titleTextField.text else { return }
+        guard let introduce = introduceTextField.text else { return }
+        OnboardingDataModel.shared.meetingTitle = title
+        OnboardingDataModel.shared.introduceMessage = introduce
+        
+        let controller = InvitationCodeViewController()
+        navigationController?.pushViewController(controller, animated: true)
     }
-    
+        
     override func setupViews() {
         view.backgroundColor = .white
         
@@ -164,20 +158,76 @@ class CreateMeetViewController: BaseViewController {
         
         leftButtonItem.rx.tap
             .bind { [weak self] in
-                self?.backButtonDidTap()
+                self?.navigationController?.popViewController(animated: true)
             }.disposed(by: disposeBag)
         
-        titleTextField.rx.text.orEmpty.asDriver()
-            .drive(onNext: { [weak self] in
+        titleTextField.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
                 guard $0.count > 15 else { return }
                 self?.titleTextField.text = String(self?.titleTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
-        introduceTextField.rx.text.orEmpty.asDriver()
-            .drive(onNext: { [weak self] in
+        titleTextField.rx.controlEvent(.touchDown)
+            .subscribe(onNext: { [weak self] in
+                self?.titleTextField.layer.borderColor = UIColor.ptBlack02.cgColor
+            }).disposed(by: disposeBag)
+
+        titleTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
+            .subscribe(onNext: { [weak self] in
+                guard let textCount = self?.titleTextField.text?.count else { return }
+                guard textCount > 0 else {
+                    self?.titleTextField.layer.borderColor = UIColor.ptGray03.cgColor
+                    return
+                }
+                self?.titleTextField.layer.borderColor = UIColor.ptGray01.cgColor
+            }).disposed(by: disposeBag)
+        
+        introduceTextField.rx.controlEvent(.touchDown)
+            .subscribe(onNext: { [weak self] in
+                self?.introduceTextField.layer.borderColor = UIColor.ptBlack02.cgColor
+            }).disposed(by: disposeBag)
+        
+        introduceTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
+            .subscribe(onNext: { [weak self] in
+                guard let textCount = self?.introduceTextField.text?.count else { return }
+                guard textCount > 0 else {
+                    self?.introduceTextField.layer.borderColor = UIColor.ptGray03.cgColor
+                    return
+                }
+                self?.introduceTextField.layer.borderColor = UIColor.ptGray01.cgColor
+            }).disposed(by: disposeBag)
+        
+        introduceTextField.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
                 guard $0.count > 15 else { return }
                 self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
+        
+        let regularExpressionInput = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
+        let regularExpressionDriver = viewModel.regularExpressionCheck(input: regularExpressionInput)
+        
+        regularExpressionDriver.titleTextCheck
+            .drive(onNext: { [weak self] in
+                guard self?.titleTextField.text?.isEmpty == false else {
+                    self?.noticeTitleLabel.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
+                    self?.noticeTitleLabel.textColor = .ptGray02
+                    return
+                }
+                self?.noticeTitleLabel.text = $0 ? "사용 가능한 동아리명입니다" : "한글, 영문, 숫자만 사용 가능합니다"
+                self?.noticeTitleLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
+            }).disposed(by: disposeBag)
+        
+        let isTextEmptyInput = CreateMeetViewModel.Input(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable(),
+                                                        introduceText: introduceTextField.rx.text.orEmpty.asObservable())
+        let isTextEmptyDriver = viewModel.isNextButtonEnable(input: isTextEmptyInput)
+        
+        isTextEmptyDriver.nextButtonEnableCheck
+            .drive(onNext: { [weak self] in
+                self?.nextButton.isEnabled = $0
+                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
+                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+            }).disposed(by: disposeBag)
     }
 }
-
