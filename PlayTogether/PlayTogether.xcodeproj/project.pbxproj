@@ -20,6 +20,7 @@
 		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
 		4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4066E499288B3CF700FC9090 /* CALayer+Extension.swift */; };
 		40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */; };
+		40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1528A1B634007E5835 /* UIResponder+Extension.swift */; };
 		409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */; };
 		409451AF28905A9000F21717 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AE28905A9000F21717 /* HomeService.swift */; };
 		409451B128905AEC00F21717 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B028905AEC00F21717 /* APIConstants.swift */; };
@@ -65,6 +66,7 @@
 		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		4066E499288B3CF700FC9090 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunIntroduceCollectionViewCell.swift; sourceTree = "<group>"; };
+		40727C1528A1B634007E5835 /* UIResponder+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Extension.swift"; sourceTree = "<group>"; };
 		409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		409451AE28905A9000F21717 /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		409451B028905AEC00F21717 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				40EDB67F288495F600996AA0 /* UIImage+Extension.swift */,
 				B6397F422887104800046843 /* UITextField+Extension.swift */,
 				4066E499288B3CF700FC9090 /* CALayer+Extension.swift */,
+				40727C1528A1B634007E5835 /* UIResponder+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 			files = (
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
+				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,

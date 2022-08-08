@@ -193,6 +193,7 @@ final class CreateThunViewController: BaseViewController {
         $0.placeholder = "최대 20명"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack01
+        $0.keyboardType = .numberPad
         $0.backgroundColor = .ptGray04
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 10
@@ -282,11 +283,17 @@ final class CreateThunViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupTabBar()
+        registerKeyboardNotification()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupIntroduceButton()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeKeyboardNotification()
     }
     
     override func setupViews() {
@@ -542,12 +549,32 @@ final class CreateThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        placeTextField.rx.text.orEmpty
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard $0.count > 12 else { return }
+                let index = $0.index($0.startIndex, offsetBy: 12)
+                self?.placeTextField.text = String($0[..<index])
+            })
+            .disposed(by: disposeBag)
+        
         unlockPlaceButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.unlockPlaceButton.isSelected.toggle()
                 self?.placeTextField.isEnabled.toggle()
                 self?.placeTextField.text = nil
+            })
+            .disposed(by: disposeBag)
+        
+        memberCountTextField.rx.controlEvent(.editingDidEnd)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let text = self?.memberCountTextField.text,
+                      let textToNumber = Int(text),
+                      textToNumber > 20
+                else { return }
+                self?.memberCountTextField.text = "20"
             })
             .disposed(by: disposeBag)
         
@@ -705,12 +732,35 @@ private extension CreateThunViewController {
         introduceButton.layer.addSublayer(borderLayer)
     }
     
-    @objc func deleteImageButtonDidTap(_ sender: UICollectionViewCell) {
+    @objc
+    func deleteImageButtonDidTap(_ sender: UICollectionViewCell) {
         guard let index = sender.layer.value(forKey: "index") as? Int else { return }
         var imageList = viewModel.introduceImageRelay.value
         imageList.remove(at: index)
         
         viewModel.introduceImageRelay.accept(imageList)
+    }
+    
+    func registerKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func removeKeyboardNotification() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc
+    func keyboardWillShow(_ sender: Notification) {
+        guard UIResponder.getCurrentResponder() == introduceTextView else { return }
+        view.frame.origin.y = -UIScreen.main.bounds.height * 0.3
+    }
+    
+    @objc
+    func keyboardWillHide(_ sender: Notification) {
+        view.frame.origin.y = 0
     }
 }
 
