@@ -10,7 +10,7 @@ import UIKit
 
 final class CreateThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = CreateThunViewModel()
+    private lazy var viewModel = CreateThunViewModel()
     
     private let leftBarItem = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -63,7 +63,7 @@ final class CreateThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
-    private lazy var categoryLayout = UICollectionViewFlowLayout().then {
+    private let categoryLayout = UICollectionViewFlowLayout().then {
         let size = UIScreen.main.bounds.width * 0.2746
         $0.minimumLineSpacing = 13
         $0.scrollDirection = .horizontal
@@ -93,6 +93,7 @@ final class CreateThunViewController: BaseViewController {
         $0.textAlignment = .center
         $0.placeholder = "YYYY.MM.DD"
         $0.font = .pretendardRegular(size: 14)
+        $0.tintColor = .clear
         $0.textColor = .ptBlack01
         $0.backgroundColor = .ptGray04
         $0.layer.borderWidth = 1
@@ -148,6 +149,7 @@ final class CreateThunViewController: BaseViewController {
         $0.textAlignment = .center
         $0.placeholder = "NN:NN"
         $0.font = .pretendardRegular(size: 14)
+        $0.tintColor = .clear
         $0.textColor = .ptBlack01
         $0.backgroundColor = .ptGray04
         $0.layer.borderWidth = 1
@@ -279,7 +281,7 @@ final class CreateThunViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
+        setupTabBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -478,6 +480,13 @@ final class CreateThunViewController: BaseViewController {
         createWhenDatePickerView()
         createTimeDatePickerView()
         
+        leftBarItem.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         titleTextField.rx.text.orEmpty
             .asDriver()
             .drive(onNext: { [weak self] in
@@ -510,8 +519,8 @@ final class CreateThunViewController: BaseViewController {
             .disposed(by: self.disposeBag)
         
         categoryCollectionView.rx.modelSelected(String.self)
-            .bind {
-                print($0)
+            .bind { _ in
+                //TODO: 추후 서버 연동 단계에서 구현 예정
             }
             .disposed(by: disposeBag)
         
@@ -555,7 +564,7 @@ final class CreateThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self,
-                self.viewModel.introduceImageRelay.value.count < 3
+                      self.viewModel.introduceImageRelay.value.count < 3
                 else { return }
                 
                 self.present(self.imagePicker, animated: true)
@@ -622,6 +631,10 @@ final class CreateThunViewController: BaseViewController {
 }
 
 private extension CreateThunViewController {
+    func setupTabBar() {
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     func createWhenDatePickerView() {
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
