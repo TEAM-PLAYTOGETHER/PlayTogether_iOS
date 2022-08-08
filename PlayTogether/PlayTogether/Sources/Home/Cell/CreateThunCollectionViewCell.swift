@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CreateThunCollectionViewCell: UICollectionViewCell {
+final class CreateThunCategoryCollectionViewCell: UICollectionViewCell {
     private lazy var imageView = UIImageView().then {
         $0.image = .ptImage(.logoNotSelect)
     }
@@ -35,7 +35,7 @@ final class CreateThunCollectionViewCell: UICollectionViewCell {
     }
 }
 
-private extension CreateThunCollectionViewCell {
+private extension CreateThunCategoryCollectionViewCell {
     func setupView() {
         backgroundColor = .white
         layer.cornerRadius = 10
@@ -66,7 +66,7 @@ private extension CreateThunCollectionViewCell {
     }
 }
 
-extension CreateThunCollectionViewCell {
+extension CreateThunCategoryCollectionViewCell {
     func setupData(titleText: String) {
         label.text = titleText
     }

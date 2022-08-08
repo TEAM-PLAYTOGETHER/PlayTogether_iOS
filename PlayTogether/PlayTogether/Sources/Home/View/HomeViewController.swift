@@ -108,6 +108,7 @@ final class HomeViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
+        $0.bounces = false
         $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -118,6 +119,7 @@ final class HomeViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
+        $0.bounces = false
         $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)

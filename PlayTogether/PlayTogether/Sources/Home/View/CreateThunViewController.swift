@@ -63,21 +63,21 @@ final class CreateThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
-    private lazy var layout = UICollectionViewFlowLayout().then {
+    private lazy var categoryLayout = UICollectionViewFlowLayout().then {
         let size = UIScreen.main.bounds.width * 0.2746
         $0.minimumLineSpacing = 13
         $0.scrollDirection = .horizontal
         $0.itemSize = CGSize(width: size, height: size)
     }
     
-    private lazy var collectionView = UICollectionView(
+    private lazy var categoryCollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: layout
+        collectionViewLayout: categoryLayout
     ).then {
         $0.backgroundColor = .white
         $0.register(
-            CreateThunCollectionViewCell.self,
-            forCellWithReuseIdentifier: "CreateThunCollectionViewCell"
+            CreateThunCategoryCollectionViewCell.self,
+            forCellWithReuseIdentifier: "CreateThunCategoryCollectionViewCell"
         )
         $0.isScrollEnabled = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -246,6 +246,30 @@ final class CreateThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
+    private lazy var introduceLayout = UICollectionViewFlowLayout().then {
+        let size = UIScreen.main.bounds.height * 0.126
+        $0.minimumLineSpacing = 13
+        $0.scrollDirection = .horizontal
+        $0.itemSize = CGSize(width: size, height: size)
+    }
+    
+    private lazy var introduceCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: introduceLayout
+    ).then {
+        $0.backgroundColor = .white
+        $0.showsHorizontalScrollIndicator = false
+        $0.register(
+            CreateThunIntroduceCollectionViewCell.self,
+            forCellWithReuseIdentifier: "CreateThunIntroduceCollectionViewCell"
+        )
+    }
+    
+    private lazy var imagePicker = UIImagePickerController().then {
+        $0.sourceType = .photoLibrary
+        $0.delegate = self
+    }
+    
     private let tapGesture = UITapGestureRecognizer(
         target: CreateThunViewController.self,
         action: nil
@@ -275,7 +299,7 @@ final class CreateThunViewController: BaseViewController {
         contentView.addSubview(titleLabel)
         contentView.addSubview(titleTextField)
         contentView.addSubview(categoryLabel)
-        contentView.addSubview(collectionView)
+        contentView.addSubview(categoryCollectionView)
         contentView.addSubview(whenLabel)
         contentView.addSubview(unlockDateButton)
         contentView.addSubview(whenTextField)
@@ -292,6 +316,7 @@ final class CreateThunViewController: BaseViewController {
         contentView.addSubview(introduceButton)
         introduceButton.addSubview(introduceImageView)
         introduceButton.addSubview(introduceImageLabel)
+        contentView.addSubview(introduceCollectionView)
         contentView.addSubview(introduceTextView)
         introduceTextView.addSubview(introduceTextLabel)
     }
@@ -337,14 +362,14 @@ final class CreateThunViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(20)
         }
         
-        collectionView.snp.makeConstraints {
+        categoryCollectionView.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(viewWidth * 0.2746)
         }
         
         whenLabel.snp.makeConstraints {
-            $0.top.equalTo(collectionView.snp.bottom).offset(24)
+            $0.top.equalTo(categoryCollectionView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
         }
         
@@ -419,6 +444,13 @@ final class CreateThunViewController: BaseViewController {
             $0.width.height.equalTo(viewHeight * 0.126)
         }
         
+        introduceCollectionView.snp.makeConstraints {
+            $0.top.equalTo(introduceButton.snp.top)
+            $0.leading.equalTo(introduceButton.snp.trailing).offset(13)
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalTo(introduceButton.snp.bottom)
+        }
+        
         introduceImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(viewHeight * 0.038)
             $0.centerX.equalToSuperview()
@@ -465,11 +497,11 @@ final class CreateThunViewController: BaseViewController {
         scrollView.addGestureRecognizer(tapGesture)
         
         Observable.of(["먹을래", "할래", "갈래"])
-            .bind(to: self.collectionView.rx.items) { _, row, item -> UICollectionViewCell in
-                guard let cell = self.collectionView.dequeueReusableCell(
-                    withReuseIdentifier: "CreateThunCollectionViewCell",
+            .bind(to: self.categoryCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                guard let cell = self.categoryCollectionView.dequeueReusableCell(
+                    withReuseIdentifier: "CreateThunCategoryCollectionViewCell",
                     for: IndexPath(row: row, section: 0)
-                ) as? CreateThunCollectionViewCell
+                ) as? CreateThunCategoryCollectionViewCell
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(titleText: item)
@@ -477,7 +509,7 @@ final class CreateThunViewController: BaseViewController {
             }
             .disposed(by: self.disposeBag)
         
-        collectionView.rx.modelSelected(String.self)
+        categoryCollectionView.rx.modelSelected(String.self)
             .bind {
                 print($0)
             }
@@ -520,9 +552,36 @@ final class CreateThunViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         introduceButton.rx.tap
-            .bind { _ in
-                print(123)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self,
+                self.viewModel.introduceImageRelay.value.count < 3
+                else { return }
+                
+                self.present(self.imagePicker, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.introduceImageRelay
+            .bind(to: self.introduceCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                guard let cell = self.introduceCollectionView.dequeueReusableCell(
+                    withReuseIdentifier: "CreateThunIntroduceCollectionViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? CreateThunIntroduceCollectionViewCell
+                else { return UICollectionViewCell() }
+                
+                cell.setupDate(image: item, indexKey: row)
+                cell.deleteImageButton.addTarget(self, action: #selector(self.deleteImageButtonDidTap(_:)),
+                                                 for: .touchUpInside)
+                return cell
             }
+            .disposed(by: self.disposeBag)
+        
+        viewModel.introduceImageRelay
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.introduceImageLabel.text = "\($0.count)/3"
+            })
             .disposed(by: disposeBag)
         
         let textViewPlaceHolderString = "만나서 무엇을 할지, 위치 등을 구체적으로 적어주세요.\n200자까지 쓸 수 있어요."
@@ -631,5 +690,31 @@ private extension CreateThunViewController {
         borderLayer.path = UIBezierPath(roundedRect: introduceButton.bounds, cornerRadius: 10).cgPath
         borderLayer.frame = introduceButton.bounds
         introduceButton.layer.addSublayer(borderLayer)
+    }
+    
+    @objc func deleteImageButtonDidTap(_ sender: UICollectionViewCell) {
+        guard let index = sender.layer.value(forKey: "index") as? Int else { return }
+        var imageList = viewModel.introduceImageRelay.value
+        imageList.remove(at: index)
+        
+        viewModel.introduceImageRelay.accept(imageList)
+    }
+}
+
+extension CreateThunViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+    ) {
+        guard let newImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        else { return }
+        
+        var imageList = viewModel.introduceImageRelay.value
+        imageList.append(newImage)
+        viewModel.introduceImageRelay.accept(imageList)
+        
+        picker.dismiss(animated: true, completion: {
+            self.introduceCollectionView.reloadData()
+        })
     }
 }

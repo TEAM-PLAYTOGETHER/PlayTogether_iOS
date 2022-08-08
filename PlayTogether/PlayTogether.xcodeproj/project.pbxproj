@@ -19,6 +19,7 @@
 		404169972886A67400812B37 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169962886A67400812B37 /* ChatViewController.swift */; };
 		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
 		4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4066E499288B3CF700FC9090 /* CALayer+Extension.swift */; };
+		40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */; };
 		409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */; };
 		409451AF28905A9000F21717 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AE28905A9000F21717 /* HomeService.swift */; };
 		409451B128905AEC00F21717 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B028905AEC00F21717 /* APIConstants.swift */; };
@@ -63,6 +64,7 @@
 		404169962886A67400812B37 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		4066E499288B3CF700FC9090 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
+		40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunIntroduceCollectionViewCell.swift; sourceTree = "<group>"; };
 		409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		409451AE28905A9000F21717 /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		409451B028905AEC00F21717 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			children = (
 				409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */,
 				4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */,
+				40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				409451AF28905A9000F21717 /* HomeService.swift in Sources */,
 				DDF2C4072887A9B000C10F67 /* LikedThunViewController.swift in Sources */,
+				40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
