@@ -113,9 +113,10 @@ class InvitationCodeViewController: BaseViewController {
             }.disposed(by: disposeBag)
         
         participationButton.rx.tap
-            .bind {
-                // MARK: 서버 응답에 따른 결과 → True: Next VC / False: Alert View
-                print("DEBUG: participationButton did tapped")
+            .bind { [weak self] in
+                // MARK: 서버 응답에 따른 처리해줘야함
+                let popupViewController = PopUpViewController(title: "존재하지 않는 코드입니다", viewType: .oneButton)
+                self?.present(popupViewController, animated: false, completion: nil)
             }.disposed(by: disposeBag)
         
         inputCodeTextField.rx.text
