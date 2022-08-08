@@ -22,6 +22,7 @@ final class CreateThunViewController: BaseViewController {
     }
     
     private let scrollView = UIScrollView().then {
+        $0.bounces = false
         $0.contentInsetAdjustmentBehavior = .never
         $0.showsVerticalScrollIndicator = false
     }
@@ -99,6 +100,14 @@ final class CreateThunViewController: BaseViewController {
         $0.layer.borderColor = UIColor.ptGray03.cgColor
     }
     
+    private let unlockDateButton = UIButton().then {
+        $0.setImage(.ptImage(.inactiveIcon), for: .normal)
+        $0.setImage(.ptImage(.activeIcon), for: .selected)
+        $0.setTitle("  날짜 미정", for: .normal)
+        $0.setTitleColor(.ptGray01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 12)
+    }
+    
     private let whenDatePicker = UIDatePicker().then {
         $0.preferredDatePickerStyle = .wheels
         $0.datePickerMode = .date
@@ -127,6 +136,14 @@ final class CreateThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
+    private let unlockTimeButton = UIButton().then {
+        $0.setImage(.ptImage(.inactiveIcon), for: .normal)
+        $0.setImage(.ptImage(.activeIcon), for: .selected)
+        $0.setTitle("  시간 미정", for: .normal)
+        $0.setTitleColor(.ptGray01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 12)
+    }
+    
     private let timeTextField = UITextField().then {
         $0.textAlignment = .center
         $0.placeholder = "NN:NN"
@@ -142,6 +159,14 @@ final class CreateThunViewController: BaseViewController {
         $0.text = "어디서 열리는 번개인가요?"
         $0.font = .pretendardBold(size: 14)
         $0.textColor = .ptBlack01
+    }
+    
+    private let unlockPlaceButton = UIButton().then {
+        $0.setImage(.ptImage(.inactiveIcon), for: .normal)
+        $0.setImage(.ptImage(.activeIcon), for: .selected)
+        $0.setTitle("  장소 미정", for: .normal)
+        $0.setTitleColor(.ptGray01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 12)
     }
     
     private let placeTextField = UITextField().then {
@@ -173,16 +198,52 @@ final class CreateThunViewController: BaseViewController {
     }
     
     private let unlockMemberCountButton = UIButton().then {
-        $0.setTitle(" 인원제한 없음", for: .normal)
-        $0.titleLabel?.font = .pretendardRegular(size: 14)
-        $0.setTitleColor(.ptGray01, for: .normal)
         $0.setImage(.ptImage(.inactiveIcon), for: .normal)
+        $0.setImage(.ptImage(.activeIcon), for: .selected)
+        $0.setTitle("  인원제한 없음", for: .normal)
+        $0.setTitleColor(.ptGray01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 12)
     }
     
     private let introduceLabel = UILabel().then {
-        $0.text = "몇 명이 모이나요?"
+        $0.text = "번개 소개글을 작성해주세요."
         $0.font = .pretendardBold(size: 14)
         $0.textColor = .ptBlack01
+    }
+    
+    private let borderLayer = CAShapeLayer().then {
+        $0.strokeColor = UIColor.ptGray02.cgColor
+        $0.lineDashPattern = [2, 2]
+        $0.fillColor = nil
+    }
+    
+    private let introduceButton = UIButton()
+    
+    private let introduceImageView = UIImageView().then {
+        $0.image = .ptImage(.cameraIcon)
+    }
+    
+    private let introduceImageLabel = UILabel().then {
+        $0.text = "0/3"
+        $0.textColor = .ptGray01
+        $0.font = .pretendardRegular(size: 14)
+    }
+    
+    private let introduceTextView = UITextView().then {
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.ptGray03.cgColor
+        $0.layer.cornerRadius = 10
+        $0.textContainerInset = UIEdgeInsets(top: 20, left: 10, bottom: 0, right: 10)
+        $0.text = "만나서 무엇을 할지, 위치 등을 구체적으로 적어주세요.\n200자까지 쓸 수 있어요."
+        $0.textColor = .ptGray01
+        $0.font = .pretendardRegular(size: 14)
+        $0.backgroundColor = .ptGray04
+    }
+    
+    private let introduceTextLabel = UILabel().then {
+        $0.text = "0/200"
+        $0.textColor = .ptGray02
+        $0.font = .pretendardRegular(size: 14)
     }
     
     private let tapGesture = UITapGestureRecognizer(
@@ -197,38 +258,60 @@ final class CreateThunViewController: BaseViewController {
         tabBarController?.tabBar.isHidden = true
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupIntroduceButton()
+    }
+    
     override func setupViews() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarItem)
         
-        view.addSubview(topView)
-        topView.addSubview(topLabel)
-        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
+        contentView.addSubview(topView)
+        topView.addSubview(topLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(titleTextField)
         contentView.addSubview(categoryLabel)
         contentView.addSubview(collectionView)
         contentView.addSubview(whenLabel)
+        contentView.addSubview(unlockDateButton)
         contentView.addSubview(whenTextField)
         contentView.addSubview(timeLabel)
+        contentView.addSubview(unlockTimeButton)
         contentView.addSubview(timeTextField)
         contentView.addSubview(placeLabel)
+        contentView.addSubview(unlockPlaceButton)
         contentView.addSubview(placeTextField)
         contentView.addSubview(memberCountLabel)
         contentView.addSubview(memberCountTextField)
         contentView.addSubview(unlockMemberCountButton)
         contentView.addSubview(introduceLabel)
+        contentView.addSubview(introduceButton)
+        introduceButton.addSubview(introduceImageView)
+        introduceButton.addSubview(introduceImageLabel)
+        contentView.addSubview(introduceTextView)
+        introduceTextView.addSubview(introduceTextLabel)
     }
     
     override func setupLayouts() {
         let viewHeight = UIScreen.main.bounds.height
+        let viewWidth = UIScreen.main.bounds.width
+        
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(scrollView.snp.width)
+        }
         
         topView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(viewHeight * 0.144)
         }
@@ -238,18 +321,8 @@ final class CreateThunViewController: BaseViewController {
             $0.centerY.equalToSuperview()
         }
         
-        scrollView.snp.makeConstraints {
-            $0.top.equalTo(topView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalTo(scrollView.snp.width)
-        }
-        
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalTo(topView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(20)
         }
         
@@ -267,12 +340,17 @@ final class CreateThunViewController: BaseViewController {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.width * 0.2746)
+            $0.height.equalTo(viewWidth * 0.2746)
         }
         
         whenLabel.snp.makeConstraints {
             $0.top.equalTo(collectionView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
+        }
+        
+        unlockDateButton.snp.makeConstraints {
+            $0.centerY.equalTo(whenLabel)
+            $0.trailing.equalToSuperview().inset(30)
         }
         
         whenTextField.snp.makeConstraints {
@@ -286,6 +364,11 @@ final class CreateThunViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(20)
         }
         
+        unlockTimeButton.snp.makeConstraints {
+            $0.centerY.equalTo(timeLabel)
+            $0.trailing.equalToSuperview().inset(30)
+        }
+        
         timeTextField.snp.makeConstraints {
             $0.top.equalTo(timeLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -295,6 +378,11 @@ final class CreateThunViewController: BaseViewController {
         placeLabel.snp.makeConstraints {
             $0.top.equalTo(timeTextField.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
+        }
+        
+        unlockPlaceButton.snp.makeConstraints {
+            $0.centerY.equalTo(placeLabel)
+            $0.trailing.equalToSuperview().inset(30)
         }
         
         placeTextField.snp.makeConstraints {
@@ -323,13 +411,49 @@ final class CreateThunViewController: BaseViewController {
             $0.top.equalTo(memberCountTextField.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.height.equalTo(17)
-            $0.bottom.equalToSuperview().inset(30)
+        }
+        
+        introduceButton.snp.makeConstraints {
+            $0.top.equalTo(introduceLabel.snp.bottom).offset(13)
+            $0.leading.equalToSuperview().offset(20)
+            $0.width.height.equalTo(viewHeight * 0.126)
+        }
+        
+        introduceImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(viewHeight * 0.038)
+            $0.centerX.equalToSuperview()
+        }
+        
+        introduceImageLabel.snp.makeConstraints {
+            $0.top.equalTo(introduceImageView.snp.bottom).offset(1)
+            $0.centerX.equalToSuperview()
+        }
+        
+        introduceTextView.snp.makeConstraints {
+            $0.top.equalTo(introduceButton.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(viewHeight * 0.27)
+            $0.bottom.equalToSuperview().inset(60)
+        }
+        
+        introduceTextLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(viewHeight * 0.237)
+            $0.trailing.equalToSuperview().offset(viewWidth * 0.853)
         }
     }
     
     override func setupBinding() {
         createWhenDatePickerView()
         createTimeDatePickerView()
+        
+        titleTextField.rx.text.orEmpty
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard $0.count > 20 else { return }
+                let index = $0.index($0.startIndex, offsetBy: 20)
+                self?.titleTextField.text = String($0[..<index])
+            })
+            .disposed(by: disposeBag)
         
         tapGesture.rx.event
             .asDriver()
@@ -358,6 +482,79 @@ final class CreateThunViewController: BaseViewController {
                 print($0)
             }
             .disposed(by: disposeBag)
+        
+        unlockDateButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.unlockDateButton.isSelected.toggle()
+                self?.whenTextField.isEnabled.toggle()
+                self?.whenTextField.text = nil
+            })
+            .disposed(by: disposeBag)
+        
+        unlockTimeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.unlockTimeButton.isSelected.toggle()
+                self?.timeTextField.isEnabled.toggle()
+                self?.timeTextField.text = nil
+            })
+            .disposed(by: disposeBag)
+        
+        unlockPlaceButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.unlockPlaceButton.isSelected.toggle()
+                self?.placeTextField.isEnabled.toggle()
+                self?.placeTextField.text = nil
+            })
+            .disposed(by: disposeBag)
+        
+        unlockMemberCountButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.unlockMemberCountButton.isSelected.toggle()
+                self?.memberCountTextField.isEnabled.toggle()
+                self?.memberCountTextField.text = nil
+            })
+            .disposed(by: disposeBag)
+        
+        introduceButton.rx.tap
+            .bind { _ in
+                print(123)
+            }
+            .disposed(by: disposeBag)
+        
+        let textViewPlaceHolderString = "만나서 무엇을 할지, 위치 등을 구체적으로 적어주세요.\n200자까지 쓸 수 있어요."
+        introduceTextView.rx.didBeginEditing
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard self?.introduceTextView.text == textViewPlaceHolderString else { return }
+                self?.introduceTextView.text = nil
+                self?.introduceTextView.textColor = .ptBlack01
+            })
+            .disposed(by: disposeBag)
+        
+        introduceTextView.rx.didEndEditing
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard self?.introduceTextView.text == "" else { return }
+                self?.introduceTextView.text = textViewPlaceHolderString
+                self?.introduceTextView.textColor = .ptGray01
+            })
+            .disposed(by: disposeBag)
+        
+        introduceTextView.rx.text
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard $0 != textViewPlaceHolderString, let text = $0 else { return }
+                self?.introduceTextLabel.text = "\(text.count)/200"
+                
+                guard text.count > 200 else { return }
+                let index = text.index(text.startIndex, offsetBy: 200)
+                self?.introduceTextView.text = String(text[..<index])
+            })
+            .disposed(by: disposeBag)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -379,6 +576,12 @@ private extension CreateThunViewController {
                 formatter.dateFormat = "yyyy.MM.dd"
                 
                 self?.whenTextField.text = formatter.string(from: date)
+                self?.view.endEditing(true)
+            }
+            .disposed(by: disposeBag)
+        
+        cancelButton.rx.tap
+            .bind { [weak self] in
                 self?.view.endEditing(true)
             }
             .disposed(by: disposeBag)
@@ -409,6 +612,12 @@ private extension CreateThunViewController {
             }
             .disposed(by: disposeBag)
         
+        cancelButton.rx.tap
+            .bind { [weak self] in
+                self?.view.endEditing(true)
+            }
+            .disposed(by: disposeBag)
+        
         let toolBar = UIToolbar().then {
             $0.sizeToFit()
             $0.setItems([cancelButton, flexible, acceptButton], animated: false)
@@ -416,5 +625,11 @@ private extension CreateThunViewController {
         
         timeTextField.rx.inputAccessoryView.onNext(toolBar)
         timeTextField.rx.inputView.onNext(timeDatePicker)
+    }
+    
+    func setupIntroduceButton() {
+        borderLayer.path = UIBezierPath(roundedRect: introduceButton.bounds, cornerRadius: 10).cgPath
+        borderLayer.frame = introduceButton.bounds
+        introduceButton.layer.addSublayer(borderLayer)
     }
 }
