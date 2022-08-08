@@ -14,7 +14,8 @@ enum popupType {
 }
 
 protocol PopUpConfirmDelegate: class {
-    func confirmButtonDidTap()
+    func firstButtonDidTap()
+    func secondButtonDidTap()
 }
 
 class PopUpViewController: UIViewController {
@@ -44,7 +45,6 @@ class PopUpViewController: UIViewController {
     }
     
     private lazy var buttonStackView = UIStackView().then {
-        $0.axis = .horizontal
         $0.distribution = .fillEqually
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -71,10 +71,7 @@ class PopUpViewController: UIViewController {
         $0.setTitleColor(.ptBlack01, for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 14)
         $0.backgroundColor = .ptGreen
-        switch popupViewType {
-        case .oneButton: return
-        case .twoButton: $0.setTitle("확인", for: .normal)
-        }
+        $0.setTitle("확인", for: .normal)
     }
     
     private var noticeTitle: String = ""
@@ -94,18 +91,8 @@ class PopUpViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseOut) { [weak self] in
-            self?.containerView.transform = .identity
-            self?.containerView.isHidden = false
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseIn) { [weak self] in
-            self?.containerView.transform = .identity
-            self?.containerView.isHidden = true
+        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseOut) {
+            self.containerView.transform = .identity
         }
     }
     
@@ -117,7 +104,7 @@ class PopUpViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.backgroundColor = .black.withAlphaComponent(0.2)
+        view.backgroundColor = .black.withAlphaComponent(0.5)
         view.addSubview(containerView)
         
         containerView.addSubview(containerStackView)
@@ -126,25 +113,16 @@ class PopUpViewController: UIViewController {
         containerStackView.addSubview(buttonStackView)
         
         buttonStackView.addArrangedSubview(firstButton)
-        buttonStackView.addArrangedSubview(secondButton)
-        
-        switch popupViewType {
-        case .oneButton: buttonStackView.removeArrangedSubview(secondButton)
-        case .twoButton: break
-        }
+        if popupViewType == .twoButton { buttonStackView.addArrangedSubview(secondButton) }
     }
     
     private func setupLayouts() {
         let containerViewHeight = 188 * (UIScreen.main.bounds.height / 812)
         let buttonStackViewHeight = 51 * (UIScreen.main.bounds.height / 812)
         
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         containerView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(60)
             $0.height.equalTo(containerViewHeight)
         }
         
@@ -186,13 +164,15 @@ class PopUpViewController: UIViewController {
     private func setupBinding() {
         firstButton.rx.tap
             .bind(onNext: {[weak self] in
-                self?.dismiss(animated: false)
+                self?.dismiss(animated: false, completion: {
+                    self?.delegate?.firstButtonDidTap()
+                })
             }).disposed(by: disposeBag)
         
         secondButton.rx.tap
             .bind(onNext: { [weak self] in
                 self?.dismiss(animated: false, completion: {
-                    self?.delegate?.confirmButtonDidTap()
+                    self?.delegate?.secondButtonDidTap()
                 })
             }).disposed(by: disposeBag)
     }

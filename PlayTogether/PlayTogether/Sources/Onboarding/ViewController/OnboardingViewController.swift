@@ -56,9 +56,6 @@ class OnboardingViewController: BaseViewController {
         $0.isEnabled = false
         $0.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)    // Rx
     }
-    private lazy var tb = UITableView().then {
-        $0.backgroundColor = .white
-    }
 
     private let viewModel = OnboardingViewModel()
     private lazy var cellIndex = 0
