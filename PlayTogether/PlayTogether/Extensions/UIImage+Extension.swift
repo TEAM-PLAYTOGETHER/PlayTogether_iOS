@@ -32,4 +32,11 @@ enum ImageCase: String {
     case eatIcon = "eatIcon"
     case goIcon = "goIcon"
     case doIcon = "doIcon"
+    
+    case logoSelect = "logoSelect"
+    case logoNotSelect = "logoNotSelect"
+    case inactiveIcon = "inactiveIcon"
+    case activeIcon = "activeIcon"
+    case cameraIcon = "cameraIcon"
+    case deleteIcon = "deleteIcon"
 }

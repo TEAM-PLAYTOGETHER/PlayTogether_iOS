@@ -98,7 +98,7 @@ final class HomeViewController: BaseViewController {
     private lazy var layout = UICollectionViewFlowLayout().then {
         let widthSize = UIScreen.main.bounds.width * 0.76
         let heightSize = UIScreen.main.bounds.height * 0.16
-        $0.minimumInteritemSpacing = 10
+        $0.minimumLineSpacing = 10
         $0.scrollDirection = .horizontal
         $0.itemSize = CGSize(width: widthSize, height: heightSize)
     }
@@ -108,6 +108,7 @@ final class HomeViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
+        $0.bounces = false
         $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -118,6 +119,7 @@ final class HomeViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
+        $0.bounces = false
         $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -259,5 +261,11 @@ final class HomeViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
+        
+        thunButton.rx.tap
+            .bind { [weak self] in
+                self?.navigationController?.pushViewController(CreateThunViewController(), animated: true)
+            }
+            .disposed(by: disposeBag)
     }
 }

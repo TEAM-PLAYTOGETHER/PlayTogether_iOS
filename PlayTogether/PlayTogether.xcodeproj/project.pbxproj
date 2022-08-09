@@ -11,11 +11,16 @@
 		401B853C287FD57E003B69D3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853B287FD57E003B69D3 /* RxSwift */; };
 		401B853F287FD5B5003B69D3 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853E287FD5B5003B69D3 /* Moya */; };
 		401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B8540287FD5B5003B69D3 /* RxMoya */; };
+		4040AC432893093F00C76978 /* CreateThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC422893093F00C76978 /* CreateThunViewController.swift */; };
+		4040AC452893096F00C76978 /* CreateThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC442893096F00C76978 /* CreateThunViewModel.swift */; };
+		4040AC4728930BA200C76978 /* CreateThunCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */; };
 		404169902886A54700812B37 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4041698F2886A54700812B37 /* HomeViewController.swift */; };
 		404169932886A56C00812B37 /* ThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169922886A56C00812B37 /* ThunViewController.swift */; };
 		404169972886A67400812B37 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169962886A67400812B37 /* ChatViewController.swift */; };
 		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
 		4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4066E499288B3CF700FC9090 /* CALayer+Extension.swift */; };
+		40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */; };
+		40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1528A1B634007E5835 /* UIResponder+Extension.swift */; };
 		409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */; };
 		409451AF28905A9000F21717 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AE28905A9000F21717 /* HomeService.swift */; };
 		409451B128905AEC00F21717 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B028905AEC00F21717 /* APIConstants.swift */; };
@@ -48,7 +53,6 @@
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
 		B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */; };
 		B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */; };
-		DD05287B288871F80051044C /* ThunDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD05287A288871F80051044C /* ThunDataModel.swift */; };
 		DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B02892536A0042490C /* ThunResponse.swift */; };
 		DDBE87B3289253B50042490C /* ThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B2289253B50042490C /* ThunViewModel.swift */; };
 		DDBE87B5289257CA0042490C /* ThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B4289257CA0042490C /* ThunService.swift */; };
@@ -60,11 +64,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4040AC422893093F00C76978 /* CreateThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunViewController.swift; sourceTree = "<group>"; };
+		4040AC442893096F00C76978 /* CreateThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunViewModel.swift; sourceTree = "<group>"; };
+		4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunCollectionViewCell.swift; sourceTree = "<group>"; };
 		4041698F2886A54700812B37 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		404169922886A56C00812B37 /* ThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunViewController.swift; sourceTree = "<group>"; };
 		404169962886A67400812B37 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		4066E499288B3CF700FC9090 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
+		40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunIntroduceCollectionViewCell.swift; sourceTree = "<group>"; };
+		40727C1528A1B634007E5835 /* UIResponder+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Extension.swift"; sourceTree = "<group>"; };
 		409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		409451AE28905A9000F21717 /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		409451B028905AEC00F21717 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
@@ -97,7 +106,6 @@
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewModel.swift; sourceTree = "<group>"; };
-		DD05287A288871F80051044C /* ThunDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunDataModel.swift; sourceTree = "<group>"; };
 		DDBE87B02892536A0042490C /* ThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B2289253B50042490C /* ThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThunViewModel.swift; path = PlayTogether/Sources/Thun/Network/ThunViewModel.swift; sourceTree = SOURCE_ROOT; };
 		DDBE87B4289257CA0042490C /* ThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunService.swift; sourceTree = "<group>"; };
@@ -167,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				4041698F2886A54700812B37 /* HomeViewController.swift */,
+				4040AC422893093F00C76978 /* CreateThunViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -175,6 +184,8 @@
 			isa = PBXGroup;
 			children = (
 				409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */,
+				4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */,
+				40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -192,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				409451B728905FDE00F21717 /* HomeViewModel.swift */,
+				4040AC442893096F00C76978 /* CreateThunViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -306,6 +318,7 @@
 				B6397F422887104800046843 /* UITextField+Extension.swift */,
 				B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */,
 				4066E499288B3CF700FC9090 /* CALayer+Extension.swift */,
+				40727C1528A1B634007E5835 /* UIResponder+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -475,6 +488,7 @@
 			files = (
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
+				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
@@ -485,15 +499,18 @@
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				409451AF28905A9000F21717 /* HomeService.swift in Sources */,
 				DDF2C4072887A9B000C10F67 /* LikedThunViewController.swift in Sources */,
+				40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				DDBE87B3289253B50042490C /* ThunViewModel.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
+				4040AC452893096F00C76978 /* CreateThunViewModel.swift in Sources */,
 				DDF2C4052887A96800C10F67 /* OpenedThunViewController.swift in Sources */,
 				409451B828905FDE00F21717 /* HomeViewModel.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
 				404169902886A54700812B37 /* HomeViewController.swift in Sources */,
+				4040AC4728930BA200C76978 /* CreateThunCollectionViewCell.swift in Sources */,
 				404169992886A68600812B37 /* MyPageViewController.swift in Sources */,
 				B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */,
 				404169972886A67400812B37 /* ChatViewController.swift in Sources */,
@@ -501,6 +518,7 @@
 				DDF2C4092887AA5600C10F67 /* ThunListTableViewCell.swift in Sources */,
 				409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */,
 				DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */,
+				4040AC432893093F00C76978 /* CreateThunViewController.swift in Sources */,
 				B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
