@@ -12,23 +12,23 @@ import Then
 class ThunListTableViewCell: UITableViewCell {
     
     static let identifier = "ThunListTableViewCell"
+    
     private let titleLabel = UILabel().then {
-        $0.text = "\(ThunDataModel.shared.title)"
         $0.textColor = .ptGreen
         $0.font = UIFont.pretendardBold(size: 16)
     }
+    
     private let subTitleLabel = UILabel().then {
-        $0.text = "\(ThunDataModel.shared.date) \(ThunDataModel.shared.location) \(ThunDataModel.shared.time)"
         $0.textColor = .white
         $0.font = UIFont.pretendardSemiBold(size: 14)
     }
+    
     private let personnelLabel = UILabel().then {
-        $0.text = "인원 \(ThunDataModel.shared.personnel)"
         $0.textColor = .ptGray02
         $0.font = UIFont.pretendardMedium(size: 12)
     }
+    
     private let tagLabel = UILabel().then {
-        $0.text = " \(ThunDataModel.shared.tag)"
         $0.textColor = .white
         $0.backgroundColor = .ptBlack02
         $0.layer.cornerRadius = 14
@@ -36,23 +36,30 @@ class ThunListTableViewCell: UITableViewCell {
         $0.textAlignment = .center
         $0.font = UIFont.pretendardMedium(size: 12)
     }
+    
     private let likeButton = UIButton().then {
-        $0.setImage(UIImage(named: "icn_like_filled_gray"), for: .normal)
-        $0.setTitle(" \(ThunDataModel.shared.like)", for: .normal)
+        $0.setImage(UIImage(named: "icn_like_filled"), for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.pretendardMedium(size: 14)
+        $0.isUserInteractionEnabled = false
+        $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
     }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupLayouts()
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         setupCellStyle()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     private func setupCellStyle() {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 10
@@ -60,6 +67,7 @@ class ThunListTableViewCell: UITableViewCell {
         selectionStyle = .none
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20))
     }
+    
     private func setupViews() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(subTitleLabel)
@@ -67,6 +75,7 @@ class ThunListTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         contentView.addSubview(tagLabel)
     }
+    
     private func setupLayouts() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
@@ -90,5 +99,19 @@ class ThunListTableViewCell: UITableViewCell {
             $0.trailing.equalTo(tagLabel.snp.trailing)
             $0.centerY.equalTo(personnelLabel)
         }
+    }
+}
+
+extension ThunListTableViewCell {
+    func setupData(
+        _ title: String,_ date: String,_ time: String,
+        _ peopleCnt: Int,_ place: String,_ lightMemberCnt: Int,_ category: String,_ scpCnt: Int
+    ){
+        let dateStr = date.replacingOccurrences(of: "-", with: ".")
+        titleLabel.text = title
+        subTitleLabel.text = "\(dateStr) \(place) \(time)"
+        personnelLabel.text = "인원 \(lightMemberCnt) / \(peopleCnt)"
+        tagLabel.text = "\(category)"
+        likeButton.setTitle("\(scpCnt)", for: .normal)
     }
 }
