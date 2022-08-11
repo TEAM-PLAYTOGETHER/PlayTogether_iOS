@@ -267,5 +267,35 @@ final class HomeViewController: BaseViewController {
                 self?.navigationController?.pushViewController(CreateThunViewController(), animated: true)
             }
             .disposed(by: disposeBag)
+        
+        eatButton.rx.tap
+            .bind { [weak self] in
+                let vc = ThunListViewController()
+                vc.currentPage = 0
+                vc.eatGoDoLabel.text = vc.nameArray[0]
+                self?.navigationController?.pushViewController(vc, animated: true)
+                self?.tabBarController?.tabBar.isHidden = true
+            }
+            .disposed(by: disposeBag)
+        
+        goButton.rx.tap
+            .bind { [weak self] in
+                let vc = ThunListViewController()
+                vc.currentPage = 1
+                vc.eatGoDoLabel.text = vc.nameArray[1]
+                self?.navigationController?.pushViewController(vc, animated: true)
+                self?.tabBarController?.tabBar.isHidden = true
+            }
+            .disposed(by: disposeBag)
+        
+        doButton.rx.tap
+            .bind { [weak self] in
+                let vc = ThunListViewController()
+                vc.currentPage = 2
+                vc.eatGoDoLabel.text = vc.nameArray[2]
+                self?.navigationController?.pushViewController(vc, animated: true)
+                self?.tabBarController?.tabBar.isHidden = true
+            }
+            .disposed(by: disposeBag)
     }
 }
