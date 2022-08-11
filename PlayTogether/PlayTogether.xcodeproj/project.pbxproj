@@ -41,9 +41,11 @@
 		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
 		B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */; };
+		B61C427028A20CA800913574 /* SelfIntroduceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61C426F28A20CA800913574 /* SelfIntroduceViewController.swift */; };
 		B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B630459D28828D9F0095F694 /* ChoiceCell.swift */; };
 		B6397F432887104800046843 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6397F422887104800046843 /* UITextField+Extension.swift */; };
 		B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C9172898D4B1006C45BE /* InvitationCodeViewModel.swift */; };
+		B67F2A9028A509FC005A82B1 /* SubwayStationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F2A8F28A509FC005A82B1 /* SubwayStationCell.swift */; };
 		B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */; };
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
 		B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */; };
@@ -87,9 +89,11 @@
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
 		B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewController.swift; sourceTree = "<group>"; };
+		B61C426F28A20CA800913574 /* SelfIntroduceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewController.swift; sourceTree = "<group>"; };
 		B630459D28828D9F0095F694 /* ChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCell.swift; sourceTree = "<group>"; };
 		B6397F422887104800046843 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		B640C9172898D4B1006C45BE /* InvitationCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewModel.swift; sourceTree = "<group>"; };
+		B67F2A8F28A509FC005A82B1 /* SubwayStationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationCell.swift; sourceTree = "<group>"; };
 		B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
@@ -255,9 +259,10 @@
 		4096A2B1287F5FDC00F1E27C /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				B630459C28828D980095F694 /* View */,
 				4096A2B2287F5FFE00F1E27C /* ViewController */,
+				B67F2A8E28A4FC88005A82B1 /* Network */,
 				4096A2B3287F601000F1E27C /* ViewModel */,
+				B630459C28828D980095F694 /* Cell */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -268,6 +273,7 @@
 				4096A29D287F5F3F00F1E27C /* OnboardingViewController.swift */,
 				B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */,
 				B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */,
+				B61C426F28A20CA800913574 /* SelfIntroduceViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -333,12 +339,20 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		B630459C28828D980095F694 /* View */ = {
+		B630459C28828D980095F694 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
 				B630459D28828D9F0095F694 /* ChoiceCell.swift */,
+				B67F2A8F28A509FC005A82B1 /* SubwayStationCell.swift */,
 			);
-			path = View;
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B67F2A8E28A4FC88005A82B1 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		DDF2C3FD2887A55900C10F67 /* ViewModel */ = {
@@ -464,6 +478,7 @@
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
+				B67F2A9028A509FC005A82B1 /* SubwayStationCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
@@ -472,6 +487,7 @@
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
+				B61C427028A20CA800913574 /* SelfIntroduceViewController.swift in Sources */,
 				DDF2C4052887A96800C10F67 /* OpenedThunViewController.swift in Sources */,
 				409451B828905FDE00F21717 /* HomeViewModel.swift in Sources */,
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,

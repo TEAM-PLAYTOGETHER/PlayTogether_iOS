@@ -115,8 +115,11 @@ class InvitationCodeViewController: BaseViewController {
         participationButton.rx.tap
             .bind { [weak self] in
                 // MARK: 서버 응답에 따른 처리해줘야함
-                let popupViewController = PopUpViewController(title: "존재하지 않는 코드입니다", viewType: .oneButton)
-                self?.present(popupViewController, animated: false, completion: nil)
+//                let popupViewController = PopUpViewController(title: "존재하지 않는 코드입니다", viewType: .oneButton)
+//                self?.present(popupViewController, animated: false, completion: nil)
+                
+                let controller = SelfIntroduceViewController()
+                self?.navigationController?.pushViewController(controller, animated: true)
             }.disposed(by: disposeBag)
         
         inputCodeTextField.rx.text
