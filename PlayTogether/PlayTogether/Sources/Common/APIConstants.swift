@@ -15,4 +15,7 @@ struct APIConstants {
     // light
     static let getHotThunList = "/light/hot"
     static let getNewThunList = "/light/new"
+    static let getSubmittedThunList = "/light/enter"
+    static let getOpenedThunList = "/light/open"
+    static let getLikedThunList = "/light/scrap"
 }
