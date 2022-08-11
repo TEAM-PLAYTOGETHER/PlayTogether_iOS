@@ -12,6 +12,8 @@ class DoThunListViewController: BaseViewController {
 
     private let disposeBag = DisposeBag()
     
+    private let cellCnt = 2 // TODO: - 임시로 해둔거고 서버 연결하면 없앨 것
+    
     private let titleLabel = UILabel().then {
         $0.text = "같이 할래?"
         $0.font = .pretendardBold(size: 20)
@@ -40,6 +42,14 @@ class DoThunListViewController: BaseViewController {
         $0.spacing = 5
         $0.backgroundColor = .ptGray04
         $0.layer.cornerRadius = 5
+    }
+    
+    private let emptyLabel = UILabel().then {
+        $0.numberOfLines = 0
+        $0.text = "아직 만들어진 번개가 없어요!\n새로운 번개를 열어보세요"
+        $0.textAlignment = .center
+        $0.font = .pretendardMedium(size: 14)
+        $0.textColor = .ptGray02
     }
     
     private lazy var tableView = UITableView().then {
@@ -77,6 +87,7 @@ class DoThunListViewController: BaseViewController {
         view.addSubview(titleLabel)
         view.addSubview(stackView)
         view.addSubview(tableView)
+        tableView.addSubview(emptyLabel)
     }
     
     override func setupLayouts() {
@@ -97,6 +108,11 @@ class DoThunListViewController: BaseViewController {
             $0.trailing.equalToSuperview().offset(-24)
             $0.centerY.equalTo(titleLabel.snp.centerY)
             $0.height.equalTo(24)
+        }
+        
+        emptyLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview().offset(-60)
+            $0.centerX.equalToSuperview()
         }
         
         tableView.snp.makeConstraints {
@@ -122,7 +138,13 @@ class DoThunListViewController: BaseViewController {
 
 extension DoThunListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        if cellCnt == 0 {
+            tableView.isScrollEnabled = false
+            return 0
+        } else {
+            emptyLabel.isHidden = true
+            return cellCnt
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
