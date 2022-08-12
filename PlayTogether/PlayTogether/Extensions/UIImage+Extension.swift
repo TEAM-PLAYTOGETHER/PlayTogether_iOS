@@ -20,6 +20,7 @@ enum ImageCase: String {
     case searchIcon = "searchIcon"
     case showIcon = "showIcon"
     case plusIcon = "plus"
+    case exitIcon = "exitIcon"
     
     case homeActive = "homeActive"
     case homeInactive = "homeInactive"

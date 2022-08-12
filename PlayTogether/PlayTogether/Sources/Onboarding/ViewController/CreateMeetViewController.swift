@@ -65,7 +65,7 @@ class CreateMeetViewController: BaseViewController {
     }
     
     private lazy var nextButton = UIButton().then {
-        $0.setupBottomButtonUI(title: "다음")
+        $0.setupBottomButtonUI(title: "다음", size: 16)
     }
     
     let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CreateMeetViewController.self, action: nil)

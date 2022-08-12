@@ -45,7 +45,7 @@ class InvitationCodeViewController: BaseViewController {
     }
     
     private lazy var participationButton = UIButton().then {
-        $0.setupBottomButtonUI(title: "입장하기")
+        $0.setupBottomButtonUI(title: "입장하기", size: 16)
         $0.isButtonEnableUI(check: false)
     }
     

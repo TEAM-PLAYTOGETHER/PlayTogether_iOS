@@ -10,15 +10,18 @@ import UIKit
 final class SubwayStationCell: UICollectionViewCell {
     private lazy var stationNameLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
-        $0.textColor = .ptBlack01
+        $0.textColor = .ptGray02
     }
     
     private lazy var removeButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+        $0.setImage(.ptImage(.exitIcon), for: .normal)
     }
+    
+    private let borderLayer = CAShapeLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupView()
     }
     
     required init?(coder: NSCoder) {
@@ -30,7 +33,13 @@ final class SubwayStationCell: UICollectionViewCell {
 private extension SubwayStationCell {
     func setupView() {
         backgroundColor = .white
-        layer.cornerRadius = 50
+        
+        borderLayer.lineDashPattern = [3, 3]
+        borderLayer.strokeColor = UIColor.ptGray03.cgColor
+        borderLayer.frame = bounds
+        borderLayer.fillColor = nil
+        borderLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2).cgPath
+        layer.addSublayer(borderLayer)
         
         addSubview(stationNameLabel)
         addSubview(removeButton)

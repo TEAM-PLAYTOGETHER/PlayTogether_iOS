@@ -110,6 +110,11 @@ class SelfIntroduceViewController: BaseViewController {
 //        $0.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     }
     
+    private lazy var nextButton = UIButton().then {
+        $0.setupBottomButtonUI(title: "다음", size: 15)
+        $0.isButtonEnableUI(check: false)
+    }
+    
     let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: SelfIntroduceViewController.self, action: nil)
     let dataSource = Observable<String>.of("플투역 1호선", "테스트역 2호선")
     
@@ -144,6 +149,7 @@ class SelfIntroduceViewController: BaseViewController {
         view.addSubview(preferredSubwayStationSubLabel)
         view.addSubview(addPreferredSubwayStationButton)
         view.addSubview(subwayStationCollectionView)
+        view.addSubview(nextButton)
     }
     
     override func setupLayouts() {
@@ -209,7 +215,13 @@ class SelfIntroduceViewController: BaseViewController {
         subwayStationCollectionView.snp.makeConstraints {
             $0.top.equalTo(preferredSubwayStationLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(120)  // Bottom
+            $0.bottom.equalTo(nextButton.snp.top).offset(75)
+        }
+        
+        nextButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(39)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(56 * (UIScreen.main.bounds.height / 812))
         }
     }
     
@@ -256,7 +268,7 @@ class SelfIntroduceViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item)
-                cell.backgroundColor = .orange
+//                cell.backgroundColor = .orange
                 
                 return cell
             }.disposed(by: disposeBag)
