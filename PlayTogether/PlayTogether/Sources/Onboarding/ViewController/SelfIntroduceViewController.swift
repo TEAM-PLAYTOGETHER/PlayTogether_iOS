@@ -20,7 +20,7 @@ class SelfIntroduceViewController: BaseViewController {
     
     private let headerLabel = UILabel().then {
         let title = OnboardingDataModel.shared
-        $0.text = "\(title.meetingTitle ?? "테스트문구")에서\n나는 어떤 사람인가요?"
+        $0.text = "\(title.meetingTitle ?? "테스트 동아리")에서\n나는 어떤 사람인가요?"
         $0.font = .pretendardMedium(size: 22)
         $0.textColor = .ptBlack01
         $0.numberOfLines = 0
@@ -33,6 +33,9 @@ class SelfIntroduceViewController: BaseViewController {
     }
     
     public lazy var existingNicknameButton = UIButton().then {
+        // TODO: 텍스트 필드 입력시 버튼이 뒤로감
+//        $0.layer.zPosition = 999
+        
         $0.backgroundColor = .ptBlack01
         $0.setTitle("중복확인", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -64,8 +67,14 @@ class SelfIntroduceViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
+    private let briefIntroductionSubLabel = UILabel().then {
+        $0.text = "200자 이내"
+        $0.textColor = .ptGray02
+        $0.font = .pretendardMedium(size: 10)
+    }
+    
     private let inputBriefIntroduceTextView = UITextView().then {
-        $0.text = "간단 소개 입력(200자 이내)"
+        $0.text = "간단 소개 입력"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptGray01
         $0.textContainerInset = UIEdgeInsets(top: 18, left: 20, bottom: 18, right: 20)
@@ -83,9 +92,9 @@ class SelfIntroduceViewController: BaseViewController {
     }
     
     private let preferredSubwayStationSubLabel = UILabel().then {
-        $0.text = "(최대 2개 추가 가능)"
-        $0.textColor = .ptGray01
-        $0.font = .pretendardRegular(size: 10)
+        $0.text = "최대 2개 추가"
+        $0.textColor = .ptGray02
+        $0.font = .pretendardMedium(size: 10)
     }
     
     private lazy var addPreferredSubwayStationButton = UIButton().then {
@@ -107,7 +116,6 @@ class SelfIntroduceViewController: BaseViewController {
     ).then {
         $0.backgroundColor = .white
         $0.register(SubwayStationCell.self, forCellWithReuseIdentifier: "SubwayStationCell")
-//        $0.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     }
     
     private lazy var nextButton = UIButton().then {
@@ -144,6 +152,7 @@ class SelfIntroduceViewController: BaseViewController {
         
         view.addSubview(noticeNicknameLabel)
         view.addSubview(briefIntroductionLabel)
+        view.addSubview(briefIntroductionSubLabel)
         view.addSubview(inputBriefIntroduceTextView)
         view.addSubview(preferredSubwayStationLabel)
         view.addSubview(preferredSubwayStationSubLabel)
@@ -191,6 +200,11 @@ class SelfIntroduceViewController: BaseViewController {
             $0.leading.equalToSuperview().inset(20)
         }
         
+        briefIntroductionSubLabel.snp.makeConstraints {
+            $0.centerY.equalTo(briefIntroductionLabel.snp.centerY)
+            $0.leading.equalTo(briefIntroductionLabel.snp.trailing).offset(6)
+        }
+        
         inputBriefIntroduceTextView.snp.makeConstraints {
             $0.top.equalTo(briefIntroductionLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -233,18 +247,43 @@ class SelfIntroduceViewController: BaseViewController {
         
         existingNicknameButton.rx.tap
             .bind(onNext: { [weak self] in
-                guard self?.inputNicknameTextField.text?.isEmpty == false else {
-                    self?.noticeNicknameLabel.text = "10자 이내(공백 제외) 한글,영문,숫자,특수문자"
-                    self?.noticeNicknameLabel.textColor = .ptGray02
+                // TODO: inputNicknameTextField 포커싱이 잡혀있는 동안은 버튼의 zPosition이 더 낮아 클릭이 안됨, return(키보드) 클릭 해야 가능(포커싱이 풀려야)
+                print(self?.inputNicknameTextField.text)
+//                guard self?.inputNicknameTextField.text?.isEmpty == false else {
+//                    self?.noticeNicknameLabel.text = "10자 이내(공백 제외) 한글,영문,숫자,특수문자"
+//                    self?.noticeNicknameLabel.textColor = .ptGray02
+//                    return
+//                }
+                // TODO: 서버 반환값에 따른 NoticeLabel Text 및 Color 변경 로직 추가
+                
+            }).disposed(by: disposeBag)
+        
+        inputNicknameTextField.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
+                guard $0.count > 10 else { return }
+                self?.inputNicknameTextField.text = String(self?.inputNicknameTextField.text?.dropLast() ?? "")
+            }).disposed(by: disposeBag)
+        
+        inputNicknameTextField.rx.controlEvent(.touchDown)
+            .subscribe(onNext: { [weak self] in
+                self?.inputNicknameTextField.layer.borderColor = UIColor.ptBlack02.cgColor
+            }).disposed(by: disposeBag)
+
+        inputNicknameTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
+            .subscribe(onNext: { [weak self] in
+                guard let textCount = self?.inputNicknameTextField.text?.count else { return }
+                guard textCount > 0 else {
+                    self?.inputNicknameTextField.layer.borderColor = UIColor.ptGray03.cgColor
                     return
                 }
-                // MARK: 서버 반환값에 따른 NoticeLabel Text 및 Color 변경 로직 추가
-                
+                self?.inputNicknameTextField.layer.borderColor = UIColor.ptGray01.cgColor
             }).disposed(by: disposeBag)
         
         inputBriefIntroduceTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] in
                 guard self?.inputBriefIntroduceTextView.textColor == .ptGray01 else { return }
+                self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptBlack02.cgColor
                 self?.inputBriefIntroduceTextView.textColor = .ptBlack01
                 self?.inputBriefIntroduceTextView.text = nil
             }).disposed(by: disposeBag)
@@ -253,9 +292,11 @@ class SelfIntroduceViewController: BaseViewController {
             .subscribe(onNext: { [weak self] in
                 guard self?.inputBriefIntroduceTextView.text.isEmpty == true else {
                     self?.inputBriefIntroduceTextView.textColor = .ptBlack01
+                    self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray01.cgColor
                     return
                 }
-                self?.inputBriefIntroduceTextView.text = "간단 소개 입력(200자 이내)"
+                self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray03.cgColor
+                self?.inputBriefIntroduceTextView.text = "간단 소개 입력"
                 self?.inputBriefIntroduceTextView.textColor = .ptGray01
             }).disposed(by: disposeBag)
         
