@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 class DoThunListViewController: BaseViewController {
-
+    
     private let disposeBag = DisposeBag()
     
     private let cellCnt = 2 // TODO: - 임시로 해둔거고 서버 연결하면 없앨 것
@@ -29,7 +29,7 @@ class DoThunListViewController: BaseViewController {
         $0.layer.cornerRadius = 5
         $0.tag = 0
     }
-
+    
     private let likeButton = UIButton().then {
         $0.setTitle("찜 많은순", for: .normal)
         $0.setTitleColor(.ptGray02, for: .normal)
@@ -41,6 +41,7 @@ class DoThunListViewController: BaseViewController {
         $0.spacing = 5
         $0.backgroundColor = .ptGray04
         $0.layer.cornerRadius = 5
+        $0.distribution = .fillProportionally
     }
     
     private let emptyLabel = UILabel().then {
@@ -95,18 +96,11 @@ class DoThunListViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(20)
         }
         
-        newButton.snp.makeConstraints {
-            $0.size.equalTo(CGSize(width: 52, height: 24))
-        }
-
-        likeButton.snp.makeConstraints {
-            $0.size.equalTo(CGSize(width: 65, height: 24))
-        }
-
         stackView.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-24)
             $0.centerY.equalTo(titleLabel.snp.centerY)
-            $0.height.equalTo(24)
+            $0.width.equalTo(117 * (UIScreen.main.bounds.width / 375))
+            $0.height.equalTo(24 * (UIScreen.main.bounds.height / 812))
         }
         
         emptyLabel.snp.makeConstraints {
@@ -126,7 +120,7 @@ class DoThunListViewController: BaseViewController {
                 self?.toggleButtonDidTap(buttonTag: 0)
             }
             .disposed(by: disposeBag)
-
+        
         likeButton.rx.tap
             .bind { [weak self] in
                 self?.toggleButtonDidTap(buttonTag: 1)
