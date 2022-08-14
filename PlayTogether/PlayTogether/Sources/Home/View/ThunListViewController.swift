@@ -31,7 +31,6 @@ class ThunListViewController: BaseViewController {
     }
     
     private lazy var stackView = UIStackView(arrangedSubviews: [beforeButton,eatGoDoLabel,afterButton]).then {
-        $0.axis = .horizontal
         $0.spacing = 20
     }
     

@@ -38,7 +38,6 @@ class GoThunListViewController: BaseViewController {
     }
     
     private lazy var stackView = UIStackView(arrangedSubviews: [newButton,likeButton]).then {
-        $0.axis = .horizontal
         $0.spacing = 5
         $0.backgroundColor = .ptGray04
         $0.layer.cornerRadius = 5
