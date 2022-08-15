@@ -12,6 +12,16 @@ import RxSwift
 
 class ThunListViewController: BaseViewController {
     
+    init(currentPageIndex: Int, index: Int) {
+        super.init()
+        self.currentPage = currentPageIndex
+        self.eatGoDoLabel.text = nameArray[index]
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private let disposeBag = DisposeBag()
     
     private let beforeButton = UIButton().then {
@@ -19,6 +29,18 @@ class ThunListViewController: BaseViewController {
     }
     
     var nameArray = ["먹을래","갈래","할래"]
+    
+    var currentPage = Int() {
+        didSet {
+            let direction: UIPageViewController.NavigationDirection = oldValue <= currentPage ? .forward : .reverse
+            pageViewController.setViewControllers(
+                [dataViewControllers[currentPage]],
+                direction: direction,
+                animated: true,
+                completion: nil
+            )
+        }
+    }
     
     var eatGoDoLabel = UILabel().then {
         $0.font = .pretendardBold(size: 18)
@@ -43,7 +65,7 @@ class ThunListViewController: BaseViewController {
     private let doThunListViewController = DoThunListViewController()
     
     private lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil).then {
-        $0.setViewControllers([dataViewControllers[1]], direction: .forward, animated: true)
+        $0.setViewControllers([dataViewControllers[currentPage]], direction: .forward, animated: true)
         $0.delegate = self
         $0.dataSource = self
         $0.view.translatesAutoresizingMaskIntoConstraints = false
@@ -51,18 +73,6 @@ class ThunListViewController: BaseViewController {
     
     private var dataViewControllers: [UIViewController] {
         [eatThunListViewController, goThunListViewController, doThunListViewController]
-    }
-    
-    var currentPage = 1 {
-        didSet {
-            let direction: UIPageViewController.NavigationDirection = oldValue <= currentPage ? .forward : .reverse
-            pageViewController.setViewControllers(
-                [dataViewControllers[currentPage]],
-                direction: direction,
-                animated: true,
-                completion: nil
-            )
-        }
     }
     
     @objc func backButtonDidTap() {
@@ -103,7 +113,6 @@ class ThunListViewController: BaseViewController {
     }
     
     override func setupLayouts() {
-        
         thunButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(36)
@@ -138,12 +147,11 @@ extension ThunListViewController: UIPageViewControllerDataSource, UIPageViewCont
         return dataViewControllers[index - 1]
     }
     
-    func pageViewController(
-        _ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-            guard let index = dataViewControllers.firstIndex(of: viewController),
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let index = dataViewControllers.firstIndex(of: viewController),
                   index + 1 < dataViewControllers.count else { return nil }
-            return dataViewControllers[index + 1]
-        }
+        return dataViewControllers[index + 1]
+    }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let viewController = pageViewController.viewControllers?[0], let index = dataViewControllers.firstIndex(of: viewController) else { return }

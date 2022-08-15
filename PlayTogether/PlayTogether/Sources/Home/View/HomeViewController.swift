@@ -270,9 +270,8 @@ final class HomeViewController: BaseViewController {
         
         eatButton.rx.tap
             .bind { [weak self] in
-                let vc = ThunListViewController()
-                vc.currentPage = 0
-                vc.eatGoDoLabel.text = vc.nameArray[0]
+                let vc = ThunListViewController(currentPageIndex: 0, index: 0)
+                print("currentPage",vc.currentPage)
                 self?.navigationController?.pushViewController(vc, animated: true)
                 self?.tabBarController?.tabBar.isHidden = true
             }
@@ -280,9 +279,7 @@ final class HomeViewController: BaseViewController {
         
         goButton.rx.tap
             .bind { [weak self] in
-                let vc = ThunListViewController()
-                vc.currentPage = 1
-                vc.eatGoDoLabel.text = vc.nameArray[1]
+                let vc = ThunListViewController(currentPageIndex: 1, index: 1)
                 self?.navigationController?.pushViewController(vc, animated: true)
                 self?.tabBarController?.tabBar.isHidden = true
             }
@@ -290,9 +287,7 @@ final class HomeViewController: BaseViewController {
         
         doButton.rx.tap
             .bind { [weak self] in
-                let vc = ThunListViewController()
-                vc.currentPage = 2
-                vc.eatGoDoLabel.text = vc.nameArray[2]
+                let vc = ThunListViewController(currentPageIndex: 2, index: 2)
                 self?.navigationController?.pushViewController(vc, animated: true)
                 self?.tabBarController?.tabBar.isHidden = true
             }
