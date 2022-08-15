@@ -271,7 +271,6 @@ final class HomeViewController: BaseViewController {
         eatButton.rx.tap
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 0, index: 0)
-                print("currentPage",vc.currentPage)
                 self?.navigationController?.pushViewController(vc, animated: true)
                 self?.tabBarController?.tabBar.isHidden = true
             }
