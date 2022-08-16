@@ -32,10 +32,10 @@ class SelfIntroduceViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    public lazy var existingNicknameButton = UIButton().then {
+    // TODO: Right View도 Left View와 마찬가지로 frame 잡아보기
+    
+    private lazy var existingNicknameButton = UIButton().then {
         // TODO: 텍스트 필드 입력시 버튼이 뒤로감
-//        $0.layer.zPosition = 999
-        
         $0.backgroundColor = .ptBlack01
         $0.setTitle("중복확인", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -59,6 +59,11 @@ class SelfIntroduceViewController: BaseViewController {
         $0.text = "10자 이내(공백 제외) 한글,영문,숫자,특수문자"
         $0.textColor = .ptGray02
         $0.font = .pretendardMedium(size: 12)
+    }
+    
+    private let noticeExistingNicknameLabel = UILabel().then {
+        $0.font = .pretendardMedium(size: 12)
+        $0.isHidden = true
     }
     
     private let briefIntroductionLabel = UILabel().then {
@@ -124,6 +129,7 @@ class SelfIntroduceViewController: BaseViewController {
     }
     
     let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: SelfIntroduceViewController.self, action: nil)
+    let viewModel = SelfIntroduceViewModel()
     let dataSource = Observable<String>.of("플투역 1호선", "테스트역 2호선")
     
     override func viewWillAppear(_ animated: Bool) {
@@ -146,11 +152,10 @@ class SelfIntroduceViewController: BaseViewController {
         view.addSubview(progressbar)
         view.addSubview(headerLabel)
         view.addSubview(nickNameLabel)
-        
         view.addSubview(inputNicknameTextField)
-        inputNicknameTextField.addSubview(existingNicknameButton)
-        
+        view.addSubview(existingNicknameButton)
         view.addSubview(noticeNicknameLabel)
+        view.addSubview(noticeExistingNicknameLabel)
         view.addSubview(briefIntroductionLabel)
         view.addSubview(briefIntroductionSubLabel)
         view.addSubview(inputBriefIntroduceTextView)
@@ -189,14 +194,19 @@ class SelfIntroduceViewController: BaseViewController {
             $0.height.equalTo(57 * (UIScreen.main.bounds.height / 812))
         }
         
+        noticeExistingNicknameLabel.snp.makeConstraints {
+            $0.top.equalTo(inputNicknameTextField.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().inset(24)
+        }
+        
         existingNicknameButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(20)
-            $0.top.bottom.equalToSuperview().inset(13.5)
+            $0.centerY.equalTo(inputNicknameTextField)
+            $0.trailing.equalTo(inputNicknameTextField.snp.trailing).inset(16)
             $0.width.equalTo(67 * (UIScreen.main.bounds.width / 375))
         }
         
         briefIntroductionLabel.snp.makeConstraints {
-            $0.top.equalTo(inputNicknameTextField.snp.bottom).offset(36)
+            $0.top.equalTo(noticeExistingNicknameLabel.snp.bottom).offset(36)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -245,22 +255,21 @@ class SelfIntroduceViewController: BaseViewController {
                 self?.navigationController?.popViewController(animated: true)
             }).disposed(by: disposeBag)
         
+//         TODO: 동아리 번호 수정예정
         existingNicknameButton.rx.tap
             .bind(onNext: { [weak self] in
-                // TODO: inputNicknameTextField 포커싱이 잡혀있는 동안은 버튼의 zPosition이 더 낮아 클릭이 안됨, return(키보드) 클릭 해야 가능(포커싱이 풀려야)
-                print(self?.inputNicknameTextField.text)
-//                guard self?.inputNicknameTextField.text?.isEmpty == false else {
-//                    self?.noticeNicknameLabel.text = "10자 이내(공백 제외) 한글,영문,숫자,특수문자"
-//                    self?.noticeNicknameLabel.textColor = .ptGray02
-//                    return
-//                }
-                // TODO: 서버 반환값에 따른 NoticeLabel Text 및 Color 변경 로직 추가
-                
+                guard let nickname = self?.inputNicknameTextField.text else { return }
+                self?.viewModel.checkNickname(102, nickname) {
+                    self?.noticeExistingNicknameLabel.isHidden = false
+                    self?.noticeExistingNicknameLabel.text = $0 ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
+                    self?.noticeExistingNicknameLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
+                }
             }).disposed(by: disposeBag)
         
         inputNicknameTextField.rx.text
             .orEmpty
             .subscribe(onNext: { [weak self] in
+                self?.noticeExistingNicknameLabel.isHidden = true
                 guard $0.count > 10 else { return }
                 self?.inputNicknameTextField.text = String(self?.inputNicknameTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
@@ -300,19 +309,19 @@ class SelfIntroduceViewController: BaseViewController {
                 self?.inputBriefIntroduceTextView.textColor = .ptGray01
             }).disposed(by: disposeBag)
         
-        Observable.of(["플투역 1호선"]) // dataSource = Observable<String>.just("플투역 1호선")
-            .bind(to: self.subwayStationCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
-                guard let cell = self.subwayStationCollectionView.dequeueReusableCell(
-                    withReuseIdentifier: "SubwayStationCell",
-                    for: IndexPath(row: row, section: 0)
-                ) as? SubwayStationCell
-                else { return UICollectionViewCell() }
-                
-                cell.setupData(item)
-//                cell.backgroundColor = .orange
-                
-                return cell
-            }.disposed(by: disposeBag)
+//        viewModel.subwayStationList
+//            .bind(to: self.subwayStationCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+//                guard let cell = self.subwayStationCollectionView.dequeueReusableCell(
+//                    withReuseIdentifier: "subwayStationCollectionView",
+//                    for: IndexPath(row: row, section: 0)
+//                ) as? SubwayStationCell,
+//                      let item = item?.response.body.items.item
+//                else { return UICollectionViewCell() }
+//
+//                cell.setupData(item[row].subwayStationName)
+//                return cell
+//            }.disposed(by: disposeBag)
+        
     }
 }
 
