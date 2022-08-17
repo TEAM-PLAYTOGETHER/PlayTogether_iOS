@@ -11,9 +11,9 @@ import Then
 
 final class ThunViewController: BaseViewController {
     
-    private let SubmittedThunVC = SubmittedThunViewController()
-    private let OpenedThunVC = OpenedThunViewController()
-    private let LikedThunVC = LikedThunViewController()
+    private let submittedThunViewController = SubmittedThunViewController()
+    private let openedThunViewController = OpenedThunViewController()
+    private let likedThunViewController = LikedThunViewController()
     
     private let segmentedControl = UnderlineSegmentedControl(items: ["신청한", "오픈한", "찜한"]).then {
         $0.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,.font: UIFont.pretendardBold(size: 14)], for: .normal)
@@ -29,7 +29,7 @@ final class ThunViewController: BaseViewController {
     }
     
     var dataViewControllers: [UIViewController] {
-        [SubmittedThunVC, OpenedThunVC, LikedThunVC]
+        [submittedThunViewController, openedThunViewController, likedThunViewController]
     }
     
     var currentPage = 0 {

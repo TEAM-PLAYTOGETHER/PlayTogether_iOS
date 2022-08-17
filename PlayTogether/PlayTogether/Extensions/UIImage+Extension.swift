@@ -39,4 +39,7 @@ enum ImageCase: String {
     case activeIcon = "activeIcon"
     case cameraIcon = "cameraIcon"
     case deleteIcon = "deleteIcon"
+    
+    case beforeIcon = "beforeIcon"
+    case afterIcon = "afterIcon"
 }
