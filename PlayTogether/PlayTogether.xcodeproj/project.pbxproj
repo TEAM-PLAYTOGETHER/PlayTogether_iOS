@@ -41,6 +41,7 @@
 		4096A2DE287F765F00F1E27C /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DA287F765F00F1E27C /* Pretendard-Regular.otf */; };
 		4096A2DF287F765F00F1E27C /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */; };
 		4096A2E0287F765F00F1E27C /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */; };
+		40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA766628A2B91F0093A3EB /* CreateThunService.swift */; };
 		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
 		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
@@ -96,6 +97,7 @@
 		4096A2DA287F765F00F1E27C /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		40AA766628A2B91F0093A3EB /* CreateThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunService.swift; sourceTree = "<group>"; };
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
 		B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewController.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			children = (
 				409451AE28905A9000F21717 /* HomeService.swift */,
 				409451B228905D7D00F21717 /* HomeResponse.swift */,
+				40AA766628A2B91F0093A3EB /* CreateThunService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				B6397F432887104800046843 /* UITextField+Extension.swift in Sources */,
+				40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */,
 				B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
