@@ -11,9 +11,10 @@ import RxCocoa
 
 class SelfIntroduceViewController: BaseViewController {
     private let disposeBag = DisposeBag()
+    private let viewModel = SelfIntroduceViewModel()
     
     private let progressbar = UIProgressView().then {
-        $0.progress = 1.0
+        $0.progress = 0.75
         $0.progressTintColor = .ptGreen
         $0.backgroundColor = .ptGray03
     }
@@ -32,10 +33,7 @@ class SelfIntroduceViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    // TODO: Right View도 Left View와 마찬가지로 frame 잡아보기
-    
     private lazy var existingNicknameButton = UIButton().then {
-        // TODO: 텍스트 필드 입력시 버튼이 뒤로감
         $0.backgroundColor = .ptBlack01
         $0.setTitle("중복확인", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -49,7 +47,6 @@ class SelfIntroduceViewController: BaseViewController {
         $0.setupPlaceholderText(title: "닉네임 입력", color: .ptGray01)
         $0.addLeftPadding()
         $0.autocorrectionType = .no
-        $0.autocapitalizationType = .allCharacters
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 10
         $0.layer.borderColor = UIColor.ptGray03.cgColor
@@ -84,7 +81,7 @@ class SelfIntroduceViewController: BaseViewController {
         $0.textColor = .ptGray01
         $0.textContainerInset = UIEdgeInsets(top: 18, left: 20, bottom: 18, right: 20)
         $0.autocorrectionType = .no
-        $0.autocapitalizationType = .allCharacters
+        $0.autocapitalizationType = .none
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 10
         $0.layer.borderColor = UIColor.ptGray03.cgColor
@@ -110,7 +107,7 @@ class SelfIntroduceViewController: BaseViewController {
     }
     
     private lazy var layout = UICollectionViewFlowLayout().then {
-        let width = 123 * (UIScreen.main.bounds.width / 375)    // MARK: 지하철 데이터를 받아오면 해당 width 동적 처리 해줘야 함
+        let width = 123 * (UIScreen.main.bounds.width / 375)    // TODO: 지하철 데이터를 받아오면 해당 width 동적으로 처리할 예정
         let height = 32 * (UIScreen.main.bounds.height / 812)
         $0.itemSize = CGSize(width: width, height: height)
     }
@@ -128,9 +125,30 @@ class SelfIntroduceViewController: BaseViewController {
         $0.isButtonEnableUI(check: false)
     }
     
-    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: SelfIntroduceViewController.self, action: nil)
-    let viewModel = SelfIntroduceViewModel()
-    let dataSource = Observable<String>.of("플투역 1호선", "테스트역 2호선")
+    private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: SelfIntroduceViewController.self, action: nil)
+    
+    // TODO: 지하철역 추가했는지 여부 체크 추가 할 예정
+    private var checkNickname: Bool = false {
+        didSet {
+            guard checkBriefIntroduceText == true,
+            checkNickname == true else {
+                changeNextButtonUI(nextButton, false)
+                return
+            }
+            changeNextButtonUI(nextButton, true)
+        }
+    }
+    private var checkBriefIntroduceText: Bool = false {
+        didSet {
+            guard checkNickname == true,
+            checkBriefIntroduceText == true else {
+                changeNextButtonUI(nextButton, false)
+                return
+            }
+            changeNextButtonUI(nextButton, true)
+        }
+    }
+    private var ableNickname: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -144,6 +162,18 @@ class SelfIntroduceViewController: BaseViewController {
     private func configureNavbar() {
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .white
+    }
+    
+    private func changeNextButtonUI(_ button: UIButton , _ status: Bool) {
+        guard status == true else {
+            button.isEnabled = false
+            button.backgroundColor = .ptGray03
+            button.layer.borderColor = UIColor.ptGray02.cgColor
+            return
+        }
+        button.isEnabled = true
+        button.backgroundColor = .ptGreen
+        button.layer.borderColor = UIColor.ptBlack01.cgColor
     }
     
     override func setupViews() {
@@ -253,31 +283,28 @@ class SelfIntroduceViewController: BaseViewController {
         leftButtonItem.rx.tap
             .bind(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
-//         TODO: 동아리 번호 수정예정
         existingNicknameButton.rx.tap
             .bind(onNext: { [weak self] in
                 guard let nickname = self?.inputNicknameTextField.text else { return }
-                self?.viewModel.checkNickname(102, nickname) {
+                self?.viewModel.checkNickname(102, nickname) {  // TODO: 추후 동아리 번호 받아올 예정
+                    self?.checkNickname = $0
                     self?.noticeExistingNicknameLabel.isHidden = false
                     self?.noticeExistingNicknameLabel.text = $0 ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
                     self?.noticeExistingNicknameLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
+                    guard $0 == true else { return }
+                    self?.ableNickname = nickname
                 }
-            }).disposed(by: disposeBag)
-        
-        inputNicknameTextField.rx.text
-            .orEmpty
-            .subscribe(onNext: { [weak self] in
-                self?.noticeExistingNicknameLabel.isHidden = true
-                guard $0.count > 10 else { return }
-                self?.inputNicknameTextField.text = String(self?.inputNicknameTextField.text?.dropLast() ?? "")
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
         inputNicknameTextField.rx.controlEvent(.touchDown)
             .subscribe(onNext: { [weak self] in
                 self?.inputNicknameTextField.layer.borderColor = UIColor.ptBlack02.cgColor
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
 
         inputNicknameTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
             .subscribe(onNext: { [weak self] in
@@ -287,7 +314,33 @@ class SelfIntroduceViewController: BaseViewController {
                     return
                 }
                 self?.inputNicknameTextField.layer.borderColor = UIColor.ptGray01.cgColor
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+        inputNicknameTextField.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
+                guard $0 == self?.ableNickname else {
+                    self?.noticeExistingNicknameLabel.isHidden = true
+                    self?.checkNickname = false
+                    guard $0.count > 10 else { return }
+                    self?.inputNicknameTextField.text = String(self?.inputNicknameTextField.text?.dropLast() ?? "")
+                    return
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        inputBriefIntroduceTextView.rx.text
+            .orEmpty
+            .subscribe(onNext: { [weak self] in
+                guard $0.count > 0,
+                      self?.inputBriefIntroduceTextView.textColor == .ptBlack01 else {
+                          self?.checkBriefIntroduceText = false
+                    return
+                }
+                self?.checkBriefIntroduceText = true
+            })
+            .disposed(by: disposeBag)
         
         inputBriefIntroduceTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] in
@@ -295,33 +348,38 @@ class SelfIntroduceViewController: BaseViewController {
                 self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptBlack02.cgColor
                 self?.inputBriefIntroduceTextView.textColor = .ptBlack01
                 self?.inputBriefIntroduceTextView.text = nil
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
         inputBriefIntroduceTextView.rx.didEndEditing
             .subscribe(onNext: { [weak self] in
-                guard self?.inputBriefIntroduceTextView.text.isEmpty == true else {
-                    self?.inputBriefIntroduceTextView.textColor = .ptBlack01
-                    self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray01.cgColor
+                guard self?.inputBriefIntroduceTextView.text.isEmpty == false else {
+                    self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray03.cgColor
+                    self?.inputBriefIntroduceTextView.text = "간단 소개 입력"
+                    self?.inputBriefIntroduceTextView.textColor = .ptGray01
+                    self?.checkBriefIntroduceText = false
                     return
                 }
-                self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray03.cgColor
-                self?.inputBriefIntroduceTextView.text = "간단 소개 입력"
-                self?.inputBriefIntroduceTextView.textColor = .ptGray01
-            }).disposed(by: disposeBag)
+                self?.inputBriefIntroduceTextView.textColor = .ptBlack01
+                self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray01.cgColor
+            })
+            .disposed(by: disposeBag)
         
-//        viewModel.subwayStationList
-//            .bind(to: self.subwayStationCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
-//                guard let cell = self.subwayStationCollectionView.dequeueReusableCell(
-//                    withReuseIdentifier: "subwayStationCollectionView",
-//                    for: IndexPath(row: row, section: 0)
-//                ) as? SubwayStationCell,
-//                      let item = item?.response.body.items.item
-//                else { return UICollectionViewCell() }
-//
-//                cell.setupData(item[row].subwayStationName)
-//                return cell
-//            }.disposed(by: disposeBag)
+        addPreferredSubwayStationButton.rx.tap
+            .bind(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(AddSubwayStationViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
         
+        nextButton.rx.tap
+            .bind(onNext: { [weak self] in
+                guard let nickname = self?.inputNicknameTextField.text else { return }
+                guard let briefIntroduceText = self?.inputBriefIntroduceTextView.text else { return }
+                OnboardingDataModel.shared.nickName = nickname
+                OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
+                // TODO: 다음 뷰로 넘어가는 기능 추가할 예정
+            })
+            .disposed(by: disposeBag)
     }
 }
 

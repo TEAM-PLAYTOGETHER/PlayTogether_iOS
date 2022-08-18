@@ -6,14 +6,13 @@
 //
 
 import RxSwift
+import RxCocoa
 import RxRelay
 import Moya
 import RxMoya
 
 final class SelfIntroduceViewModel {
     private lazy var disposeBag = DisposeBag()
-    var subwayStationList = BehaviorSubject<[StationResponse?]>.init(value: [])
-    var stationNameRelay = BehaviorRelay<String>.init(value: "")
     
     struct checkNicknameInput {
         var crewID: Int
@@ -31,25 +30,7 @@ final class SelfIntroduceViewModel {
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
-            }.disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
     }
-    
-    // TODO: 지하철 역 파라미터, String 변환
-    func fetchSubwayStationList(completion: @escaping ([StationsInfo?]) -> Void ) {
-        let provider = MoyaProvider<SelfIntroduceService>()
-        
-        provider.rx.request(.searchStationRequeset(stationName: stationNameRelay.value, type: "json", serviceKey: APIConstants.subwayServiceKey))
-            .subscribe { result in
-                switch result {
-                case let .success(response):
-                    let responseData = try? response.map(StationResponse.self)
-                    guard let data = responseData?.response.body.items.item else { return }
-                    completion(data)
-                    
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }.disposed(by: disposeBag)
-    }
-    
 }

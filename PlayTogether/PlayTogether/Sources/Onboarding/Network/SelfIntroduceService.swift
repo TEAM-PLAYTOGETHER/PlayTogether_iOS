@@ -31,7 +31,6 @@ extension SelfIntroduceService: TargetType {
             
         case .existingNicknameRequset(let crewID, _):
             return APIConstants.existingNickname + "/\(crewID)"
-//            return "\(APIConstants.existingNickname)/\(crewID)?nickname=\(Nickname)"
         }
     }
     
@@ -61,6 +60,5 @@ extension SelfIntroduceService: TargetType {
         return [
             "Content-Type": "application/json"
         ]
-    }
-    
+    }   
 }
