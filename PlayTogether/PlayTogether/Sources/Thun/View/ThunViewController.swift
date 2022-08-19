@@ -8,9 +8,11 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
 
 final class ThunViewController: BaseViewController {
     
+    private let disposeBag = DisposeBag()
     private let submittedThunViewController = SubmittedThunViewController()
     private let openedThunViewController = OpenedThunViewController()
     private let likedThunViewController = LikedThunViewController()
@@ -67,7 +69,17 @@ final class ThunViewController: BaseViewController {
         }
     }
     
-    override func setupBinding() {}
+    override func setupBinding() {
+        submittedThunViewController.tableView.rx.modelSelected(ThunResponseList.self)
+            .bind { model in
+                let vc = SubmittedDetailThunViewController(lightID: model.lightID)
+                self.navigationController?.pushViewController(vc, animated: true)
+                self.tabBarController?.tabBar.isHidden = true
+            }
+            .disposed(by: disposeBag)
+        
+        
+    }
     
     private func configureNaigationvBar() {
         let navigationBarController = navigationController?.navigationBar
