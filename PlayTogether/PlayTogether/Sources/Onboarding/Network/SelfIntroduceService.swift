@@ -42,9 +42,9 @@ extension SelfIntroduceService: TargetType {
         switch self {
         case .searchStationRequeset(let stationName):
             let params = [
-                "stationName" : stationName,
-                "type" : "json",
-                "serviceKey" : APIConstants.subwayServiceKey
+                "serviceKey" : APIConstants.subwayServiceKey,
+                "_type" : "json",
+                "subwayStationName" : stationName
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             
