@@ -53,7 +53,14 @@ class SubmittedDetailThunTableViewCell: UITableViewCell {
         contentView.layer.cornerRadius = 10
         contentView.backgroundColor = .ptBlack01
         selectionStyle = .none
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0))
+        contentView.frame = contentView.frame.inset(
+            by: UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: 10,
+                right: 0
+            )
+        )
     }
     
     private func setupLayouts() {
