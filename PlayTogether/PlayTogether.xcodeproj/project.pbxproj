@@ -55,11 +55,12 @@
 		B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */; };
 		B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */; };
 		B66EA07C28A7E60B00F1F723 /* SubwayStationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */; };
-		B67F2A9028A509FC005A82B1 /* SubwayStationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F2A8F28A509FC005A82B1 /* SubwayStationCell.swift */; };
+		B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */; };
 		B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */; };
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
 		B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */; };
 		B6A612FF28A9F36600688DA2 /* CheckNicknameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */; };
+		B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */; };
 		B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */; };
 		DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B02892536A0042490C /* ThunResponse.swift */; };
 		DDBE87B3289253B50042490C /* ThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B2289253B50042490C /* ThunViewModel.swift */; };
@@ -116,11 +117,12 @@
 		B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceService.swift; sourceTree = "<group>"; };
 		B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewModel.swift; sourceTree = "<group>"; };
 		B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationResponse.swift; sourceTree = "<group>"; };
-		B67F2A8F28A509FC005A82B1 /* SubwayStationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationCell.swift; sourceTree = "<group>"; };
+		B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationCollectionViewCell.swift; sourceTree = "<group>"; };
 		B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameResponse.swift; sourceTree = "<group>"; };
+		B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationListTableViewCell.swift; sourceTree = "<group>"; };
 		B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewModel.swift; sourceTree = "<group>"; };
 		DDBE87B02892536A0042490C /* ThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B2289253B50042490C /* ThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThunViewModel.swift; path = PlayTogether/Sources/Thun/Network/ThunViewModel.swift; sourceTree = SOURCE_ROOT; };
@@ -290,10 +292,10 @@
 		4096A2B1287F5FDC00F1E27C /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				B654A3CF28AF861B00C29BC2 /* View */,
 				4096A2B2287F5FFE00F1E27C /* ViewController */,
 				B67F2A8E28A4FC88005A82B1 /* Network */,
 				4096A2B3287F601000F1E27C /* ViewModel */,
-				B630459C28828D980095F694 /* Cell */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -373,13 +375,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		B630459C28828D980095F694 /* Cell */ = {
+		B654A3CF28AF861B00C29BC2 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				B630459D28828D9F0095F694 /* ChoiceCell.swift */,
-				B67F2A8F28A509FC005A82B1 /* SubwayStationCell.swift */,
+				B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */,
+				B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */,
 			);
-			path = Cell;
+			path = View;
 			sourceTree = "<group>";
 		};
 		B67F2A8E28A4FC88005A82B1 /* Network */ = {
@@ -525,9 +528,10 @@
 				DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
+				B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
-				B67F2A9028A509FC005A82B1 /* SubwayStationCell.swift in Sources */,
+				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */,

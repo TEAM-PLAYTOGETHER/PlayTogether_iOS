@@ -9,7 +9,7 @@ import Moya
 import Foundation
 
 enum SelfIntroduceService {
-    case searchStationRequeset(stationName: String, type: String, serviceKey: String)
+    case searchStationRequeset(stationName: String)
     case existingNicknameRequset(crewID: Int, Nickname: String)
 }
 
@@ -40,11 +40,11 @@ extension SelfIntroduceService: TargetType {
     
     var task: Task {
         switch self {
-        case .searchStationRequeset(let stationName, let type, let serviceKey):
+        case .searchStationRequeset(let stationName):
             let params = [
                 "stationName" : stationName,
-                "type" : type,
-                "serviceKey" : serviceKey
+                "type" : "json",
+                "serviceKey" : APIConstants.subwayServiceKey
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             

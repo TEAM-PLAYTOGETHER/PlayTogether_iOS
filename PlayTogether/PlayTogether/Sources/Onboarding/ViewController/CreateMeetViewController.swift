@@ -33,7 +33,6 @@ class CreateMeetViewController: BaseViewController {
     
     private let titleTextField = UITextField().then {
         $0.setupPlaceholderText(title: "동아리명 입력", color: .ptGray01)
-        $0.placeholder = "동아리명 입력"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
         $0.layer.borderColor = UIColor.ptGray03.cgColor

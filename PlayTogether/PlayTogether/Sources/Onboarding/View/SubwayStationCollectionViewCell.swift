@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SubwayStationCell: UICollectionViewCell {
+final class SubwayStationCollectionViewCell: UICollectionViewCell {
     private lazy var stationNameLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptGray02
@@ -30,7 +30,7 @@ final class SubwayStationCell: UICollectionViewCell {
 }
 
 
-private extension SubwayStationCell {
+private extension SubwayStationCollectionViewCell {
     func setupView() {
         backgroundColor = .white
         
@@ -62,7 +62,7 @@ private extension SubwayStationCell {
 }
 
 
-extension SubwayStationCell {
+extension SubwayStationCollectionViewCell {
     func setupData(_ title: String) {
         stationNameLabel.text = title
     }

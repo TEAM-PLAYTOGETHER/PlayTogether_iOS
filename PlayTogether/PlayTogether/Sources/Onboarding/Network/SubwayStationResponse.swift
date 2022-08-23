@@ -5,25 +5,25 @@
 //  Created by 이지석 on 2022/08/13.
 //
 
-struct StationResponse: Codable {
+struct StationResponse: Decodable {
     let response: ResponseData
 }
 
-struct ResponseData: Codable {
+struct ResponseData: Decodable {
     let header: Header
     let body: Body
 }
 
-struct Body: Codable {
+struct Body: Decodable {
     let items: Items
     let numOfRows, pageNo, totalCount: Int
 }
 
-struct Items: Codable {
+struct Items: Decodable {
     let item: [StationsInfo]
 }
 
-struct StationsInfo: Codable {
+struct StationsInfo: Decodable {
     let subwayRouteName, subwayStationID, subwayStationName: String
 
     enum CodingKeys: String, CodingKey {
@@ -33,6 +33,6 @@ struct StationsInfo: Codable {
     }
 }
 
-struct Header: Codable {
+struct Header: Decodable {
     let resultCode, resultMsg: String
 }
