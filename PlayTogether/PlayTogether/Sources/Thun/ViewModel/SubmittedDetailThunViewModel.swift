@@ -43,5 +43,28 @@ final class SubmittedDetailThunViewModel {
             }
             .disposed(by: disposeBag)
     }
+    
+    func getImageList(lightId: Int, completion: @escaping([String?]) -> Void) {
+        let provider = MoyaProvider<SubmittedDetailThunService>()
+        provider.rx.request(.detailThunRequest(lightId: lightId))
+            .subscribe { result in
+                switch result {
+                case let .success(response):
+                    let responseData = try? response.map(SubmittedDetailThunResponse.self)
+                    guard let data = responseData?.data[0].image else { return }
+                    
+                    var imageUrl = [String?]()
+                    data.forEach {
+                        imageUrl.append($0)
+                    }
+                    completion(imageUrl)
+                    
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
 }
 
