@@ -14,9 +14,9 @@ class SubmittedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let cancelViewModel = CancelSubmittedViewModel()
     private var superView = UIViewController()
-    private let viewModel: ThunViewModel?
+    private let viewModel: ThunVIewModel?
     
-    init(viewModel: ThunViewModel) {
+    init(viewModel: ThunVIewModel) {
         self.viewModel = viewModel
         super.init()
     }

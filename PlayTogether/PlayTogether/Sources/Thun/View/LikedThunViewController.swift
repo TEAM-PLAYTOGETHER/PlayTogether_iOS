@@ -12,9 +12,9 @@ import RxSwift
 
 class LikedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel: ThunViewModel?
+    private let viewModel: ThunVIewModel?
     
-    init(viewModel: ThunViewModel) {
+    init(viewModel: ThunVIewModel) {
         self.viewModel = viewModel
         super.init()
     }

@@ -14,10 +14,10 @@ class SubmittedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = SubmittedDetailThunViewModel()
     private let cancelViewModel = CancelSubmittedViewModel()
-    private let superViewModel: ThunViewModel?
+    private let superViewModel: ThunVIewModel?
     var lightId: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int, superViewModel: ThunVIewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
