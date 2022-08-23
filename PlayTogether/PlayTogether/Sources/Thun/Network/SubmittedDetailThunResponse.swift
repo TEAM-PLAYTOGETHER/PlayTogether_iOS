@@ -18,10 +18,10 @@ struct DetailThunList: Decodable {
     let lightID: Int
     let category, title: String
     let scpCnt: Int
-    let date, time, datumDescription: String
-    let image: JSONNull?
-    let peopleCnt: Int
-    let place: String
+    let date, time, datumDescription: String?
+    let image: [String]?
+    let peopleCnt: Int?
+    let place: String?
     let lightMemberCnt: Int
     let isOpened: Bool
     let members: [Member]
@@ -44,7 +44,7 @@ struct DetailThunList: Decodable {
 
 struct Member: Decodable {
     let userID: Int
-    let mbti: JSONNull?
+    let mbti: String?
     let gender, name: String
     let age: Int
 
