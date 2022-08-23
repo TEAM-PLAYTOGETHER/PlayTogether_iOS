@@ -15,17 +15,17 @@ class ThunListTableViewCell: UITableViewCell {
     
     private let titleLabel = UILabel().then {
         $0.textColor = .ptGreen
-        $0.font = UIFont.pretendardBold(size: 16)
+        $0.font = .pretendardBold(size: 16)
     }
     
     private let subTitleLabel = UILabel().then {
         $0.textColor = .white
-        $0.font = UIFont.pretendardSemiBold(size: 14)
+        $0.font = .pretendardSemiBold(size: 14)
     }
     
     private let personnelLabel = UILabel().then {
         $0.textColor = .ptGray02
-        $0.font = UIFont.pretendardMedium(size: 12)
+        $0.font = .pretendardMedium(size: 12)
     }
     
     private let tagLabel = UILabel().then {
@@ -38,7 +38,7 @@ class ThunListTableViewCell: UITableViewCell {
     }
     
     private let likeButton = UIButton().then {
-        $0.setImage(UIImage(named: "icn_like_filled"), for: .normal)
+        $0.setImage(.ptImage(.likeFilledGreenIcon), for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.pretendardMedium(size: 14)
         $0.isUserInteractionEnabled = false
@@ -65,7 +65,10 @@ class ThunListTableViewCell: UITableViewCell {
         contentView.layer.cornerRadius = 10
         contentView.backgroundColor = .ptBlack01
         selectionStyle = .none
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20))
+        contentView.frame = contentView.frame.inset(
+            by: UIEdgeInsets(
+                top: 0, left: 20, bottom: 10, right: 20)
+        )
     }
     
     private func setupViews() {
