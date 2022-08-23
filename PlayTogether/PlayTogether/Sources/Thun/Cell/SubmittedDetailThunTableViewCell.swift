@@ -60,7 +60,7 @@ class SubmittedDetailThunTableViewCell: UITableViewCell {
         circleImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
-            $0.size.equalTo(CGSize(width: 36, height: 36))
+            $0.size.equalTo(CGSize(width: (UIScreen.main.bounds.width / 375) * 36, height: (UIScreen.main.bounds.height / 812) * 36))
         }
         nameLabel.snp.makeConstraints {
             $0.centerY.equalTo(circleImageView)
