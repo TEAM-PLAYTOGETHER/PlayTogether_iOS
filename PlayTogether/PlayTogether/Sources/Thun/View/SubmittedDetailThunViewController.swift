@@ -11,20 +11,21 @@ import SnapKit
 import Then
 
 class SubmittedDetailThunViewController: BaseViewController {
-    init(lightID: Int) {
-        super.init()
+    private lazy var disposeBag = DisposeBag()
+    private let viewModel = SubmittedDetailThunViewModel()
+    private let cancelViewModel = CancelSubmittedViewModel()
+    private let superViewModel: ThunViewModel?
+    var lightId: Int?
+    
+    init(lightID: Int, superViewModel: ThunViewModel) {
         self.lightId = lightID
+        self.superViewModel = superViewModel
+        super.init()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private lazy var disposeBag = DisposeBag()
-    private let viewModel = SubmittedDetailThunViewModel()
-    private let cancelViewModel = CancelSubmittedViewModel()
-    private let submittedThunViewController = SubmittedThunViewController()
-    var lightId: Int?
     
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
@@ -105,15 +106,14 @@ class SubmittedDetailThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
-    private lazy var collectionViewLayout = UICollectionViewFlowLayout().then {
+    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        let collectionViewLayout = UICollectionViewFlowLayout()
         let width = (UIScreen.main.bounds.width / 375) * 273
         let height = (UIScreen.main.bounds.height / 812) * 91
-        $0.scrollDirection = .horizontal
-        $0.itemSize = CGSize(width: width/3, height: height)
-        $0.minimumLineSpacing = 15
-    }
-    
-    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout).then {
+        collectionViewLayout.itemSize = CGSize(width: width/3, height: height)
+        collectionViewLayout.minimumLineSpacing = 15
+        $0.collectionViewLayout = collectionViewLayout
+        
         $0.backgroundColor = .ptBlack01
         $0.register(SubmittedDetailThunCollectionViewCell.self, forCellWithReuseIdentifier: "SubmittedDetailThunCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
@@ -153,8 +153,17 @@ class SubmittedDetailThunViewController: BaseViewController {
         let navigationBarController = navigationController?.navigationBar
         navigationBarController?.isTranslucent = false
         navigationBarController?.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .ptImage(.backIcon), style: .plain, target: self, action: #selector(backButtonDidTap))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "신청 취소", style: .plain, target: self, action: #selector(cancelButtonDidTap))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: .ptImage(.backIcon),
+            style: .plain,
+            target: self, action: #selector(backButtonDidTap)
+        )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "신청 취소",
+            style: .plain,
+            target: self,
+            action: #selector(cancelButtonDidTap)
+        )
         navigationItem.rightBarButtonItem?.tintColor = .ptGreen
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.pretendardRegular(size: 16)], for: .normal)
     }
@@ -168,10 +177,10 @@ class SubmittedDetailThunViewController: BaseViewController {
         let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
         self.present(popupViewController, animated: false, completion: nil)
         popupViewController.delegate = self
-        popupViewController.delegate = self
     }
     
     override func setupViews() {
+        tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
         view.addSubview(scrollView)
         
@@ -253,8 +262,8 @@ class SubmittedDetailThunViewController: BaseViewController {
         }
         
         imageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(self.textInfoLabel.snp.bottom)
-            $0.leading.trailing.equalTo(self.textInfoLabel)
+            $0.top.equalTo(textInfoLabel.snp.bottom)
+            $0.leading.trailing.equalTo(textInfoLabel)
             $0.height.equalTo(1)
             $0.bottom.equalToSuperview().offset(-20)
         }
@@ -298,7 +307,17 @@ class SubmittedDetailThunViewController: BaseViewController {
     override func setupBinding() {
         viewModel.getDetailThunList(lightId: lightId ?? -1) { response in
             let nameResponse = response[0].organizer
-            self.setupData(response[0].title , response[0].date ?? "날짜 미정", response[0].time ?? "시간 미정", response[0].datumDescription ?? "", response[0].place ?? "장소 미정", response[0].category , nameResponse[0].name, response[0].peopleCnt ?? 0, response[0].lightMemberCnt )
+            self.setupData(
+                response[0].title,
+                response[0].date ?? "날짜 미정",
+                response[0].time ?? "시간 미정",
+                response[0].datumDescription ?? "",
+                response[0].place ?? "장소 미정",
+                response[0].category,
+                nameResponse[0].name,
+                response[0].peopleCnt ?? 0,
+                response[0].lightMemberCnt
+            )
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -320,15 +339,18 @@ class SubmittedDetailThunViewController: BaseViewController {
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
             Observable.of(image)
-                .bind(to: self.imageCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                .bind(to: self.imageCollectionView.rx.items) {
+                    _, row, item -> UICollectionViewCell in
                     guard let cell = self.imageCollectionView.dequeueReusableCell(
                         withReuseIdentifier: "SubmittedDetailThunCollectionViewCell",
-                        for: IndexPath(row: row, section: 0)) as? SubmittedDetailThunCollectionViewCell else { return UICollectionViewCell() }
+                        for: IndexPath(row: row, section: 0)
+                    ) as? SubmittedDetailThunCollectionViewCell
+                    else { return UICollectionViewCell() }
                     
                     if let cellImage = image[row] {
                         self.imageCollectionView.snp.updateConstraints {
                             $0.top.equalTo(self.textInfoLabel.snp.bottom).offset(20)
-                            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 92)
+                            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
                         }
                         cell.imageView.loadImage(url: cellImage)
                     }
@@ -341,18 +363,26 @@ class SubmittedDetailThunViewController: BaseViewController {
 
 extension SubmittedDetailThunViewController {
     func setupData(
-        _ title: String,_ date: String,_ time: String,_ description: String,_ place: String,_ category: String,_ name: String,_ peopleCnt: Int,_ lightMemberCnt: Int
+        _ title: String,
+        _ date: String,
+        _ time: String,
+        _ description: String,
+        _ place: String,
+        _ category: String,
+        _ name: String,
+        _ peopleCnt: Int,
+        _ lightMemberCnt: Int
     ){
         let dateStr = date.replacingOccurrences(of: "-", with: ".")
         titleLabel.text = title
         dateLabel.text = "날짜  \(dateStr)"
-        dateLabel.asFontColor(targetString: "날짜", font: .pretendardRegular(size: 14), color: .ptGreen)
+        dateLabel.changeFontColor(targetString: "날짜")
         timeLabel.text = "시간  \(time)"
-        timeLabel.asFontColor(targetString: "시간", font: .pretendardRegular(size: 14), color: .ptGreen)
+        timeLabel.changeFontColor(targetString: "시간")
         placeLabel.text = "장소  \(place)"
-        placeLabel.asFontColor(targetString: "장소", font: .pretendardRegular(size: 14), color: .ptGreen)
+        placeLabel.changeFontColor(targetString: "장소")
         categoryLabel.text = "카테고리  \(category)"
-        categoryLabel.asFontColor(targetString: "카테고리", font: .pretendardRegular(size: 14), color: .ptGreen)
+        categoryLabel.changeFontColor(targetString: "카테고리")
         textInfoLabel.text = description
         nicknameLabel.text = name
         memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
@@ -361,16 +391,24 @@ extension SubmittedDetailThunViewController {
 
 extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
     func oneButtonDidTap() {
+        guard let originData = try? superViewModel?.submittedThunList.value() else { return }
+        superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
         navigationController?.popToRootViewController(animated: true)
         tabBarController?.tabBar.isHidden = false
     }
+    
     func firstButtonDidTap() {}
     
     func secondButtonDidTap() {
         cancelViewModel.postCancelSubmittedButton(lightId: lightId ?? -1) { response in
-            let popupViewController = PopUpViewController(title: "신청 취소되었습니다.", viewType: .oneButton)
+            let popupViewController = PopUpViewController(
+                title: "신청 취소되었습니다.",
+                viewType: .oneButton
+            )
             self.present(popupViewController, animated: false, completion: nil)
             popupViewController.delegate = self
         }
     }
 }
+
+
