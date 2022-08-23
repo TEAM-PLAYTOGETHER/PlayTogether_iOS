@@ -39,7 +39,12 @@ class UnderlineSegmentedControl: UISegmentedControl {
         setBackgroundImage(image, for: .normal, barMetrics: .default)
         setBackgroundImage(image, for: .selected, barMetrics: .default)
         setBackgroundImage(image, for: .highlighted, barMetrics: .default)
-        setDividerImage(image, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
+        setDividerImage(
+            image,
+            forLeftSegmentState: .selected,
+            rightSegmentState: .normal,
+            barMetrics: .default
+        )
         backgroundColor = .ptBlack01
     }
     
