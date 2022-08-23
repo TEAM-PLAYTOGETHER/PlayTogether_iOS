@@ -8,9 +8,9 @@
 import UIKit
 
 extension UIButton {
-    func setupBottomButtonUI(title: String) {
+    func setupBottomButtonUI(title: String, size: CGFloat) {
         self.setTitle(title, for: .normal)
-        self.titleLabel?.font = .pretendardSemiBold(size: 16)
+        self.titleLabel?.font = .pretendardSemiBold(size: size)
         self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 10
         self.clipsToBounds = true

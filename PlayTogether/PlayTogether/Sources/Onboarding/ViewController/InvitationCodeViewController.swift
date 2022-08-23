@@ -45,7 +45,7 @@ class InvitationCodeViewController: BaseViewController {
     }
     
     private lazy var participationButton = UIButton().then {
-        $0.setupBottomButtonUI(title: "입장하기")
+        $0.setupBottomButtonUI(title: "입장하기", size: 16)
         $0.isButtonEnableUI(check: false)
     }
     
@@ -113,11 +113,16 @@ class InvitationCodeViewController: BaseViewController {
             }.disposed(by: disposeBag)
         
         participationButton.rx.tap
-            .bind { [weak self] in
-                // MARK: 서버 응답에 따른 처리해줘야함
-                let popupViewController = PopUpViewController(title: "존재하지 않는 코드입니다", viewType: .oneButton)
-                self?.present(popupViewController, animated: false, completion: nil)
-            }.disposed(by: disposeBag)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                // TODO: 서버 응답에 따른 처리해줘야함
+//                let popupViewController = PopUpViewController(title: "존재하지 않는 코드입니다", viewType: .oneButton)
+//                self?.present(popupViewController, animated: false, completion: nil)
+                
+                let controller = SelfIntroduceViewController()
+                self?.navigationController?.pushViewController(controller, animated: true)
+            })
+            .disposed(by: disposeBag)
         
         inputCodeTextField.rx.text
             .orEmpty
