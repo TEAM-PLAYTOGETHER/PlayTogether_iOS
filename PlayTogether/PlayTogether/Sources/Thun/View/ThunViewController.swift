@@ -13,30 +13,46 @@ import RxSwift
 final class ThunViewController: BaseViewController {
     
     private let disposeBag = DisposeBag()
-    private let submittedThunViewController = SubmittedThunViewController()
-    private let openedThunViewController = OpenedThunViewController()
-    private let likedThunViewController = LikedThunViewController()
+    private let viewModel = ThunViewModel()
+    private let submittedThunViewController: SubmittedThunViewController
+    private let openedThunViewController: OpenedThunViewController
+    private let likedThunViewController: LikedThunViewController
+    
+    override init() {
+        self.submittedThunViewController = SubmittedThunViewController(viewModel: viewModel)
+        self.openedThunViewController = OpenedThunViewController(viewModel: viewModel)
+        self.likedThunViewController = LikedThunViewController(viewModel: viewModel)
+        super.init()
+        submittedThunViewController.setupSuperView(superView: self)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let segmentedControl = UnderlineSegmentedControl(items: ["신청한", "오픈한", "찜한"]).then {
         $0.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,.font: UIFont.pretendardBold(size: 14)], for: .normal)
         $0.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.ptGreen,.font: UIFont.pretendardBold(size: 14)],for: .selected)
-        $0.addTarget(SubmittedThunViewController(), action: #selector(changeValue(control:)), for: .valueChanged)
         $0.selectedSegmentIndex = 0
     }
     
-    private lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil).then {
+    private lazy var pageViewController = UIPageViewController(
+        transitionStyle: .scroll,
+        navigationOrientation: .horizontal,
+        options: nil
+    ).then {
         $0.setViewControllers([dataViewControllers[0]], direction: .forward, animated: true)
         $0.delegate = self
         $0.dataSource = self
     }
     
-    var dataViewControllers: [UIViewController] {
+    private var dataViewControllers: [UIViewController] {
         [submittedThunViewController, openedThunViewController, likedThunViewController]
     }
     
     var currentPage = 0 {
         didSet {
-            let direction: UIPageViewController.NavigationDirection = oldValue <= currentPage ? .forward : .reverse
+            let direction:UIPageViewController.NavigationDirection = oldValue <= currentPage ? .forward : .reverse
             pageViewController.setViewControllers(
                 [dataViewControllers[currentPage]], direction: direction, animated: true, completion: nil
             )
@@ -49,6 +65,11 @@ final class ThunViewController: BaseViewController {
     }
     
     override func setupViews() {
+        segmentedControl.addTarget(
+            self,
+            action: #selector(segmentedButtonDidTap(control:)),
+            for: .valueChanged
+        )
         view.addSubview(segmentedControl)
         view.addSubview(pageViewController.view)
     }
@@ -69,33 +90,20 @@ final class ThunViewController: BaseViewController {
         }
     }
     
-    override func setupBinding() {
-        submittedThunViewController.tableView.rx.modelSelected(ThunResponseList.self)
-            .bind { model in
-                let vc = SubmittedDetailThunViewController(lightID: model.lightID)
-                self.navigationController?.pushViewController(vc, animated: true)
-                self.tabBarController?.tabBar.isHidden = true
-            }
-            .disposed(by: disposeBag)
-        
-        
-    }
-    
     private func configureNaigationvBar() {
         let navigationBarController = navigationController?.navigationBar
         navigationBarController?.isTranslucent = false
         navigationBarController?.tintColor = .white
         navigationItem.title = "나의 번개"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "backIcon"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "searchIcon"), style: .plain, target: self, action: #selector(searchButtonDidTap))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "searchIcon"),
+            style: .plain,
+            target: self,
+            action: #selector(searchButtonDidTap))
     }
     
-    @objc func changeValue(control: UnderlineSegmentedControl) {
+    @objc func segmentedButtonDidTap(control: UnderlineSegmentedControl) {
         currentPage = control.selectedSegmentIndex
-    }
-    
-    @objc func backButtonDidTap() {
-        print("backBtn")
     }
     
     @objc func searchButtonDidTap() {
@@ -104,20 +112,30 @@ final class ThunViewController: BaseViewController {
 }
 
 extension ThunViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerBefore viewController: UIViewController
+    ) -> UIViewController? {
         guard let index = dataViewControllers.firstIndex(of: viewController),
               index - 1 >= 0 else { return nil }
         return dataViewControllers[index - 1]
     }
     
     func pageViewController(
-        _ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        _ pageViewController: UIPageViewController,
+        viewControllerAfter viewController: UIViewController
+    ) -> UIViewController? {
             guard let index = dataViewControllers.firstIndex(of: viewController),
                   index + 1 < dataViewControllers.count else { return nil }
             return dataViewControllers[index + 1]
         }
     
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        didFinishAnimating finished: Bool,
+        previousViewControllers: [UIViewController],
+        transitionCompleted completed: Bool
+    ) {
         guard let viewController = pageViewController.viewControllers?[0], let index = dataViewControllers.firstIndex(of: viewController) else { return }
         currentPage = index
         segmentedControl.selectedSegmentIndex = index
