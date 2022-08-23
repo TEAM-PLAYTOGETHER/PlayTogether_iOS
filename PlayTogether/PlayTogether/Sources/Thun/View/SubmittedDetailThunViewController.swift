@@ -11,7 +11,6 @@ import SnapKit
 import Then
 
 class SubmittedDetailThunViewController: BaseViewController {
-    
     init(lightID: Int) {
         super.init()
         self.lightId = lightID
@@ -23,9 +22,9 @@ class SubmittedDetailThunViewController: BaseViewController {
     
     private lazy var disposeBag = DisposeBag()
     private let viewModel = SubmittedDetailThunViewModel()
-    var img = ["임시데스네"]
+    private let cancelViewModel = CancelSubmittedViewModel()
+    private let submittedThunViewController = SubmittedThunViewController()
     var lightId: Int?
-    var memberCnt: Int?
     
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
@@ -67,7 +66,6 @@ class SubmittedDetailThunViewController: BaseViewController {
     private let dateLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .white
-        
     }
     
     private let timeLabel = UILabel().then {
@@ -85,7 +83,7 @@ class SubmittedDetailThunViewController: BaseViewController {
         $0.textColor = .white
     }
     
-    private lazy var stackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]).then {
+    private lazy var labelStackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]).then {
         $0.axis = .vertical
         $0.spacing = 22
     }
@@ -107,21 +105,21 @@ class SubmittedDetailThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
-    private lazy var layout = UICollectionViewFlowLayout().then {
-        let widthSize = 91 * (UIScreen.main.bounds.width/375)
-        let heightSize = 91 * (UIScreen.main.bounds.height/812)
+    private lazy var collectionViewLayout = UICollectionViewFlowLayout().then {
+        let width = (UIScreen.main.bounds.width / 375) * 273
+        let height = (UIScreen.main.bounds.height / 812) * 91
         $0.scrollDirection = .horizontal
-        $0.itemSize = CGSize(width: widthSize, height: heightSize)
+        $0.itemSize = CGSize(width: width/3, height: height)
+        $0.minimumLineSpacing = 15
     }
-
-    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
+    
+    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout).then {
         $0.backgroundColor = .ptBlack01
         $0.register(SubmittedDetailThunCollectionViewCell.self, forCellWithReuseIdentifier: "SubmittedDetailThunCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
-        $0.delegate = self
-        $0.dataSource = self
+        $0.isScrollEnabled = false
     }
-
+    
     private let alertButton = UIButton().then {
         $0.setTitle("게시글 신고", for: .normal)
         $0.setTitleColor(.ptGray01, for: .normal)
@@ -133,21 +131,18 @@ class SubmittedDetailThunViewController: BaseViewController {
         $0.backgroundColor = .ptGray03
     }
     
+    private var memberCntLabel = UILabel().then {
+        $0.textColor = .ptBlack01
+        $0.font = .pretendardBold(size: 16)
+    }
+    
     private lazy var memberTableView = UITableView().then {
         $0.register(SubmittedDetailThunTableViewCell.self, forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
-        $0.rowHeight = 60
+        $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
         $0.isScrollEnabled = false
-        $0.backgroundColor = .red
     }
-
-    private var headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40*(UIScreen.main.bounds.height/812))).then {
-        $0.textColor = .ptBlack01
-        $0.font = .pretendardBold(size: 16)
-    }
-
-    private let headerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40*(UIScreen.main.bounds.height/812)))
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -170,14 +165,15 @@ class SubmittedDetailThunViewController: BaseViewController {
     }
     
     @objc func cancelButtonDidTap() {
-        print("신청취소")
+        let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
+        self.present(popupViewController, animated: false, completion: nil)
+        popupViewController.delegate = self
+        popupViewController.delegate = self
     }
-
+    
     override func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
-        headerView.addSubview(headerLabel)
-        memberTableView.tableHeaderView = headerView
         
         scrollView.addSubview(contentView)
         
@@ -186,7 +182,9 @@ class SubmittedDetailThunViewController: BaseViewController {
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
+        contentView.addSubview(alertButton)
         contentView.addSubview(grayLineView)
+        contentView.addSubview(memberCntLabel)
         contentView.addSubview(memberTableView)
         
         blackView.addSubview(titleLabel)
@@ -194,11 +192,10 @@ class SubmittedDetailThunViewController: BaseViewController {
         blackView.addSubview(timeLabel)
         blackView.addSubview(placeLabel)
         blackView.addSubview(categoryLabel)
-        blackView.addSubview(stackView)
+        blackView.addSubview(labelStackView)
         blackView.addSubview(dashedLineView)
         blackView.addSubview(textInfoLabel)
         blackView.addSubview(imageCollectionView)
-        blackView.addSubview(alertButton)
     }
     
     override func setupLayouts() {
@@ -245,53 +242,55 @@ class SubmittedDetailThunViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-        stackView.snp.makeConstraints {
+        labelStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(30)
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
         dashedLineView.snp.makeConstraints {
-            $0.top.equalTo(stackView.snp.bottom).offset(30)
+            $0.top.equalTo(labelStackView.snp.bottom).offset(30)
             $0.leading.trailing.equalToSuperview()
         }
         
-        textInfoLabel.snp.makeConstraints {
-            $0.top.equalTo(dashedLineView.snp.bottom).offset(20)
-            $0.leading.equalTo(stackView.snp.leading)
-            $0.trailing.equalToSuperview().offset(-16)
-        }
-
         imageCollectionView.snp.makeConstraints {
-            if img.count == 0 {
-                imageCollectionView.isHidden = true
+            $0.top.equalTo(self.textInfoLabel.snp.bottom)
+            $0.leading.trailing.equalTo(self.textInfoLabel)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview().offset(-20)
+        }
+        
+        textInfoLabel.snp.makeConstraints {
+            if imageCollectionView.frame.height == 1 {
+                $0.top.equalTo(dashedLineView.snp.bottom).offset(20)
+                $0.leading.equalTo(labelStackView.snp.leading)
+                $0.trailing.equalToSuperview().offset(-16)
+                $0.bottom.equalToSuperview().inset(20)
             } else {
-                $0.top.equalTo(textInfoLabel.snp.bottom).offset(20)
-                $0.leading.trailing.equalTo(textInfoLabel)
-                $0.height.equalTo(91*(UIScreen.main.bounds.height/812))
+                $0.top.equalTo(dashedLineView.snp.bottom).offset(20)
+                $0.leading.equalTo(labelStackView.snp.leading)
+                $0.trailing.equalToSuperview().offset(-16)
             }
         }
-
+        
         alertButton.snp.makeConstraints {
-            if imageCollectionView.isHidden {
-                $0.top.equalTo(textInfoLabel.snp.bottom).offset(20)
-                $0.trailing.equalToSuperview().offset(-25)
-                $0.bottom.equalToSuperview().offset(-20)
-            } else {
-                $0.top.equalTo(imageCollectionView.snp.bottom).offset(15)
-                $0.trailing.equalToSuperview().offset(-25)
-                $0.bottom.equalToSuperview().offset(-20)
-            }
+            $0.top.equalTo(blackView.snp.bottom).offset(15)
+            $0.trailing.equalToSuperview().offset(-33)
         }
         
         grayLineView.snp.makeConstraints {
             $0.size.equalTo(CGSize(width: UIScreen.main.bounds.width, height: 8))
-            $0.top.equalTo(blackView.snp.bottom).offset(40)
+            $0.top.equalTo(alertButton.snp.bottom).offset(40)
+        }
+        
+        memberCntLabel.snp.makeConstraints {
+            $0.top.equalTo(grayLineView.snp.bottom).offset(20)
+            $0.leading.trailing.equalTo(blackView)
         }
         
         memberTableView.snp.makeConstraints {
-            $0.top.equalTo(grayLineView.snp.bottom).offset(10)
+            $0.top.equalTo(memberCntLabel.snp.bottom).offset(10)
             $0.leading.trailing.equalTo(blackView)
-            $0.height.equalTo(memberTableView.contentSize.height)
+            $0.height.equalTo(50)
             $0.bottom.equalToSuperview()
         }
     }
@@ -299,7 +298,7 @@ class SubmittedDetailThunViewController: BaseViewController {
     override func setupBinding() {
         viewModel.getDetailThunList(lightId: lightId ?? -1) { response in
             let nameResponse = response[0].organizer
-            self.setupData(response[0].title, response[0].date, response[0].time, response[0].datumDescription, response[0].place, response[0].category, nameResponse[0].name, response[0].peopleCnt, response[0].lightMemberCnt)
+            self.setupData(response[0].title , response[0].date ?? "날짜 미정", response[0].time ?? "시간 미정", response[0].datumDescription ?? "", response[0].place ?? "장소 미정", response[0].category , nameResponse[0].name, response[0].peopleCnt ?? 0, response[0].lightMemberCnt )
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -309,33 +308,34 @@ class SubmittedDetailThunViewController: BaseViewController {
                         withIdentifier: "SubmittedDetailThunTableViewCell",
                         for: IndexPath(row: row, section: 0)
                     ) as? SubmittedDetailThunTableViewCell else { return UITableViewCell() }
+                    
+                    self.memberTableView.snp.updateConstraints {
+                        $0.height.equalTo(self.memberTableView.contentSize.height)
+                    }
                     cell.setupData(item.name)
                     return cell
                 }
                 .disposed(by: self.disposeBag)
         }
-    }
-}
-
-extension SubmittedDetailThunViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if img.count == 0 {
-            return 0
-        } else {
-            return 3
+        
+        viewModel.getImageList(lightId: lightId ?? -1) { image in
+            Observable.of(image)
+                .bind(to: self.imageCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
+                    guard let cell = self.imageCollectionView.dequeueReusableCell(
+                        withReuseIdentifier: "SubmittedDetailThunCollectionViewCell",
+                        for: IndexPath(row: row, section: 0)) as? SubmittedDetailThunCollectionViewCell else { return UICollectionViewCell() }
+                    
+                    if let cellImage = image[row] {
+                        self.imageCollectionView.snp.updateConstraints {
+                            $0.top.equalTo(self.textInfoLabel.snp.bottom).offset(20)
+                            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 92)
+                        }
+                        cell.imageView.loadImage(url: cellImage)
+                    }
+                    return cell
+                }
+                .disposed(by: self.disposeBag)
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SubmittedDetailThunCollectionViewCell", for: indexPath) as? SubmittedDetailThunCollectionViewCell else {return UICollectionViewCell()}
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let vc = ImageDetailViewController()
-//        navigationController?.pushViewController(vc, animated: true)
-//        navigationController?.isNavigationBarHidden = true
-//        tabBarController?.tabBar.isHidden = true
     }
 }
 
@@ -355,6 +355,22 @@ extension SubmittedDetailThunViewController {
         categoryLabel.asFontColor(targetString: "카테고리", font: .pretendardRegular(size: 14), color: .ptGreen)
         textInfoLabel.text = description
         nicknameLabel.text = name
-        headerLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
+        memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
+    }
+}
+
+extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
+    func oneButtonDidTap() {
+        navigationController?.popToRootViewController(animated: true)
+        tabBarController?.tabBar.isHidden = false
+    }
+    func firstButtonDidTap() {}
+    
+    func secondButtonDidTap() {
+        cancelViewModel.postCancelSubmittedButton(lightId: lightId ?? -1) { response in
+            let popupViewController = PopUpViewController(title: "신청 취소되었습니다.", viewType: .oneButton)
+            self.present(popupViewController, animated: false, completion: nil)
+            popupViewController.delegate = self
+        }
     }
 }
