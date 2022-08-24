@@ -24,6 +24,7 @@ class ParticipationCompletedViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 22)
         $0.textColor = .ptBlack01
         $0.numberOfLines = 0
+        $0.addSpacingLabelText($0)
     }
     
     private let bottomImageView = UIImageView().then {
