@@ -82,4 +82,16 @@ class ParticipationCompletedViewController: BaseViewController {
             $0.trailing.equalToSuperview().inset(20)
         }
     }
+    
+    override func setupBinding() {
+        completedButton.rx.tap
+            .asDriver()
+            .drive(onNext: { _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                        as? SceneDelegate else { return }
+                let rootViewController = TabBarController()
+                sceneDelegate.window?.rootViewController = rootViewController
+            })
+            .disposed(by: disposeBag)
+    }
 }
