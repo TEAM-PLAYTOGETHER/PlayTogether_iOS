@@ -13,7 +13,7 @@ class ParticipationCompletedViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     
     private let progressbar = UIProgressView().then {
-        $0.progress = 0.75
+        $0.progress = 1.0
         $0.progressTintColor = .ptGreen
         $0.backgroundColor = .ptGray03
     }
