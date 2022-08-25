@@ -10,7 +10,7 @@ import RxSwift
 import Moya
 import RxMoya
 
-final class ThunVIewModel {
+final class ThunViewModel {
     private lazy var disposeBag = DisposeBag()
     
     var submittedThunList = BehaviorSubject<[ThunResponseList?]>.init(value: Array.init())
