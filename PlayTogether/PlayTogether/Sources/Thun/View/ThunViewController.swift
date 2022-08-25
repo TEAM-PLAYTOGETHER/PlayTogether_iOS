@@ -13,7 +13,7 @@ import RxSwift
 final class ThunViewController: BaseViewController {
     
     private let disposeBag = DisposeBag()
-    private let viewModel = ThunVIewModel()
+    private let viewModel = ThunViewModel()
     private let submittedThunViewController: SubmittedThunViewController
     private let openedThunViewController: OpenedThunViewController
     private let likedThunViewController: LikedThunViewController
