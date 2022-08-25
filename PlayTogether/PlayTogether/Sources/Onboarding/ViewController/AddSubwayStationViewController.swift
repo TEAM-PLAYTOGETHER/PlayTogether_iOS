@@ -66,9 +66,6 @@ class AddSubwayStationViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavbar()
-        viewModel.fetchSubwayStationList {
-            print($0)
-        }
     }
     
     override func viewDidLoad() {

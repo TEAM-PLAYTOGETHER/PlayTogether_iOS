@@ -44,4 +44,5 @@ enum ImageCase: String {
     
     case beforeIcon = "beforeIcon"
     case afterIcon = "afterIcon"
+    case onboardingBottomImage = "OnboardingBottomImage"
 }
