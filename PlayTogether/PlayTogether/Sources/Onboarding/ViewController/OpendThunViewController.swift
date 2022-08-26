@@ -11,6 +11,8 @@ import RxCocoa
 
 class OpendThunViewController: BaseViewController {
     
+    private let shareInfoView = ShareExtensionView()
+    
     private let progressbar = UIProgressView().then {
         $0.progress = 1.0
         $0.progressTintColor = .ptGreen
@@ -26,11 +28,20 @@ class OpendThunViewController: BaseViewController {
         $0.addSpacingLabelText($0)
     }
     
+    private lazy var startButton = UIButton().then {
+        $0.setupBottomButtonUI(title: "시작하기", size: 16)
+        $0.isButtonEnableUI(check: true)
+    }
+    
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: ParticipationCompletedViewController.self, action: nil)
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavbar()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     private func configureNavbar() {
@@ -43,7 +54,10 @@ class OpendThunViewController: BaseViewController {
         
         view.addSubview(progressbar)
         view.addSubview(headerLabel)
+        view.addSubview(shareInfoView)
+        view.addSubview(startButton)
     }
+    
     override func setupLayouts() {
         progressbar.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
@@ -55,6 +69,18 @@ class OpendThunViewController: BaseViewController {
             $0.leading.equalTo(view).offset(20)
             $0.top.equalTo(progressbar.snp.bottom).offset(24)
             $0.height.equalTo(60 * (UIScreen.main.bounds.height / 812))
+        }
+        
+        shareInfoView.snp.makeConstraints {
+            $0.top.equalTo(headerLabel.snp.bottom).offset(28)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(179 * (UIScreen.main.bounds.height / 812))
+        }
+        
+        startButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(40)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(56 * (UIScreen.main.bounds.height / 812))
         }
     }
 }
