@@ -68,7 +68,9 @@
 		DD73C2C228B209DC001DEC1A /* CancelSubmittedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD73C2C128B209DC001DEC1A /* CancelSubmittedResponse.swift */; };
 		DD73C2C428B20A0C001DEC1A /* CancelSubmittedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD73C2C328B20A0C001DEC1A /* CancelSubmittedService.swift */; };
 		DD73C2C628B3B44E001DEC1A /* CancelSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD73C2C528B3B44E001DEC1A /* CancelSubmittedViewModel.swift */; };
-		DD73C2C828B57174001DEC1A /* ThunVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD73C2C728B57174001DEC1A /* ThunVIewModel.swift */; };
+		DD73C2C828B57174001DEC1A /* ThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD73C2C728B57174001DEC1A /* ThunViewModel.swift */; };
+		DD9F070228B7850700BACC72 /* SelectImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9F070128B7850700BACC72 /* SelectImageViewController.swift */; };
+		DD9F070428B78CA900BACC72 /* CompleteThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9F070328B78CA900BACC72 /* CompleteThunViewController.swift */; };
 		DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B02892536A0042490C /* ThunResponse.swift */; };
 		DDBE87B5289257CA0042490C /* ThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B4289257CA0042490C /* ThunService.swift */; };
 		DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */; };
@@ -136,7 +138,9 @@
 		DD73C2C128B209DC001DEC1A /* CancelSubmittedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubmittedResponse.swift; sourceTree = "<group>"; };
 		DD73C2C328B20A0C001DEC1A /* CancelSubmittedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubmittedService.swift; sourceTree = "<group>"; };
 		DD73C2C528B3B44E001DEC1A /* CancelSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubmittedViewModel.swift; sourceTree = "<group>"; };
-		DD73C2C728B57174001DEC1A /* ThunVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunVIewModel.swift; sourceTree = "<group>"; };
+		DD73C2C728B57174001DEC1A /* ThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunViewModel.swift; sourceTree = "<group>"; };
+		DD9F070128B7850700BACC72 /* SelectImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageViewController.swift; sourceTree = "<group>"; };
+		DD9F070328B78CA900BACC72 /* CompleteThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteThunViewController.swift; sourceTree = "<group>"; };
 		DDBE87B02892536A0042490C /* ThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B4289257CA0042490C /* ThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunService.swift; sourceTree = "<group>"; };
 		DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
@@ -399,7 +403,7 @@
 		DD36D39828A65CF800C9851A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DD73C2C728B57174001DEC1A /* ThunVIewModel.swift */,
+				DD73C2C728B57174001DEC1A /* ThunViewModel.swift */,
 				DD73C2BB28AA1C0A001DEC1A /* SubmittedDetailThunViewModel.swift */,
 				DD73C2C528B3B44E001DEC1A /* CancelSubmittedViewModel.swift */,
 			);
@@ -438,6 +442,8 @@
 				DDF2C4042887A96800C10F67 /* OpenedThunViewController.swift */,
 				DDF2C4062887A9B000C10F67 /* LikedThunViewController.swift */,
 				DD36D39928A6676100C9851A /* SubmittedDetailThunViewController.swift */,
+				DD9F070128B7850700BACC72 /* SelectImageViewController.swift */,
+				DD9F070328B78CA900BACC72 /* CompleteThunViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -536,11 +542,13 @@
 				DD36D39528A4C99B00C9851A /* GoThunListViewController.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelSubmittedViewModel.swift in Sources */,
+				DD9F070228B7850700BACC72 /* SelectImageViewController.swift in Sources */,
+				DD9F070428B78CA900BACC72 /* CompleteThunViewController.swift in Sources */,
 				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DD36D39C28A66D1800C9851A /* UILabel + Extension.swift in Sources */,
 				DD73C2C228B209DC001DEC1A /* CancelSubmittedResponse.swift in Sources */,
 				DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */,
-				DD73C2C828B57174001DEC1A /* ThunVIewModel.swift in Sources */,
+				DD73C2C828B57174001DEC1A /* ThunViewModel.swift in Sources */,
 				DD73C2BA28AA1727001DEC1A /* SubmittedDetailThunService.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
