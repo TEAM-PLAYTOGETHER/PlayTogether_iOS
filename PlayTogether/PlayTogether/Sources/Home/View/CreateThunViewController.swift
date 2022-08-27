@@ -252,7 +252,7 @@ final class CreateThunViewController: BaseViewController {
     }
     
     private lazy var introduceLayout = UICollectionViewFlowLayout().then {
-        let size = UIScreen.main.bounds.height * 0.126
+        let size = UIScreen.main.bounds.height * 0.130
         $0.minimumLineSpacing = 13
         $0.scrollDirection = .horizontal
         $0.itemSize = CGSize(width: size, height: size)
@@ -456,10 +456,10 @@ final class CreateThunViewController: BaseViewController {
         }
         
         introduceCollectionView.snp.makeConstraints {
-            $0.top.equalTo(introduceButton.snp.top)
-            $0.leading.equalTo(introduceButton.snp.trailing).offset(13)
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalTo(introduceButton.snp.bottom)
+            $0.top.equalTo(introduceButton.snp.top).offset(-3)
+            $0.leading.equalTo(introduceButton.snp.trailing).offset(16)
+            $0.trailing.equalToSuperview().inset(3)
+            $0.bottom.equalTo(introduceButton.snp.bottom).offset(3)
         }
         
         introduceImageView.snp.makeConstraints {
