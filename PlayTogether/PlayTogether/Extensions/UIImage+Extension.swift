@@ -55,4 +55,8 @@ enum ImageCase: String {
     case navLikeFilledGreenIcon = "navLikeFilledGreenIcon"
     
     case arrowRightIcon = "arrowRightIcon"
+    
+    case settingIcon = "settingIcon"
+    case showIconBlack = "showIconBlack"
+    case introduceLabelIcon = "introduceLabelIcon"
 }
