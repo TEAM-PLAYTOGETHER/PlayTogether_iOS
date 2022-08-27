@@ -20,7 +20,7 @@ final class ThunViewController: BaseViewController {
     private let segmentedControl = UnderlineSegmentedControl(items: ["신청한", "오픈한", "찜한"]).then {
         $0.setTitleTextAttributes(
             [NSAttributedString.Key.foregroundColor: UIColor.white,
-            .font: UIFont.pretendardBold(size: 14)],for: .normal)
+             .font: UIFont.pretendardBold(size: 14)],for: .normal)
         $0.setTitleTextAttributes(
             [NSAttributedString.Key.foregroundColor: UIColor.ptGreen,
              .font: UIFont.pretendardBold(size: 14)],for: .selected)
@@ -112,32 +112,32 @@ final class ThunViewController: BaseViewController {
 }
 
 extension ThunViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    func pageViewController(
-        _ pageViewController: UIPageViewController,
-        viewControllerBefore viewController: UIViewController
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
         guard let index = dataViewControllers.firstIndex(of: viewController),
-              index - 1 >= 0 else { return nil }
+              index - 1 >= 0
+        else { return nil }
         return dataViewControllers[index - 1]
     }
     
-    func pageViewController(
-        _ pageViewController: UIPageViewController,
-        viewControllerAfter viewController: UIViewController
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-            guard let index = dataViewControllers.firstIndex(of: viewController),
-                  index + 1 < dataViewControllers.count else { return nil }
-            return dataViewControllers[index + 1]
-        }
+        guard let index = dataViewControllers.firstIndex(of: viewController),
+              index + 1 < dataViewControllers.count
+        else { return nil }
+        return dataViewControllers[index + 1]
+    }
     
-    func pageViewController(
-        _ pageViewController: UIPageViewController,
-        didFinishAnimating finished: Bool,
-        previousViewControllers: [UIViewController],
-        transitionCompleted completed: Bool
-    ) {
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            didFinishAnimating finished: Bool,
+                            previousViewControllers: [UIViewController],
+                            transitionCompleted completed: Bool
+    ){
         guard let viewController = pageViewController.viewControllers?[0],
-              let index = dataViewControllers.firstIndex(of: viewController) else { return }
+              let index = dataViewControllers.firstIndex(of: viewController)
+        else { return }
         currentPage = index
         segmentedControl.selectedSegmentIndex = index
     }
