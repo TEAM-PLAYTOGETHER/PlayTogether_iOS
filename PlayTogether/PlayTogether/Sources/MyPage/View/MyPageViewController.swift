@@ -5,9 +5,13 @@
 //  Created by 한상진 on 2022/07/19.
 //
 
+import RxSwift
 import UIKit
 
 final class MyPageViewController: BaseViewController {
+    private let viewModel = MyPageViewModel()
+    private let disposeBag = DisposeBag()
+    
     private let rightBarItem = UIButton().then {
         $0.setImage(.ptImage(.settingIcon), for: .normal)
     }
@@ -71,7 +75,9 @@ final class MyPageViewController: BaseViewController {
     }
     
     private let menuTableView = UITableView().then {
+        $0.bounces = false
         $0.rowHeight = UIScreen.main.bounds.height * 0.061
+        $0.register(MyPageMenuTableViewCell.self, forCellReuseIdentifier: "MyPageMenuTableViewCell")
     }
     
     override func setupViews() {
@@ -149,6 +155,11 @@ final class MyPageViewController: BaseViewController {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(5)
         }
+        
+        menuTableView.snp.makeConstraints {
+            $0.top.equalTo(devideView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
     override func setupBinding() {
@@ -156,5 +167,28 @@ final class MyPageViewController: BaseViewController {
         ["강남역", "동대문역사문화공원역"].forEach {
             myPageSubwayLabelView.addStation(stationName: $0)
         }
+        
+        Observable.just(viewModel.menuList)
+            .bind(to: menuTableView.rx.items) { _, row, item -> UITableViewCell in
+                guard let cell = self.menuTableView.dequeueReusableCell(
+                    withIdentifier: "MyPageMenuTableViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? MyPageMenuTableViewCell else { return UITableViewCell() }
+                
+                cell.setupCell(menuName: item)
+                
+                guard row == self.viewModel.menuList.count - 1
+                else { return cell }
+                
+                let halfWidth = self.view.frame.width / 2
+                cell.separatorInset = UIEdgeInsets(
+                    top: 0,
+                    left: halfWidth,
+                    bottom: 0,
+                    right: halfWidth
+                )
+                return cell
+            }
+            .disposed(by: self.disposeBag)
     }
 }

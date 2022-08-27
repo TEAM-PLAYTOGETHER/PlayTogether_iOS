@@ -23,6 +23,8 @@
 		40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1528A1B634007E5835 /* UIResponder+Extension.swift */; };
 		408EE3E028BAA8C00012C642 /* MyPageSubwayLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */; };
 		408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */; };
+		408EE3E628BAB16F0012C642 /* MyPageMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */; };
+		408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E828BAB2510012C642 /* MyPageViewModel.swift */; };
 		409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */; };
 		409451AF28905A9000F21717 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AE28905A9000F21717 /* HomeService.swift */; };
 		409451B128905AEC00F21717 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B028905AEC00F21717 /* APIConstants.swift */; };
@@ -104,6 +106,8 @@
 		40727C1528A1B634007E5835 /* UIResponder+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Extension.swift"; sourceTree = "<group>"; };
 		408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSubwayLabelView.swift; sourceTree = "<group>"; };
 		408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSubwayLabel.swift; sourceTree = "<group>"; };
+		408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuTableViewCell.swift; sourceTree = "<group>"; };
+		408EE3E828BAB2510012C642 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		409451AE28905A9000F21717 /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		409451B028905AEC00F21717 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
@@ -222,11 +226,37 @@
 		404169952886A66A00812B37 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				408EE3E328BAB1590012C642 /* View */,
+				408EE3E728BAB2430012C642 /* ViewModel */,
+				408EE3E428BAB1610012C642 /* Cell */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		408EE3E328BAB1590012C642 /* View */ = {
+			isa = PBXGroup;
+			children = (
 				404169982886A68600812B37 /* MyPageViewController.swift */,
 				408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */,
 				408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */,
 			);
-			path = MyPage;
+			path = View;
+			sourceTree = "<group>";
+		};
+		408EE3E428BAB1610012C642 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		408EE3E728BAB2430012C642 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				408EE3E828BAB2510012C642 /* MyPageViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		409451A9288F37C700F21717 /* View */ = {
@@ -584,6 +614,7 @@
 				DD36D39528A4C99B00C9851A /* GoThunListViewController.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelSubmittedViewModel.swift in Sources */,
+				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
 				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DD73C2C228B209DC001DEC1A /* CancelSubmittedResponse.swift in Sources */,
 				DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */,
@@ -627,6 +658,7 @@
 				DD73C2BC28AA1C0A001DEC1A /* SubmittedDetailThunViewModel.swift in Sources */,
 				409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */,
 				B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */,
+				408EE3E628BAB16F0012C642 /* MyPageMenuTableViewCell.swift in Sources */,
 				DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */,
 				B66EA07C28A7E60B00F1F723 /* SubwayStationResponse.swift in Sources */,
 				B649134728ADD6FF007A5821 /* AddSubwayStationViewModel.swift in Sources */,
