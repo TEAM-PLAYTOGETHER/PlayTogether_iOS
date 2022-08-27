@@ -55,12 +55,10 @@ struct Member: Decodable {
 }
 
 struct Organizer: Decodable {
-    let userLoginID: String
     let organizerID: Int
     let name: String
 
     enum CodingKeys: String, CodingKey {
-        case userLoginID = "userLoginId"
         case organizerID = "organizer_id"
         case name
     }
