@@ -19,6 +19,8 @@ enum ImageCase: String {
     case floatingIcon = "floatingIcon"
     case searchIcon = "searchIcon"
     case showIcon = "showIcon"
+    case plusIcon = "plus"
+    case exitIcon = "exitIcon"
     
     case homeActive = "homeActive"
     case homeInactive = "homeInactive"
@@ -42,4 +44,15 @@ enum ImageCase: String {
     
     case beforeIcon = "beforeIcon"
     case afterIcon = "afterIcon"
+    case onboardingBottomImage = "OnboardingBottomImage"
+    
+    case profileIcon = "profileIcon"
+    
+    case likeFilledGrayIcon = "likeFilledGrayIcon"
+    case likeFilledGreenIcon = "likeFilledGreenIcon"
+    
+    case navLikeDefaultIcon = "navLikeDefaultIcon"
+    case navLikeFilledGreenIcon = "navLikeFilledGreenIcon"
+    
+    case arrowRightIcon = "arrowRightIcon"
 }

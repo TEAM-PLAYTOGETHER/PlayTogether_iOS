@@ -12,16 +12,23 @@ import RxSwift
 
 class LikedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = ThunViewModel()
+    private var viewModel: ThunViewModel?
     
     private lazy var tableView = UITableView().then {
-        $0.register(ThunListTableViewCell.self, forCellReuseIdentifier: ThunListTableViewCell.identifier)
+        $0.register(
+            ThunListTableViewCell.self,
+            forCellReuseIdentifier: ThunListTableViewCell.identifier
+        )
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
     }
     
     private let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
+    
+    func setupViewModel(viewModel: ThunViewModel) {
+        self.viewModel = viewModel
+    }
     
     override func setupViews() {
         view.addSubview(tableView)
@@ -35,7 +42,7 @@ class LikedThunViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        viewModel.likedThunList
+        viewModel?.likedThunList
                .bind(to: self.tableView.rx.items) { _, row, item -> UITableViewCell in
                    guard let cell = self.tableView.dequeueReusableCell(
                        withIdentifier: "ThunListTableViewCell",
@@ -44,7 +51,16 @@ class LikedThunViewController: BaseViewController {
                          let item = item
                    else { return UITableViewCell() }
                    
-                   cell.setupData(item.title, item.date, item.time, item.peopleCnt, item.place, item.lightMemberCnt, item.category, item.scpCnt)
+                   cell.setupData(
+                    item.title,
+                    item.date ?? "",
+                    item.time ?? "",
+                    item.peopleCnt ?? 0,
+                    item.place ?? "",
+                    item.lightMemberCnt,
+                    item.category,
+                    item.scpCnt
+                   )
                    return cell
                }
                .disposed(by: disposeBag)

@@ -13,9 +13,10 @@ enum popupType {
     case twoButton
 }
 
-protocol PopUpConfirmDelegate: class {
+protocol PopUpConfirmDelegate: AnyObject {
     func firstButtonDidTap()
     func secondButtonDidTap()
+    func oneButtonDidTap()
 }
 
 class PopUpViewController: UIViewController {
@@ -162,19 +163,29 @@ class PopUpViewController: UIViewController {
     }
     
     private func setupBinding() {
-        firstButton.rx.tap
-            .bind(onNext: {[weak self] in
-                self?.dismiss(animated: false, completion: {
-                    self?.delegate?.firstButtonDidTap()
-                })
-            }).disposed(by: disposeBag)
-        
-        secondButton.rx.tap
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: false, completion: {
-                    self?.delegate?.secondButtonDidTap()
-                })
-            }).disposed(by: disposeBag)
+        switch popupViewType {
+        case .oneButton:
+            firstButton.rx.tap
+                .bind(onNext: {[weak self] in
+                    self?.dismiss(animated: false, completion: {
+                        self?.delegate?.oneButtonDidTap()
+                    })
+                }).disposed(by: disposeBag)
+        case .twoButton:
+            firstButton.rx.tap
+                .bind(onNext: {[weak self] in
+                    self?.dismiss(animated: false, completion: {
+                        self?.delegate?.firstButtonDidTap()
+                    })
+                }).disposed(by: disposeBag)
+            
+            secondButton.rx.tap
+                .bind(onNext: { [weak self] in
+                    self?.dismiss(animated: false, completion: {
+                        self?.delegate?.secondButtonDidTap()
+                    })
+                }).disposed(by: disposeBag)
+        }
     }
     
 }

@@ -10,7 +10,12 @@ import SnapKit
 import Then
 
 class UnderlineSegmentedControl: UISegmentedControl {
-    private lazy var underlineView = UIView(frame: CGRect(x: CGFloat(self.selectedSegmentIndex * Int(bounds.size.width/CGFloat(numberOfSegments))), y: bounds.size.height - 3.0, width: bounds.size.width/CGFloat(numberOfSegments), height: 5.0)).then {
+    private lazy var underlineView = UIView(frame: CGRect(
+        x: CGFloat(self.selectedSegmentIndex * Int(bounds.size.width/CGFloat(numberOfSegments))),
+        y: bounds.size.height - 3.0,
+        width: bounds.size.width/CGFloat(numberOfSegments),
+        height: 5.0)
+    ).then {
         $0.backgroundColor = UIColor.ptGreen
         addSubview($0)
     }
@@ -39,7 +44,12 @@ class UnderlineSegmentedControl: UISegmentedControl {
         setBackgroundImage(image, for: .normal, barMetrics: .default)
         setBackgroundImage(image, for: .selected, barMetrics: .default)
         setBackgroundImage(image, for: .highlighted, barMetrics: .default)
-        setDividerImage(image, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
+        setDividerImage(
+            image,
+            forLeftSegmentState: .selected,
+            rightSegmentState: .normal,
+            barMetrics: .default
+        )
         backgroundColor = .ptBlack01
     }
     
