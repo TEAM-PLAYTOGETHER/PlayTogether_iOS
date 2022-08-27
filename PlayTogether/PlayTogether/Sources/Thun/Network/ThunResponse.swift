@@ -16,17 +16,18 @@ struct ThunResponse: Decodable {
 
 struct ThunResponseData: Decodable {
     let lightData: [ThunResponseList]
-    let totalCount, totalPage: Int
+    let offset, limit, totalCount, totalPage: Int
 }
 
 struct ThunResponseList: Decodable {
     let lightID: Int
     let title, category: String
     let scpCnt: Int
-    let date, time: String
-    let peopleCnt: Int
-    let place: String
+    let date, time: String?
+    let peopleCnt: Int?
+    let place: String?
     let lightMemberCnt: Int
+    let isOpened: Bool
 
     enum CodingKeys: String, CodingKey {
         case lightID = "light_id"
@@ -36,5 +37,6 @@ struct ThunResponseList: Decodable {
         case peopleCnt = "people_cnt"
         case place
         case lightMemberCnt = "LightMemberCnt"
+        case isOpened = "is_opened"
     }
 }
