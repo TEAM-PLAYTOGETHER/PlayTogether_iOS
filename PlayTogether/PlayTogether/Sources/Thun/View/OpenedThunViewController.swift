@@ -11,18 +11,8 @@ import Then
 import RxSwift
 
 class OpenedThunViewController: BaseViewController {
-    
     private lazy var disposeBag = DisposeBag()
-    private let viewModel: ThunViewModel?
-    
-    init(viewModel: ThunViewModel) {
-        self.viewModel = viewModel
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewModel: ThunViewModel?
     
     private lazy var tableView = UITableView().then {
         $0.register(
@@ -35,6 +25,10 @@ class OpenedThunViewController: BaseViewController {
     }
     
     private let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
+    
+    func setupViewModel(viewModel: ThunViewModel) {
+        self.viewModel = viewModel
+    }
     
     override func setupViews() {
         view.addSubview(tableView)

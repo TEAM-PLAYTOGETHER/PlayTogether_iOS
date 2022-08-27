@@ -11,28 +11,19 @@ import Then
 import RxSwift
 
 final class ThunViewController: BaseViewController {
-    
     private let disposeBag = DisposeBag()
     private let viewModel = ThunViewModel()
-    private let submittedThunViewController: SubmittedThunViewController
-    private let openedThunViewController: OpenedThunViewController
-    private let likedThunViewController: LikedThunViewController
-    
-    override init() {
-        self.submittedThunViewController = SubmittedThunViewController(viewModel: viewModel)
-        self.openedThunViewController = OpenedThunViewController(viewModel: viewModel)
-        self.likedThunViewController = LikedThunViewController(viewModel: viewModel)
-        super.init()
-        submittedThunViewController.setupSuperView(superView: self)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private let submittedThunViewController = SubmittedThunViewController()
+    private let openedThunViewController = OpenedThunViewController()
+    private let likedThunViewController = LikedThunViewController()
     
     private let segmentedControl = UnderlineSegmentedControl(items: ["신청한", "오픈한", "찜한"]).then {
-        $0.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,.font: UIFont.pretendardBold(size: 14)], for: .normal)
-        $0.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.ptGreen,.font: UIFont.pretendardBold(size: 14)],for: .selected)
+        $0.setTitleTextAttributes(
+            [NSAttributedString.Key.foregroundColor: UIColor.white,
+            .font: UIFont.pretendardBold(size: 14)],for: .normal)
+        $0.setTitleTextAttributes(
+            [NSAttributedString.Key.foregroundColor: UIColor.ptGreen,
+             .font: UIFont.pretendardBold(size: 14)],for: .selected)
         $0.selectedSegmentIndex = 0
     }
     
@@ -65,11 +56,10 @@ final class ThunViewController: BaseViewController {
     }
     
     override func setupViews() {
+        setupViewModel()
+        setupSuperView()
         segmentedControl.addTarget(
-            self,
-            action: #selector(segmentedButtonDidTap(control:)),
-            for: .valueChanged
-        )
+            self,action: #selector(segmentedButtonDidTap(control:)), for: .valueChanged)
         view.addSubview(segmentedControl)
         view.addSubview(pageViewController.view)
     }
@@ -88,6 +78,16 @@ final class ThunViewController: BaseViewController {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    private func setupViewModel() {
+        submittedThunViewController.setupViewModel(viewModel: viewModel)
+        openedThunViewController.setupViewModel(viewModel: viewModel)
+        likedThunViewController.setupViewModel(viewModel: viewModel)
+    }
+    
+    private func setupSuperView() {
+        submittedThunViewController.setupSuperView(superView: self)
     }
     
     private func configureNaigationvBar() {
@@ -136,7 +136,8 @@ extension ThunViewController: UIPageViewControllerDataSource, UIPageViewControll
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool
     ) {
-        guard let viewController = pageViewController.viewControllers?[0], let index = dataViewControllers.firstIndex(of: viewController) else { return }
+        guard let viewController = pageViewController.viewControllers?[0],
+              let index = dataViewControllers.firstIndex(of: viewController) else { return }
         currentPage = index
         segmentedControl.selectedSegmentIndex = index
     }

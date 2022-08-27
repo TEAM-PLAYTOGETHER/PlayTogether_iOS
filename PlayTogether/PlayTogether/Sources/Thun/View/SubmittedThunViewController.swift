@@ -12,24 +12,13 @@ import RxSwift
 
 class SubmittedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let cancelViewModel = CancelSubmittedViewModel()
     private var superView = UIViewController()
-    private let viewModel: ThunViewModel?
-    
-    init(viewModel: ThunViewModel) {
-        self.viewModel = viewModel
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewModel: ThunViewModel?
     
     private lazy var tableView = UITableView().then {
         $0.register(
             ThunListTableViewCell.self,
-            forCellReuseIdentifier: ThunListTableViewCell.identifier
-        )
+            forCellReuseIdentifier: ThunListTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
@@ -39,6 +28,10 @@ class SubmittedThunViewController: BaseViewController {
     
     func setupSuperView(superView: UIViewController) {
         self.superView = superView
+    }
+    
+    func setupViewModel(viewModel: ThunViewModel) {
+        self.viewModel = viewModel
     }
     
     override func setupViews() {
@@ -70,9 +63,7 @@ class SubmittedThunViewController: BaseViewController {
                     item.place ?? "장소미정",
                     item.lightMemberCnt,
                     item.category,
-                    item.scpCnt
-                )
-                
+                    item.scpCnt)
                 return cell
             }
             .disposed(by: self.disposeBag)
@@ -84,8 +75,7 @@ class SubmittedThunViewController: BaseViewController {
                     SubmittedDetailThunViewController(
                         lightID: $0.lightID,
                         superViewModel: (self?.viewModel)!),
-                    animated: true
-                )
+                    animated: true)
             })
             .disposed(by: disposeBag)
     }
