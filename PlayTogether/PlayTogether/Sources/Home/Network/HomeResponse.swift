@@ -15,6 +15,7 @@ struct HomeResponse: Decodable {
 struct HomeResponseList: Decodable {
     let lightID: Int
     let category: String
+    let likedCount: Int
     let nowMemberCount: Int
     let title, date, time: String
     let totalMemberCount: Int
@@ -23,6 +24,7 @@ struct HomeResponseList: Decodable {
     enum CodingKeys: String, CodingKey {
         case lightID = "light_id"
         case category
+        case likedCount = "scp_cnt"
         case nowMemberCount = "LightMemberCnt"
         case title, date, time
         case totalMemberCount = "people_cnt"

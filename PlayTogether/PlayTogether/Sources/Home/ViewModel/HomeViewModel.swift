@@ -12,23 +12,26 @@ import RxMoya
 
 final class HomeViewModel {
     private lazy var disposeBag = DisposeBag()
-    var hotThunList = BehaviorSubject<[HomeResponseList?]>.init(value: Array.init())
-    var newThunList = BehaviorSubject<[HomeResponseList?]>.init(value: Array.init())
+    var hotThunList = PublishSubject<[HomeResponseList?]>()
+    var isEmptyHotThun = BehaviorSubject<Bool>(value: false)
+    var newThunList = PublishSubject<[HomeResponseList?]>()
+    var isEmptyNewThun = BehaviorSubject<Bool>(value: false)
     
     init () {
-        self.fetchHotThunList { self.hotThunList.onNext($0) }
-        self.fetchNewThunList { self.newThunList.onNext($0) }
+        fetchHotThunList()
+        fetchNewThunList()
     }
     
-    func fetchHotThunList(completion: @escaping ([HomeResponseList?]) -> Void) {
+    func fetchHotThunList() {
         let provider = MoyaProvider<HomeService>()
         provider.rx.request(.hotThunRequest)
-            .subscribe { result in
+            .subscribe { [weak self] result in
                 switch result {
                 case let .success(response):
                     let responseData = try? response.map(HomeResponse.self)
                     guard let data = responseData?.data else { return }
-                    completion(data)
+                    self?.hotThunList.onNext(data)
+                    if data.isEmpty { self?.isEmptyHotThun.onNext(true) }
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -36,15 +39,16 @@ final class HomeViewModel {
             .disposed(by: disposeBag)
     }
     
-    func fetchNewThunList(completion: @escaping ([HomeResponseList?]) -> Void) {
+    func fetchNewThunList() {
         let provider = MoyaProvider<HomeService>()
         provider.rx.request(.newThunRequest)
-            .subscribe { result in
+            .subscribe { [weak self] result in
                 switch result {
                 case let .success(response):
                     let responseData = try? response.map(HomeResponse.self)
                     guard let data = responseData?.data else { return }
-                    completion(data)
+                    self?.newThunList.onNext(data)
+                    if data.isEmpty { self?.isEmptyNewThun.onNext(true) }
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

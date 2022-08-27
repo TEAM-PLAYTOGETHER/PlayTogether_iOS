@@ -17,8 +17,8 @@ struct APIConstants {
     static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"
     
     // light
-    static let getHotThunList = "/light/hot"
-    static let getNewThunList = "/light/new"
+    static let getHotThunList = "/light/\(crewID)/hot"
+    static let getNewThunList = "/light/\(crewID)/new"
     static let createThun = "/light/add"
     static let getSubmittedThunList = "/light"
     static let getOpenedThunList = "/light"
