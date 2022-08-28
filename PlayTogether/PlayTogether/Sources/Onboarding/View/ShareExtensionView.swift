@@ -6,8 +6,16 @@
 //
 
 import UIKit
+import RxSwift
+
+protocol shareExtensionProtocol: class {
+    func shareButtonDidTap()
+}
 
 class ShareExtensionView: UIView {
+    private let disposeBag = DisposeBag()
+    weak var delegate: shareExtensionProtocol?
+    
     private let thunTitleLabel = UILabel().then {
         $0.text = OnboardingDataModel.shared.meetingTitle ?? "동아리명"
         $0.textColor = .ptBlack01
@@ -21,7 +29,7 @@ class ShareExtensionView: UIView {
     }
     
     private let introduceLabel = UILabel().then {
-        $0.text = OnboardingDataModel.shared.introduceMessage ?? "한 줄 소개입니다."
+        $0.text = OnboardingDataModel.shared.introduceMessage ?? "한 줄 소개"
         $0.textColor = .ptBlack01
         $0.font = .pretendardMedium(size: 14)
     }
@@ -33,20 +41,14 @@ class ShareExtensionView: UIView {
     }
     
     private let invatationCodeLabel = UILabel().then {
-        $0.text = OnboardingDataModel.shared.inviteCode ?? "초대코드 표시 부분"
+        $0.text = OnboardingDataModel.shared.inviteCode ?? "초대코드"
         $0.textColor = .ptBlack01
         $0.font = .pretendardMedium(size: 14)
     }
     
-    private let dottedLineView = UIView().then {
-        let borderLayer = CAShapeLayer()
-        borderLayer.strokeColor = UIColor.ptBlack01.cgColor
-        borderLayer.lineDashPattern = [2, 2]
-        borderLayer.frame = $0.bounds
-//        borderLayer.fillColor = UIColor.red.cgColor
-        borderLayer.path = UIBezierPath(rect: $0.bounds).cgPath
-        $0.layer.addSublayer(borderLayer)
-        $0.layer.borderWidth = 1.0
+    private let dottedLineImageView = UIImageView().then {
+        $0.image = .ptImage(.dottedLineImage)
+        $0.backgroundColor = .white
     }
     
     private lazy var shareButton = UIButton().then {
@@ -61,6 +63,7 @@ class ShareExtensionView: UIView {
         super.init(frame: frame)
         
         setupView()
+        setupBinding()
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +80,7 @@ class ShareExtensionView: UIView {
         addSubview(introduceLabel)
         addSubview(noticeInvatationCodeLable)
         addSubview(invatationCodeLabel)
-        addSubview(dottedLineView)
+        addSubview(dottedLineImageView)
         addSubview(shareButton)
         
         setupLayout()
@@ -109,18 +112,25 @@ class ShareExtensionView: UIView {
             $0.leading.equalTo(noticeInvatationCodeLable.snp.trailing).offset(10)
         }
         
-        dottedLineView.snp.makeConstraints {
-            $0.bottom.equalTo(shareButton.snp.top)
+        dottedLineImageView.snp.makeConstraints {
+            $0.top.equalTo(noticeInvatationCodeLable.snp.bottom).offset(28)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
         }
         
         shareButton.snp.makeConstraints {
-            $0.top.equalTo(dottedLineView.snp.bottom).offset(28)
+            $0.top.equalTo(dottedLineImageView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(45 * (UIScreen.main.bounds.height / 812))
         }
     }
+    
+    private func setupBinding() {
+        shareButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.delegate?.shareButtonDidTap()
+            })
+            .disposed(by: disposeBag)
+    }
 }
-
-// TODO: 점선 표기 및 Share Extension 기능 추가

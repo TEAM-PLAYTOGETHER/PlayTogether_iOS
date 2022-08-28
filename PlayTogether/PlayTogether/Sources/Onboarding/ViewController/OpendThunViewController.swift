@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class OpendThunViewController: BaseViewController {
-    
+    private let disposeBag = DisposeBag()
     private let shareInfoView = ShareExtensionView()
     
     private let progressbar = UIProgressView().then {
@@ -50,6 +50,7 @@ class OpendThunViewController: BaseViewController {
     }
     
     override func setupViews() {
+        shareInfoView.delegate = self
         view.backgroundColor = .white
         
         view.addSubview(progressbar)
@@ -82,5 +83,25 @@ class OpendThunViewController: BaseViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(56 * (UIScreen.main.bounds.height / 812))
         }
+    }
+    
+    override func setupBinding() {
+        startButton.rx.tap
+            .asDriver()
+            .drive(onNext: { _ in
+                // TODO: Root Viewcontroller 넘어갈 때 애니메이션 넣을지
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                        as? SceneDelegate else { return }
+                sceneDelegate.window?.rootViewController = TabBarController()
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+
+extension OpendThunViewController: shareExtensionProtocol {
+    func shareButtonDidTap() {
+        // TODO: Share Extension 추가 할 예정
+        print("DEBUG: share Button Did Tap!")
     }
 }
