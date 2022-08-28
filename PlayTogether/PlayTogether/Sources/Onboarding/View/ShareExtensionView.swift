@@ -69,8 +69,10 @@ class ShareExtensionView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setupView() {
+}
+
+private extension ShareExtensionView {
+    func setupView() {
         layer.borderWidth = 1.0
         layer.borderColor = UIColor.ptBlack01.cgColor
         layer.cornerRadius = 10.0
@@ -86,7 +88,7 @@ class ShareExtensionView: UIView {
         setupLayout()
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         thunTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(20)
@@ -125,7 +127,7 @@ class ShareExtensionView: UIView {
         }
     }
     
-    private func setupBinding() {
+    func setupBinding() {
         shareButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
