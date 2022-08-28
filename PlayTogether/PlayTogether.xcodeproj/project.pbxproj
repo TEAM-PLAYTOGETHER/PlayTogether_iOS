@@ -25,6 +25,7 @@
 		408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */; };
 		408EE3E628BAB16F0012C642 /* MyPageMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */; };
 		408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E828BAB2510012C642 /* MyPageViewModel.swift */; };
+		408EE3EB28BBE4CA0012C642 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3EA28BBE4CA0012C642 /* ProfileView.swift */; };
 		409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */; };
 		409451AF28905A9000F21717 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451AE28905A9000F21717 /* HomeService.swift */; };
 		409451B128905AEC00F21717 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409451B028905AEC00F21717 /* APIConstants.swift */; };
@@ -108,6 +109,7 @@
 		408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSubwayLabel.swift; sourceTree = "<group>"; };
 		408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuTableViewCell.swift; sourceTree = "<group>"; };
 		408EE3E828BAB2510012C642 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		408EE3EA28BBE4CA0012C642 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		409451AB288F37F600F21717 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		409451AE28905A9000F21717 /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		409451B028905AEC00F21717 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				404169982886A68600812B37 /* MyPageViewController.swift */,
 				408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */,
 				408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */,
+				408EE3EA28BBE4CA0012C642 /* ProfileView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -672,6 +675,7 @@
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				B6397F432887104800046843 /* UITextField+Extension.swift in Sources */,
 				40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */,
+				408EE3EB28BBE4CA0012C642 /* ProfileView.swift in Sources */,
 				B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */,
