@@ -12,7 +12,7 @@ struct APIConstants {
     
     //TODO: 추후 삭제 예정
     static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzIiwidXNlckxvZ2luSWQiOiJkbHdwd25zMDIiLCJpYXQiOjE2NTkzMzcyMzgsImV4cCI6MTY2MTkyOTIzOCwiaXNzIjoicGxheXRvZ2V0aGVyIn0.SxPA4KTBzKFe7nTVb3lQecUFxaRnMogOutB072Mzb8Y"
-    static let crewID = 56
+    static let crewID = 2
     
     static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"
     
