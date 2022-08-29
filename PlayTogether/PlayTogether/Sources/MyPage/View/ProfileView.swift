@@ -12,9 +12,7 @@ final class ProfileView: UIView {
         $0.setTitleColor(.ptBlack01, for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 14)
         $0.semanticContentAttribute = .forceRightToLeft
-        
-        let image = UIImage.ptImage(.showIconBlack)
-        $0.setImage(image, for: .normal)
+        $0.setImage(.ptImage(.showIconBlack), for: .normal)
     }
     
     private let cardView = UIView().then {
