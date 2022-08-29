@@ -11,16 +11,19 @@ import RxSwift
 
 final class LikeThunViewModel {
     private lazy var disposeBag = DisposeBag()
+    var isRemovedLike = false
     
-    func postLikeThun(lightId: Int, completion: @escaping (String) -> Void) {
+    func postLikeThun(lightId: Int, completion: @escaping (Bool) -> Void) {
         let provider = MoyaProvider<LikeThunService>()
         provider.rx.request(.likeThunRequest(lightId: lightId))
-            .subscribe { result in
+            .subscribe { [weak self] result in
                 switch result {
                 case let .success(response):
                     let responseData = try? response.map(LikeThunResponse.self)
                     guard let data = responseData?.message else { return }
-                    completion(data)
+                    let isRemoved = data == "찜하기가 완료되었습니다." ? false : true
+                    self?.isRemovedLike = isRemoved
+                    completion(isRemoved)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

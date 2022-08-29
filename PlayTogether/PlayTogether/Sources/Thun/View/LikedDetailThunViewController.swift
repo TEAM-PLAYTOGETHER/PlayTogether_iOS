@@ -16,7 +16,6 @@ class LikedDetailThunViewController: BaseViewController {
     private let likeThunViewModel = LikeThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
-    var isSelected = true
     
     init(lightID: Int, superViewModel: ThunViewModel) {
         self.lightId = lightID
@@ -34,6 +33,10 @@ class LikedDetailThunViewController: BaseViewController {
     }
     
     private let contentView = UIView()
+    
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
     
     private let likeButton = UIButton().then {
         $0.setImage(.ptImage(.navLikeDefaultIcon), for: .normal)
@@ -90,7 +93,9 @@ class LikedDetailThunViewController: BaseViewController {
         $0.textColor = .white
     }
     
-    private lazy var labelStackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]).then {
+    private lazy var labelStackView = UIStackView(
+        arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]
+    ).then {
         $0.axis = .vertical
         $0.spacing = 22
     }
@@ -112,7 +117,10 @@ class LikedDetailThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
-    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    private lazy var imageCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    ).then {
         let collectionViewLayout = UICollectionViewFlowLayout()
         let width = (UIScreen.main.bounds.width / 375) * 273
         let height = (UIScreen.main.bounds.height / 812) * 91
@@ -121,7 +129,10 @@ class LikedDetailThunViewController: BaseViewController {
         $0.collectionViewLayout = collectionViewLayout
         
         $0.backgroundColor = .ptBlack01
-        $0.register(SubmittedDetailThunCollectionViewCell.self, forCellWithReuseIdentifier: "SubmittedDetailThunCollectionViewCell")
+        $0.register(
+            SubmittedDetailThunCollectionViewCell.self,
+            forCellWithReuseIdentifier: "SubmittedDetailThunCollectionViewCell"
+        )
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
     }
@@ -143,40 +154,20 @@ class LikedDetailThunViewController: BaseViewController {
     }
     
     private lazy var memberTableView = UITableView().then {
-        $0.register(SubmittedDetailThunTableViewCell.self, forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
+        $0.register(SubmittedDetailThunTableViewCell.self,
+                    forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
         $0.isScrollEnabled = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNaigationvBar()
-    }
-    
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .ptImage(.backIcon),
-            style: .plain,
-            target: self, action: #selector(backButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
-    }
-    
-    @objc func backButtonDidTap() {
-        guard let originData = try? superViewModel?.likedThunList.value() else { return }
-        superViewModel?.likedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
-        self.navigationController?.popViewController(animated: true)
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
     override func setupViews() {
-        tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
+        tabBarController?.tabBar.isHidden = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+        
         view.addSubview(scrollView)
         
         scrollView.addSubview(contentView)
@@ -315,12 +306,8 @@ class LikedDetailThunViewController: BaseViewController {
             )
         }
         
-        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) { response in
-            if response == true {
-                self.likeButton.isSelected = true
-            } else {
-                self.likeButton.isSelected = false
-            }
+        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
+            self.likeButton.isSelected = $0
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -362,17 +349,27 @@ class LikedDetailThunViewController: BaseViewController {
                 .disposed(by: self.disposeBag)
         }
     
-        likeButton.rx.tap
-            .bind { [weak self] in
-                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) { response in
-                    print("찜하기", response)
-                    if response == "찜하기가 완료되었습니다." {
-                        self?.likeButton.isSelected = true
-                    } else {
-                        self?.likeButton.isSelected = false
-                    }
+        backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if self?.likeThunViewModel.isRemovedLike == true {
+                    guard let originData = try? self?.superViewModel?.likedThunList.value()
+                    else { return }
+                    self?.superViewModel?.likedThunList.onNext(originData.filter {
+                        $0?.lightID != self?.lightId })
                 }
-            }
+                self?.navigationController?.popViewController(animated: true)
+                self?.tabBarController?.tabBar.isHidden = false
+            })
+            .disposed(by: disposeBag)
+        
+        likeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
+                    self?.likeButton.isSelected = !$0
+                }
+            })
             .disposed(by: disposeBag)
     }
 }
