@@ -90,6 +90,7 @@
 		DDB380C928BBA8B6001826B0 /* ExistLikeThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */; };
 		DDB380CB28BBA8C6001826B0 /* ExistLikeThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380CA28BBA8C6001826B0 /* ExistLikeThunResponse.swift */; };
 		DDB380CD28BD2EAE001826B0 /* SelectImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380CC28BD2EAE001826B0 /* SelectImageViewController.swift */; };
+		DDB380CF28BE4511001826B0 /* CompleteThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380CE28BE4511001826B0 /* CompleteThunViewController.swift */; };
 		DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B02892536A0042490C /* ThunResponse.swift */; };
 		DDBE87B5289257CA0042490C /* ThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B4289257CA0042490C /* ThunService.swift */; };
 		DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */; };
@@ -179,6 +180,7 @@
 		DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistLikeThunService.swift; sourceTree = "<group>"; };
 		DDB380CA28BBA8C6001826B0 /* ExistLikeThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistLikeThunResponse.swift; sourceTree = "<group>"; };
 		DDB380CC28BD2EAE001826B0 /* SelectImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageViewController.swift; sourceTree = "<group>"; };
+		DDB380CE28BE4511001826B0 /* CompleteThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteThunViewController.swift; sourceTree = "<group>"; };
 		DDBE87B02892536A0042490C /* ThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B4289257CA0042490C /* ThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunService.swift; sourceTree = "<group>"; };
 		DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				DD36D39928A6676100C9851A /* SubmittedDetailThunViewController.swift */,
 				DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */,
 				DDB380CC28BD2EAE001826B0 /* SelectImageViewController.swift */,
+				DDB380CE28BE4511001826B0 /* CompleteThunViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
+				DDB380CF28BE4511001826B0 /* CompleteThunViewController.swift in Sources */,
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,

@@ -389,13 +389,13 @@ extension LikedDetailThunViewController {
         let dateStr = date.replacingOccurrences(of: "-", with: ".")
         titleLabel.text = title
         dateLabel.text = "날짜  \(dateStr)"
-        dateLabel.changeFontColor(targetString: "날짜")
+        dateLabel.changeFontColor(targetString: "날짜", color: .ptGreen)
         timeLabel.text = "시간  \(time)"
-        timeLabel.changeFontColor(targetString: "시간")
+        timeLabel.changeFontColor(targetString: "시간", color: .ptGreen)
         placeLabel.text = "장소  \(place)"
-        placeLabel.changeFontColor(targetString: "장소")
+        placeLabel.changeFontColor(targetString: "장소", color: .ptGreen)
         categoryLabel.text = "카테고리  \(category)"
-        categoryLabel.changeFontColor(targetString: "카테고리")
+        categoryLabel.changeFontColor(targetString: "카테고리", color: .ptGreen)
         textInfoLabel.text = description
         nicknameLabel.text = name
         memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
