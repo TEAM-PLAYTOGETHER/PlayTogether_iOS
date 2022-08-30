@@ -18,7 +18,9 @@ final class CreateThunViewController: BaseViewController {
     private let rightBarItem = UIButton().then {
         $0.setTitle("완료", for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 16)
+        $0.setTitleColor(.ptGray01, for: .disabled)
         $0.setTitleColor(.ptGreen, for: .normal)
+        $0.isEnabled = false
     }
     
     private let scrollView = UIScrollView().then {
@@ -503,6 +505,10 @@ final class CreateThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        titleTextField.rx.text.orEmpty
+            .bind(to: viewModel.titleInputRelay)
+            .disposed(by: disposeBag)
+        
         tapGesture.rx.event
             .asDriver()
             .drive(onNext: { [weak self] _ in
@@ -526,9 +532,11 @@ final class CreateThunViewController: BaseViewController {
             .disposed(by: self.disposeBag)
         
         categoryCollectionView.rx.modelSelected(String.self)
-            .bind { _ in
-                //TODO: 추후 서버 연동 단계에서 구현 예정
-            }
+            .bind(to: viewModel.categoryInputRelay)
+            .disposed(by: disposeBag)
+        
+        whenTextField.rx.text.orEmpty
+            .bind(to: viewModel.dateInputRelay)
             .disposed(by: disposeBag)
         
         unlockDateButton.rx.tap
@@ -536,8 +544,14 @@ final class CreateThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 self?.unlockDateButton.isSelected.toggle()
                 self?.whenTextField.isEnabled.toggle()
-                self?.whenTextField.text = nil
+                self?.whenTextField.text = ""
+                guard let state = self?.whenTextField.isEnabled else { return }
+                self?.viewModel.dateInputRelay.accept(state ? "" : "unlock")
             })
+            .disposed(by: disposeBag)
+        
+        timeTextField.rx.text.orEmpty
+            .bind(to: viewModel.timeInputRelay)
             .disposed(by: disposeBag)
         
         unlockTimeButton.rx.tap
@@ -545,7 +559,9 @@ final class CreateThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 self?.unlockTimeButton.isSelected.toggle()
                 self?.timeTextField.isEnabled.toggle()
-                self?.timeTextField.text = nil
+                self?.timeTextField.text = ""
+                guard let state = self?.timeTextField.isEnabled else { return }
+                self?.viewModel.timeInputRelay.accept(state ? "" : "unlock")
             })
             .disposed(by: disposeBag)
         
@@ -558,12 +574,18 @@ final class CreateThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        placeTextField.rx.text.orEmpty
+            .bind(to: viewModel.placeInputRelay)
+            .disposed(by: disposeBag)
+        
         unlockPlaceButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.unlockPlaceButton.isSelected.toggle()
                 self?.placeTextField.isEnabled.toggle()
-                self?.placeTextField.text = nil
+                self?.placeTextField.text = ""
+                guard let state = self?.placeTextField.isEnabled else { return }
+                self?.viewModel.placeInputRelay.accept(state ? "" : "unlock")
             })
             .disposed(by: disposeBag)
         
@@ -578,12 +600,18 @@ final class CreateThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        memberCountTextField.rx.text.orEmpty
+            .bind(to: viewModel.memberCountInputRelay)
+            .disposed(by: disposeBag)
+        
         unlockMemberCountButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.unlockMemberCountButton.isSelected.toggle()
                 self?.memberCountTextField.isEnabled.toggle()
-                self?.memberCountTextField.text = nil
+                self?.memberCountTextField.text = ""
+                guard let state = self?.memberCountTextField.isEnabled else { return }
+                self?.viewModel.memberCountInputRelay.accept(state ? "" : "unlock")
             })
             .disposed(by: disposeBag)
         
@@ -591,14 +619,18 @@ final class CreateThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self,
-                      self.viewModel.introduceImageRelay.value.count < 3
+                      self.viewModel.imageInputRelay.value.count < 3
                 else { return }
                 
                 self.present(self.imagePicker, animated: true)
             })
             .disposed(by: disposeBag)
         
-        viewModel.introduceImageRelay
+        introduceTextView.rx.text.orEmpty
+            .bind(to: viewModel.descriptionInputRelay)
+            .disposed(by: disposeBag)
+        
+        viewModel.imageInputRelay
             .bind(to: self.introduceCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
                 guard let cell = self.introduceCollectionView.dequeueReusableCell(
                     withReuseIdentifier: "CreateThunIntroduceCollectionViewCell",
@@ -613,7 +645,7 @@ final class CreateThunViewController: BaseViewController {
             }
             .disposed(by: self.disposeBag)
         
-        viewModel.introduceImageRelay
+        viewModel.imageInputRelay
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.introduceImageLabel.text = "\($0.count)/3"
@@ -648,6 +680,22 @@ final class CreateThunViewController: BaseViewController {
                 guard text.count > 200 else { return }
                 let index = text.index(text.startIndex, offsetBy: 200)
                 self?.introduceTextView.text = String(text[..<index])
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.isCreateEnable()
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] in
+                self?.rightBarItem.isEnabled = $0
+            })
+            .disposed(by: disposeBag)
+        
+        rightBarItem.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.viewModel.createThunRequest() {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -735,10 +783,10 @@ private extension CreateThunViewController {
     @objc
     func deleteImageButtonDidTap(_ sender: UICollectionViewCell) {
         guard let index = sender.layer.value(forKey: "index") as? Int else { return }
-        var imageList = viewModel.introduceImageRelay.value
+        var imageList = viewModel.imageInputRelay.value
         imageList.remove(at: index)
         
-        viewModel.introduceImageRelay.accept(imageList)
+        viewModel.imageInputRelay.accept(imageList)
     }
     
     func registerKeyboardNotification() {
@@ -772,9 +820,9 @@ extension CreateThunViewController: UIImagePickerControllerDelegate, UINavigatio
         guard let newImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         else { return }
         
-        var imageList = viewModel.introduceImageRelay.value
+        var imageList = viewModel.imageInputRelay.value
         imageList.append(newImage)
-        viewModel.introduceImageRelay.accept(imageList)
+        viewModel.imageInputRelay.accept(imageList)
         
         picker.dismiss(animated: true, completion: {
             self.introduceCollectionView.reloadData()

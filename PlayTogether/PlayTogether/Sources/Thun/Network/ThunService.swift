@@ -21,11 +21,11 @@ extension ThunService: TargetType {
     var path: String {
         switch self {
         case .submittedRequest:
-            return APIConstants.getSubmittedThunList
+            return APIConstants.getSubmittedThunList + "/\(APIConstants.crewID)" + "/enter"
         case .openedRequest:
-            return APIConstants.getOpenedThunList
+            return APIConstants.getOpenedThunList + "/\(APIConstants.crewID)" + "/open"
         case .likedRequest:
-            return APIConstants.getLikedThunList
+            return APIConstants.getLikedThunList + "/\(APIConstants.crewID)" + "/scrap"
         }
     }
     

@@ -1,8 +1,8 @@
 //
-//  ThunViewModel.swift
+//  Thun.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/07/28.
+//  Created by 김수정 on 2022/08/24.
 //
 
 import UIKit

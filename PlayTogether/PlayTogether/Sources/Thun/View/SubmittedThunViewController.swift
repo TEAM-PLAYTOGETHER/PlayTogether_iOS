@@ -12,16 +12,27 @@ import RxSwift
 
 class SubmittedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = ThunViewModel()
+    private var superView = UIViewController()
+    private var viewModel: ThunViewModel?
     
     private lazy var tableView = UITableView().then {
-        $0.register(ThunListTableViewCell.self, forCellReuseIdentifier: ThunListTableViewCell.identifier)
+        $0.register(
+            ThunListTableViewCell.self,
+            forCellReuseIdentifier: ThunListTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
     }
     
     private let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
+    
+    func setupSuperView(superView: UIViewController) {
+        self.superView = superView
+    }
+    
+    func setupViewModel(viewModel: ThunViewModel) {
+        self.viewModel = viewModel
+    }
     
     override func setupViews() {
         view.addSubview(tableView)
@@ -35,7 +46,7 @@ class SubmittedThunViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        viewModel.submittedThunList
+        viewModel?.submittedThunList
             .bind(to: self.tableView.rx.items) { _, row, item -> UITableViewCell in
                 guard let cell = self.tableView.dequeueReusableCell(
                     withIdentifier: "ThunListTableViewCell",
@@ -44,9 +55,28 @@ class SubmittedThunViewController: BaseViewController {
                       let item = item
                 else { return UITableViewCell() }
                 
-                cell.setupData(item.title, item.date, item.time, item.peopleCnt, item.place, item.lightMemberCnt, item.category, item.scpCnt)
+                cell.setupData(
+                    item.title,
+                    item.date ?? "날짜미정",
+                    item.time ?? "시간미정",
+                    item.peopleCnt ?? 0,
+                    item.place ?? "장소미정",
+                    item.lightMemberCnt,
+                    item.category,
+                    item.scpCnt)
                 return cell
             }
+            .disposed(by: self.disposeBag)
+        
+        tableView.rx.modelSelected(ThunResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.superView.navigationController?.pushViewController(
+                    SubmittedDetailThunViewController(
+                        lightID: $0.lightID,
+                        superViewModel: (self?.viewModel)!),
+                    animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }

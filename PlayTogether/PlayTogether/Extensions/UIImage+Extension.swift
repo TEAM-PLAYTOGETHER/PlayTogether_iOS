@@ -46,4 +46,14 @@ enum ImageCase: String {
     case afterIcon = "afterIcon"
     case onboardingBottomImage = "OnboardingBottomImage"
     case dottedLineImage = "dottedLineImage"
+    
+    case profileIcon = "profileIcon"
+    
+    case likeFilledGrayIcon = "likeFilledGrayIcon"
+    case likeFilledGreenIcon = "likeFilledGreenIcon"
+    
+    case navLikeDefaultIcon = "navLikeDefaultIcon"
+    case navLikeFilledGreenIcon = "navLikeFilledGreenIcon"
+    
+    case arrowRightIcon = "arrowRightIcon"
 }
