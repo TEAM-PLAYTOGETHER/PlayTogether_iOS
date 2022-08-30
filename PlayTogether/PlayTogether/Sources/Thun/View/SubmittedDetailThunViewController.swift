@@ -16,6 +16,7 @@ class SubmittedDetailThunViewController: BaseViewController {
     private let cancelViewModel = CancelSubmittedViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
+    var imageCount: Int?
     
     init(lightID: Int, superViewModel: ThunViewModel) {
         self.lightId = lightID
@@ -353,11 +354,21 @@ class SubmittedDetailThunViewController: BaseViewController {
                             $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
                         }
                         cell.imageView.loadImage(url: cellImage)
+                        self.imageCount = image.count
                     }
                     return cell
                 }
                 .disposed(by: self.disposeBag)
         }
+        
+        imageCollectionView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                let nextVC = SelectImageViewController(lightID: self?.lightId ?? -1, indexPath: indexPath.row, imageCount: self?.imageCount ?? 0)
+                nextVC.modalPresentationStyle = .fullScreen
+                self?.present(nextVC, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
