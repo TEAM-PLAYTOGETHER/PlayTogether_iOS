@@ -95,7 +95,7 @@ final class HomeViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
-    private lazy var layout = UICollectionViewFlowLayout().then {
+    private lazy var hotCollectionViewLayout = UICollectionViewFlowLayout().then {
         let widthSize = UIScreen.main.bounds.width * 0.76
         let heightSize = UIScreen.main.bounds.height * 0.16
         $0.minimumLineSpacing = 10
@@ -103,9 +103,20 @@ final class HomeViewController: BaseViewController {
         $0.itemSize = CGSize(width: widthSize, height: heightSize)
     }
     
+    private lazy var newCollectionViewLayout = UICollectionViewFlowLayout().then {
+        let widthSize = UIScreen.main.bounds.width * 0.76
+        let heightSize = UIScreen.main.bounds.height * 0.16
+        $0.minimumLineSpacing = 10
+        $0.scrollDirection = .horizontal
+        $0.itemSize = CGSize(width: widthSize, height: heightSize)
+    }
+    
+    private let hotEmptyView = HomeEmptyView()
+    private let newEmptyView = HomeEmptyView()
+    
     private lazy var hotCollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: layout
+        collectionViewLayout: hotCollectionViewLayout
     ).then {
         $0.backgroundColor = .white
         $0.bounces = false
@@ -116,7 +127,7 @@ final class HomeViewController: BaseViewController {
     
     private lazy var newCollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: layout
+        collectionViewLayout: newCollectionViewLayout
     ).then {
         $0.backgroundColor = .white
         $0.bounces = false
@@ -143,8 +154,10 @@ final class HomeViewController: BaseViewController {
         contentView.addSubview(doLabel)
         contentView.addSubview(devideView)
         contentView.addSubview(hotLabel)
+        contentView.addSubview(hotEmptyView)
         contentView.addSubview(hotCollectionView)
         contentView.addSubview(newLabel)
+        contentView.addSubview(newEmptyView)
         contentView.addSubview(newCollectionView)
     }
     
@@ -183,7 +196,7 @@ final class HomeViewController: BaseViewController {
         
         goButton.snp.makeConstraints {
             $0.top.equalTo(eatButton)
-            $0.leading.equalTo(eatButton.snp.trailing).offset(27)
+            $0.centerX.equalToSuperview()
         }
         
         goLabel.snp.makeConstraints {
@@ -193,7 +206,7 @@ final class HomeViewController: BaseViewController {
         
         doButton.snp.makeConstraints {
             $0.top.equalTo(eatButton)
-            $0.leading.equalTo(goButton.snp.trailing).offset(27)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         doLabel.snp.makeConstraints {
@@ -212,26 +225,41 @@ final class HomeViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(20)
         }
         
-        hotCollectionView.snp.makeConstraints {
+        hotEmptyView.snp.makeConstraints {
             $0.top.equalTo(hotLabel.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(UIScreen.main.bounds.height * 0.16)
+        }
+        
+        hotCollectionView.snp.makeConstraints {
+            $0.top.height.equalTo(hotEmptyView)
+            $0.leading.trailing.equalToSuperview()
         }
         
         newLabel.snp.makeConstraints {
             $0.top.equalTo(hotCollectionView.snp.bottom).offset(48)
+            $0.height.equalTo(24)
             $0.leading.equalToSuperview().offset(20)
         }
         
-        newCollectionView.snp.makeConstraints {
+        newEmptyView.snp.makeConstraints {
             $0.top.equalTo(newLabel.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(UIScreen.main.bounds.height * 0.16)
-            $0.bottom.equalToSuperview().offset(-(tabBarHeight+48))
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().offset((-(tabBarHeight+48)))
+        }
+        
+        newCollectionView.snp.makeConstraints {
+            $0.top.height.bottom.equalTo(newEmptyView)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
     override func setupBinding() {
+        viewModel.isEmptyHotThun
+            .bind(to: hotCollectionView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
         viewModel.hotThunList
             .bind(to: self.hotCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
                 guard let cell = self.hotCollectionView.dequeueReusableCell(
@@ -246,6 +274,10 @@ final class HomeViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
+        
+        viewModel.isEmptyNewThun
+            .bind(to: newCollectionView.rx.isHidden)
+            .disposed(by: disposeBag)
         
         viewModel.newThunList
             .bind(to: self.newCollectionView.rx.items) { _, row, item -> UICollectionViewCell in
