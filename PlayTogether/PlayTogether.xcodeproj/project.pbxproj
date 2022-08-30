@@ -44,6 +44,7 @@
 		40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA766628A2B91F0093A3EB /* CreateThunService.swift */; };
 		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
+		40DCE5C428BA866E00EE31B0 /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */; };
 		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
 		B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
@@ -65,6 +66,8 @@
 		B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */; };
 		B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */; };
 		B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */; };
+		B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */; };
+		B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */; };
 		DD36D39128A4C7FE00C9851A /* ThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39028A4C7FE00C9851A /* ThunListViewController.swift */; };
 		DD36D39328A4C98600C9851A /* EatThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39228A4C98600C9851A /* EatThunListViewController.swift */; };
 		DD36D39528A4C99B00C9851A /* GoThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */; };
@@ -131,6 +134,7 @@
 		4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		40AA766628A2B91F0093A3EB /* CreateThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunService.swift; sourceTree = "<group>"; };
+		40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewController.swift; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
@@ -152,6 +156,8 @@
 		B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewModel.swift; sourceTree = "<group>"; };
 		B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationCompletedViewController.swift; sourceTree = "<group>"; };
 		B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
+		B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpendThunViewController.swift; sourceTree = "<group>"; };
+		B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		DD36D39028A4C7FE00C9851A /* ThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunListViewController.swift; sourceTree = "<group>"; };
 		DD36D39228A4C98600C9851A /* EatThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatThunListViewController.swift; sourceTree = "<group>"; };
 		DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +254,7 @@
 				DD36D39228A4C98600C9851A /* EatThunListViewController.swift */,
 				DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */,
 				DD36D39628A4C9A800C9851A /* DoThunListViewController.swift */,
+				40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -363,6 +370,7 @@
 				B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */,
 				B61C426F28A20CA800913574 /* SelfIntroduceViewController.swift */,
 				B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */,
+				B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */,
 				B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */,
 			);
 			path = ViewController;
@@ -439,6 +447,7 @@
 				B630459D28828D9F0095F694 /* ChoiceCell.swift */,
 				B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */,
 				B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */,
+				B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -597,6 +606,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD73C2B828AA1671001DEC1A /* SubmittedDetailThunResponse.swift in Sources */,
+				40DCE5C428BA866E00EE31B0 /* HomeEmptyView.swift in Sources */,
 				4096A2CF287F67E600F1E27C /* UIColor+Extension.swift in Sources */,
 				B6A612FF28A9F36600688DA2 /* CheckNicknameResponse.swift in Sources */,
 				DD36D39528A4C99B00C9851A /* GoThunListViewController.swift in Sources */,
@@ -618,6 +628,7 @@
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
+				B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */,
 				B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				DD73C2C428B20A0C001DEC1A /* CancelSubmittedService.swift in Sources */,
@@ -660,6 +671,7 @@
 				B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */,
 				DD73C2BE28AD5DA7001DEC1A /* SubmittedDetailThunTableViewCell.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
+				B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */,
