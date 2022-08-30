@@ -40,10 +40,6 @@ class OpendThunViewController: BaseViewController {
         configureNavbar()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     private func configureNavbar() {
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .white

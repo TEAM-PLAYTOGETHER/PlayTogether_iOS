@@ -100,7 +100,7 @@ private extension ShareExtensionView {
         }
         
         introduceLabel.snp.makeConstraints {
-            $0.centerY.equalTo(noticeIntroduceLabel.snp.centerY)
+            $0.centerY.equalTo(noticeIntroduceLabel)
             $0.leading.equalTo(noticeIntroduceLabel.snp.trailing).offset(10)
         }
         
@@ -110,7 +110,7 @@ private extension ShareExtensionView {
         }
         
         invatationCodeLabel.snp.makeConstraints {
-            $0.centerY.equalTo(noticeInvatationCodeLable.snp.centerY)
+            $0.centerY.equalTo(noticeInvatationCodeLable)
             $0.leading.equalTo(noticeInvatationCodeLable.snp.trailing).offset(10)
         }
         
