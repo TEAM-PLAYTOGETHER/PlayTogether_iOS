@@ -29,7 +29,7 @@ final class TabBarController: UITabBarController {
     }
     private let mypageViewController = MyPageViewController().then {
         $0.tabBarItem = UITabBarItem(
-            title: "홈",
+            title: "마이페이지",
             image: .ptImage(.mypageInactive).withRenderingMode(.alwaysOriginal),
             selectedImage: .ptImage(.mypageActive).withRenderingMode(.alwaysOriginal))
     }
