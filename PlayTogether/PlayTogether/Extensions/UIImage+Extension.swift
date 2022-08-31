@@ -45,6 +45,7 @@ enum ImageCase: String {
     case beforeIcon = "beforeIcon"
     case afterIcon = "afterIcon"
     case onboardingBottomImage = "OnboardingBottomImage"
+    case dottedLineImage = "dottedLineImage"
     
     case profileIcon = "profileIcon"
     
@@ -59,4 +60,5 @@ enum ImageCase: String {
     case settingIcon = "settingIcon"
     case showIconBlack = "showIconBlack"
     case introduceLabelIcon = "introduceLabelIcon"
+    case clearIcon = "clearIcon"
 }
