@@ -16,7 +16,6 @@
 		4040AC4728930BA200C76978 /* CreateThunCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */; };
 		404169902886A54700812B37 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4041698F2886A54700812B37 /* HomeViewController.swift */; };
 		404169932886A56C00812B37 /* ThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169922886A56C00812B37 /* ThunViewController.swift */; };
-		404169972886A67400812B37 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169962886A67400812B37 /* ChatViewController.swift */; };
 		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
 		4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4066E499288B3CF700FC9090 /* CALayer+Extension.swift */; };
 		40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */; };
@@ -46,6 +45,8 @@
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
 		40DCE5C428BA866E00EE31B0 /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */; };
 		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
+		40EE01B428BF4DD700DE46C8 /* ChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01B328BF4DD700DE46C8 /* ChattingViewController.swift */; };
+		40F7FE2828BF497A00B58A4C /* ChattingRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7FE2728BF497A00B58A4C /* ChattingRoomTableViewCell.swift */; };
 		B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
 		B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */; };
@@ -106,7 +107,6 @@
 		4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunCollectionViewCell.swift; sourceTree = "<group>"; };
 		4041698F2886A54700812B37 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		404169922886A56C00812B37 /* ThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunViewController.swift; sourceTree = "<group>"; };
-		404169962886A67400812B37 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		4066E499288B3CF700FC9090 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunIntroduceCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -136,6 +136,8 @@
 		40AA766628A2B91F0093A3EB /* CreateThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunService.swift; sourceTree = "<group>"; };
 		40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		40EE01B328BF4DD700DE46C8 /* ChattingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChattingViewController.swift; sourceTree = "<group>"; };
+		40F7FE2728BF497A00B58A4C /* ChattingRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomTableViewCell.swift; sourceTree = "<group>"; };
 		B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewController.swift; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
 		B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewController.swift; sourceTree = "<group>"; };
@@ -229,12 +231,13 @@
 			path = Thun;
 			sourceTree = "<group>";
 		};
-		404169942886A66400812B37 /* Chat */ = {
+		404169942886A66400812B37 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
-				404169962886A67400812B37 /* ChatViewController.swift */,
+				40F7FE2528BF495800B58A4C /* View */,
+				40F7FE2628BF495F00B58A4C /* Cell */,
 			);
-			path = Chat;
+			path = Chatting;
 			sourceTree = "<group>";
 		};
 		404169952886A66A00812B37 /* MyPage */ = {
@@ -331,7 +334,7 @@
 			children = (
 				4041698E2886A4F700812B37 /* Home */,
 				404169912886A55D00812B37 /* Thun */,
-				404169942886A66400812B37 /* Chat */,
+				404169942886A66400812B37 /* Chatting */,
 				404169952886A66A00812B37 /* MyPage */,
 				4096A2BB287F626600F1E27C /* Common */,
 				4096A2B1287F5FDC00F1E27C /* Onboarding */,
@@ -431,6 +434,22 @@
 				4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		40F7FE2528BF495800B58A4C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				40EE01B328BF4DD700DE46C8 /* ChattingViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		40F7FE2628BF495F00B58A4C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				40F7FE2728BF497A00B58A4C /* ChattingRoomTableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		B616A80D2886A20B00E1ABCF /* Utils */ = {
@@ -638,6 +657,7 @@
 				DDB380CB28BBA8C6001826B0 /* ExistLikeThunResponse.swift in Sources */,
 				40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
+				40F7FE2828BF497A00B58A4C /* ChattingRoomTableViewCell.swift in Sources */,
 				DDB380CD28BD2EAE001826B0 /* SelectImageViewController.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
@@ -653,10 +673,10 @@
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
 				404169902886A54700812B37 /* HomeViewController.swift in Sources */,
 				4040AC4728930BA200C76978 /* CreateThunCollectionViewCell.swift in Sources */,
+				40EE01B428BF4DD700DE46C8 /* ChattingViewController.swift in Sources */,
 				DD36D39128A4C7FE00C9851A /* ThunListViewController.swift in Sources */,
 				404169992886A68600812B37 /* MyPageViewController.swift in Sources */,
 				B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */,
-				404169972886A67400812B37 /* ChatViewController.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
 				DDF2C4092887AA5600C10F67 /* ThunListTableViewCell.swift in Sources */,
 				DD73C2BC28AA1C0A001DEC1A /* SubmittedDetailThunViewModel.swift in Sources */,
