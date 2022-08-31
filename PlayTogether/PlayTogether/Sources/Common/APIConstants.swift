@@ -32,4 +32,7 @@ struct APIConstants {
     
     // subway
     static let getStationList = "/getKwrdFndSubwaySttnList"
+    
+    // message
+    static let chattingList = "/message"
 }

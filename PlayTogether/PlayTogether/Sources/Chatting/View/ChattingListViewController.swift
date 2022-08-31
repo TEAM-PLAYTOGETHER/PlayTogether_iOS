@@ -10,6 +10,7 @@ import UIKit
 
 final class ChattingListViewController: BaseViewController {
     private let disposeBag = DisposeBag()
+    private let viewModel = ChattingListViewModel()
     
     private let tableView = UITableView().then {
         $0.showsVerticalScrollIndicator = false
@@ -37,27 +38,25 @@ final class ChattingListViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        // 삭제 예정
-        let mockData = [
-            [nil, "문수제비", "네 가능합니다.", "2022.04.13. 14:00"],
-            [nil, "궈뇽민", "제가 7시부터 가능한데 혹시 5시 시작이지만 늦참할 수 있을까요?", "2022.04.13. 14:00"]
-        ]
-        // 변경 예정
-        Observable.just(mockData)
-        .bind(to: tableView.rx.items) { _, row, item -> UITableViewCell in
-            guard let cell = self.tableView.dequeueReusableCell(
-                withIdentifier: "ChattingListTableViewCell",
-                for: IndexPath(row: 0, section: 0)
-            ) as? ChattingListTableViewCell else { return UITableViewCell() }
-            
-            cell.setupCell(
-                profileImage: nil,
-                name: item[1]!,
-                lastChat: item[2]!,
-                date: item[3]!
-            )
-            return cell
-        }
-        .disposed(by: disposeBag)
+        viewModel.chattingRoomListSubject
+            .bind(to: tableView.rx.items) { _, row, item -> UITableViewCell in
+                guard let cell = self.tableView.dequeueReusableCell(
+                    withIdentifier: "ChattingListTableViewCell",
+                    for: IndexPath(row: 0, section: 0)
+                ) as? ChattingListTableViewCell,
+                      let item = item
+                else { return UITableViewCell() }
+                
+                cell.setupCell(
+                    profileImage: nil,
+                    name: item.audience,
+                    lastChat: item.content,
+                    date: item.createdAt,
+                    send: item.send,
+                    read: item.read
+                )
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
 }

@@ -15,6 +15,11 @@ final class ChattingListTableViewCell: UITableViewCell {
         $0.font = .pretendardBold(size: 16)
     }
     
+    private let pointView = UIView().then {
+        $0.backgroundColor = .ptGreen
+        $0.layer.cornerRadius = 3
+    }
+    
     private let lastChatLabel = UILabel().then {
         $0.textColor = .ptBlack01
         $0.font = .pretendardRegular(size: 14)
@@ -35,7 +40,14 @@ final class ChattingListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCell(profileImage: UIImage?, name: String, lastChat: String, date: String) {
+    func setupCell(
+        profileImage: UIImage?,
+        name: String,
+        lastChat: String,
+        date: String,
+        send: Bool,
+        read: Bool
+    ) {
         if let profileImage = profileImage {
             profileImageView.image = profileImage
         } else {
@@ -44,7 +56,13 @@ final class ChattingListTableViewCell: UITableViewCell {
         
         nameLabel.text = name
         lastChatLabel.text = lastChat
-        dateLabel.text = date
+        dateLabel.text = dateParser(date)
+        
+        if send || read {
+            nameLabel.textColor = .ptGray01
+            lastChatLabel.textColor = .ptGray01
+            pointView.isHidden = true
+        }
     }
 }
 
@@ -56,6 +74,7 @@ private extension ChattingListTableViewCell {
         
         addSubview(profileImageView)
         addSubview(nameLabel)
+        addSubview(pointView)
         addSubview(lastChatLabel)
         addSubview(dateLabel)
         
@@ -70,6 +89,12 @@ private extension ChattingListTableViewCell {
             $0.leading.equalTo(profileImageView.snp.trailing).offset(12)
         }
         
+        pointView.snp.makeConstraints {
+            $0.leading.equalTo(nameLabel.snp.trailing).offset(8)
+            $0.centerY.equalTo(nameLabel)
+            $0.size.equalTo(6)
+        }
+        
         lastChatLabel.snp.makeConstraints {
             $0.leading.equalTo(nameLabel)
             $0.trailing.equalToSuperview()
@@ -80,5 +105,14 @@ private extension ChattingListTableViewCell {
             $0.top.equalTo(nameLabel)
             $0.trailing.equalToSuperview().inset(20)
         }
+    }
+    
+    func dateParser(_ dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        guard let convertDate = dateFormatter.date(from: dateString) else { return String.init() }
+        
+        dateFormatter.dateFormat = "yyyy.MM.dd.  HH:mm"
+        return dateFormatter.string(from: convertDate)
     }
 }

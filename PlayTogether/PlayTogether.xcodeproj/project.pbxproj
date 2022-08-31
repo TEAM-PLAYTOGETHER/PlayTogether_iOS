@@ -48,6 +48,9 @@
 		40EE01B428BF4DD700DE46C8 /* ChattingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01B328BF4DD700DE46C8 /* ChattingListViewController.swift */; };
 		40EE01B728BF71A500DE46C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 40EE01B628BF71A500DE46C8 /* SocketIO */; };
 		40EE01B928BF723100DE46C8 /* SocketIOManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01B828BF723100DE46C8 /* SocketIOManger.swift */; };
+		40EE01BC28BFC5E200DE46C8 /* ChattingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */; };
+		40EE01BE28BFC66B00DE46C8 /* ChattingListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */; };
+		40EE01C128BFC7D700DE46C8 /* ChattingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */; };
 		40F7FE2828BF497A00B58A4C /* ChattingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */; };
 		B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
@@ -140,6 +143,9 @@
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		40EE01B328BF4DD700DE46C8 /* ChattingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChattingListViewController.swift; sourceTree = "<group>"; };
 		40EE01B828BF723100DE46C8 /* SocketIOManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManger.swift; sourceTree = "<group>"; };
+		40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingService.swift; sourceTree = "<group>"; };
+		40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListResponse.swift; sourceTree = "<group>"; };
+		40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListViewModel.swift; sourceTree = "<group>"; };
 		40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListTableViewCell.swift; sourceTree = "<group>"; };
 		B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewController.swift; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
@@ -239,7 +245,9 @@
 			isa = PBXGroup;
 			children = (
 				40F7FE2528BF495800B58A4C /* View */,
+				40EE01BF28BFC7CC00DE46C8 /* ViewModel */,
 				40F7FE2628BF495F00B58A4C /* Cell */,
+				40EE01BA28BFC5BE00DE46C8 /* Network */,
 			);
 			path = Chatting;
 			sourceTree = "<group>";
@@ -439,6 +447,23 @@
 				4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		40EE01BA28BFC5BE00DE46C8 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */,
+				40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		40EE01BF28BFC7CC00DE46C8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		40F7FE2528BF495800B58A4C /* View */ = {
@@ -653,6 +678,7 @@
 				DDB380CF28BE4511001826B0 /* CompleteThunViewController.swift in Sources */,
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
+				40EE01BE28BFC66B00DE46C8 /* ChattingListResponse.swift in Sources */,
 				40EE01B928BF723100DE46C8 /* SocketIOManger.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */,
@@ -708,9 +734,11 @@
 				B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */,
 				DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
+				40EE01C128BFC7D700DE46C8 /* ChattingListViewModel.swift in Sources */,
 				B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */,
 				DD36D3A028A67D0700C9851A /* SubmittedDetailThunCollectionViewCell.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
+				40EE01BC28BFC5E200DE46C8 /* ChattingService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

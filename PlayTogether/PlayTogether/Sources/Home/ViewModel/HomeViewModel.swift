@@ -11,7 +11,7 @@ import Moya
 import RxMoya
 
 final class HomeViewModel {
-    private lazy var disposeBag = DisposeBag()
+    private letAPIConstants.swift disposeBag = DisposeBag()
     var hotThunList = PublishSubject<[HomeResponseList?]>()
     var isEmptyHotThun = BehaviorSubject<Bool>(value: false)
     var newThunList = PublishSubject<[HomeResponseList?]>()
