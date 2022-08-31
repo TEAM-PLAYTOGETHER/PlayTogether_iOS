@@ -79,13 +79,13 @@ private extension ChattingListTableViewCell {
         addSubview(dateLabel)
         
         profileImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(18)
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
             $0.size.equalTo(UIScreen.main.bounds.width * 0.106)
         }
         
         nameLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(17)
+            $0.top.equalTo(profileImageView).offset(1)
             $0.leading.equalTo(profileImageView.snp.trailing).offset(12)
         }
         

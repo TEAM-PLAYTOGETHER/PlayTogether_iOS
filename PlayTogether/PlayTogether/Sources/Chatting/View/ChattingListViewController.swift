@@ -58,5 +58,23 @@ final class ChattingListViewController: BaseViewController {
                 return cell
             }
             .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { view, indexPath in
+                guard let values = try? view.viewModel.chattingRoomListSubject.value(),
+                      let item = values[indexPath.row]
+                else { return }
+                
+                let chattingRoomViewController = ChattingRoomViewController(userName: item.audience)
+                chattingRoomViewController.hidesBottomBarWhenPushed = true
+                
+                self.navigationController?.pushViewController(
+                    chattingRoomViewController,
+                    animated: true
+                )
+            })
+            .disposed(by: disposeBag)
     }
 }
