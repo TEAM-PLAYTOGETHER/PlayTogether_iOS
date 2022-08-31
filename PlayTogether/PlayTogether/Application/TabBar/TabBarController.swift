@@ -21,7 +21,7 @@ final class TabBarController: UITabBarController {
             image: .ptImage(.thunInactive).withRenderingMode(.alwaysOriginal),
             selectedImage: .ptImage(.thunActive).withRenderingMode(.alwaysOriginal))
     }
-    private let chatViewController = ChattingViewController().then {
+    private let chatViewController = ChattingListViewController().then {
         $0.tabBarItem = UITabBarItem(
             title: "채팅",
             image: .ptImage(.chatInactive).withRenderingMode(.alwaysOriginal),

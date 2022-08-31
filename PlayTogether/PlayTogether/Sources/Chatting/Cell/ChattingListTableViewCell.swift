@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ChattingRoomTableViewCell: UITableViewCell {
+final class ChattingListTableViewCell: UITableViewCell {
     private let profileImageView = UIImageView()
     
     private let nameLabel = UILabel().then {
@@ -48,7 +48,7 @@ final class ChattingRoomTableViewCell: UITableViewCell {
     }
 }
 
-private extension ChattingRoomTableViewCell {
+private extension ChattingListTableViewCell {
     func setupUI() {
         backgroundColor = .white
         selectionStyle = .none

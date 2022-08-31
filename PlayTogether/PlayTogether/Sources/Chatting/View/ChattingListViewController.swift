@@ -8,15 +8,15 @@
 import RxSwift
 import UIKit
 
-final class ChattingViewController: BaseViewController {
+final class ChattingListViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     
     private let tableView = UITableView().then {
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = UIScreen.main.bounds.height * 0.093
         $0.register(
-            ChattingRoomTableViewCell.self,
-            forCellReuseIdentifier: "ChattingRoomTableViewCell"
+            ChattingListTableViewCell.self,
+            forCellReuseIdentifier: "ChattingListTableViewCell"
         )
     }
     
@@ -46,9 +46,9 @@ final class ChattingViewController: BaseViewController {
         Observable.just(mockData)
         .bind(to: tableView.rx.items) { _, row, item -> UITableViewCell in
             guard let cell = self.tableView.dequeueReusableCell(
-                withIdentifier: "ChattingRoomTableViewCell",
+                withIdentifier: "ChattingListTableViewCell",
                 for: IndexPath(row: 0, section: 0)
-            ) as? ChattingRoomTableViewCell else { return UITableViewCell() }
+            ) as? ChattingListTableViewCell else { return UITableViewCell() }
             
             cell.setupCell(
                 profileImage: nil,
