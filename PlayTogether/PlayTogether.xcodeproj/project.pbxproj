@@ -46,6 +46,7 @@
 		40DCE5C428BA866E00EE31B0 /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */; };
 		40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EDB67F288495F600996AA0 /* UIImage+Extension.swift */; };
 		40EE01B428BF4DD700DE46C8 /* ChattingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01B328BF4DD700DE46C8 /* ChattingListViewController.swift */; };
+		40EE01B728BF71A500DE46C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 40EE01B628BF71A500DE46C8 /* SocketIO */; };
 		40F7FE2828BF497A00B58A4C /* ChattingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */; };
 		B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
@@ -199,6 +200,7 @@
 			files = (
 				401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */,
 				401B853A287FD57E003B69D3 /* RxCocoa in Frameworks */,
+				40EE01B728BF71A500DE46C8 /* SocketIO in Frameworks */,
 				40B77844287FD51600096802 /* Then in Frameworks */,
 				401B853C287FD57E003B69D3 /* RxSwift in Frameworks */,
 				401B853F287FD5B5003B69D3 /* Moya in Frameworks */,
@@ -558,6 +560,7 @@
 				401B853B287FD57E003B69D3 /* RxSwift */,
 				401B853E287FD5B5003B69D3 /* Moya */,
 				401B8540287FD5B5003B69D3 /* RxMoya */,
+				40EE01B628BF71A500DE46C8 /* SocketIO */,
 			);
 			productName = PlayTogether;
 			productReference = 4096A296287F5F3F00F1E27C /* PlayTogether.app */;
@@ -592,6 +595,7 @@
 				40B77845287FD53200096802 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				401B8538287FD57E003B69D3 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				401B853D287FD5B5003B69D3 /* XCRemoteSwiftPackageReference "Moya" */,
+				40EE01B528BF71A400DE46C8 /* XCRemoteSwiftPackageReference "socket" */,
 			);
 			productRefGroup = 4096A297287F5F3F00F1E27C /* Products */;
 			projectDirPath = "";
@@ -944,6 +948,14 @@
 				kind = branch;
 			};
 		};
+		40EE01B528BF71A400DE46C8 /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -976,6 +988,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 40B77845287FD53200096802 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		40EE01B628BF71A500DE46C8 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40EE01B528BF71A400DE46C8 /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
