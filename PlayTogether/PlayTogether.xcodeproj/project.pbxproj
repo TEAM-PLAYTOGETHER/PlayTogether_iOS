@@ -51,6 +51,9 @@
 		40EE01BC28BFC5E200DE46C8 /* ChattingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */; };
 		40EE01BE28BFC66B00DE46C8 /* ChattingListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */; };
 		40EE01C128BFC7D700DE46C8 /* ChattingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */; };
+		40EE01C328BFD44600DE46C8 /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C228BFD44600DE46C8 /* ChattingRoomViewController.swift */; };
+		40EE01C528BFD46700DE46C8 /* ChattingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C428BFD46700DE46C8 /* ChattingRoomViewModel.swift */; };
+		40EE01C728BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C628BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift */; };
 		40F7FE2828BF497A00B58A4C /* ChattingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */; };
 		B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
@@ -146,6 +149,9 @@
 		40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingService.swift; sourceTree = "<group>"; };
 		40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListResponse.swift; sourceTree = "<group>"; };
 		40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListViewModel.swift; sourceTree = "<group>"; };
+		40EE01C228BFD44600DE46C8 /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
+		40EE01C428BFD46700DE46C8 /* ChattingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewModel.swift; sourceTree = "<group>"; };
+		40EE01C628BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomTableViewCell.swift; sourceTree = "<group>"; };
 		40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListTableViewCell.swift; sourceTree = "<group>"; };
 		B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewController.swift; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
@@ -462,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */,
+				40EE01C428BFD46700DE46C8 /* ChattingRoomViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -470,6 +477,7 @@
 			isa = PBXGroup;
 			children = (
 				40EE01B328BF4DD700DE46C8 /* ChattingListViewController.swift */,
+				40EE01C228BFD44600DE46C8 /* ChattingRoomViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -478,6 +486,7 @@
 			isa = PBXGroup;
 			children = (
 				40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */,
+				40EE01C628BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -677,6 +686,7 @@
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
 				DDB380CF28BE4511001826B0 /* CompleteThunViewController.swift in Sources */,
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
+				40EE01C528BFD46700DE46C8 /* ChattingRoomViewModel.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				40EE01BE28BFC66B00DE46C8 /* ChattingListResponse.swift in Sources */,
 				40EE01B928BF723100DE46C8 /* SocketIOManger.swift in Sources */,
@@ -707,9 +717,11 @@
 				4096A2B9287F60D900F1E27C /* TabBarController.swift in Sources */,
 				404169902886A54700812B37 /* HomeViewController.swift in Sources */,
 				4040AC4728930BA200C76978 /* CreateThunCollectionViewCell.swift in Sources */,
+				40EE01C728BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift in Sources */,
 				40EE01B428BF4DD700DE46C8 /* ChattingListViewController.swift in Sources */,
 				DD36D39128A4C7FE00C9851A /* ThunListViewController.swift in Sources */,
 				404169992886A68600812B37 /* MyPageViewController.swift in Sources */,
+				40EE01C328BFD44600DE46C8 /* ChattingRoomViewController.swift in Sources */,
 				B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
 				DDF2C4092887AA5600C10F67 /* ThunListTableViewCell.swift in Sources */,
