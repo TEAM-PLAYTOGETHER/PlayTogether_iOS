@@ -129,7 +129,7 @@ class OpenedDetailThunViewController: BaseViewController {
         $0.collectionViewLayout = collectionViewLayout
         
         $0.backgroundColor = .ptBlack01
-        $0.register(SubmittedDetailThunCollectionViewCell.self, forCellWithReuseIdentifier: "SubmittedDetailThunCollectionViewCell")
+        $0.register(DetailThunImageCollectionViewCell.self, forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
     }
@@ -144,7 +144,7 @@ class OpenedDetailThunViewController: BaseViewController {
     }
     
     private lazy var memberTableView = UITableView().then {
-        $0.register(SubmittedDetailThunTableViewCell.self, forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
+        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
@@ -351,9 +351,9 @@ class OpenedDetailThunViewController: BaseViewController {
             Observable.of(member)
                 .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
                     guard let cell = self.memberTableView.dequeueReusableCell(
-                        withIdentifier: "SubmittedDetailThunTableViewCell",
+                        withIdentifier: "DetailThunMemberTableViewCell",
                         for: IndexPath(row: row, section: 0)
-                    ) as? SubmittedDetailThunTableViewCell else { return UITableViewCell() }
+                    ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
                     
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
@@ -369,9 +369,9 @@ class OpenedDetailThunViewController: BaseViewController {
                 .bind(to: self.imageCollectionView.rx.items) {
                     _, row, item -> UICollectionViewCell in
                     guard let cell = self.imageCollectionView.dequeueReusableCell(
-                        withReuseIdentifier: "SubmittedDetailThunCollectionViewCell",
+                        withReuseIdentifier: "DetailThunImageCollectionViewCell",
                         for: IndexPath(row: row, section: 0)
-                    ) as? SubmittedDetailThunCollectionViewCell
+                    ) as? DetailThunImageCollectionViewCell
                     else { return UICollectionViewCell() }
 
                     if item.isEmpty == false {
