@@ -339,7 +339,7 @@ class SubmittedDetailThunViewController: BaseViewController {
         }
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
-            Observable.of(image)
+            Observable.of([image])
                 .bind(to: self.imageCollectionView.rx.items) {
                     _, row, item -> UICollectionViewCell in
                     guard let cell = self.imageCollectionView.dequeueReusableCell(
@@ -348,13 +348,13 @@ class SubmittedDetailThunViewController: BaseViewController {
                     ) as? SubmittedDetailThunCollectionViewCell
                     else { return UICollectionViewCell() }
                     
-                    if let cellImage = image[row] {
+                    if item.isEmpty == false {
                         self.imageCollectionView.snp.updateConstraints {
                             $0.top.equalTo(self.textInfoLabel.snp.bottom).offset(20)
                             $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
                         }
-                        cell.imageView.loadImage(url: cellImage)
-                        self.imageCount = image.count
+                        cell.imageView.loadImage(url: image)
+                        self.imageCount = [image].count
                     }
                     return cell
                 }

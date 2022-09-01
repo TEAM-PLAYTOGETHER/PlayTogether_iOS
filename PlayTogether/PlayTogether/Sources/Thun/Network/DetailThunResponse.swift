@@ -19,7 +19,7 @@ struct DetailThunList: Decodable {
     let category, title: String
     let scpCnt: Int
     let date, time, datumDescription: String?
-    let image: [String]?
+    let image: String?
     let peopleCnt: Int?
     let place: String?
     let lightMemberCnt: Int

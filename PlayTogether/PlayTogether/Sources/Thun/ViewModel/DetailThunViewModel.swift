@@ -44,7 +44,7 @@ final class DetailThunViewModel {
             .disposed(by: disposeBag)
     }
     
-    func getImageList(lightId: Int, completion: @escaping([String?]) -> Void) {
+    func getImageList(lightId: Int, completion: @escaping(String) -> Void) {
         let provider = MoyaProvider<DetailThunService>()
         provider.rx.request(.detailThunRequest(lightId: lightId))
             .subscribe { result in
@@ -52,13 +52,7 @@ final class DetailThunViewModel {
                 case let .success(response):
                     let responseData = try? response.map(DetailThunResponse.self)
                     guard let data = responseData?.data[0].image else { return }
-                    
-                    var imageUrl = [String?]()
-                    data.forEach {
-                        imageUrl.append($0)
-                    }
-                    completion(imageUrl)
-                    
+                    completion(data)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
