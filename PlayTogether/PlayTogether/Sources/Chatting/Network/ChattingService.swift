@@ -10,6 +10,7 @@ import Moya
 
 enum ChattingService {
     case chattingListRequest
+    case messageListRequest(roomID: Int)
 }
 
 extension ChattingService: TargetType {
@@ -21,6 +22,8 @@ extension ChattingService: TargetType {
         switch self {
         case .chattingListRequest:
             return APIConstants.chattingList
+        case let .messageListRequest(roomID):
+            return APIConstants.chattingList + "/\(roomID)"
         }
     }
     

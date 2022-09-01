@@ -12,15 +12,15 @@ import RxMoya
 
 final class ChattingListViewModel {
     private let disposeBag = DisposeBag()
-    var chattingRoomListSubject = BehaviorSubject<[ChattingRoomResponse?]>(value: [])
+    var chattingRoomListSubject = BehaviorSubject<[ChattingRoom?]>(value: [])
     
     //TODO: 삭제 예정
     let mockData = [
-        ChattingRoomResponse(
+        ChattingRoom(
             roomID: 0, audience: "김플투", audienceID: 0, send: false, read: false,
             createdAt: "2022-04-27T06:43:33.432Z", content: "안녕하세요"),
-        ChattingRoomResponse(roomID: 0, audience: "김유저", audienceID: 0, send: true, read: true,
-                             createdAt: "2022-04-27T06:43:33.432Z", content: "안녕하세요")
+        ChattingRoom(roomID: 0, audience: "김유저", audienceID: 0, send: true, read: true,
+                             createdAt: "2022-04-27T06:43:33.432Z", content: "배고프다")
     ]
     
     init () {
@@ -34,7 +34,7 @@ final class ChattingListViewModel {
             .subscribe { [weak self] result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(ChattingListResponse.self)
+                    let responseData = try? response.map(ChattingRoomListResponse.self)
                     guard let data = responseData?.data.chattingRooms else { return }
                     self?.chattingRoomListSubject.onNext(data)
                 case let .failure(error):

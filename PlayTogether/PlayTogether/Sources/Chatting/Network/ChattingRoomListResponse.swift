@@ -5,22 +5,22 @@
 //  Created by 한상진 on 2022/09/01.
 //
 
-struct ChattingListResponse: Decodable {
+struct ChattingRoomListResponse: Decodable {
     let status: Int
     let success: Bool
     let message: String
-    let data: ChattingRoomListResponse
+    let data: ChattingRoomList
 }
 
-struct ChattingRoomListResponse: Decodable {
-    let chattingRooms: [ChattingRoomResponse]
+struct ChattingRoomList: Decodable {
+    let chattingRooms: [ChattingRoom]
     
     enum CodingKeys: String, CodingKey {
         case chattingRooms = "messages"
     }
 }
 
-struct ChattingRoomResponse: Decodable {
+struct ChattingRoom: Decodable {
     let roomID: Int
     let audience: String
     let audienceID: Int

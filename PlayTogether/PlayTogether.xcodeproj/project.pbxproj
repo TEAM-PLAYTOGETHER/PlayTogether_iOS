@@ -46,6 +46,7 @@
 		4096A2DF287F765F00F1E27C /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */; };
 		4096A2E0287F765F00F1E27C /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */; };
 		40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA766628A2B91F0093A3EB /* CreateThunService.swift */; };
+		40B15BFB28C04C8E00E2CB82 /* MessageListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B15BFA28C04C8D00E2CB82 /* MessageListResponse.swift */; };
 		40B77844287FD51600096802 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77843287FD51600096802 /* Then */; };
 		40B77847287FD53200096802 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40B77846287FD53200096802 /* SnapKit */; };
 		40DCE5C428BA866E00EE31B0 /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */; };
@@ -54,7 +55,7 @@
 		40EE01B728BF71A500DE46C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 40EE01B628BF71A500DE46C8 /* SocketIO */; };
 		40EE01B928BF723100DE46C8 /* SocketIOManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01B828BF723100DE46C8 /* SocketIOManger.swift */; };
 		40EE01BC28BFC5E200DE46C8 /* ChattingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */; };
-		40EE01BE28BFC66B00DE46C8 /* ChattingListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */; };
+		40EE01BE28BFC66B00DE46C8 /* ChattingRoomListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01BD28BFC66B00DE46C8 /* ChattingRoomListResponse.swift */; };
 		40EE01C128BFC7D700DE46C8 /* ChattingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */; };
 		40EE01C328BFD44600DE46C8 /* ChattingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C228BFD44600DE46C8 /* ChattingRoomViewController.swift */; };
 		40EE01C528BFD46700DE46C8 /* ChattingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C428BFD46700DE46C8 /* ChattingRoomViewModel.swift */; };
@@ -152,12 +153,13 @@
 		4096A2DB287F765F00F1E27C /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		4096A2DC287F765F00F1E27C /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		40AA766628A2B91F0093A3EB /* CreateThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunService.swift; sourceTree = "<group>"; };
+		40B15BFA28C04C8D00E2CB82 /* MessageListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageListResponse.swift; sourceTree = "<group>"; };
 		40DCE5C328BA866E00EE31B0 /* HomeEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
 		40EDB67F288495F600996AA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		40EE01B328BF4DD700DE46C8 /* ChattingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChattingListViewController.swift; sourceTree = "<group>"; };
 		40EE01B828BF723100DE46C8 /* SocketIOManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManger.swift; sourceTree = "<group>"; };
 		40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingService.swift; sourceTree = "<group>"; };
-		40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListResponse.swift; sourceTree = "<group>"; };
+		40EE01BD28BFC66B00DE46C8 /* ChattingRoomListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomListResponse.swift; sourceTree = "<group>"; };
 		40EE01C028BFC7D700DE46C8 /* ChattingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListViewModel.swift; sourceTree = "<group>"; };
 		40EE01C228BFD44600DE46C8 /* ChattingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewController.swift; sourceTree = "<group>"; };
 		40EE01C428BFD46700DE46C8 /* ChattingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomViewModel.swift; sourceTree = "<group>"; };
@@ -498,7 +500,8 @@
 			isa = PBXGroup;
 			children = (
 				40EE01BB28BFC5E200DE46C8 /* ChattingService.swift */,
-				40EE01BD28BFC66B00DE46C8 /* ChattingListResponse.swift */,
+				40EE01BD28BFC66B00DE46C8 /* ChattingRoomListResponse.swift */,
+				40B15BFA28C04C8D00E2CB82 /* MessageListResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -728,7 +731,7 @@
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				40EE01C528BFD46700DE46C8 /* ChattingRoomViewModel.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
-				40EE01BE28BFC66B00DE46C8 /* ChattingListResponse.swift in Sources */,
+				40EE01BE28BFC66B00DE46C8 /* ChattingRoomListResponse.swift in Sources */,
 				40EE01B928BF723100DE46C8 /* SocketIOManger.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */,
@@ -746,6 +749,7 @@
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */,
+				40B15BFB28C04C8E00E2CB82 /* MessageListResponse.swift in Sources */,
 				B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				B61C427028A20CA800913574 /* SelfIntroduceViewController.swift in Sources */,
