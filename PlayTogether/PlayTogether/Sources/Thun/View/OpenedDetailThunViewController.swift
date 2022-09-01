@@ -14,6 +14,7 @@ import RxCocoa
 class OpenedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
+    private let deleteThunViewModel = DeleteThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     
@@ -35,9 +36,9 @@ class OpenedDetailThunViewController: BaseViewController {
         $0.setImage(.ptImage(.backIcon), for: .normal)
     }
     
-    private let optionButton = UIButton()
-//        $0.setImage(.ptImage(.optionIcon), for: .normal)
-//    }
+    private let optionButton = UIButton().then {
+        $0.setImage(.ptImage(.optionIcon), for: .normal)
+    }
     
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
@@ -414,6 +415,7 @@ class OpenedDetailThunViewController: BaseViewController {
                 self?.buttonStackView.isHidden = true
                 let popupViewController = PopUpViewController(title: "게시글을 삭제할까요?", viewType: .twoButton)
                 self?.present(popupViewController, animated: false, completion: nil)
+                popupViewController.delegate = self
             }
             .disposed(by: disposeBag)
     }
@@ -444,6 +446,29 @@ extension OpenedDetailThunViewController {
         textInfoLabel.text = description
         nicknameLabel.text = name
         memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
+    }
+}
+
+extension OpenedDetailThunViewController: PopUpConfirmDelegate {
+    func oneButtonDidTap() {
+        guard let originData = try? superViewModel?.openedThunList.value() else { return }
+        superViewModel?.openedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
+        navigationController?.popToRootViewController(animated: true)
+        navigationController?.navigationBar.isHidden = false
+        tabBarController?.tabBar.isHidden = false
+    }
+    
+    func firstButtonDidTap() {}
+    
+    func secondButtonDidTap() {
+        deleteThunViewModel.postDeleteThun(lightId: lightId ?? -1) { response in
+            let popupViewController = PopUpViewController(
+                title: "게시글이 삭제되었습니다.",
+                viewType: .oneButton
+            )
+            self.present(popupViewController, animated: false, completion: nil)
+            popupViewController.delegate = self
+        }
     }
 }
 
