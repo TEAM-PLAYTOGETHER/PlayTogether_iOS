@@ -16,6 +16,7 @@ class LikedDetailThunViewController: BaseViewController {
     private let likeThunViewModel = LikeThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
+    var imageCount: Int?
     
     init(lightID: Int, superViewModel: ThunViewModel) {
         self.lightId = lightID
@@ -343,6 +344,7 @@ class LikedDetailThunViewController: BaseViewController {
                             $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
                         }
                         cell.imageView.loadImage(url: image)
+                        self.imageCount = [image].count
                     }
                     return cell
                 }
@@ -369,6 +371,15 @@ class LikedDetailThunViewController: BaseViewController {
                 self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
                     self?.likeButton.isSelected = !$0
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        imageCollectionView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                let nextVC = SelectImageViewController(lightID: self?.lightId ?? -1, indexPath: indexPath.row, imageCount: self?.imageCount ?? 0)
+                nextVC.modalPresentationStyle = .fullScreen
+                self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
