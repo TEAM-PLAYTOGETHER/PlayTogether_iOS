@@ -259,21 +259,29 @@ class CreateMeetViewController: BaseViewController {
                 self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
+        let regularExpressionInput = CreateMeetViewModel.RegularExpressionInput(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable())
+        let regularExpressionDriver = viewModel.regularExpressionCheck(input: regularExpressionInput)
+        
+        regularExpressionDriver.titleTextCheck
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard self?.titleTextField.text?.isEmpty == false else {
+                    self?.noticeWrongTitleLabel.textColor = .ptGray02
+                    self?.noticePassTitleLabel.isHidden = true
+                    return
+                }
+                self?.noticeWrongTitleLabel.textColor = $0 ? .ptGray02 : .ptIncorrect
+                self?.noticePassTitleLabel.isHidden = !$0
+                self?.checkTitleButton.isEnabled = $0
+                self?.checkTitleButton.backgroundColor = $0 ? .ptBlack01 : .ptGray03
+                
+            })
+            .disposed(by: disposeBag)
+        
         checkTitleButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.titleTextField.text.map {
-                    let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-핳\\s]*$"
-                    guard let _ = $0.range(of: pattern, options: .regularExpression) else {
-                        self?.noticeWrongTitleLabel.textColor = .ptIncorrect
-                        self?.noticePassTitleLabel.isHidden = true
-                        self?.isEnableMeetingTitle.accept(false)
-                        return
-                    }
-                    self?.noticeWrongTitleLabel.textColor = .ptGray02
-                    self?.noticePassTitleLabel.isHidden = false
-                    self?.isEnableMeetingTitle.accept(true)
-                }
+                self?.isEnableMeetingTitle.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -284,6 +292,7 @@ class CreateMeetViewController: BaseViewController {
         isTextEmptyDriver.nextButtonEnableCheck
             .drive(onNext: { [weak self] in
                 self?.nextButton.isButtonEnableUI(check: $0)
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
 }
