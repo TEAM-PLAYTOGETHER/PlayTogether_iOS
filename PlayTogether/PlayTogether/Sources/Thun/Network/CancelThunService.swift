@@ -1,39 +1,39 @@
 //
-//  DetailThunService.swift
+//  CancelSubmittedService.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/08/15.
+//  Created by 김수정 on 2022/08/21.
 //
 
 import Foundation
 import Moya
 
-enum SubmittedDetailThunService {
-    case detailThunRequest(lightId: Int)
+enum CancelThunService {
+    case cancelThunRequest(lightId: Int)
 }
 
-extension SubmittedDetailThunService: TargetType {
+extension CancelThunService: TargetType {
     var baseURL: URL {
         return URL(string: APIConstants.baseUrl)!
     }
     
     var path: String {
         switch self {
-        case .detailThunRequest(let lightId):
-            return "\(APIConstants.getDetailThunList)" + "/\(lightId)"
+        case .cancelThunRequest(let lightId):
+            return "\(APIConstants.postDetailThunCancel)" + "/\(lightId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .detailThunRequest:
-            return .get
+        case .cancelThunRequest:
+            return .post
         }
     }
     
     var task: Task {
         switch self {
-        case .detailThunRequest:
+        case .cancelThunRequest:
             return .requestPlain
         }
     }

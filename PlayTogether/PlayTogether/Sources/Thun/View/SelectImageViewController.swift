@@ -3,7 +3,7 @@ import RxSwift
 
 class SelectImageViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = SubmittedDetailThunViewModel()
+    private let viewModel = DetailThunViewModel()
     var lightId : Int?
     var indexPath: Int?
     var imageCount: Int?

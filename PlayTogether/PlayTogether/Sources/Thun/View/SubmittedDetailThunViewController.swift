@@ -12,8 +12,8 @@ import Then
 
 class SubmittedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = SubmittedDetailThunViewModel()
-    private let cancelViewModel = CancelSubmittedViewModel()
+    private let viewModel = DetailThunViewModel()
+    private let cancelViewModel = CancelThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -411,7 +411,7 @@ extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
     func firstButtonDidTap() {}
     
     func secondButtonDidTap() {
-        cancelViewModel.postCancelSubmittedButton(lightId: lightId ?? -1) { response in
+        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
             let popupViewController = PopUpViewController(
                 title: "신청 취소되었습니다.",
                 viewType: .oneButton

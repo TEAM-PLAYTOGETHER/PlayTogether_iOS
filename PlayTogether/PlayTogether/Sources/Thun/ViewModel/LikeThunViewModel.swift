@@ -19,7 +19,7 @@ final class LikeThunViewModel {
             .subscribe { [weak self] result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(LikeThunResponse.self)
+                    let responseData = try? response.map(CancelThunResponse.self)
                     guard let data = responseData?.message else { return }
                     let isRemoved = data == "찜하기가 완료되었습니다." ? false : true
                     self?.isRemovedLike = isRemoved

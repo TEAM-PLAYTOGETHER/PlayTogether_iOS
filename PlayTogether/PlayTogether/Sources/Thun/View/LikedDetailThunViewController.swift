@@ -12,7 +12,7 @@ import Then
 
 class LikedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = SubmittedDetailThunViewModel()
+    private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
