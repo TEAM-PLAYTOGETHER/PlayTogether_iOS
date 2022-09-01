@@ -61,4 +61,5 @@ enum ImageCase: String {
     case showIconBlack = "showIconBlack"
     case introduceLabelIcon = "introduceLabelIcon"
     case clearIcon = "clearIcon"
+    case optionIcon = "optionIcon"
 }
