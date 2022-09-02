@@ -20,7 +20,7 @@ extension DeleteThunService: TargetType {
     var path: String {
         switch self {
         case .deleteThunRequest(lightId: let lightId):
-            return "\(APIConstants.postDeleteThun)" + "/\(lightId)"
+            return APIConstants.postDeleteThun + "/\(lightId)"
         }
     }
     
