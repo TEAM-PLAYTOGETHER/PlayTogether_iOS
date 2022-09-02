@@ -212,6 +212,8 @@ private extension ChattingRoomViewController {
     
     @objc
     func keyboardWillShow(notification: Notification) {
+        if viewModel.isKeyboardShown { return }
+        viewModel.isKeyboardShown.toggle()
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         else { return }
@@ -235,6 +237,7 @@ private extension ChattingRoomViewController {
     
     @objc
     func keyboardWillHide(_ sender: Notification) {
+        viewModel.isKeyboardShown.toggle()
         inputTextView.transform = .identity
         tableView.transform = .identity
     }

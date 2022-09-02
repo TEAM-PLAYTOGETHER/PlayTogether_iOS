@@ -13,6 +13,7 @@ import RxMoya
 final class ChattingRoomViewModel {
     private let disposeBag = DisposeBag()
     var existingMessageSubject = BehaviorSubject<[Message?]>(value: [])
+    var isKeyboardShown = false
     let roomID: Int
     let receiverID: Int
     var messageCount: Int {
