@@ -13,7 +13,7 @@ class CreateMeetViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     
     private let progressbar = UIProgressView().then {
-        $0.progress = 0.67
+        $0.progress = 0.5
         $0.progressTintColor = .ptGreen
         $0.backgroundColor = .ptGray03
     }
@@ -42,8 +42,26 @@ class CreateMeetViewController: BaseViewController {
         $0.addLeftPadding()
     }
     
-    private let noticeTitleLabel = UILabel().then {
+    private lazy var checkTitleButton = UIButton().then {
+        $0.setTitle("확인", for: .normal)
+        $0.titleLabel?.textColor = .white
+        $0.titleLabel?.font = .pretendardMedium(size: 12)
+        $0.layer.cornerRadius = 5.0
+        $0.backgroundColor = .ptGray03
+        $0.isEnabled = false
+    }
+    
+    private let noticeWrongTitleLabel = UILabel().then {
+        $0.text = "1 ~ 15자(공백 포함) 한글, 영문, 숫자 사용 가능"
+        $0.font = .pretendardMedium(size: 10)
+        $0.textColor = .ptGray02
+    }
+    
+    private let noticePassTitleLabel = UILabel().then {
+        $0.text = "사용 가능한 동아리명입니다"
+        $0.isHidden = true
         $0.font = .pretendardMedium(size: 12)
+        $0.textColor = .ptCorrect
     }
     
     private let introduceLabel = UILabel().then {
@@ -65,10 +83,13 @@ class CreateMeetViewController: BaseViewController {
     
     private lazy var nextButton = UIButton().then {
         $0.setupBottomButtonUI(title: "다음", size: 16)
+        $0.isButtonEnableUI(check: false)
     }
     
-    let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CreateMeetViewController.self, action: nil)
-    let viewModel = CreateMeetViewModel()
+    private var isEnableMeetingTitle = BehaviorRelay<Bool>(value: false)
+    
+    private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CreateMeetViewController.self, action: nil)
+    private let viewModel = CreateMeetViewModel()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -79,16 +100,6 @@ class CreateMeetViewController: BaseViewController {
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
-    
-    private func nextButtonDidTap() {
-        guard let title = titleTextField.text else { return }
-        guard let introduce = introduceTextField.text else { return }
-        OnboardingDataModel.shared.meetingTitle = title
-        OnboardingDataModel.shared.introduceMessage = introduce
-        
-        let controller = InvitationCodeViewController()
-        navigationController?.pushViewController(controller, animated: true)
-    }
         
     override func setupViews() {
         view.backgroundColor = .white
@@ -97,7 +108,9 @@ class CreateMeetViewController: BaseViewController {
         view.addSubview(headerLabel)
         view.addSubview(titleLabel)
         view.addSubview(titleTextField)
-        view.addSubview(noticeTitleLabel)
+        view.addSubview(checkTitleButton)
+        view.addSubview(noticeWrongTitleLabel)
+        view.addSubview(noticePassTitleLabel)
         view.addSubview(introduceLabel)
         view.addSubview(introduceTextField)
         view.addSubview(nextButton)
@@ -126,13 +139,24 @@ class CreateMeetViewController: BaseViewController {
             $0.height.equalTo(57 * (view.frame.height / 812))
         }
         
-        noticeTitleLabel.snp.makeConstraints {
+        checkTitleButton.snp.makeConstraints {
+            $0.top.bottom.equalTo(titleTextField).inset(13.5)
+            $0.trailing.equalTo(titleTextField.snp.trailing).inset(16)
+            $0.width.equalTo(67 * (UIScreen.main.bounds.width / 375))
+        }
+        
+        noticeWrongTitleLabel.snp.makeConstraints {
+            $0.centerY.equalTo(titleLabel)
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(6)
+        }
+        
+        noticePassTitleLabel.snp.makeConstraints {
             $0.top.equalTo(titleTextField.snp.bottom).offset(10)
             $0.leading.equalToSuperview().inset(24)
         }
         
         introduceLabel.snp.makeConstraints {
-            $0.top.equalTo(noticeTitleLabel.snp.bottom).offset(36)
+            $0.top.equalTo(noticePassTitleLabel.snp.bottom).offset(36)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -151,29 +175,58 @@ class CreateMeetViewController: BaseViewController {
     
     override func setupBinding() {
         nextButton.rx.tap
-            .bind { [weak self] in
-                self?.nextButtonDidTap()
-            }.disposed(by: disposeBag)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let title = self?.titleTextField.text else { return }
+                guard let introduce = self?.introduceTextField.text else { return }
+                OnboardingDataModel.shared.meetingTitle = title
+                OnboardingDataModel.shared.introduceMessage = introduce
+                
+                let controller = InvitationCodeViewController()
+                self?.navigationController?.pushViewController(controller, animated: true)
+            })
+            .disposed(by: disposeBag)
         
         leftButtonItem.rx.tap
-            .bind { [weak self] in
+            .asDriver()
+            .drive(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
-            }.disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
-        titleTextField.rx.text
-            .orEmpty
-            .subscribe(onNext: { [weak self] in
+        titleTextField.rx.text.orEmpty
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard $0.count > 0 else {
+                    self?.checkTitleButton.isEnabled = false
+                    self?.checkTitleButton.backgroundColor = .ptGray03
+                    return
+                }
+                self?.checkTitleButton.isEnabled = true
+                self?.checkTitleButton.backgroundColor = .ptBlack01
+                
                 guard $0.count > 15 else { return }
                 self?.titleTextField.text = String(self?.titleTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
         
+        titleTextField.rx.controlEvent(.editingChanged)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.noticePassTitleLabel.isHidden = true
+                self?.noticeWrongTitleLabel.textColor = .ptGray02
+                self?.isEnableMeetingTitle.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         titleTextField.rx.controlEvent(.touchDown)
-            .subscribe(onNext: { [weak self] in
+            .asDriver()
+            .drive(onNext: { [weak self] in
                 self?.titleTextField.layer.borderColor = UIColor.ptBlack02.cgColor
             }).disposed(by: disposeBag)
 
         titleTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
-            .subscribe(onNext: { [weak self] in
+            .asDriver()
+            .drive(onNext: { [weak self] in
                 guard let textCount = self?.titleTextField.text?.count else { return }
                 guard textCount > 0 else {
                     self?.titleTextField.layer.borderColor = UIColor.ptGray03.cgColor
@@ -183,12 +236,14 @@ class CreateMeetViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         introduceTextField.rx.controlEvent(.touchDown)
-            .subscribe(onNext: { [weak self] in
+            .asDriver()
+            .drive(onNext: { [weak self] in
                 self?.introduceTextField.layer.borderColor = UIColor.ptBlack02.cgColor
             }).disposed(by: disposeBag)
         
         introduceTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
-            .subscribe(onNext: { [weak self] in
+            .asDriver()
+            .drive(onNext: { [weak self] in
                 guard let textCount = self?.introduceTextField.text?.count else { return }
                 guard textCount > 0 else {
                     self?.introduceTextField.layer.borderColor = UIColor.ptGray03.cgColor
@@ -197,9 +252,9 @@ class CreateMeetViewController: BaseViewController {
                 self?.introduceTextField.layer.borderColor = UIColor.ptGray01.cgColor
             }).disposed(by: disposeBag)
         
-        introduceTextField.rx.text
-            .orEmpty
-            .subscribe(onNext: { [weak self] in
+        introduceTextField.rx.text.orEmpty
+            .asDriver()
+            .drive(onNext: { [weak self] in
                 guard $0.count > 15 else { return }
                 self?.introduceTextField.text = String(self?.introduceTextField.text?.dropLast() ?? "")
             }).disposed(by: disposeBag)
@@ -208,25 +263,36 @@ class CreateMeetViewController: BaseViewController {
         let regularExpressionDriver = viewModel.regularExpressionCheck(input: regularExpressionInput)
         
         regularExpressionDriver.titleTextCheck
+            .asDriver()
             .drive(onNext: { [weak self] in
                 guard self?.titleTextField.text?.isEmpty == false else {
-                    self?.noticeTitleLabel.text = "1~15(공백포함) 이내 한글, 영문, 숫자 사용 가능"
-                    self?.noticeTitleLabel.textColor = .ptGray02
+                    self?.noticeWrongTitleLabel.textColor = .ptGray02
+                    self?.noticePassTitleLabel.isHidden = true
                     return
                 }
-                self?.noticeTitleLabel.text = $0 ? "사용 가능한 동아리명입니다" : "한글, 영문, 숫자만 사용 가능합니다"
-                self?.noticeTitleLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
-            }).disposed(by: disposeBag)
+                self?.noticeWrongTitleLabel.textColor = $0 ? .ptGray02 : .ptIncorrect
+                self?.noticePassTitleLabel.isHidden = !$0
+                self?.checkTitleButton.isEnabled = $0
+                self?.checkTitleButton.backgroundColor = $0 ? .ptBlack01 : .ptGray03
+                
+            })
+            .disposed(by: disposeBag)
         
-        let isTextEmptyInput = CreateMeetViewModel.Input(meetingTitleText: titleTextField.rx.text.orEmpty.asObservable(),
+        checkTitleButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.isEnableMeetingTitle.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        let isTextEmptyInput = CreateMeetViewModel.Input(checkMeetingTitle: isEnableMeetingTitle.asObservable(),
                                                         introduceText: introduceTextField.rx.text.orEmpty.asObservable())
         let isTextEmptyDriver = viewModel.isNextButtonEnable(input: isTextEmptyInput)
         
         isTextEmptyDriver.nextButtonEnableCheck
             .drive(onNext: { [weak self] in
-                self?.nextButton.isEnabled = $0
-                self?.nextButton.backgroundColor = $0 ? .ptGreen : .ptGray03
-                self?.nextButton.layer.borderColor = $0 ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
-            }).disposed(by: disposeBag)
+                self?.nextButton.isButtonEnableUI(check: $0)
+            })
+            .disposed(by: disposeBag)
     }
 }
