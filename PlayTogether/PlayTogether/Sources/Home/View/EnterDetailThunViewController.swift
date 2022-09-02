@@ -14,7 +14,6 @@ class EnterDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
-    private let superViewModel = ThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
     var lightId: Int?
@@ -242,9 +241,9 @@ class EnterDetailThunViewController: BaseViewController {
         }
         
         imageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(textInfoLabel.snp.bottom)
+            $0.top.equalTo(textInfoLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(textInfoLabel)
-            $0.height.equalTo(1)
+            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
             $0.bottom.equalToSuperview().offset(-20)
         }
         
@@ -273,10 +272,10 @@ class EnterDetailThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
                 response[0].datumDescription ?? "",
-                response[0].place ?? "장소 미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
@@ -298,14 +297,14 @@ class EnterDetailThunViewController: BaseViewController {
                     ) as? DetailThunImageCollectionViewCell
                     else { return UICollectionViewCell() }
                     
-                    if item.isEmpty == false {
+                    if item.isEmpty {
                         self.imageCollectionView.snp.updateConstraints {
-                            $0.top.equalTo(self.textInfoLabel.snp.bottom).offset(20)
-                            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
+                            $0.top.equalTo(self.textInfoLabel.snp.bottom)
+                            $0.height.equalTo(1)
                         }
-                        cell.imageView.loadImage(url: image)
-                        self.imageCount = [image].count
                     }
+                    cell.imageView.loadImage(url: image)
+                    self.imageCount = [image].count
                     return cell
                 }
                 .disposed(by: self.disposeBag)
@@ -391,8 +390,7 @@ extension EnterDetailThunViewController: PopUpConfirmDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
-            guard let lightID = self.lightId else { return }
-            self.navigationController?.pushViewController(CompleteThunViewController(lightID: lightID), animated: true)
+            self.navigationController?.pushViewController(CompleteThunViewController(lightID: self.lightId ?? -1), animated: true)
         }
     }
 }
