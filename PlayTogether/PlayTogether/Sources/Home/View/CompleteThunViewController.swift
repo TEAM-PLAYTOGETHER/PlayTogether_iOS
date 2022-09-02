@@ -1,8 +1,6 @@
 import UIKit
 import RxSwift
 
-// MARK: tableView rx로 바꿀 때, memberTableView의 높이 값도 변경해줘야함
-// MARK: SubmittedDetailThunViewController의 memberTableView setupBinding()부분을 참고해서 바꾸면 됌
 class CompleteThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
 
@@ -23,7 +21,7 @@ class CompleteThunViewController: BaseViewController {
     }
 
     private let completeLabel = UILabel().then {
-        $0.text = "번개 오픈을\n완료했어요!"
+        $0.text = "번개 신청을\n완료했어요!"
         $0.numberOfLines = 0
         $0.font = .pretendardRegular(size: 22)
         $0.textColor = .white
