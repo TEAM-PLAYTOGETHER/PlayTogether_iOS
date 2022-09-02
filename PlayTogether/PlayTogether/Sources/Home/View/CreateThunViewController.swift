@@ -694,7 +694,7 @@ final class CreateThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.viewModel.createThunRequest(completion: { response in
-                    self?.navigationController?.pushViewController(CompleteThunViewController(), animated: true)
+                    self?.navigationController?.pushViewController(CompleteThunViewController(lightID: response[0].id), animated: true)
                 })
             })
             .disposed(by: disposeBag)
