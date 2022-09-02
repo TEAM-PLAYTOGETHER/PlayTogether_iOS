@@ -1,8 +1,6 @@
 import UIKit
 import RxSwift
 
-// MARK: tableView rx로 바꿀 때, memberTableView의 높이 값도 변경해줘야함
-// MARK: SubmittedDetailThunViewController의 memberTableView setupBinding()부분을 참고해서 바꾸면 됌
 class CompleteThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
 
@@ -23,7 +21,7 @@ class CompleteThunViewController: BaseViewController {
     }
 
     private let completeLabel = UILabel().then {
-        $0.text = "번개 오픈을\n완료했어요!"
+        $0.text = "번개 신청을\n완료했어요!"
         $0.numberOfLines = 0
         $0.font = .pretendardRegular(size: 22)
         $0.textColor = .white
@@ -107,7 +105,7 @@ class CompleteThunViewController: BaseViewController {
     }
 
     private lazy var memberTableView = UITableView().then {
-        $0.register(SubmittedDetailThunTableViewCell.self, forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
+        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
@@ -224,7 +222,7 @@ extension CompleteThunViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SubmittedDetailThunTableViewCell", for: indexPath) as! SubmittedDetailThunTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DetailThunMemberTableViewCell", for: indexPath) as! DetailThunMemberTableViewCell
         return cell
     }
 }

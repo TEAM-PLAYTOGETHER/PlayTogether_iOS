@@ -10,17 +10,18 @@ import RxSwift
 import SnapKit
 import Then
 
-final class LikedDetailThunViewController: BaseViewController {
+class EnterDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let superViewModel = ThunViewModel()
+    private let cancelViewModel = CancelThunViewModel()
+    private let existThunViewModel = ExistThunViewModel()
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int) {
         self.lightId = lightID
-        self.superViewModel = superViewModel
         super.init()
     }
     
@@ -31,6 +32,10 @@ final class LikedDetailThunViewController: BaseViewController {
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
         $0.showsVerticalScrollIndicator = false
+    }
+    
+    private let enterButton = UIButton().then {
+        $0.isButtonEnableUI(check: true)
     }
     
     private let contentView = UIView()
@@ -145,24 +150,6 @@ final class LikedDetailThunViewController: BaseViewController {
         $0.setUnderline()
     }
     
-    private let grayLineView = UIView().then {
-        $0.backgroundColor = .ptGray03
-    }
-    
-    private var memberCntLabel = UILabel().then {
-        $0.textColor = .ptBlack01
-        $0.font = .pretendardBold(size: 16)
-    }
-    
-    private lazy var memberTableView = UITableView().then {
-        $0.register(DetailThunMemberTableViewCell.self,
-                    forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
-        $0.separatorStyle = .none
-        $0.showsVerticalScrollIndicator = false
-        $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
-        $0.isScrollEnabled = false
-    }
-    
     override func setupViews() {
         view.backgroundColor = .white
         tabBarController?.tabBar.isHidden = true
@@ -170,6 +157,7 @@ final class LikedDetailThunViewController: BaseViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
         
         view.addSubview(scrollView)
+        view.addSubview(enterButton)
         
         scrollView.addSubview(contentView)
         
@@ -179,9 +167,6 @@ final class LikedDetailThunViewController: BaseViewController {
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
         contentView.addSubview(alertButton)
-        contentView.addSubview(grayLineView)
-        contentView.addSubview(memberCntLabel)
-        contentView.addSubview(memberTableView)
         
         blackView.addSubview(titleLabel)
         blackView.addSubview(dateLabel)
@@ -196,7 +181,15 @@ final class LikedDetailThunViewController: BaseViewController {
     
     override func setupLayouts() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        enterButton.snp.makeConstraints {
+            $0.top.equalTo(scrollView.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(56 * UIScreen.main.bounds.height/812)
         }
         
         contentView.snp.makeConstraints {
@@ -271,22 +264,6 @@ final class LikedDetailThunViewController: BaseViewController {
         alertButton.snp.makeConstraints {
             $0.top.equalTo(blackView.snp.bottom).offset(15)
             $0.trailing.equalToSuperview().offset(-33)
-        }
-        
-        grayLineView.snp.makeConstraints {
-            $0.size.equalTo(CGSize(width: UIScreen.main.bounds.width, height: 8))
-            $0.top.equalTo(alertButton.snp.bottom).offset(40)
-        }
-        
-        memberCntLabel.snp.makeConstraints {
-            $0.top.equalTo(grayLineView.snp.bottom).offset(20)
-            $0.leading.trailing.equalTo(blackView)
-        }
-        
-        memberTableView.snp.makeConstraints {
-            $0.top.equalTo(memberCntLabel.snp.bottom).offset(10)
-            $0.leading.trailing.equalTo(blackView)
-            $0.height.equalTo(50)
             $0.bottom.equalToSuperview()
         }
     }
@@ -309,23 +286,6 @@ final class LikedDetailThunViewController: BaseViewController {
         
         likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
             self.likeButton.isSelected = $0
-        }
-        
-        viewModel.getMemberList(lightId: lightId ?? -1) { member in
-            Observable.of(member)
-                .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
-                    guard let cell = self.memberTableView.dequeueReusableCell(
-                        withIdentifier: "DetailThunMemberTableViewCell",
-                        for: IndexPath(row: row, section: 0)
-                    ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
-                    
-                    self.memberTableView.snp.updateConstraints {
-                        $0.height.equalTo(self.memberTableView.contentSize.height)
-                    }
-                    cell.setupData(item.name)
-                    return cell
-                }
-                .disposed(by: self.disposeBag)
         }
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
@@ -354,12 +314,6 @@ final class LikedDetailThunViewController: BaseViewController {
         backButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                if self?.likeThunViewModel.isRemovedLike == true {
-                    guard let originData = try? self?.superViewModel?.likedThunList.value()
-                    else { return }
-                    self?.superViewModel?.likedThunList.onNext(originData.filter {
-                        $0?.lightID != self?.lightId })
-                }
                 self?.navigationController?.popViewController(animated: true)
                 self?.tabBarController?.tabBar.isHidden = false
             })
@@ -382,10 +336,30 @@ final class LikedDetailThunViewController: BaseViewController {
                 self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        enterButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                let popupViewController = PopUpViewController(title: "번개에 참여할까요?", viewType: .twoButton)
+                self?.present(popupViewController, animated: false, completion: nil)
+                popupViewController.delegate = self
+            })
+            .disposed(by: disposeBag)
+        
+        existThunViewModel.getExistThun(lightId: lightId ?? -1) {_ in
+            if self.existThunViewModel.isExistThun == true {
+                self.enterButton.isHidden = true
+                self.enterButton.snp.updateConstraints {
+                    $0.height.equalTo(0)
+                }
+            } else {
+                self.enterButton.isHidden = false
+            }
+        }
     }
 }
 
-extension LikedDetailThunViewController {
+extension EnterDetailThunViewController {
     func setupData(
         _ title: String,
         _ date: String,
@@ -409,6 +383,16 @@ extension LikedDetailThunViewController {
         categoryLabel.changeFontColor(targetString: "카테고리", color: .ptGreen)
         textInfoLabel.text = description
         nicknameLabel.text = name
-        memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
+        enterButton.setupBottomButtonUI(title: "신청하기 (\(lightMemberCnt)/\(peopleCnt))", size: 16)
+    }
+}
+
+extension EnterDetailThunViewController: PopUpConfirmDelegate {
+    func oneButtonDidTap() {}
+    func firstButtonDidTap() {}
+    func secondButtonDidTap() {
+        cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
+            self.navigationController?.pushViewController(CompleteThunViewController(), animated: true)
+        }
     }
 }

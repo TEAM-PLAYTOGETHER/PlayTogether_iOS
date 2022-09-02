@@ -58,10 +58,10 @@ class LikedThunViewController: BaseViewController {
                    
                    cell.setupData(
                     item.title,
-                    item.date ?? "",
-                    item.time ?? "",
+                    item.date ?? "날짜미정",
+                    item.time ?? "시간미정",
                     item.peopleCnt ?? 0,
-                    item.place ?? "",
+                    item.place ?? "장소미정",
                     item.lightMemberCnt,
                     item.category,
                     item.scpCnt

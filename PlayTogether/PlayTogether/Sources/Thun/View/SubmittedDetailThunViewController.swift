@@ -10,10 +10,10 @@ import RxSwift
 import SnapKit
 import Then
 
-class SubmittedDetailThunViewController: BaseViewController {
+final class SubmittedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = SubmittedDetailThunViewModel()
-    private let cancelViewModel = CancelSubmittedViewModel()
+    private let viewModel = DetailThunViewModel()
+    private let cancelViewModel = CancelThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -116,7 +116,7 @@ class SubmittedDetailThunViewController: BaseViewController {
         $0.collectionViewLayout = collectionViewLayout
         
         $0.backgroundColor = .ptBlack01
-        $0.register(SubmittedDetailThunCollectionViewCell.self, forCellWithReuseIdentifier: "SubmittedDetailThunCollectionViewCell")
+        $0.register(DetailThunImageCollectionViewCell.self, forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
     }
@@ -138,7 +138,7 @@ class SubmittedDetailThunViewController: BaseViewController {
     }
     
     private lazy var memberTableView = UITableView().then {
-        $0.register(SubmittedDetailThunTableViewCell.self, forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
+        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
@@ -263,9 +263,9 @@ class SubmittedDetailThunViewController: BaseViewController {
         }
         
         imageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(textInfoLabel.snp.bottom)
+            $0.top.equalTo(textInfoLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(textInfoLabel)
-            $0.height.equalTo(1)
+            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
             $0.bottom.equalToSuperview().offset(-20)
         }
         
@@ -325,9 +325,9 @@ class SubmittedDetailThunViewController: BaseViewController {
             Observable.of(member)
                 .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
                     guard let cell = self.memberTableView.dequeueReusableCell(
-                        withIdentifier: "SubmittedDetailThunTableViewCell",
+                        withIdentifier: "DetailThunMemberTableViewCell",
                         for: IndexPath(row: row, section: 0)
-                    ) as? SubmittedDetailThunTableViewCell else { return UITableViewCell() }
+                    ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
                     
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
@@ -339,23 +339,23 @@ class SubmittedDetailThunViewController: BaseViewController {
         }
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
-            Observable.of(image)
+            Observable.of([image])
                 .bind(to: self.imageCollectionView.rx.items) {
                     _, row, item -> UICollectionViewCell in
                     guard let cell = self.imageCollectionView.dequeueReusableCell(
-                        withReuseIdentifier: "SubmittedDetailThunCollectionViewCell",
+                        withReuseIdentifier: "DetailThunImageCollectionViewCell",
                         for: IndexPath(row: row, section: 0)
-                    ) as? SubmittedDetailThunCollectionViewCell
+                    ) as? DetailThunImageCollectionViewCell
                     else { return UICollectionViewCell() }
                     
-                    if let cellImage = image[row] {
+                    if item.isEmpty {
                         self.imageCollectionView.snp.updateConstraints {
-                            $0.top.equalTo(self.textInfoLabel.snp.bottom).offset(20)
-                            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
+                            $0.top.equalTo(self.textInfoLabel.snp.bottom)
+                            $0.height.equalTo(1)
                         }
-                        cell.imageView.loadImage(url: cellImage)
-                        self.imageCount = image.count
                     }
+                    cell.imageView.loadImage(url: image)
+                    self.imageCount = [image].count
                     return cell
                 }
                 .disposed(by: self.disposeBag)
@@ -411,7 +411,7 @@ extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
     func firstButtonDidTap() {}
     
     func secondButtonDidTap() {
-        cancelViewModel.postCancelSubmittedButton(lightId: lightId ?? -1) { response in
+        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
             let popupViewController = PopUpViewController(
                 title: "신청 취소되었습니다.",
                 viewType: .oneButton

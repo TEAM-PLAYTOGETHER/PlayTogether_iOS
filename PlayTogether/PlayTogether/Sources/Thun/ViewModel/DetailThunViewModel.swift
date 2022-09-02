@@ -9,16 +9,16 @@ import Foundation
 import Moya
 import RxSwift
 
-final class SubmittedDetailThunViewModel {
+final class DetailThunViewModel {
     private lazy var disposeBag = DisposeBag()
     
     func getDetailThunList(lightId: Int, completion: @escaping ([DetailThunList]) -> Void) {
-        let provider = MoyaProvider<SubmittedDetailThunService>()
+        let provider = MoyaProvider<DetailThunService>()
         provider.rx.request(.detailThunRequest(lightId: lightId))
             .subscribe { result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(SubmittedDetailThunResponse.self)
+                    let responseData = try? response.map(DetailThunResponse.self)
                           guard let data = responseData?.data else { return }
                           completion(data)
                 case let .failure(error):
@@ -29,12 +29,12 @@ final class SubmittedDetailThunViewModel {
     }
     
     func getMemberList(lightId: Int, completion: @escaping([Member]) -> Void) {
-        let provider = MoyaProvider<SubmittedDetailThunService>()
+        let provider = MoyaProvider<DetailThunService>()
         provider.rx.request(.detailThunRequest(lightId: lightId))
             .subscribe { result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(SubmittedDetailThunResponse.self)
+                    let responseData = try? response.map(DetailThunResponse.self)
                     guard let data = responseData?.data[0].members else { return }
                     completion(data)
                 case let .failure(error):
@@ -44,21 +44,15 @@ final class SubmittedDetailThunViewModel {
             .disposed(by: disposeBag)
     }
     
-    func getImageList(lightId: Int, completion: @escaping([String?]) -> Void) {
-        let provider = MoyaProvider<SubmittedDetailThunService>()
+    func getImageList(lightId: Int, completion: @escaping(String) -> Void) {
+        let provider = MoyaProvider<DetailThunService>()
         provider.rx.request(.detailThunRequest(lightId: lightId))
             .subscribe { result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(SubmittedDetailThunResponse.self)
+                    let responseData = try? response.map(DetailThunResponse.self)
                     guard let data = responseData?.data[0].image else { return }
-                    
-                    var imageUrl = [String?]()
-                    data.forEach {
-                        imageUrl.append($0)
-                    }
-                    completion(imageUrl)
-                    
+                    completion(data)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

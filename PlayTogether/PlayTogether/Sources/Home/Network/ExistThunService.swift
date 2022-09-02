@@ -3,32 +3,32 @@
 import Foundation
 import Moya
 
-enum ExistLikeThunService {
-    case existLikeThunRequest(lightId: Int)
+enum ExistThunService {
+    case existThunRequest(lightId: Int)
 }
 
-extension ExistLikeThunService: TargetType {
+extension ExistThunService: TargetType {
     var baseURL: URL {
         return URL(string: APIConstants.baseUrl)!
     }
     
     var path: String {
         switch self {
-        case .existLikeThunRequest(let lightId):
-            return APIConstants.getExistLikeThun + "/\(lightId)"
+        case .existThunRequest(let lightId):
+            return APIConstants.getExistThun + "/\(lightId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .existLikeThunRequest:
+        case .existThunRequest:
             return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .existLikeThunRequest:
+        case .existThunRequest:
             return .requestPlain
         }
     }
@@ -41,4 +41,5 @@ extension ExistLikeThunService: TargetType {
         ]
     }
 }
+
 

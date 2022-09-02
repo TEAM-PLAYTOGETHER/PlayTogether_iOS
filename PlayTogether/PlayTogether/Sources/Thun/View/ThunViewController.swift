@@ -88,6 +88,7 @@ final class ThunViewController: BaseViewController {
     
     private func setupSuperView() {
         submittedThunViewController.setupSuperView(superView: self)
+        openedThunViewController.setupSuperView(superView: self)
         likedThunViewController.setupSuperView(superView: self)
     }
     
