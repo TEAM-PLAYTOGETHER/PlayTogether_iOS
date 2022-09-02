@@ -6,8 +6,9 @@ final class CompleteThunViewController: BaseViewController {
     private let viewModel = DetailThunViewModel()
     var lightId: Int?
     
-    init(lightID: Int) {
+    init(lightID: Int, completeText: String) {
         self.lightId = lightID
+        self.completeLabel.text = completeText
         super.init()
     }
     
@@ -32,7 +33,6 @@ final class CompleteThunViewController: BaseViewController {
     }
 
     private let completeLabel = UILabel().then {
-        $0.text = "번개 신청을\n완료했어요!"
         $0.numberOfLines = 0
         $0.font = .pretendardRegular(size: 22)
         $0.textColor = .white
@@ -109,7 +109,7 @@ final class CompleteThunViewController: BaseViewController {
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
         $0.isScrollEnabled = false
     }
-
+    
     override func setupViews() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: exitButton)
