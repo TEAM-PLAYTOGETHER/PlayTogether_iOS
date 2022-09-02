@@ -14,7 +14,6 @@ class EnterDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
-    private let superViewModel = ThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
     var lightId: Int?
@@ -273,10 +272,10 @@ class EnterDetailThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
                 response[0].datumDescription ?? "",
-                response[0].place ?? "장소 미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
@@ -315,7 +314,6 @@ class EnterDetailThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
-                self?.tabBarController?.tabBar.isHidden = false
             })
             .disposed(by: disposeBag)
         
@@ -392,7 +390,7 @@ extension EnterDetailThunViewController: PopUpConfirmDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
-            self.navigationController?.pushViewController(CompleteThunViewController(), animated: true)
+            self.navigationController?.pushViewController(CompleteThunViewController(lightID: self.lightId ?? -1), animated: true)
         }
     }
 }
