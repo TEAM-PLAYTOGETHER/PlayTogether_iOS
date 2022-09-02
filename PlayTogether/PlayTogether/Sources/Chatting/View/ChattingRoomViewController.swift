@@ -11,7 +11,7 @@ import RxSwift
 final class ChattingRoomViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: ChattingRoomViewModel
-    private let socket = SocketIOManager.shared
+    private let socketManager = SocketIOManager.shared
     
     private let leftBarItem = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -82,7 +82,8 @@ final class ChattingRoomViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotification()
-        socket.reqEnterRoom(receiverID: viewModel.receiverID, roomID: viewModel.roomID)
+        subscribeNewMessage()
+        socketManager.reqEnterRoom(receiverID: viewModel.receiverID, roomID: viewModel.roomID)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -93,7 +94,7 @@ final class ChattingRoomViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardNotification()
-        socket.reqExitRoom()
+        socketManager.reqExitRoom()
     }
     
     override func setupViews() {
@@ -177,7 +178,7 @@ final class ChattingRoomViewController: BaseViewController {
             .asDriver(onErrorDriveWith: .empty())
             .drive(onNext: { _ in
                 guard let text = self.textView.text else { return }
-                self.socket.reqSendMessage(text)
+                self.socketManager.reqSendMessage(text)
                 self.sendMessage(text)
                 self.textView.text = ""
             })
@@ -186,10 +187,12 @@ final class ChattingRoomViewController: BaseViewController {
 }
 
 private extension ChattingRoomViewController {
+    //MARK: - UI
     func setupNavigationBarTitle(_ userName: String) {
         title = userName
     }
     
+    //MARK: - Notification
     func registerKeyboardNotification() {
         NotificationCenter.default.addObserver(
             self,
@@ -227,7 +230,6 @@ private extension ChattingRoomViewController {
             y: safeAreaBottomHeight - keyboardHeight
         )
         
-        // 추후 수정 예정
         guard endLine < lastCellPosition else { return }
         tableView.transform = CGAffineTransform(
             translationX: 0,
@@ -256,12 +258,13 @@ private extension ChattingRoomViewController {
         return rectOfCellInSuperview.origin.y + rectOfCellInTableView.size.height
     }
     
+    //MARK: - Chatting
     func sendMessage(_ text: String) {
         //TODO: 임시적으로 사용, 추후 변경 예정
         let message = Message(
             messageID: nil,
             send: true,
-            read: nil,
+            read: false,
             createdAt: "2022-09-03T12:15:57.641Z",
             content: text
         )
@@ -289,5 +292,21 @@ private extension ChattingRoomViewController {
             at: .bottom,
             animated: false
         )
+    }
+    
+    func subscribeNewMessage() {
+        socketManager.socket.subscribeOn("newMessageToRoom") { response in
+            guard let messageString = response["content"] as? String else { return }
+            
+            //TODO: 변경 예정
+            let message = Message(
+                messageID: nil,
+                send: false,
+                read: true,
+                createdAt: "2022-09-03T12:15:57.641Z",
+                content: messageString
+            )
+            self.updateChat(message)
+        }
     }
 }

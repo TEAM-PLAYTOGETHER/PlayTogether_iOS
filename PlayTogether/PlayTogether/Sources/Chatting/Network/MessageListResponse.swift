@@ -20,7 +20,7 @@ struct MessageList: Decodable {
 struct Message: Decodable {
     let messageID: Int?
     let send: Bool
-    let read: Bool?
+    let read: Bool
     let createdAt, content: String
 
     enum CodingKeys: String, CodingKey {

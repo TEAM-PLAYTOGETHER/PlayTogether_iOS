@@ -833,7 +833,7 @@
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				40EE01C128BFC7D700DE46C8 /* ChattingListViewModel.swift in Sources */,
 				B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */,
-				DD36D3A028A67D0700C9851A /* SubmittedDetailThunCollectionViewCell.swift in Sources */,
+				DD36D3A028A67D0700C9851A /* DetailThunImageCollectionViewCell.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
 				40EE01BC28BFC5E200DE46C8 /* ChattingService.swift in Sources */,
 				408EE3E228BAAF290012C642 /* PaddingLabel.swift in Sources */,

@@ -14,10 +14,6 @@ final class ChattingListViewModel {
     private let disposeBag = DisposeBag()
     var chattingRoomListSubject = BehaviorSubject<[ChattingRoom?]>(value: [])
     
-    init () {
-        fetchChattingRoomList()
-    }
-    
     func fetchChattingRoomList() {
         let provider = MoyaProvider<ChattingService>()
         provider.rx.request(.chattingListRequest)

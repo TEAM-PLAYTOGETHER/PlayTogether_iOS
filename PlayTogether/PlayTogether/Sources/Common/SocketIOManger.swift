@@ -16,7 +16,7 @@ final class SocketIOManager: NSObject {
         config: [.log(true), .compress, .extraHeaders(["Authorization": APIConstants.token])]
     )
     
-    private var socket: SocketIOClient {
+    var socket: SocketIOClient {
         return manager.defaultSocket
     }
     
@@ -51,6 +51,19 @@ final class SocketIOManager: NSObject {
     
     func reqExitRoom() {
         socket.emit("reqExitRoom")
+    }
+}
+
+extension SocketIOClient {
+    func subscribeOn(_ event: String, callback: @escaping ([String: Any]) -> Void) {
+        on(event) { (data, _) in
+            guard let dataString = data[0] as? String,
+                  let data = dataString.data(using: .utf8),
+                  let response = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            else { return }
+
+            callback(response)
+        }
     }
 }
 

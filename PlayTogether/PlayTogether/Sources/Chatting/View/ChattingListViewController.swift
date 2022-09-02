@@ -26,6 +26,11 @@ final class ChattingListViewController: BaseViewController {
         SocketIOManager.shared.establishConnection()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchChattingRoomList()
+    }
+    
     override func setupViews() {
         title = "채팅"
         view.backgroundColor = .white
