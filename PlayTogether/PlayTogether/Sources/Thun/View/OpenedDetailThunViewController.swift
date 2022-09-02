@@ -1,19 +1,20 @@
 //
-//  DetailThunViewController.swift
+//  OpenedDetailThunViewController.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/08/12.
+//  Created by 김수정 on 2022/08/27.
 //
 
 import UIKit
 import RxSwift
 import SnapKit
 import Then
+import RxCocoa
 
-final class LikedDetailThunViewController: BaseViewController {
+final class OpenedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
-    private let likeThunViewModel = LikeThunViewModel()
+    private let deleteThunViewModel = DeleteThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -28,21 +29,24 @@ final class LikedDetailThunViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let navigationBarView = UIView().then {
+        $0.backgroundColor = .ptBlack01
+    }
+    
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
+    
+    private let optionButton = UIButton().then {
+        $0.setImage(.ptImage(.optionIcon), for: .normal)
+    }
+    
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
         $0.showsVerticalScrollIndicator = false
     }
     
     private let contentView = UIView()
-    
-    private let backButton = UIButton().then {
-        $0.setImage(.ptImage(.backIcon), for: .normal)
-    }
-    
-    private let likeButton = UIButton().then {
-        $0.setImage(.ptImage(.navLikeDefaultIcon), for: .normal)
-        $0.setImage(.ptImage(.navLikeFilledGreenIcon), for: .selected)
-    }
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
@@ -94,9 +98,7 @@ final class LikedDetailThunViewController: BaseViewController {
         $0.textColor = .white
     }
     
-    private lazy var labelStackView = UIStackView(
-        arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]
-    ).then {
+    private lazy var labelStackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]).then {
         $0.axis = .vertical
         $0.spacing = 22
     }
@@ -118,10 +120,7 @@ final class LikedDetailThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
-    private lazy var imageCollectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
-    ).then {
+    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let collectionViewLayout = UICollectionViewFlowLayout()
         let width = (UIScreen.main.bounds.width / 375) * 273
         let height = (UIScreen.main.bounds.height / 812) * 91
@@ -130,19 +129,9 @@ final class LikedDetailThunViewController: BaseViewController {
         $0.collectionViewLayout = collectionViewLayout
         
         $0.backgroundColor = .ptBlack01
-        $0.register(
-            DetailThunImageCollectionViewCell.self,
-            forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell"
-        )
+        $0.register(DetailThunImageCollectionViewCell.self, forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell")
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
-    }
-    
-    private let alertButton = UIButton().then {
-        $0.setTitle("게시글 신고", for: .normal)
-        $0.setTitleColor(.ptGray01, for: .normal)
-        $0.titleLabel?.font = .pretendardRegular(size: 12)
-        $0.setUnderline()
     }
     
     private let grayLineView = UIView().then {
@@ -155,21 +144,52 @@ final class LikedDetailThunViewController: BaseViewController {
     }
     
     private lazy var memberTableView = UITableView().then {
-        $0.register(DetailThunMemberTableViewCell.self,
-                    forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
+        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
         $0.isScrollEnabled = false
     }
     
-    override func setupViews() {
-        view.backgroundColor = .white
-        tabBarController?.tabBar.isHidden = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+    private let editButton = UIButton().then {
+        $0.setTitle("수정", for: .normal)
+        $0.setTitleColor(.ptBlack01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 14)
+        let border = UIView()
+        border.backgroundColor = .ptBlack01
+        border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        border.frame = CGRect(x: 0, y: 0, width: $0.frame.width, height: 1)
+        $0.addSubview(border)
+    }
+    
+    private let deleteButton = UIButton().then {
+        $0.setTitle("삭제", for: .normal)
+        $0.setTitleColor(.ptBlack01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 14)
+    }
+    
+    private lazy var buttonStackView = UIStackView(arrangedSubviews: [editButton,deleteButton]).then {
+        $0.axis = .vertical
+        $0.spacing = 0
+        $0.backgroundColor = .white
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.ptBlack01.cgColor
+        $0.layer.cornerRadius = 5
+        $0.distribution = .fillEqually
+        $0.isHidden = true
+    }
         
+    override func setupViews() {
+        tabBarController?.tabBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = .white
+        
+        view.addSubview(navigationBarView)
         view.addSubview(scrollView)
+        view.addSubview(buttonStackView)
+        
+        navigationBarView.addSubview(backButton)
+        navigationBarView.addSubview(optionButton)
         
         scrollView.addSubview(contentView)
         
@@ -178,7 +198,6 @@ final class LikedDetailThunViewController: BaseViewController {
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
-        contentView.addSubview(alertButton)
         contentView.addSubview(grayLineView)
         contentView.addSubview(memberCntLabel)
         contentView.addSubview(memberTableView)
@@ -195,8 +214,34 @@ final class LikedDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        navigationBarView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            let height = UIScreen.main.bounds.height/812 * 44
+            let navigationBarHeight = navigationController?.navigationBar.frame.height
+            $0.height.equalTo(height+navigationBarHeight!)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-16)
+            $0.leading.equalTo(navigationBarView.snp.leading).offset(18)
+        }
+        
+        optionButton.snp.makeConstraints {
+            $0.bottom.equalTo(backButton.snp.bottom)
+            $0.trailing.equalTo(navigationBarView.snp.trailing).offset(-20)
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-54)
+            $0.bottom.equalTo(navigationBarView.snp.bottom).offset(40)
+            $0.width.equalTo((UIScreen.main.bounds.width/375)*113)
+            $0.height.equalTo((UIScreen.main.bounds.height/812)*82)
+        }
+        
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(navigationBarView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
@@ -268,14 +313,9 @@ final class LikedDetailThunViewController: BaseViewController {
             }
         }
         
-        alertButton.snp.makeConstraints {
-            $0.top.equalTo(blackView.snp.bottom).offset(15)
-            $0.trailing.equalToSuperview().offset(-33)
-        }
-        
         grayLineView.snp.makeConstraints {
             $0.size.equalTo(CGSize(width: UIScreen.main.bounds.width, height: 8))
-            $0.top.equalTo(alertButton.snp.bottom).offset(40)
+            $0.top.equalTo(blackView.snp.bottom).offset(40)
         }
         
         memberCntLabel.snp.makeConstraints {
@@ -307,10 +347,6 @@ final class LikedDetailThunViewController: BaseViewController {
             )
         }
         
-        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
-            self.likeButton.isSelected = $0
-        }
-        
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
             Observable.of(member)
                 .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
@@ -329,7 +365,7 @@ final class LikedDetailThunViewController: BaseViewController {
         }
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
-            Observable.of([image])
+            Observable.just([image])
                 .bind(to: self.imageCollectionView.rx.items) {
                     _, row, item -> UICollectionViewCell in
                     guard let cell = self.imageCollectionView.dequeueReusableCell(
@@ -337,7 +373,7 @@ final class LikedDetailThunViewController: BaseViewController {
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunImageCollectionViewCell
                     else { return UICollectionViewCell() }
-                    
+
                     if item.isEmpty {
                         self.imageCollectionView.snp.updateConstraints {
                             $0.top.equalTo(self.textInfoLabel.snp.bottom)
@@ -350,28 +386,39 @@ final class LikedDetailThunViewController: BaseViewController {
                 }
                 .disposed(by: self.disposeBag)
         }
-    
+        
         backButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                if self?.likeThunViewModel.isRemovedLike == true {
-                    guard let originData = try? self?.superViewModel?.likedThunList.value()
-                    else { return }
-                    self?.superViewModel?.likedThunList.onNext(originData.filter {
-                        $0?.lightID != self?.lightId })
-                }
+            .bind { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
+                self?.navigationController?.navigationBar.isHidden = false
                 self?.tabBarController?.tabBar.isHidden = false
-            })
+            }
             .disposed(by: disposeBag)
         
-        likeButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
-                    self?.likeButton.isSelected = !$0
+        optionButton.rx.tap
+            .bind { [weak self] in
+                if self?.buttonStackView.isHidden == true {
+                    self?.buttonStackView.isHidden = false
+                } else {
+                    self?.buttonStackView.isHidden =  true
                 }
-            })
+            }
+            .disposed(by: disposeBag)
+        
+        editButton.rx.tap
+            .bind { [weak self] in
+                self?.buttonStackView.isHidden = true
+                print("수정버튼") // TODO: - 수정부분 서버 완료되면 연결할 것
+            }
+            .disposed(by: disposeBag)
+        
+        deleteButton.rx.tap
+            .bind { [weak self] in
+                self?.buttonStackView.isHidden = true
+                let popupViewController = PopUpViewController(title: "게시글을 삭제할까요?", viewType: .twoButton)
+                self?.present(popupViewController, animated: false, completion: nil)
+                popupViewController.delegate = self
+            }
             .disposed(by: disposeBag)
         
         imageCollectionView.rx.itemSelected
@@ -385,7 +432,7 @@ final class LikedDetailThunViewController: BaseViewController {
     }
 }
 
-extension LikedDetailThunViewController {
+extension OpenedDetailThunViewController {
     func setupData(
         _ title: String,
         _ date: String,
@@ -412,3 +459,27 @@ extension LikedDetailThunViewController {
         memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
     }
 }
+
+extension OpenedDetailThunViewController: PopUpConfirmDelegate {
+    func oneButtonDidTap() {
+        guard let originData = try? superViewModel?.openedThunList.value() else { return }
+        superViewModel?.openedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
+        navigationController?.popToRootViewController(animated: true)
+        navigationController?.navigationBar.isHidden = false
+        tabBarController?.tabBar.isHidden = false
+    }
+    
+    func firstButtonDidTap() {}
+    
+    func secondButtonDidTap() {
+        deleteThunViewModel.postDeleteThun(lightId: lightId ?? -1) { response in
+            let popupViewController = PopUpViewController(
+                title: "게시글이 삭제되었습니다.",
+                viewType: .oneButton
+            )
+            self.present(popupViewController, animated: false, completion: nil)
+            popupViewController.delegate = self
+        }
+    }
+}
+

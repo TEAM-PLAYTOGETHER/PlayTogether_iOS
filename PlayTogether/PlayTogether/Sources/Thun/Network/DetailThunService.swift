@@ -1,34 +1,39 @@
-
+//
+//  DetailThunService.swift
+//  PlayTogether
+//
+//  Created by 김수정 on 2022/08/15.
+//
 
 import Foundation
 import Moya
 
-enum ExistLikeThunService {
-    case existLikeThunRequest(lightId: Int)
+enum DetailThunService {
+    case detailThunRequest(lightId: Int)
 }
 
-extension ExistLikeThunService: TargetType {
+extension DetailThunService: TargetType {
     var baseURL: URL {
         return URL(string: APIConstants.baseUrl)!
     }
     
     var path: String {
         switch self {
-        case .existLikeThunRequest(let lightId):
-            return APIConstants.getExistLikeThun + "/\(lightId)"
+        case .detailThunRequest(let lightId):
+            return APIConstants.getDetailThunList + "/\(lightId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .existLikeThunRequest:
+        case .detailThunRequest:
             return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .existLikeThunRequest:
+        case .detailThunRequest:
             return .requestPlain
         }
     }
@@ -41,4 +46,3 @@ extension ExistLikeThunService: TargetType {
         ]
     }
 }
-

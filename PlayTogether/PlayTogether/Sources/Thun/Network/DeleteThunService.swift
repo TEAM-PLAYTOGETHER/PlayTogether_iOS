@@ -1,39 +1,39 @@
 //
-//  DetailThunService.swift
+//  DeleteThunService.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/08/15.
+//  Created by 김수정 on 2022/08/28.
 //
 
 import Foundation
 import Moya
 
-enum SubmittedDetailThunService {
-    case detailThunRequest(lightId: Int)
+enum DeleteThunService {
+    case deleteThunRequest(lightId: Int)
 }
 
-extension SubmittedDetailThunService: TargetType {
+extension DeleteThunService: TargetType {
     var baseURL: URL {
         return URL(string: APIConstants.baseUrl)!
     }
     
     var path: String {
         switch self {
-        case .detailThunRequest(let lightId):
-            return "\(APIConstants.getDetailThunList)" + "/\(lightId)"
+        case .deleteThunRequest(lightId: let lightId):
+            return APIConstants.postDeleteThun + "/\(lightId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .detailThunRequest:
-            return .get
+        case .deleteThunRequest:
+            return .post
         }
     }
     
     var task: Task {
         switch self {
-        case .detailThunRequest:
+        case .deleteThunRequest:
             return .requestPlain
         }
     }
@@ -46,3 +46,4 @@ extension SubmittedDetailThunService: TargetType {
         ]
     }
 }
+

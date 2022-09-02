@@ -107,7 +107,7 @@ class CompleteThunViewController: BaseViewController {
     }
 
     private lazy var memberTableView = UITableView().then {
-        $0.register(SubmittedDetailThunTableViewCell.self, forCellReuseIdentifier: SubmittedDetailThunTableViewCell.identifier)
+        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
@@ -224,7 +224,7 @@ extension CompleteThunViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SubmittedDetailThunTableViewCell", for: indexPath) as! SubmittedDetailThunTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DetailThunMemberTableViewCell", for: indexPath) as! DetailThunMemberTableViewCell
         return cell
     }
 }

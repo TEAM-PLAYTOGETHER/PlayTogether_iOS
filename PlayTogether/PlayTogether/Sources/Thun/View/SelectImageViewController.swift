@@ -3,7 +3,7 @@ import RxSwift
 
 class SelectImageViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-    private let viewModel = SubmittedDetailThunViewModel()
+    private let viewModel = DetailThunViewModel()
     var lightId : Int?
     var indexPath: Int?
     var imageCount: Int?
@@ -66,9 +66,7 @@ class SelectImageViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
-            if let imageView = image[self.indexPath ?? -1] {
-                self.imageView.loadImage(url: imageView)
-            }
+            self.imageView.loadImage(url: image)
             self.pageLabel.text = "\((self.indexPath ?? 0) + 1)/\(self.imageCount ?? 0)"
         }
     }
