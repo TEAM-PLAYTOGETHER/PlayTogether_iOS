@@ -30,6 +30,7 @@ final class ChattingRoomViewController: BaseViewController {
             ChattingRoomTableViewCell.self,
             forCellReuseIdentifier: "ChattingRoomTableViewCell"
         )
+        $0.contentInset = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 32)
     }
     
     private let inputTextView = UIView().then {
@@ -102,7 +103,7 @@ final class ChattingRoomViewController: BaseViewController {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(inputTextView.snp.top)
         }
