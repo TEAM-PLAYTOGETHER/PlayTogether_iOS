@@ -221,9 +221,9 @@ final class CompleteThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
-                response[0].place ?? "장소 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
