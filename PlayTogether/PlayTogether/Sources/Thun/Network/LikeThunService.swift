@@ -20,7 +20,7 @@ extension LikeThunService: TargetType {
     var path: String {
         switch self {
         case .likeThunRequest(let lightId):
-            return "\(APIConstants.postLikeThun)" + "/\(lightId)"
+            return APIConstants.postLikeThun + "/\(lightId)"
         }
     }
     

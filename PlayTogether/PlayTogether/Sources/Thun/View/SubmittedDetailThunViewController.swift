@@ -10,7 +10,7 @@ import RxSwift
 import SnapKit
 import Then
 
-class SubmittedDetailThunViewController: BaseViewController {
+final class SubmittedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
@@ -263,9 +263,9 @@ class SubmittedDetailThunViewController: BaseViewController {
         }
         
         imageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(textInfoLabel.snp.bottom)
+            $0.top.equalTo(textInfoLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(textInfoLabel)
-            $0.height.equalTo(1)
+            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
             $0.bottom.equalToSuperview().offset(-20)
         }
         
@@ -348,14 +348,14 @@ class SubmittedDetailThunViewController: BaseViewController {
                     ) as? DetailThunImageCollectionViewCell
                     else { return UICollectionViewCell() }
                     
-                    if item.isEmpty == false {
+                    if item.isEmpty {
                         self.imageCollectionView.snp.updateConstraints {
-                            $0.top.equalTo(self.textInfoLabel.snp.bottom).offset(20)
-                            $0.height.equalTo((UIScreen.main.bounds.height / 812) * 91)
+                            $0.top.equalTo(self.textInfoLabel.snp.bottom)
+                            $0.height.equalTo(1)
                         }
-                        cell.imageView.loadImage(url: image)
-                        self.imageCount = [image].count
                     }
+                    cell.imageView.loadImage(url: image)
+                    self.imageCount = [image].count
                     return cell
                 }
                 .disposed(by: self.disposeBag)

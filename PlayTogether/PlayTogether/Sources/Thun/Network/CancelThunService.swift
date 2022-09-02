@@ -20,7 +20,7 @@ extension CancelThunService: TargetType {
     var path: String {
         switch self {
         case .cancelThunRequest(let lightId):
-            return "\(APIConstants.postDetailThunCancel)" + "/\(lightId)"
+            return APIConstants.postDetailThunCancel + "/\(lightId)"
         }
     }
     
