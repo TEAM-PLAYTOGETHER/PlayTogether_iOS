@@ -17,6 +17,8 @@
 		404169902886A54700812B37 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4041698F2886A54700812B37 /* HomeViewController.swift */; };
 		404169932886A56C00812B37 /* ThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169922886A56C00812B37 /* ThunViewController.swift */; };
 		404169992886A68600812B37 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404169982886A68600812B37 /* MyPageViewController.swift */; };
+		404CA62A28C2364F00A444A1 /* MessageDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404CA62928C2364F00A444A1 /* MessageDataModel.swift */; };
+		404CA62C28C236D400A444A1 /* RoomDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404CA62B28C236D400A444A1 /* RoomDataModel.swift */; };
 		4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4066E499288B3CF700FC9090 /* CALayer+Extension.swift */; };
 		40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */; };
 		40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1528A1B634007E5835 /* UIResponder+Extension.swift */; };
@@ -122,6 +124,8 @@
 		4041698F2886A54700812B37 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		404169922886A56C00812B37 /* ThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunViewController.swift; sourceTree = "<group>"; };
 		404169982886A68600812B37 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		404CA62928C2364F00A444A1 /* MessageDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataModel.swift; sourceTree = "<group>"; };
+		404CA62B28C236D400A444A1 /* RoomDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDataModel.swift; sourceTree = "<group>"; };
 		4066E499288B3CF700FC9090 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunIntroduceCollectionViewCell.swift; sourceTree = "<group>"; };
 		40727C1528A1B634007E5835 /* UIResponder+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Extension.swift"; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 		404169942886A66400812B37 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
+				404CA62828C2363200A444A1 /* Model */,
 				40F7FE2528BF495800B58A4C /* View */,
 				40EE01BF28BFC7CC00DE46C8 /* ViewModel */,
 				40F7FE2628BF495F00B58A4C /* Cell */,
@@ -278,6 +283,15 @@
 				408EE3E428BAB1610012C642 /* Cell */,
 			);
 			path = MyPage;
+			sourceTree = "<group>";
+		};
+		404CA62828C2363200A444A1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				404CA62B28C236D400A444A1 /* RoomDataModel.swift */,
+				404CA62928C2364F00A444A1 /* MessageDataModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		408EE3E328BAB1590012C642 /* View */ = {
@@ -768,10 +782,12 @@
 				40EE01C328BFD44600DE46C8 /* ChattingRoomViewController.swift in Sources */,
 				B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
+				404CA62C28C236D400A444A1 /* RoomDataModel.swift in Sources */,
 				DDF2C4092887AA5600C10F67 /* ThunListTableViewCell.swift in Sources */,
 				DD73C2BC28AA1C0A001DEC1A /* SubmittedDetailThunViewModel.swift in Sources */,
 				409451AC288F37F600F21717 /* HomeCollectionViewCell.swift in Sources */,
 				B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */,
+				404CA62A28C2364F00A444A1 /* MessageDataModel.swift in Sources */,
 				408EE3E628BAB16F0012C642 /* MyPageMenuTableViewCell.swift in Sources */,
 				DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */,
 				B66EA07C28A7E60B00F1F723 /* SubwayStationResponse.swift in Sources */,

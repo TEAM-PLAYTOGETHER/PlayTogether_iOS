@@ -11,6 +11,7 @@ import RxSwift
 final class ChattingRoomViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: ChattingRoomViewModel
+    private let socket = SocketIOManager.shared
     
     private let leftBarItem = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -53,8 +54,8 @@ final class ChattingRoomViewController: BaseViewController {
         $0.isEnabled = false
     }
     
-    init(userName: String, roomID: Int) {
-        self.viewModel = ChattingRoomViewModel(roomID: roomID)
+    init(userName: String, roomID: Int, receiverID: Int) {
+        self.viewModel = ChattingRoomViewModel(roomID: roomID, receiverID: receiverID)
         super.init()
         
         setupNavigationBarTitle(userName)
@@ -67,11 +68,13 @@ final class ChattingRoomViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotification()
+        socket.reqEnterRoom(receiverID: viewModel.receiverID, roomID: viewModel.roomID)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardNotification()
+        socket.reqExitRoom()
     }
     
     override func setupViews() {
@@ -144,6 +147,19 @@ final class ChattingRoomViewController: BaseViewController {
                 return cell
             }
             .disposed(by: disposeBag)
+        
+        textField.rx.text.orEmpty
+            .map { !$0.isEmpty }
+            .bind(to: sendButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        sendButton.rx.tap
+            .withUnretained(self)
+            .bind { _ in
+                guard let text = self.textField.text else { return }
+                self.socket.reqSendMessage(text)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
@@ -177,14 +193,20 @@ private extension ChattingRoomViewController {
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         else { return }
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        let safeAreaBottomHeight = view.safeAreaInsets.bottom
+        let endLine = UIScreen.main.bounds.height - (inputTextView.frame.height + keyboardHeight)
         
         inputTextView.transform = CGAffineTransform(
             translationX: 0,
-            y: -keyboardFrame.cgRectValue.height + getSafeAreaBottomHeight()
+            y: safeAreaBottomHeight - keyboardHeight
         )
+        
+        // 추후 수정 예정
+        guard endLine < getLastCellPostion() else { return }
         tableView.transform = CGAffineTransform(
             translationX: 0,
-            y: -keyboardFrame.cgRectValue.height + getSafeAreaBottomHeight()
+            y: getLastCellPostion() - endLine
         )
     }
     
@@ -194,15 +216,11 @@ private extension ChattingRoomViewController {
         tableView.transform = .identity
     }
     
-    func getSafeAreaBottomHeight() -> CGFloat {
-        let window = UIApplication.shared.connectedScenes
-            .filter { $0.activationState == .foregroundActive}
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows
-            .filter { $0.isKeyWindow }
-            .first
+    func getLastCellPostion() -> CGFloat {
+        let indexPath = IndexPath(row: viewModel.messageCount - 1, section: 0)
+        let rectOfCellInTableView = tableView.rectForRow(at: indexPath)
+        let rectOfCellInSuperview = tableView.convert(rectOfCellInTableView, to: view)
         
-        guard let height = window?.safeAreaInsets.bottom else { return CGFloat.init() }
-        return height
+        return rectOfCellInSuperview.origin.y + rectOfCellInTableView.size.height
     }
 }

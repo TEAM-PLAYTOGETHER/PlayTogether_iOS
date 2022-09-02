@@ -21,6 +21,11 @@ final class ChattingListViewController: BaseViewController {
         )
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        SocketIOManager.shared.establishConnection()
+    }
+    
     override func setupViews() {
         title = "채팅"
         view.backgroundColor = .white
@@ -67,7 +72,11 @@ final class ChattingListViewController: BaseViewController {
                       let item = values[indexPath.row]
                 else { return }
                 
-                let chattingRoomViewController = ChattingRoomViewController(userName: item.audience, roomID: item.roomID)
+                let chattingRoomViewController = ChattingRoomViewController(
+                    userName: item.audience,
+                    roomID: item.roomID,
+                    receiverID: item.audienceID
+                )
                 chattingRoomViewController.hidesBottomBarWhenPushed = true
                 
                 self.navigationController?.pushViewController(
