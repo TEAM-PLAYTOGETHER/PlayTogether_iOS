@@ -15,6 +15,7 @@ extension UIImage {
 }
 
 enum ImageCase: String {
+    case loginCenterIcon = "loginCenterIcon"
     case backIcon = "backIcon"
     case floatingIcon = "floatingIcon"
     case searchIcon = "searchIcon"

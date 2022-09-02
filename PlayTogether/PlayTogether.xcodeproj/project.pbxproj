@@ -63,6 +63,7 @@
 		B6A612FF28A9F36600688DA2 /* CheckNicknameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */; };
 		B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */; };
 		B6B4B10328C1AE3C009AA0DB /* FetchMeetingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */; };
+		B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */; };
 		B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */; };
 		B6E8851128C05D9C001CAE3D /* ReDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */; };
 		B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */; };
@@ -146,6 +147,7 @@
 		B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameResponse.swift; sourceTree = "<group>"; };
 		B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationListTableViewCell.swift; sourceTree = "<group>"; };
 		B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMeetingService.swift; sourceTree = "<group>"; };
+		B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewModel.swift; sourceTree = "<group>"; };
 		B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReDownloadViewController.swift; sourceTree = "<group>"; };
 		B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationCompletedViewController.swift; sourceTree = "<group>"; };
@@ -314,12 +316,13 @@
 		4096A2AE287F5F8200F1E27C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B6B4B10428C1B5A0009AA0DB /* LogIn */,
+				4096A2B1287F5FDC00F1E27C /* Onboarding */,
 				4041698E2886A4F700812B37 /* Home */,
 				404169912886A55D00812B37 /* Thun */,
 				404169942886A66400812B37 /* Chat */,
 				404169952886A66A00812B37 /* MyPage */,
 				4096A2BB287F626600F1E27C /* Common */,
-				4096A2B1287F5FDC00F1E27C /* Onboarding */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -447,6 +450,22 @@
 				B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		B6B4B10428C1B5A0009AA0DB /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				B6B4B10528C1B5B3009AA0DB /* Controller */,
+			);
+			path = LogIn;
+			sourceTree = "<group>";
+		};
+		B6B4B10528C1B5B3009AA0DB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		DD36D39828A65CF800C9851A /* ViewModel */ = {
@@ -604,6 +623,7 @@
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
+				B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */,
 				B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */,
 				B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
