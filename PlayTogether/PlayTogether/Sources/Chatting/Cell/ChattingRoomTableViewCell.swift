@@ -13,7 +13,9 @@ enum MessageType {
 }
 
 final class ChattingRoomTableViewCell: UITableViewCell {
-    private let myMessageLabel = PaddingLabel().then {
+    private var messageType: MessageType?
+    
+    let myMessageLabel = PaddingLabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.numberOfLines = 0
         $0.textColor = .ptBlack01
@@ -50,6 +52,16 @@ final class ChattingRoomTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        guard let messageType = messageType else { return }
+
+        switch messageType {
+        case .myMessage: setupMyMessageReuseLayout()
+        case .yourMessage: setupYourMessageReuseLayout()
+        }
+    }
+    
     func setupCell(
         profileImage: UIImage?,
         send: Bool,
@@ -62,9 +74,11 @@ final class ChattingRoomTableViewCell: UITableViewCell {
         
         switch send {
         case true:
+            messageType = .myMessage
             myMessageLabel.text = content
             setupUI(.myMessage)
         case false:
+            messageType = .yourMessage
             yourMessageLabel.text = content
             setupUI(.yourMessage)
         }
@@ -116,6 +130,15 @@ private extension ChattingRoomTableViewCell {
                 $0.bottom.equalToSuperview().inset(6)
             }
         }
+    }
+    
+    func setupMyMessageReuseLayout() {
+        myMessageLabel.removeFromSuperview()
+    }
+    
+    func setupYourMessageReuseLayout() {
+        yourMessageLabel.removeFromSuperview()
+        yourProfileImageView.removeFromSuperview()
     }
     
     func dateParser(_ dateString: String) -> String {
