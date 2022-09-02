@@ -14,31 +14,23 @@ final class ChattingRoomViewModel {
     private let disposeBag = DisposeBag()
     var existingMessageSubject = BehaviorSubject<[Message?]>(value: [])
     
-    //TODO: 삭제 예정
-    let mockData = [
-        Message(messageID: 0, send: false, read: true, createdAt: "2022-04-27T06:41:33.432Z", content: "첫 번째 메세지"),
-        Message(messageID: 0, send: false, read: true, createdAt: "2022-04-27T06:42:33.432Z", content: "두 번째 메세지"),
-        Message(messageID: 0, send: false, read: false, createdAt: "2022-04-27T06:43:33.432Z", content: "안녕하세요")
-    ]
-    
-    init () {
-        //TODO: 서버 연동 후 변경 예정
-        existingMessageSubject.onNext(mockData)
+    init (roomID: Int) {
+        fetchExistingMessageList(roomID: roomID)
     }
     
-//    func fetchExistingChattingList() {
-//        let provider = MoyaProvider<ChattingService>()
-//        provider.rx.request(.chattingListRequest)
-//            .subscribe { [weak self] result in
-//                switch result {
-//                case let .success(response):
-//                    let responseData = try? response.map(ChattingRoomListResponse.self)
-//                    guard let data = responseData?.data.chattingRooms else { return }
-//                    self?.chattingRoomListSubject.onNext(data)
-//                case let .failure(error):
-//                    print(error.localizedDescription)
-//                }
-//            }
-//            .disposed(by: disposeBag)
-//    }
+    func fetchExistingMessageList(roomID: Int) {
+        let provider = MoyaProvider<ChattingService>()
+        provider.rx.request(.messageListRequest(roomID: roomID))
+            .subscribe { [weak self] result in
+                switch result {
+                case let .success(response):
+                    let responseData = try? response.map(MessageListResponse.self)
+                    guard let data = responseData?.data.messages else { return }
+                    self?.existingMessageSubject.onNext(data)
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }

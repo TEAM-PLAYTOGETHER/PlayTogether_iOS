@@ -67,7 +67,7 @@ final class ChattingListViewController: BaseViewController {
                       let item = values[indexPath.row]
                 else { return }
                 
-                let chattingRoomViewController = ChattingRoomViewController(userName: item.audience)
+                let chattingRoomViewController = ChattingRoomViewController(userName: item.audience, roomID: item.roomID)
                 chattingRoomViewController.hidesBottomBarWhenPushed = true
                 
                 self.navigationController?.pushViewController(

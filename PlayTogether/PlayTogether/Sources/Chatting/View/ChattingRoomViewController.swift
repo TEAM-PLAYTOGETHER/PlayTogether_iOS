@@ -10,7 +10,7 @@ import RxSwift
 
 final class ChattingRoomViewController: BaseViewController {
     private let disposeBag = DisposeBag()
-    private let viewModel = ChattingRoomViewModel()
+    private let viewModel: ChattingRoomViewModel
     
     private let leftBarItem = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -24,6 +24,8 @@ final class ChattingRoomViewController: BaseViewController {
     }
     
     private let tableView = UITableView().then {
+        $0.separatorStyle = .none
+        $0.allowsSelection = false
         $0.register(
             ChattingRoomTableViewCell.self,
             forCellReuseIdentifier: "ChattingRoomTableViewCell"
@@ -50,8 +52,10 @@ final class ChattingRoomViewController: BaseViewController {
         $0.isEnabled = false
     }
     
-    init(userName: String) {
+    init(userName: String, roomID: Int) {
+        self.viewModel = ChattingRoomViewModel(roomID: roomID)
         super.init()
+        
         setupNavigationBarTitle(userName)
     }
     
@@ -98,7 +102,7 @@ final class ChattingRoomViewController: BaseViewController {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(inputTextView.snp.top)
         }
@@ -119,6 +123,25 @@ final class ChattingRoomViewController: BaseViewController {
             .drive(onNext: { _ in
                 self.view.endEditing(true)
             })
+            .disposed(by: disposeBag)
+        
+        viewModel.existingMessageSubject
+            .bind(to: tableView.rx.items) { _, row, item -> UITableViewCell in
+                guard let cell = self.tableView.dequeueReusableCell(
+                    withIdentifier: "ChattingRoomTableViewCell",
+                    for: IndexPath(row: 0, section: 0)
+                ) as? ChattingRoomTableViewCell,
+                      let item = item
+                else { return UITableViewCell() }
+                
+                cell.setupCell(
+                    profileImage: nil, // 추후 변경 예정
+                    send: item.send,
+                    content: item.content,
+                    createdAt: item.createdAt
+                )
+                return cell
+            }
             .disposed(by: disposeBag)
     }
 }

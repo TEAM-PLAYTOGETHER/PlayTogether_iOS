@@ -8,7 +8,9 @@
 import UIKit
 
 final class ChattingListTableViewCell: UITableViewCell {
-    private let profileImageView = UIImageView()
+    private let profileImageView = UIImageView().then {
+        $0.image = .ptImage(.profileIcon)
+    }
     
     private let nameLabel = UILabel().then {
         $0.textColor = .ptBlack01
@@ -50,8 +52,6 @@ final class ChattingListTableViewCell: UITableViewCell {
     ) {
         if let profileImage = profileImage {
             profileImageView.image = profileImage
-        } else {
-            profileImageView.image = .ptImage(.profileIcon)
         }
         
         nameLabel.text = name
