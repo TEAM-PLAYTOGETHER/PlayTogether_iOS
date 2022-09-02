@@ -323,5 +323,23 @@ final class HomeViewController: BaseViewController {
                 self?.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
+        
+        hotCollectionView.rx.modelSelected(HomeResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(
+                    EnterDetailThunViewController(
+                        lightID: $0.lightID), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        newCollectionView.rx.modelSelected(HomeResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(
+                    EnterDetailThunViewController(
+                        lightID: $0.lightID), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
