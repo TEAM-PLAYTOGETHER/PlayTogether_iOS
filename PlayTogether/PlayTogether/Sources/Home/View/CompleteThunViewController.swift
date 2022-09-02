@@ -1,9 +1,20 @@
 import UIKit
 import RxSwift
 
-class CompleteThunViewController: BaseViewController {
+final class CompleteThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-
+    private let viewModel = DetailThunViewModel()
+    var lightId: Int?
+    
+    init(lightID: Int) {
+        self.lightId = lightID
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
         $0.showsVerticalScrollIndicator = false
@@ -37,43 +48,31 @@ class CompleteThunViewController: BaseViewController {
     private let titleLabel = UILabel().then {
         $0.textColor = .ptBlack01
         $0.font = .pretendardBold(size: 20)
-        $0.text = "우리집에서 피자 먹기"
     }
 
     private let dateLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptBlack01
-        $0.text = "날짜  2022.04.15"
-        $0.changeFontColor(targetString: "날짜", color: .ptGray01)
     }
 
     private let timeLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptBlack01
-        $0.text = "시간  18:00 ~"
-        $0.changeFontColor(targetString: "시간", color: .ptGray01)
-        
     }
 
     private let placeLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptBlack01
-        $0.text = "장소  우리집"
-        $0.changeFontColor(targetString: "장소", color: .ptGray01)
     }
 
     private let categoryLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptBlack01
-        $0.text = "카테고리  음식"
-        $0.changeFontColor(targetString: "카테고리", color: .ptGray01)
     }
 
     private let organizerNameLabel = UILabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptBlack01
-        $0.text = "개설자  문수제비"
-        $0.changeFontColor(targetString: "개설자", color: .ptGray01)
     }
 
     private lazy var labelStackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel,organizerNameLabel]).then {
@@ -101,7 +100,6 @@ class CompleteThunViewController: BaseViewController {
     private var memberCntLabel = UILabel().then {
         $0.textColor = .ptBlack01
         $0.font = .pretendardBold(size: 16)
-        $0.text = "번개 참여자 (2/6)"
     }
 
     private lazy var memberTableView = UITableView().then {
@@ -110,8 +108,6 @@ class CompleteThunViewController: BaseViewController {
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
         $0.isScrollEnabled = false
-        $0.delegate = self
-        $0.dataSource = self
     }
 
     override func setupViews() {
@@ -196,34 +192,87 @@ class CompleteThunViewController: BaseViewController {
         memberTableView.snp.makeConstraints {
             $0.top.equalTo(memberCntLabel.snp.bottom).offset(10)
             $0.leading.trailing.equalTo(borderView)
-            $0.height.equalTo(500)
+            $0.height.equalTo(50 * (UIScreen.main.bounds.height / 812))
             $0.bottom.equalToSuperview()
         }
     }
 
     override func setupBinding() {
         exitButton.rx.tap
-            .bind { [weak self] in
-                print("나가기 버튼")
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.popToRootViewController(animated: true)
+            })
             .disposed(by: disposeBag)
         
         moreButton.rx.tap
-            .bind { [weak self] in
-                print("자세히보기 버튼")
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let lightID = self?.lightId else { return }
+                self?.navigationController?.pushViewController(
+                    EnterDetailThunViewController(lightID: lightID),
+                    animated: true)
+            })
             .disposed(by: disposeBag)
+    
+        
+        viewModel.getDetailThunList(lightId: lightId ?? -1) { response in
+            let nameResponse = response[0].organizer
+            self.setupData(
+                response[0].title,
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
+                response[0].place ?? "장소미정",
+                response[0].category,
+                nameResponse[0].name,
+                response[0].peopleCnt ?? 0,
+                response[0].lightMemberCnt)
+        }
+        
+        viewModel.getMemberList(lightId: lightId ?? -1) { member in
+            Observable.of(member)
+                .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
+                    guard let cell = self.memberTableView.dequeueReusableCell(
+                        withIdentifier: "DetailThunMemberTableViewCell",
+                        for: IndexPath(row: row, section: 0)
+                    ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
+                    
+                    cell.setupData(item.name)
+                    self.memberTableView.snp.updateConstraints {
+                        $0.height.equalTo(self.memberTableView.contentSize.height)
+                    }
+                    guard row == member.count-1 else { return cell }
+
+                    return cell
+                }
+                .disposed(by: self.disposeBag)
+        }
     }
 }
 
-extension CompleteThunViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DetailThunMemberTableViewCell", for: indexPath) as! DetailThunMemberTableViewCell
-        return cell
+extension CompleteThunViewController {
+    func setupData(
+        _ title: String,
+        _ date: String,
+        _ time: String,
+        _ place: String,
+        _ category: String,
+        _ name: String,
+        _ peopleCnt: Int,
+        _ lightMemberCnt: Int
+    ){
+        let dateStr = date.replacingOccurrences(of: "-", with: ".")
+        titleLabel.text = title
+        dateLabel.text = "날짜  \(dateStr)"
+        dateLabel.changeFontColor(targetString: "날짜", color: .ptGray01)
+        timeLabel.text = "시간  \(time)"
+        timeLabel.changeFontColor(targetString: "시간", color: .ptGray01)
+        placeLabel.text = "장소  \(place)"
+        placeLabel.changeFontColor(targetString: "장소", color: .ptGray01)
+        categoryLabel.text = "카테고리  \(category)"
+        categoryLabel.changeFontColor(targetString: "카테고리", color: .ptGray01)
+        organizerNameLabel.text = "개설자  \(name)"
+        organizerNameLabel.changeFontColor(targetString: "개설자", color: .ptGray01)
+        memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
     }
 }
-

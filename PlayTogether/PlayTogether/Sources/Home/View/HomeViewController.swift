@@ -136,6 +136,11 @@ final class HomeViewController: BaseViewController {
         $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     override func setupViews() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
@@ -270,7 +275,7 @@ final class HomeViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item.title, item.category, item.nowMemberCount,
-                               item.totalMemberCount, item.date, item.place, item.time)
+                               item.totalMemberCount ?? 0, item.date ?? "날짜미정", item.place ?? "장소미정", item.time ?? "시간미정")
                 return cell
             }
             .disposed(by: self.disposeBag)
@@ -289,7 +294,7 @@ final class HomeViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item.title, item.category, item.nowMemberCount,
-                               item.totalMemberCount, item.date, item.place, item.time)
+                               item.totalMemberCount ?? 0, item.date ?? "날짜미정", item.place ?? "장소미정", item.time ?? "시간미정")
                 return cell
             }
             .disposed(by: self.disposeBag)

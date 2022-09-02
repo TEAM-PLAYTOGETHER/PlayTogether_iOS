@@ -19,8 +19,8 @@ final class DetailThunViewModel {
                 switch result {
                 case let .success(response):
                     let responseData = try? response.map(DetailThunResponse.self)
-                          guard let data = responseData?.data else { return }
-                          completion(data)
+                    guard let data = responseData?.data else { return }
+                    completion(data)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
