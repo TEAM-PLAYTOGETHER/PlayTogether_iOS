@@ -30,6 +30,7 @@ struct APIConstants {
     static let getExistLikeThun = "/scrap/exist"
     static let postDeleteThun = "light/remove"
     static let getExistThun = "light/exist"
+    static let getEatThunList = "light/\(crewID)"
     
     // subway
     static let getStationList = "/getKwrdFndSubwaySttnList"
