@@ -192,7 +192,7 @@ final class CompleteThunViewController: BaseViewController {
         memberTableView.snp.makeConstraints {
             $0.top.equalTo(memberCntLabel.snp.bottom).offset(10)
             $0.leading.trailing.equalTo(borderView)
-            $0.height.equalTo(50)
+            $0.height.equalTo(50 * (UIScreen.main.bounds.height / 812))
             $0.bottom.equalToSuperview()
         }
     }
@@ -210,8 +210,7 @@ final class CompleteThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let lightID = self?.lightId else { return }
                 self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(
-                        lightID: lightID),
+                    EnterDetailThunViewController(lightID: lightID),
                     animated: true)
             })
             .disposed(by: disposeBag)
@@ -227,8 +226,7 @@ final class CompleteThunViewController: BaseViewController {
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
-                response[0].lightMemberCnt
-            )
+                response[0].lightMemberCnt)
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -239,10 +237,12 @@ final class CompleteThunViewController: BaseViewController {
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
                     
+                    cell.setupData(item.name)
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
-                    cell.setupData(item.name)
+                    guard row == member.count-1 else { return cell }
+
                     return cell
                 }
                 .disposed(by: self.disposeBag)
