@@ -15,7 +15,7 @@ extension ExistThunService: TargetType {
     var path: String {
         switch self {
         case .existThunRequest(let lightId):
-            return "\(APIConstants.getExistThun)" + "/\(lightId)"
+            return APIConstants.getExistThun + "/\(lightId)"
         }
     }
     
