@@ -21,7 +21,7 @@
 		40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */; };
 		40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40727C1528A1B634007E5835 /* UIResponder+Extension.swift */; };
 		408EE3E028BAA8C00012C642 /* MyPageSubwayLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */; };
-		408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */; };
+		408EE3E228BAAF290012C642 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E128BAAF290012C642 /* PaddingLabel.swift */; };
 		408EE3E628BAB16F0012C642 /* MyPageMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */; };
 		408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3E828BAB2510012C642 /* MyPageViewModel.swift */; };
 		408EE3EB28BBE4CA0012C642 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408EE3EA28BBE4CA0012C642 /* ProfileView.swift */; };
@@ -126,7 +126,7 @@
 		40727C1328A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunIntroduceCollectionViewCell.swift; sourceTree = "<group>"; };
 		40727C1528A1B634007E5835 /* UIResponder+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Extension.swift"; sourceTree = "<group>"; };
 		408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSubwayLabelView.swift; sourceTree = "<group>"; };
-		408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSubwayLabel.swift; sourceTree = "<group>"; };
+		408EE3E128BAAF290012C642 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMenuTableViewCell.swift; sourceTree = "<group>"; };
 		408EE3E828BAB2510012C642 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		408EE3EA28BBE4CA0012C642 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -285,7 +285,6 @@
 			children = (
 				404169982886A68600812B37 /* MyPageViewController.swift */,
 				408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */,
-				408EE3E128BAAF290012C642 /* MyPageSubwayLabel.swift */,
 				408EE3EA28BBE4CA0012C642 /* ProfileView.swift */,
 			);
 			path = View;
@@ -477,6 +476,7 @@
 		4096A2BB287F626600F1E27C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				408EE3E128BAAF290012C642 /* PaddingLabel.swift */,
 				4096A2BC287F627E00F1E27C /* BaseViewController.swift */,
 				409451B028905AEC00F21717 /* APIConstants.swift */,
 				B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */,
@@ -797,7 +797,7 @@
 				DD36D3A028A67D0700C9851A /* SubmittedDetailThunCollectionViewCell.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
 				40EE01BC28BFC5E200DE46C8 /* ChattingService.swift in Sources */,
-				408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */,
+				408EE3E228BAAF290012C642 /* PaddingLabel.swift in Sources */,
 				B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */,
 				DD36D3A028A67D0700C9851A /* SubmittedDetailThunCollectionViewCell.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MyPageSubwayLabel: UILabel {
+final class PaddingLabel: UILabel {
     private var padding = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
     
     convenience init(padding: UIEdgeInsets) {

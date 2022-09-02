@@ -13,14 +13,14 @@ enum MessageType {
 }
 
 final class ChattingRoomTableViewCell: UITableViewCell {
-    private let myMessageLabel = UILabel().then {
+    private let myMessageLabel = PaddingLabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.numberOfLines = 0
         $0.textColor = .ptBlack01
         $0.backgroundColor = .ptGray02
         $0.layer.cornerRadius = 10
-//        $0.clipsToBounds = true
-//        $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)))
+        $0.clipsToBounds = true
+        $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)))
     }
     
     private let dateLabel = UILabel().then {
@@ -32,14 +32,14 @@ final class ChattingRoomTableViewCell: UITableViewCell {
         $0.image = .ptImage(.profileIcon)
     }
     
-    private let yourMessageLabel = UILabel().then {
+    private let yourMessageLabel = PaddingLabel().then {
         $0.font = .pretendardMedium(size: 14)
         $0.numberOfLines = 0
         $0.textColor = .white
         $0.backgroundColor = .ptBlack01
         $0.layer.cornerRadius = 10
-//        $0.clipsToBounds = true
-//        $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)))
+        $0.clipsToBounds = true
+        $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)))
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -83,7 +83,7 @@ private extension ChattingRoomTableViewCell {
             addSubview(dateLabel)
             
             myMessageLabel.snp.makeConstraints {
-                $0.top.equalToSuperview()
+                $0.top.equalToSuperview().offset(6)
                 $0.leading.greaterThanOrEqualToSuperview().offset(128)
                 $0.trailing.equalToSuperview().inset(20)
             }
@@ -91,6 +91,7 @@ private extension ChattingRoomTableViewCell {
             dateLabel.snp.makeConstraints {
                 $0.top.equalTo(myMessageLabel.snp.bottom).offset(6)
                 $0.trailing.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(6)
             }
         case .yourMessage:
             addSubview(yourProfileImageView)
@@ -99,12 +100,12 @@ private extension ChattingRoomTableViewCell {
             
             yourProfileImageView.snp.makeConstraints {
                 $0.leading.equalToSuperview().offset(20)
-                $0.top.equalToSuperview().offset(8)
+                $0.top.equalToSuperview().offset(14)
                 $0.size.equalTo(24)
             }
             
             yourMessageLabel.snp.makeConstraints {
-                $0.top.equalToSuperview()
+                $0.top.equalToSuperview().offset(6)
                 $0.leading.equalTo(yourProfileImageView.snp.trailing).offset(8)
                 $0.trailing.lessThanOrEqualToSuperview().inset(128)
             }
@@ -112,6 +113,7 @@ private extension ChattingRoomTableViewCell {
             dateLabel.snp.makeConstraints {
                 $0.top.equalTo(yourMessageLabel.snp.bottom).offset(6)
                 $0.leading.equalTo(yourProfileImageView.snp.trailing).offset(10)
+                $0.bottom.equalToSuperview().inset(6)
             }
         }
     }

@@ -23,7 +23,7 @@ final class MyPageSubwayLabelView: UIView {
     }
     
     func addStation(stationName: String) {
-        let subwayLabel = MyPageSubwayLabel().then {
+        let subwayLabel = PaddingLabel().then {
             $0.text = stationName
             $0.textColor = .white
             $0.font = .pretendardMedium(size: 12)
