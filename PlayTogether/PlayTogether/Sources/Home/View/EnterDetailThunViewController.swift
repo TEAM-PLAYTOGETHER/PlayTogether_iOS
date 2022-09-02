@@ -315,7 +315,6 @@ class EnterDetailThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
-                self?.tabBarController?.tabBar.isHidden = false
             })
             .disposed(by: disposeBag)
         
@@ -392,7 +391,8 @@ extension EnterDetailThunViewController: PopUpConfirmDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
-            self.navigationController?.pushViewController(CompleteThunViewController(), animated: true)
+            guard let lightID = self.lightId else { return }
+            self.navigationController?.pushViewController(CompleteThunViewController(lightID: lightID), animated: true)
         }
     }
 }
