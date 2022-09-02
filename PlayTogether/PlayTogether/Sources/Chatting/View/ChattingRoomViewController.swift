@@ -26,12 +26,13 @@ final class ChattingRoomViewController: BaseViewController {
     
     private let tableView = UITableView().then {
         $0.separatorStyle = .none
+        $0.alwaysBounceHorizontal = false
         $0.allowsSelection = false
         $0.register(
             ChattingRoomTableViewCell.self,
             forCellReuseIdentifier: "ChattingRoomTableViewCell"
         )
-        $0.contentInset = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 32)
+        $0.contentInset = UIEdgeInsets(top: 32, left: 0, bottom: 16, right: 0)
     }
     
     private let inputTextView = UIView().then {
@@ -69,6 +70,11 @@ final class ChattingRoomViewController: BaseViewController {
         super.viewWillAppear(animated)
         registerKeyboardNotification()
         socket.reqEnterRoom(receiverID: viewModel.receiverID, roomID: viewModel.roomID)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToLastMessage()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -155,10 +161,12 @@ final class ChattingRoomViewController: BaseViewController {
         
         sendButton.rx.tap
             .withUnretained(self)
-            .bind { _ in
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _ in
                 guard let text = self.textField.text else { return }
                 self.socket.reqSendMessage(text)
-            }
+                self.sendMessage(text)
+            })
             .disposed(by: disposeBag)
     }
 }
@@ -206,7 +214,7 @@ private extension ChattingRoomViewController {
         guard endLine < getLastCellPostion() else { return }
         tableView.transform = CGAffineTransform(
             translationX: 0,
-            y: getLastCellPostion() - endLine
+            y: -(getLastCellPostion() - endLine)
         )
     }
     
@@ -222,5 +230,40 @@ private extension ChattingRoomViewController {
         let rectOfCellInSuperview = tableView.convert(rectOfCellInTableView, to: view)
         
         return rectOfCellInSuperview.origin.y + rectOfCellInTableView.size.height
+    }
+    
+    func sendMessage(_ text: String) {
+        //TODO: 임시적으로 사용, 추후 변경 예정
+        let message = Message(
+            messageID: nil,
+            send: true,
+            read: nil,
+            createdAt: "2022-09-03T12:15:57.641Z",
+            content: text
+        )
+        updateChat(message)
+    }
+    
+    func updateChat(_ message: Message) {
+        let indexPath = IndexPath(row: viewModel.messageCount-1, section: 0)
+        
+        tableView.beginUpdates()
+        
+        guard var messages = try? viewModel.existingMessageSubject.value() else { return }
+        messages.append(message)
+        viewModel.existingMessageSubject.onNext(messages)
+        
+        tableView.insertRows(at: [indexPath], with: .none)
+        
+        tableView.endUpdates()
+        scrollToLastMessage()
+    }
+    
+    func scrollToLastMessage() {
+        tableView.scrollToRow(
+            at: IndexPath(row: viewModel.messageCount - 1, section: 0),
+            at: .bottom,
+            animated: false
+        )
     }
 }

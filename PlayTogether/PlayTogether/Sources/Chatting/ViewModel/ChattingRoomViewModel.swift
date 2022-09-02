@@ -15,7 +15,10 @@ final class ChattingRoomViewModel {
     var existingMessageSubject = BehaviorSubject<[Message?]>(value: [])
     let roomID: Int
     let receiverID: Int
-    var messageCount = Int()
+    var messageCount: Int {
+        guard let messages = try? existingMessageSubject.value() else { return .init() }
+        return messages.count
+    }
     
     init (roomID: Int, receiverID: Int) {
         self.roomID = roomID
@@ -32,7 +35,6 @@ final class ChattingRoomViewModel {
                     let responseData = try? response.map(MessageListResponse.self)
                     guard let data = responseData?.data.messages else { return }
                     self?.existingMessageSubject.onNext(data)
-                    self?.messageCount = data.count
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

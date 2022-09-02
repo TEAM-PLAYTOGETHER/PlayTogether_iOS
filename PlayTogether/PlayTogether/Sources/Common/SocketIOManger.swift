@@ -59,4 +59,4 @@ private extension SocketIOManager {
         guard let jsonData = try? JSONEncoder().encode(dataModel) else { return Data() }
         return jsonData
     }
-}AppDelegate.swift
+}

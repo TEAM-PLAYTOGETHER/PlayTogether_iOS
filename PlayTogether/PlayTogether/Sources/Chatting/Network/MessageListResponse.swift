@@ -12,15 +12,15 @@ struct MessageListResponse: Decodable {
     let data: MessageList
 }
 
-// MARK: - DataClass
 struct MessageList: Decodable {
     let messages: [Message]
 }
 
-// MARK: - Message
+//TODO: 추후 옵셔널 제거 예정
 struct Message: Decodable {
-    let messageID: Int
-    let send, read: Bool
+    let messageID: Int?
+    let send: Bool
+    let read: Bool?
     let createdAt, content: String
 
     enum CodingKeys: String, CodingKey {
