@@ -3,7 +3,7 @@ import RxSwift
 
 class CompleteThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
-
+    
     private let scrollView = UIScrollView().then {
         $0.contentInsetAdjustmentBehavior = .never
         $0.showsVerticalScrollIndicator = false
