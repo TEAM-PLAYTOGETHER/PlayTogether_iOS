@@ -97,7 +97,7 @@ private extension ChattingListTableViewCell {
         
         lastChatLabel.snp.makeConstraints {
             $0.leading.equalTo(nameLabel)
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(profileImageView).offset(1)
         }
         
