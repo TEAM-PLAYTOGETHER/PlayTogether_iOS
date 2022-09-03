@@ -11,6 +11,9 @@ import RxSwift
 class LogInViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     
+    private let kakaoLoginView = LoginButtonView()
+    private let appleLoginView = LoginButtonView()
+    
     private let headerLabel = UILabel().then {
         $0.text = "함께 놀아요\nPLAY TOGETHER!"
         $0.font = .pretendardRegular(size: 24)
@@ -51,6 +54,8 @@ class LogInViewController: BaseViewController {
         
         view.addSubview(headerLabel)
         view.addSubview(logoImageView)
+        view.addSubview(kakaoLoginView)
+        view.addSubview(appleLoginView)
         view.addSubview(bottomLabel)
         view.addSubview(contactTextButton)
     }
@@ -65,6 +70,18 @@ class LogInViewController: BaseViewController {
             $0.centerX.centerY.equalToSuperview()
         }
         
+        kakaoLoginView.snp.makeConstraints {
+            $0.bottom.equalTo(appleLoginView.snp.top).offset(-4)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(46 * (UIScreen.main.bounds.height / 812))
+        }
+        
+        appleLoginView.snp.makeConstraints {
+            $0.bottom.equalTo(bottomLabel).inset(45)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(46 * (UIScreen.main.bounds.height / 812))
+        }
+        
         bottomLabel.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(56)
             $0.leading.equalToSuperview().inset(105)
@@ -77,11 +94,27 @@ class LogInViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        kakaoLoginView.setupUI(.kakaoLogin)
+        appleLoginView.setupUI(.appleLogin)
+        
+        kakaoLoginView.delegate = self
+        appleLoginView.delegate = self
+        
         contactTextButton.rx.tap
             .asDriver()
             .drive(onNext: { _ in
-                print("DEBUG: 문의하기 버튼 클릭")
+                print("DEBUG: Contact button did tap")
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension LogInViewController: LoginButtonDelegate {
+    func kakaoButtonDidTap() {
+        print("DEBUG: Kakao login button did tap!")
+    }
+    
+    func appleButtonDidTap() {
+        print("DEBUG: Apple login button did tap!")
     }
 }
