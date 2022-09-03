@@ -7,12 +7,15 @@
 
 import UIKit
 import RxSwift
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class LogInViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     
     private let kakaoLoginView = LoginButtonView()
     private let appleLoginView = LoginButtonView()
+    private var userAccessToken: String = ""
     
     private let headerLabel = UILabel().then {
         $0.text = "함께 놀아요\nPLAY TOGETHER!"
@@ -45,9 +48,6 @@ class LogInViewController: BaseViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
     }
-    
-    // TODO: 상태 표시줄 색상 흰색인데 검은색으로 변경
-    // TODO: 카카오 로그인 패키지 추가
     
     override func setupViews() {
         view.backgroundColor = .white
@@ -111,10 +111,26 @@ class LogInViewController: BaseViewController {
 
 extension LogInViewController: LoginButtonDelegate {
     func kakaoButtonDidTap() {
-        print("DEBUG: Kakao login button did tap!")
+        kakaoLogin()
     }
     
     func appleButtonDidTap() {
         print("DEBUG: Apple login button did tap!")
+    }
+}
+
+private extension LogInViewController {
+    func kakaoLogin() {
+        guard UserApi.isKakaoTalkLoginAvailable() == true else {
+            UserApi.shared.loginWithKakaoAccount(prompts:[.Login]) { oauthToken, error  in
+                guard let accessToken = oauthToken?.accessToken else { return }
+                self.userAccessToken = accessToken
+            }
+            return
+        }
+        UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+            guard let accessToken = oauthToken?.accessToken else { return }
+            self.userAccessToken = accessToken
+        }
     }
 }
