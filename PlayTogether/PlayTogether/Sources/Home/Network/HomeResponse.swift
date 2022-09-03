@@ -32,3 +32,4 @@ struct HomeResponseList: Decodable {
         case place
     }
 }
+

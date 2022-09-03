@@ -390,7 +390,10 @@ extension EnterDetailThunViewController: PopUpConfirmDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
-            self.navigationController?.pushViewController(CompleteThunViewController(lightID: self.lightId ?? -1), animated: true)
+            self.navigationController?.pushViewController(CompleteThunViewController(
+                lightID: self.lightId ?? -1,
+                completeText: "번개 신청을\n완료했어요!"
+            ),animated: true)
         }
     }
 }

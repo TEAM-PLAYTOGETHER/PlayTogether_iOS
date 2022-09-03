@@ -102,6 +102,7 @@
 		DDB380E128C1A971001826B0 /* ExistThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380E028C1A971001826B0 /* ExistThunResponse.swift */; };
 		DDB380E328C1A992001826B0 /* ExistThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380E228C1A992001826B0 /* ExistThunService.swift */; };
 		DDB380E528C1AA8D001826B0 /* ExistThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380E428C1AA8D001826B0 /* ExistThunViewModel.swift */; };
+		DDB380ED28C27C86001826B0 /* CreateThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380EC28C27C86001826B0 /* CreateThunResponse.swift */; };
 		DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B02892536A0042490C /* ThunResponse.swift */; };
 		DDBE87B5289257CA0042490C /* ThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B4289257CA0042490C /* ThunService.swift */; };
 		DDF2C4012887A60F00C10F67 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */; };
@@ -203,6 +204,7 @@
 		DDB380E028C1A971001826B0 /* ExistThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistThunResponse.swift; sourceTree = "<group>"; };
 		DDB380E228C1A992001826B0 /* ExistThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistThunService.swift; sourceTree = "<group>"; };
 		DDB380E428C1AA8D001826B0 /* ExistThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistThunViewModel.swift; sourceTree = "<group>"; };
+		DDB380EC28C27C86001826B0 /* CreateThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B02892536A0042490C /* ThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B4289257CA0042490C /* ThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunService.swift; sourceTree = "<group>"; };
 		DDF2C4002887A60F00C10F67 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				409451AE28905A9000F21717 /* HomeService.swift */,
 				409451B228905D7D00F21717 /* HomeResponse.swift */,
 				40AA766628A2B91F0093A3EB /* CreateThunService.swift */,
+				DDB380EC28C27C86001826B0 /* CreateThunResponse.swift */,
 				DDB380E028C1A971001826B0 /* ExistThunResponse.swift */,
 				DDB380E228C1A992001826B0 /* ExistThunService.swift */,
 			);
@@ -673,6 +676,7 @@
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
 				DDB380D528C08E73001826B0 /* DeleteThunViewModel.swift in Sources */,
+				DDB380ED28C27C86001826B0 /* CreateThunResponse.swift in Sources */,
 				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DDB380DF28C19E5E001826B0 /* EnterDetailThunViewController.swift in Sources */,
 				DD73C2C228B209DC001DEC1A /* CancelThunResponse.swift in Sources */,
