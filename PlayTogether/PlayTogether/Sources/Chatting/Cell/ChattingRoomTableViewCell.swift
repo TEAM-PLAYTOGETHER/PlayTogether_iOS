@@ -144,13 +144,4 @@ private extension ChattingRoomTableViewCell {
         yourMessageLabel.removeFromSuperview()
         yourProfileImageView.removeFromSuperview()
     }
-    
-    func dateParser(_ dateString: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        guard let convertDate = dateFormatter.date(from: dateString) else { return String.init() }
-        
-        dateFormatter.dateFormat = "yyyy.MM.dd.  HH:mm"
-        return dateFormatter.string(from: convertDate)
-    }
 }
