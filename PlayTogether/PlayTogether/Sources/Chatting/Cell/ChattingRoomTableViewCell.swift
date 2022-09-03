@@ -22,7 +22,9 @@ final class ChattingRoomTableViewCell: UITableViewCell {
         $0.backgroundColor = .ptGray02
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
-        $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)))
+        $0.lineBreakMode = .byCharWrapping
+        $0.setupPadding(top: 8, left: 12, bottom: 8, right: 12)
+        $0.drawText(in: CGRect())
     }
     
     private let dateLabel = UILabel().then {
@@ -41,7 +43,9 @@ final class ChattingRoomTableViewCell: UITableViewCell {
         $0.backgroundColor = .ptBlack01
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
-        $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)))
+        $0.lineBreakMode = .byCharWrapping
+        $0.setupPadding(top: 8, left: 12, bottom: 8, right: 12)
+        $0.drawText(in: CGRect())
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
