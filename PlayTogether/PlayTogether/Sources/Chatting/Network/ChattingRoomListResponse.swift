@@ -25,7 +25,7 @@ struct ChattingRoom: Decodable {
     let audience: String
     let audienceID: Int
     let send, read: Bool
-    let createdAt, content: String
+    var createdAt, content: String
 
     enum CodingKeys: String, CodingKey {
         case roomID = "roomId"

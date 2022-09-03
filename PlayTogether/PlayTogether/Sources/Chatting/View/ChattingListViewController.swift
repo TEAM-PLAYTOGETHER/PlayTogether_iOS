@@ -11,6 +11,7 @@ import UIKit
 final class ChattingListViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel = ChattingListViewModel()
+    private let socketManager = SocketIOManager.shared
     
     private let tableView = UITableView().then {
         $0.showsVerticalScrollIndicator = false
@@ -24,6 +25,7 @@ final class ChattingListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         SocketIOManager.shared.establishConnection()
+        subscribeNewMessage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +59,7 @@ final class ChattingListViewController: BaseViewController {
                       let item = item
                 else { return UITableViewCell() }
                 
+                //TODO: 추후 변경 예정
                 cell.setupCell(
                     profileImage: nil,
                     name: item.audience,
@@ -90,5 +93,77 @@ final class ChattingListViewController: BaseViewController {
                 )
             })
             .disposed(by: disposeBag)
+    }
+}
+
+private extension ChattingListViewController {
+    func subscribeNewMessage() {
+        socketManager.socket.subscribeOn("newMessageToUser") { response in
+            guard let messageString = response["content"] as? String,
+                  let audienceID = response["recvId"] as? Int,
+                  var rooms = try? self.viewModel.chattingRoomListSubject.value()
+            else { return }
+            
+            for room in rooms {
+                guard var room = room,
+                      room.audienceID == audienceID
+                else { continue }
+
+                self.updateRoom(audienceID, messageString, &rooms, &room)
+                return
+            }
+            self.addNewRoom(audienceID, messageString, &rooms)
+        }
+    }
+    
+    func addNewRoom(_ audinceID: Int, _ message: String, _ originRooms: inout [ChattingRoom?]) {
+        let firstIndex = IndexPath(row: 0, section: 0)
+        
+        //TODO: 변경 예정
+        let newRoom = ChattingRoom(
+            roomID: 57,
+            audience: "이승헌",
+            audienceID: audinceID,
+            send: false,
+            read: false,
+            createdAt: "2022-09-03T18:44:57.641Z",
+            content: message
+        )
+        
+        tableView.beginUpdates()
+        
+        originRooms.insert(newRoom, at: 0)
+        viewModel.chattingRoomListSubject.onNext(originRooms)
+        tableView.insertRows(at: [firstIndex], with: .bottom)
+        
+        tableView.endUpdates()
+    }
+    
+    func updateRoom(
+        _ audienceID: Int,
+        _ message: String,
+        _ originRooms: inout [ChattingRoom?],
+        _ originRoom: inout ChattingRoom
+    ) {
+        //TODO: 변경 예정
+        originRoom.content = message
+        var row: Int = .init()
+        for i in 0..<originRooms.count {
+            guard originRooms[i]?.audienceID == originRoom.audienceID else { continue }
+
+            row = i
+            break
+        }
+        
+        let firstIndex = IndexPath(row: 0, section: 0)
+        let originIndex = IndexPath(row: row, section: 0)
+        
+        tableView.beginUpdates()
+        
+        tableView.moveRow(at: originIndex, to: firstIndex)
+        originRooms.insert(originRooms.remove(at: row), at: 0)
+        viewModel.chattingRoomListSubject.onNext(originRooms)
+        
+        tableView.endUpdates()
     }
 }
