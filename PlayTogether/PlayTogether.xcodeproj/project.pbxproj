@@ -11,6 +11,10 @@
 		401B853C287FD57E003B69D3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853B287FD57E003B69D3 /* RxSwift */; };
 		401B853F287FD5B5003B69D3 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B853E287FD5B5003B69D3 /* Moya */; };
 		401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 401B8540287FD5B5003B69D3 /* RxMoya */; };
+		402A16E528C4AA5D00161820 /* CrewListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A16E428C4AA5D00161820 /* CrewListResponse.swift */; };
+		402A16E728C4C1BE00161820 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A16E628C4C1BE00161820 /* BottomSheetViewController.swift */; };
+		402A16EA28C4C5F800161820 /* BottomSheetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A16E928C4C5F800161820 /* BottomSheetTableViewCell.swift */; };
+		402A16EC28C4D49100161820 /* CompleteURLLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402A16EB28C4D49100161820 /* CompleteURLLoggerPlugin.swift */; };
 		4040AC432893093F00C76978 /* CreateThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC422893093F00C76978 /* CreateThunViewController.swift */; };
 		4040AC452893096F00C76978 /* CreateThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC442893096F00C76978 /* CreateThunViewModel.swift */; };
 		4040AC4728930BA200C76978 /* CreateThunCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */; };
@@ -113,6 +117,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		402A16E428C4AA5D00161820 /* CrewListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewListResponse.swift; sourceTree = "<group>"; };
+		402A16E628C4C1BE00161820 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		402A16E928C4C5F800161820 /* BottomSheetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTableViewCell.swift; sourceTree = "<group>"; };
+		402A16EB28C4D49100161820 /* CompleteURLLoggerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteURLLoggerPlugin.swift; sourceTree = "<group>"; };
 		4040AC422893093F00C76978 /* CreateThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunViewController.swift; sourceTree = "<group>"; };
 		4040AC442893096F00C76978 /* CreateThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunViewModel.swift; sourceTree = "<group>"; };
 		4040AC4628930BA200C76978 /* CreateThunCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -231,6 +239,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		402A16E828C4C5E700161820 /* BottomSheetView */ = {
+			isa = PBXGroup;
+			children = (
+				402A16E628C4C1BE00161820 /* BottomSheetViewController.swift */,
+				402A16E928C4C5F800161820 /* BottomSheetTableViewCell.swift */,
+			);
+			path = BottomSheetView;
+			sourceTree = "<group>";
+		};
 		4041698E2886A4F700812B37 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,6 +350,7 @@
 				DDB380EC28C27C86001826B0 /* CreateThunResponse.swift */,
 				DDB380E028C1A971001826B0 /* ExistThunResponse.swift */,
 				DDB380E228C1A992001826B0 /* ExistThunService.swift */,
+				402A16E428C4AA5D00161820 /* CrewListResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -474,6 +492,7 @@
 		4096A2BB287F626600F1E27C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				402A16E828C4C5E700161820 /* BottomSheetView */,
 				4096A2BC287F627E00F1E27C /* BaseViewController.swift */,
 				409451B028905AEC00F21717 /* APIConstants.swift */,
 				B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */,
@@ -496,6 +515,7 @@
 			isa = PBXGroup;
 			children = (
 				B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */,
+				402A16EB28C4D49100161820 /* CompleteURLLoggerPlugin.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -676,6 +696,7 @@
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
 				DDB380D528C08E73001826B0 /* DeleteThunViewModel.swift in Sources */,
+				402A16EC28C4D49100161820 /* CompleteURLLoggerPlugin.swift in Sources */,
 				DDB380ED28C27C86001826B0 /* CreateThunResponse.swift in Sources */,
 				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DDB380DF28C19E5E001826B0 /* EnterDetailThunViewController.swift in Sources */,
@@ -685,6 +706,7 @@
 				DD73C2BA28AA1727001DEC1A /* DetailThunService.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
+				402A16EA28C4C5F800161820 /* BottomSheetTableViewCell.swift in Sources */,
 				B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				4096A29E287F5F3F00F1E27C /* OnboardingViewController.swift in Sources */,
@@ -743,10 +765,12 @@
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */,
 				B6397F432887104800046843 /* UITextField+Extension.swift in Sources */,
+				402A16E528C4AA5D00161820 /* CrewListResponse.swift in Sources */,
 				40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */,
 				408EE3EB28BBE4CA0012C642 /* ProfileView.swift in Sources */,
 				B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */,
 				DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */,
+				402A16E728C4C1BE00161820 /* BottomSheetViewController.swift in Sources */,
 				DDB380D328C08DEB001826B0 /* DeleteThunService.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */,

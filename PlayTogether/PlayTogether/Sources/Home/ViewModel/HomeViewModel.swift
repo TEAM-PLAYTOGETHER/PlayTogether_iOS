@@ -12,14 +12,32 @@ import RxMoya
 
 final class HomeViewModel {
     private lazy var disposeBag = DisposeBag()
+    var crewList = [CrewResponse]()
     var hotThunList = PublishSubject<[HomeResponseList?]>()
     var isEmptyHotThun = BehaviorSubject<Bool>(value: false)
     var newThunList = PublishSubject<[HomeResponseList?]>()
     var isEmptyNewThun = BehaviorSubject<Bool>(value: false)
     
     init () {
+        fetchCrewList()
         fetchHotThunList()
         fetchNewThunList()
+    }
+    
+    func fetchCrewList() {
+        let provider = MoyaProvider<HomeService>()
+        provider.rx.request(.crewListRequest)
+            .subscribe { [weak self] result in
+                switch result {
+                case let .success(response):
+                    let responseData = try? response.map(CrewListResponse.self)
+                    guard let data = responseData?.data else { return }
+                    self?.crewList = data.crewList
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     func fetchHotThunList() {

@@ -9,6 +9,7 @@ import Moya
 import Foundation
 
 enum HomeService {
+    case crewListRequest
     case hotThunRequest
     case newThunRequest
 }
@@ -20,6 +21,8 @@ extension HomeService: TargetType {
     
     var path: String {
         switch self {
+        case .crewListRequest:
+            return APIConstants.getCrewList
         case .hotThunRequest:
             return APIConstants.getHotThunList
         case .newThunRequest:

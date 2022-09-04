@@ -13,7 +13,7 @@ final class HomeViewController: BaseViewController {
     private let viewModel = HomeViewModel()
     
     private let leftBarItem = UIButton().then {
-        $0.setTitle("SOPT", for: .normal) // TODO: 추후 삭제 예정
+        $0.setTitle(APIConstants.crewName, for: .normal)
         $0.setTitleColor(.ptGreen, for: .normal)
         $0.setImage(.ptImage(.showIcon), for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 20)
@@ -261,6 +261,15 @@ final class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        leftBarItem.rx.tap
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _ in
+                let bottomSheet = BottomSheetViewController(crewData: self.viewModel.crewList)
+                bottomSheet.setup(parentViewController: self)
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.isEmptyHotThun
             .bind(to: hotCollectionView.rx.isHidden)
             .disposed(by: disposeBag)
