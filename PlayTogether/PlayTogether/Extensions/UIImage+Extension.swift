@@ -64,4 +64,7 @@ enum ImageCase: String {
     
     case checkActiveIcon = "checkActiveIcon"
     case checkInActiveIcon = "checkInActiveIcon"
+    
+    case calendarInActiveIcon = "calendarInActiveIcon"
+    case calendarActiveIcon = "calendarActiveIcon"
 }
