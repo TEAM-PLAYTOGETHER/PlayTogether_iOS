@@ -21,8 +21,14 @@ struct APIConstants {
     static let getCrewList = "/crew/list"
     
     // light
-    static let getHotThunList = "/light/\(crewID)/hot"
-    static let getNewThunList = "/light/\(crewID)/new"
+    static var getHotThunList = {
+        return "/light/\(crewID)/hot"
+    }
+    
+    static var getNewThunList = {
+        return "/light/\(crewID)/new"
+    }
+    
     static let createThun = "/light/add"
     static let getSubmittedThunList = "/light"
     static let getOpenedThunList = "/light"

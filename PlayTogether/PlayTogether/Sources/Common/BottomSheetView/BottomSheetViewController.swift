@@ -8,8 +8,13 @@
 import RxSwift
 import UIKit
 
+protocol BottomSheetDelegate: AnyObject {
+    func selectCrew(name: String)
+}
+
 final class BottomSheetViewController: BaseViewController {
     private let disposeBag = DisposeBag()
+    weak var delegate: BottomSheetDelegate?
     
     var crewDataSource: [CrewResponse]
     
@@ -45,6 +50,7 @@ final class BottomSheetViewController: BaseViewController {
     }
     
     private let tableView = UITableView().then {
+        $0.delaysContentTouches = false
         $0.register(
             BottomSheetTableViewCell.self,
             forCellReuseIdentifier: "BottomSheetTableViewCell"
@@ -54,7 +60,9 @@ final class BottomSheetViewController: BaseViewController {
     private let tapGesture = UITapGestureRecognizer(
         target: BottomSheetViewController.self,
         action: nil
-    )
+    ).then {
+        $0.cancelsTouchesInView = false
+    }
     
     init(crewData: [CrewResponse]) {
         self.crewDataSource = crewData
@@ -135,17 +143,24 @@ final class BottomSheetViewController: BaseViewController {
             .withUnretained(self)
             .asDriver(onErrorDriveWith: .empty())
             .drive(onNext: { _ in
-                UIView.transition(with: self.view, duration: 0.25, options: .curveEaseInOut, animations: {
-                    self.view.backgroundColor = .clear
-                    self.sheetView.frame.origin = CGPoint(x: 0, y: UIScreen.main.bounds.height)
-                }, completion: { _ in
-                    self.view.removeFromSuperview()
-                    self.removeFromParent()
-                })
+                self.dismissBottomSheet()
             })
             .disposed(by: disposeBag)
-        
         view.addGestureRecognizer(tapGesture)
+        
+        tableView.rx.modelSelected(CrewResponse.self)
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _, item in
+                guard APIConstants.crewID != item.crewID
+                else { self.dismissBottomSheet(); return }
+                
+                APIConstants.crewID = item.crewID
+                APIConstants.crewName = item.crewName
+                self.delegate?.selectCrew(name: item.crewName)
+                self.dismissBottomSheet()
+            })
+            .disposed(by: disposeBag)
     }
     
     func setup(parentViewController: UIViewController) {
@@ -158,6 +173,18 @@ final class BottomSheetViewController: BaseViewController {
         UIView.transition(with: view, duration: 0.25, options: .curveEaseInOut, animations: {
             self.view.backgroundColor = .black.withAlphaComponent(0.5)
             self.sheetView.frame.origin = CGPoint(x: 0, y: 0)
+        })
+    }
+}
+
+private extension BottomSheetViewController {
+    func dismissBottomSheet() {
+        UIView.transition(with: view, duration: 0.25, options: .curveEaseInOut, animations: {
+            self.view.backgroundColor = .clear
+            self.sheetView.frame.origin = CGPoint(x: 0, y: UIScreen.main.bounds.height)
+        }, completion: { _ in
+            self.view.removeFromSuperview()
+            self.removeFromParent()
         })
     }
 }

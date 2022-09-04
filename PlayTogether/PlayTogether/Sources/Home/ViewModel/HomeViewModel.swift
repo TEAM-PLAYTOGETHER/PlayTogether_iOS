@@ -48,7 +48,9 @@ final class HomeViewModel {
                 case let .success(response):
                     let responseData = try? response.map(HomeResponse.self)
                     guard let data = responseData?.data else { return }
-                    data.isEmpty ? self?.isEmptyHotThun.onNext(true) : self?.hotThunList.onNext(data)
+                    let isDataEmpty = data.isEmpty
+                    self?.isEmptyHotThun.onNext(isDataEmpty)
+                    if !isDataEmpty { self?.hotThunList.onNext(data)}
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -64,7 +66,9 @@ final class HomeViewModel {
                 case let .success(response):
                     let responseData = try? response.map(HomeResponse.self)
                     guard let data = responseData?.data else { return }
-                    data.isEmpty ? self?.isEmptyNewThun.onNext(true) : self?.newThunList.onNext(data)
+                    let isDataEmpty = data.isEmpty
+                    self?.isEmptyNewThun.onNext(isDataEmpty)
+                    if !isDataEmpty { self?.newThunList.onNext(data)}
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

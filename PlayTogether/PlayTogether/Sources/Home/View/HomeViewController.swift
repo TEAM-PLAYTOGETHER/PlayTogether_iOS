@@ -266,12 +266,18 @@ final class HomeViewController: BaseViewController {
             .asDriver(onErrorDriveWith: .empty())
             .drive(onNext: { _ in
                 let bottomSheet = BottomSheetViewController(crewData: self.viewModel.crewList)
+                bottomSheet.delegate = self
                 bottomSheet.setup(parentViewController: self)
             })
             .disposed(by: disposeBag)
         
         viewModel.isEmptyHotThun
-            .bind(to: hotCollectionView.rx.isHidden)
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _, isEmpty in
+                self.hotCollectionView.isHidden = isEmpty
+                self.hotEmptyView.isHidden = !isEmpty
+            })
             .disposed(by: disposeBag)
         
         viewModel.hotThunList
@@ -290,7 +296,12 @@ final class HomeViewController: BaseViewController {
             .disposed(by: self.disposeBag)
         
         viewModel.isEmptyNewThun
-            .bind(to: newCollectionView.rx.isHidden)
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _, isEmpty in
+                self.newCollectionView.isHidden = isEmpty
+                self.newEmptyView.isHidden = !isEmpty
+            })
             .disposed(by: disposeBag)
         
         viewModel.newThunList
@@ -355,5 +366,15 @@ final class HomeViewController: BaseViewController {
                         lightID: $0.lightID), animated: true)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension HomeViewController: BottomSheetDelegate {
+    func selectCrew(name: String) {
+        leftBarItem.setTitle(name, for: .normal)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
+        
+        viewModel.fetchHotThunList()
+        viewModel.fetchNewThunList()
     }
 }

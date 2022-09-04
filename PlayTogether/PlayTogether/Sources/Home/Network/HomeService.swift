@@ -24,9 +24,9 @@ extension HomeService: TargetType {
         case .crewListRequest:
             return APIConstants.getCrewList
         case .hotThunRequest:
-            return APIConstants.getHotThunList
+            return APIConstants.getHotThunList()
         case .newThunRequest:
-            return APIConstants.getNewThunList
+            return APIConstants.getNewThunList()
         }
     }
     
