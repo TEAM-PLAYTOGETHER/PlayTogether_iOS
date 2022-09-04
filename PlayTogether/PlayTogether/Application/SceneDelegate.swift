@@ -16,7 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
-        window?.rootViewController = TabBarController()
+//        window?.rootViewController = TabBarController()
+        window?.rootViewController = UINavigationController(rootViewController: CheckTermsServiceViewController())
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

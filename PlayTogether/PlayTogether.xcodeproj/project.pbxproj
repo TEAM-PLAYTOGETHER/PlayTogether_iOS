@@ -54,6 +54,9 @@
 		B6397F432887104800046843 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6397F422887104800046843 /* UITextField+Extension.swift */; };
 		B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C9172898D4B1006C45BE /* InvitationCodeViewModel.swift */; };
 		B649134728ADD6FF007A5821 /* AddSubwayStationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B649134628ADD6FF007A5821 /* AddSubwayStationViewModel.swift */; };
+		B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */; };
+		B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597228C48B9B00776008 /* CheckTermsView.swift */; };
+		B660597628C4A1D400776008 /* CheckTermsServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */; };
 		B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */; };
 		B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */; };
 		B66EA07C28A7E60B00F1F723 /* SubwayStationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */; };
@@ -139,6 +142,9 @@
 		B6397F422887104800046843 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		B640C9172898D4B1006C45BE /* InvitationCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewModel.swift; sourceTree = "<group>"; };
 		B649134628ADD6FF007A5821 /* AddSubwayStationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewModel.swift; sourceTree = "<group>"; };
+		B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewController.swift; sourceTree = "<group>"; };
+		B660597228C48B9B00776008 /* CheckTermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsView.swift; sourceTree = "<group>"; };
+		B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewModel.swift; sourceTree = "<group>"; };
 		B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceService.swift; sourceTree = "<group>"; };
 		B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewModel.swift; sourceTree = "<group>"; };
 		B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationResponse.swift; sourceTree = "<group>"; };
@@ -320,6 +326,7 @@
 		4096A2AE287F5F8200F1E27C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B660596D28C488EB00776008 /* TermsService */,
 				B6B4B10428C1B5A0009AA0DB /* LogIn */,
 				4096A2B1287F5FDC00F1E27C /* Onboarding */,
 				4041698E2886A4F700812B37 /* Home */,
@@ -443,6 +450,40 @@
 				B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		B660596D28C488EB00776008 /* TermsService */ = {
+			isa = PBXGroup;
+			children = (
+				B660596F28C4890700776008 /* View */,
+				B660596E28C4890100776008 /* Controller */,
+				B660597428C4A1C000776008 /* ViewModel */,
+			);
+			path = TermsService;
+			sourceTree = "<group>";
+		};
+		B660596E28C4890100776008 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B660596F28C4890700776008 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B660597228C48B9B00776008 /* CheckTermsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B660597428C4A1C000776008 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B67F2A8E28A4FC88005A82B1 /* Network */ = {
@@ -638,6 +679,7 @@
 				B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
+				B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */,
 				B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */,
 				B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */,
 				B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */,
@@ -647,8 +689,10 @@
 				409451AF28905A9000F21717 /* HomeService.swift in Sources */,
 				DDF2C4072887A9B000C10F67 /* LikedThunViewController.swift in Sources */,
 				40727C1428A19A41007E5835 /* CreateThunIntroduceCollectionViewCell.swift in Sources */,
+				B660597628C4A1D400776008 /* CheckTermsServiceViewModel.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
+				B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */,
 				B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */,
