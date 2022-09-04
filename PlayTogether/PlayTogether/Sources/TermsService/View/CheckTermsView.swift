@@ -21,13 +21,10 @@ class CheckTermsView: UIView {
     weak var delegate: checkTermsProtocol?
     
     var allCheckButton = UIButton().then {
+        $0.setTitle("   전체 동의", for: .normal)
+        $0.setTitleColor(.ptBlack01, for: .normal)
+        $0.titleLabel?.font = .pretendardBold(size: 16)
         $0.setupToggleButtonUI()
-    }
-    
-    private let allCheckLabel = UILabel().then {
-        $0.text = "전체 동의"
-        $0.textColor = .ptBlack01
-        $0.font = .pretendardBold(size: 16)
     }
     
     private let underLineView = UIView().then {
@@ -35,43 +32,31 @@ class CheckTermsView: UIView {
     }
     
     var ageCheckButton = UIButton().then {
+        $0.setTitle("   (필수) 만 18세 이상", for: .normal)
+        $0.setTitleColor(.ptBlack02, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 16)
         $0.setupToggleButtonUI()
-    }
-    
-    private let ageCheckLabel = UILabel().then {
-        $0.text = "(필수) 만 18세 이상"
-        $0.textColor = .ptBlack02
-        $0.font = .pretendardRegular(size: 16)
     }
     
     var termsCheckButton = UIButton().then {
+        $0.setTitle("   (필수) 이용약관 동의", for: .normal)
+        $0.setTitleColor(.ptBlack02, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 16)
         $0.setupToggleButtonUI()
-    }
-    
-    private let termsCheckLabel = UILabel().then {
-        $0.text = "(필수) 이용약관 동의"
-        $0.textColor = .ptBlack02       // TODO: 색, 폰트 섞여있음, 밑줄 NSAtributed 넣어주기 + TapGesture
-        $0.font = .pretendardRegular(size: 16)
     }
     
     var privacyCheckButton = UIButton().then {
+        $0.setTitle("   (필수) 개인정보 수집 및 이용 동의", for: .normal)
+        $0.setTitleColor(.ptBlack02, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 16)
         $0.setupToggleButtonUI()
-    }
-    
-    private let privacyCheckLabel = UILabel().then {
-        $0.text = "(필수) 개인정보 수집 및 이용 동의"
-        $0.textColor = .ptBlack02
-        $0.font = .pretendardRegular(size: 16)
     }
     
     var marketingCheckButton = UIButton().then {
+        $0.setTitle("   (선택) 마케팅 정보 수집 및 수신 동의", for: .normal)
+        $0.setTitleColor(.ptBlack02, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 16)
         $0.setupToggleButtonUI()
-    }
-    
-    private let marketingCheckLabel = UILabel().then {
-        $0.text = "(선택) 마케팅 정보 수집 및 수신 동의"
-        $0.textColor = .ptBlack02
-        $0.font = .pretendardRegular(size: 16)
     }
     
     override init(frame: CGRect) {
@@ -93,16 +78,11 @@ private extension CheckTermsView {
         layer.cornerRadius = 10.0
         
         addSubview(allCheckButton)
-        addSubview(allCheckLabel)
         addSubview(underLineView)
         addSubview(ageCheckButton)
-        addSubview(ageCheckLabel)
         addSubview(termsCheckButton)
-        addSubview(termsCheckLabel)
         addSubview(privacyCheckButton)
-        addSubview(privacyCheckLabel)
         addSubview(marketingCheckButton)
-        addSubview(marketingCheckLabel)
         
         setupLayout()
         setupBinding()
@@ -110,61 +90,35 @@ private extension CheckTermsView {
     
     func setupLayout() {
         allCheckButton.snp.makeConstraints {
-            $0.centerY.equalTo(allCheckLabel)
+            $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(19.04)
         }
         
-        allCheckLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(20)
-            $0.leading.equalTo(allCheckButton.snp.trailing).offset(11.04)
-        }
-        
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(allCheckLabel.snp.bottom).offset(20)
+            $0.top.equalTo(allCheckButton.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
         }
         
         ageCheckButton.snp.makeConstraints {
-            $0.centerY.equalTo(ageCheckLabel)
-            $0.leading.equalToSuperview().inset(19.04)
-        }
-        
-        ageCheckLabel.snp.makeConstraints {
             $0.top.equalTo(underLineView.snp.bottom).offset(20)
-            $0.leading.equalTo(ageCheckButton.snp.trailing).offset(11.04)
+            $0.leading.equalToSuperview().inset(19.04)
         }
         
         termsCheckButton.snp.makeConstraints {
-            $0.centerY.equalTo(termsCheckLabel)
+            $0.top.equalTo(ageCheckButton.snp.bottom).offset(25)
             $0.leading.equalToSuperview().inset(19.04)
-        }
-        
-        termsCheckLabel.snp.makeConstraints {
-            $0.top.equalTo(ageCheckLabel.snp.bottom).offset(25)
-            $0.leading.equalTo(termsCheckButton.snp.trailing).offset(11.04)
         }
         
         privacyCheckButton.snp.makeConstraints {
-            $0.centerY.equalTo(privacyCheckLabel)
+            $0.top.equalTo(termsCheckButton.snp.bottom).offset(25)
             $0.leading.equalToSuperview().inset(19.04)
-        }
-        
-        privacyCheckLabel.snp.makeConstraints {
-            $0.top.equalTo(termsCheckLabel.snp.bottom).offset(25)
-            $0.leading.equalTo(privacyCheckButton.snp.trailing).offset(11.04)
         }
         
         marketingCheckButton.snp.makeConstraints {
-            $0.centerY.equalTo(marketingCheckLabel)
+            $0.top.equalTo(privacyCheckButton.snp.bottom).offset(25)
             $0.leading.equalToSuperview().inset(19.04)
         }
-        
-        marketingCheckLabel.snp.makeConstraints {
-            $0.top.equalTo(privacyCheckLabel.snp.bottom).offset(25)
-            $0.leading.equalTo(marketingCheckButton.snp.trailing).offset(11.04)
-        }
-        
     }
     
     func setupBinding() {

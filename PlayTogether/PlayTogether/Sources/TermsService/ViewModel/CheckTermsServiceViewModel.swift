@@ -19,6 +19,10 @@ final class CheckTermsServiceViewModel {
         var allCheck: Driver<Bool>
     }
     
+    struct ConfirmButtonDriverOutput {
+        var confirmButtonState: Driver<Bool>
+    }
+    
     func buttonAllStateCheck() -> AllCheckDriverOutput {
         let output = Observable.combineLatest(ageCheck.asObservable(),
                                               termsCheck.asObservable(),
@@ -27,5 +31,14 @@ final class CheckTermsServiceViewModel {
             return $0 && $1 && $2 && $3
         }.asDriver(onErrorJustReturn: false)
         return AllCheckDriverOutput(allCheck: output)
+    }
+    
+    func confirmButtonEnalbeCheck() -> ConfirmButtonDriverOutput {
+        let output = Observable.combineLatest(ageCheck.asObservable(),
+                                              termsCheck.asObservable(),
+                                              privacyCheck.asObservable()) {
+            return $0 && $1 && $2
+        }.asDriver(onErrorJustReturn: false)
+        return ConfirmButtonDriverOutput(confirmButtonState: output)
     }
 }

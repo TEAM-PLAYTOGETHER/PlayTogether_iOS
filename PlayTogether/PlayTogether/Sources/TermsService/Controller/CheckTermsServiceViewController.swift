@@ -47,6 +47,18 @@ class CheckTermsServiceViewController: BaseViewController {
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
+    private func changeToggleButtons(_ state: Bool) {
+        checkTermsView.ageCheckButton.isSelected = state
+        checkTermsView.termsCheckButton.isSelected = state
+        checkTermsView.privacyCheckButton.isSelected = state
+        checkTermsView.marketingCheckButton.isSelected = state
+        
+        viewModel.ageCheck.onNext(state)
+        viewModel.termsCheck.onNext(state)
+        viewModel.privacyCheck.onNext(state)
+        viewModel.marketingCheck.onNext(state)
+    }
+    
     override func setupViews() {
         view.backgroundColor = .white
         
@@ -90,6 +102,15 @@ class CheckTermsServiceViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        checkTermsView.allCheckButton.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                guard let buttonState = self?.checkTermsView.allCheckButton.isSelected else { return }
+                self?.checkTermsView.allCheckButton.isSelected = !buttonState
+                self?.changeToggleButtons(!buttonState)
+            })
+            .disposed(by: disposeBag)
+        
         checkTermsView.ageCheckButton.rx.tap
             .bind { [weak self] in
                 guard let buttonState = self?.checkTermsView.ageCheckButton.isSelected else { return }
@@ -121,8 +142,13 @@ class CheckTermsServiceViewController: BaseViewController {
                 self?.viewModel.marketingCheck.onNext(!buttonState)
             }
             .disposed(by: disposeBag)
-         
-        // TODO: 전체동의 액션
+        
+        confirmButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                // TODO: 다음 뷰 넘어가는 코드 추가 할 예정
+            })
+            .disposed(by: disposeBag)
         
         let buttonAllCheckDriver = viewModel.buttonAllStateCheck()
         
@@ -130,6 +156,15 @@ class CheckTermsServiceViewController: BaseViewController {
             .asDriver()
             .drive(onNext: {[weak self] in
                 self?.checkTermsView.allCheckButton.isSelected = $0
+            })
+            .disposed(by: disposeBag)
+        
+        let cofirmButtonEnableDriver = viewModel.confirmButtonEnalbeCheck()
+        
+        cofirmButtonEnableDriver.confirmButtonState
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                self?.confirmButton.isButtonEnableUI(check: $0)
             })
             .disposed(by: disposeBag)
     }
