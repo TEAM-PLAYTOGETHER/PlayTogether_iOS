@@ -46,7 +46,7 @@ class InputGenderBirthYearViewController: BaseViewController {
         $0.titleLabel?.font = .pretendardMedium(size: 14)
         $0.isSelected = true
         $0.layer.cornerRadius = 10.0
-        $0.setupSeletedGenderButtonUI(true)
+        setupSeletedGenderButtonUI($0, true)
     }
     
     private lazy var femaleButton = UIButton().then {
@@ -55,7 +55,7 @@ class InputGenderBirthYearViewController: BaseViewController {
         $0.setTitleColor(.ptGreen, for: .selected)
         $0.titleLabel?.font = .pretendardMedium(size: 14)
         $0.layer.cornerRadius = 10.0
-        $0.setupSeletedGenderButtonUI(false)
+        setupSeletedGenderButtonUI($0, false)
     }
     
     private let noticeBirthYearLabel = UILabel().then {
@@ -68,10 +68,15 @@ class InputGenderBirthYearViewController: BaseViewController {
         $0.setupPlaceholderText(title: "태어난 연도 선택", color: .ptGray01)
         $0.textColor = .ptBlack02
         $0.font = .pretendardRegular(size: 14)
-        $0.addLeftPadding()
         $0.layer.borderWidth = 1.0
         $0.layer.borderColor = UIColor.ptGray03.cgColor
         $0.layer.cornerRadius = 10.0
+        $0.addLeftPadding()
+    }
+    
+    private var textFieldRightImageView = UIImageView().then {
+        $0.backgroundColor = .white
+        $0.image = .ptImage(.calendarInActiveIcon)
     }
     
     private lazy var confirmButton = UIButton().then {
@@ -86,11 +91,6 @@ class InputGenderBirthYearViewController: BaseViewController {
         configureNavBar()
     }
     
-    private func configureNavBar() {
-        navigationItem.leftBarButtonItem = leftButtonItem
-        navigationItem.leftBarButtonItem?.tintColor = .white
-    }
-    
     override func setupViews() {
         view.backgroundColor = .white
         
@@ -102,10 +102,9 @@ class InputGenderBirthYearViewController: BaseViewController {
         genderStackView.addArrangedSubview(maleButton)
         genderStackView.addArrangedSubview(femaleButton)
         
-//        view.addSubview(maleButton)
-//        view.addSubview(femaleButton)
         view.addSubview(noticeBirthYearLabel)
         view.addSubview(birthYearTextField)
+        view.addSubview(textFieldRightImageView)
         view.addSubview(confirmButton)
     }
     
@@ -144,6 +143,11 @@ class InputGenderBirthYearViewController: BaseViewController {
             $0.height.equalTo(57 * height)
         }
         
+        textFieldRightImageView.snp.makeConstraints {
+            $0.centerY.equalTo(birthYearTextField)
+            $0.trailing.equalTo(birthYearTextField.snp.trailing).inset(18.2)
+        }
+        
         confirmButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(40)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -152,6 +156,74 @@ class InputGenderBirthYearViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        leftButtonItem.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
         
+        maleButton.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                guard let buttonState = self?.maleButton.isSelected else { return }
+                guard let self = self else { return }
+                guard self.maleButton.isSelected == false else { return }
+                self.setupSeletedGenderButtonUI(self.maleButton, !buttonState)
+                self.setupSeletedGenderButtonUI(self.femaleButton, buttonState)
+            })
+            .disposed(by: disposeBag)
+        
+        femaleButton.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                guard let buttonState = self?.femaleButton.isSelected else { return }
+                guard let self = self else { return }
+                guard self.femaleButton.isSelected == false else { return }
+                self.setupSeletedGenderButtonUI(self.femaleButton, !buttonState)
+                self.setupSeletedGenderButtonUI(self.maleButton, buttonState)
+            })
+            .disposed(by: disposeBag)
+        
+        birthYearTextField.rx.controlEvent(.touchUpInside)
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                // TODO: 생년 Picker View
+            })
+            .disposed(by: disposeBag)
+        
+        birthYearTextField.rx.text.orEmpty
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                guard $0.count > 0 else {
+                    self?.textFieldRightImageView.image = .ptImage(.calendarInActiveIcon)
+                    self?.confirmButton.isButtonEnableUI(check: false)
+                    self?.birthYearTextField.layer.borderColor = UIColor.ptGray03.cgColor
+                    return
+                }
+                self?.textFieldRightImageView.image = .ptImage(.calendarActiveIcon)
+                self?.confirmButton.isButtonEnableUI(check: true)
+                self?.birthYearTextField.layer.borderColor = UIColor.ptGray01.cgColor
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+private extension InputGenderBirthYearViewController {
+    func configureNavBar() {
+        navigationItem.leftBarButtonItem = leftButtonItem
+        navigationItem.leftBarButtonItem?.tintColor = .white
+    }
+    
+    func setupSeletedGenderButtonUI(_ button: UIButton ,_ state: Bool) {
+        button.isSelected = state
+        guard state == true else {
+            button.layer.borderWidth = 1.0
+            button.layer.borderColor = UIColor.ptGray01.cgColor
+            button.backgroundColor = .white
+            return
+        }
+        button.layer.borderWidth = 0.0
+        button.backgroundColor = .ptBlack01
     }
 }

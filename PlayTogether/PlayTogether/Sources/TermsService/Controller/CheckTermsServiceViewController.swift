@@ -146,7 +146,7 @@ class CheckTermsServiceViewController: BaseViewController {
         confirmButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                // TODO: 다음 뷰 넘어가는 코드 추가 할 예정
+                self?.navigationController?.pushViewController(InputGenderBirthYearViewController(), animated: true)
             })
             .disposed(by: disposeBag)
         

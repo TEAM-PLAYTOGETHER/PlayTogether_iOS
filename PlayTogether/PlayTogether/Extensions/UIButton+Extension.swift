@@ -24,18 +24,6 @@ extension UIButton {
         self.layer.borderColor = check ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
     }
     
-    /// 성별 버튼 UI
-    func setupSeletedGenderButtonUI(_ state: Bool) {
-        guard state == true else {
-            self.layer.borderWidth = 1.0
-            self.layer.borderColor = UIColor.ptGray01.cgColor
-            self.backgroundColor = .white
-            return
-        }
-        self.layer.borderWidth = 0.0
-        self.backgroundColor = .ptBlack01
-    }
-    
     /// 이용약관 버튼 이미지 세팅
     func setupToggleButtonUI() {
         self.setImage(.ptImage(.checkInActiveIcon), for: .normal)
