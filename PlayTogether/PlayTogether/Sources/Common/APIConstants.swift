@@ -29,4 +29,7 @@ struct APIConstants {
     
     // subway
     static let getStationList = "/getKwrdFndSubwaySttnList"
+    
+    // user
+    static let registerUserInfo = "/user/signup"
 }

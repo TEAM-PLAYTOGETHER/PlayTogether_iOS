@@ -84,6 +84,24 @@ class InputGenderBirthYearViewController: BaseViewController {
         $0.isButtonEnableUI(check: false)
     }
     
+    private lazy var yearPickerView = UIPickerView().then {
+        $0.backgroundColor = .white
+        $0.tintColor = .clear
+    }
+    
+    private let doneToolBar = UIToolbar().then {
+        $0.tintColor = .link
+        $0.isUserInteractionEnabled = true
+    }
+    
+    private let doneBarButton = UIBarButtonItem.init(title: "완료",
+                                                     style: .plain,
+                                                     target: InputGenderBirthYearViewController.self,
+                                                     action: nil)
+    private var yearList: [Int] = []
+    private var userGender: String = "남"
+    private var userBirthYear: Int = 0
+    
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CheckTermsServiceViewController.self, action: nil)
     
     override func viewWillAppear(_ animated: Bool) {
@@ -156,6 +174,8 @@ class InputGenderBirthYearViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        setupYearData()
+        
         leftButtonItem.rx.tap
             .asDriver()
             .drive(onNext: {[weak self] in
@@ -171,6 +191,7 @@ class InputGenderBirthYearViewController: BaseViewController {
                 guard self.maleButton.isSelected == false else { return }
                 self.setupSeletedGenderButtonUI(self.maleButton, !buttonState)
                 self.setupSeletedGenderButtonUI(self.femaleButton, buttonState)
+                self.userGender = "남"
             })
             .disposed(by: disposeBag)
         
@@ -182,13 +203,7 @@ class InputGenderBirthYearViewController: BaseViewController {
                 guard self.femaleButton.isSelected == false else { return }
                 self.setupSeletedGenderButtonUI(self.femaleButton, !buttonState)
                 self.setupSeletedGenderButtonUI(self.maleButton, buttonState)
-            })
-            .disposed(by: disposeBag)
-        
-        birthYearTextField.rx.controlEvent(.touchUpInside)
-            .asDriver()
-            .drive(onNext: {[weak self] in
-                // TODO: 생년 Picker View
+                self.userGender = "여"
             })
             .disposed(by: disposeBag)
         
@@ -204,6 +219,26 @@ class InputGenderBirthYearViewController: BaseViewController {
                 self?.textFieldRightImageView.image = .ptImage(.calendarActiveIcon)
                 self?.confirmButton.isButtonEnableUI(check: true)
                 self?.birthYearTextField.layer.borderColor = UIColor.ptGray01.cgColor
+            })
+            .disposed(by: disposeBag)
+        
+        doneBarButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let selectedIndex = self?.yearPickerView.selectedRow(inComponent: 0) else { return }
+                guard let year = self?.yearList[selectedIndex] else { return }
+                self?.userBirthYear = year
+                self?.birthYearTextField.text = String(describing: year)
+                self?.birthYearTextField.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+        
+        confirmButton.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                guard let year = self?.userBirthYear else { return }
+                guard let gender = self?.userGender else { return }
+                print("DEBUG: user gender: \(gender), year: \(year)")   // TODO: 서버 연동 후 데이터 보내줄 예정
             })
             .disposed(by: disposeBag)
     }
@@ -225,5 +260,37 @@ private extension InputGenderBirthYearViewController {
         }
         button.layer.borderWidth = 0.0
         button.backgroundColor = .ptBlack01
+    }
+}
+
+// MARK: Setup Picker View
+private extension InputGenderBirthYearViewController {
+    func setupYearData() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        guard let intCurrentYear = Int(dateFormatter.string(from: Date())) else { return }
+        
+        for year in 1900...intCurrentYear {
+            yearList.append(year)
+        }
+        
+        _ = Observable.just(yearList)
+            .bind(to: yearPickerView.rx.itemTitles) { _, item in
+                return "\(item)"
+            }
+            .disposed(by: disposeBag)
+        
+        setupPickerView()
+    }
+    
+    func setupPickerView() {
+        guard let defaultIndex = yearList.firstIndex(of: 2000) else { return }
+        yearPickerView.selectRow(defaultIndex, inComponent: 0, animated: true)
+        
+        doneToolBar.sizeToFit()
+        doneToolBar.items = [doneBarButton]
+        
+        birthYearTextField.inputView = yearPickerView
+        birthYearTextField.inputAccessoryView = doneToolBar
     }
 }
