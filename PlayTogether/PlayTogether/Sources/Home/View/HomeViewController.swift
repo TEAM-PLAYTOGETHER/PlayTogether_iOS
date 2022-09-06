@@ -5,12 +5,22 @@
 //  Created by 한상진 on 2022/07/19.
 //
 
+import Lottie
 import RxSwift
 import UIKit
 
 final class HomeViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = HomeViewModel()
+    
+    private lazy var refreshControl = UIRefreshControl().then {
+        $0.tintColor = .clear
+    }
+    private lazy var animationView = AnimationView(name: "HomeRefreshLottie").then {
+        $0.stop()
+        $0.contentMode = .scaleAspectFit
+        $0.isHidden = true
+    }
     
     private let leftBarItem = UIButton().then {
         $0.setTitle(APIConstants.crewName, for: .normal)
@@ -147,9 +157,11 @@ final class HomeViewController: BaseViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarItem)
         
         view.addSubview(scrollView)
-        view.addSubview(thunButton)
         scrollView.addSubview(contentView)
+        refreshControl.addSubview(animationView)
+        scrollView.refreshControl = refreshControl
         
+        view.addSubview(thunButton)
         contentView.addSubview(categoryLabel)
         contentView.addSubview(eatButton)
         contentView.addSubview(eatLabel)
@@ -168,6 +180,12 @@ final class HomeViewController: BaseViewController {
     
     override func setupLayouts() {
         guard let tabBarHeight = tabBarController?.tabBar.frame.height else { return }
+        
+        animationView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.size.equalTo(UIScreen.main.bounds.width * 0.133)
+            $0.centerX.equalToSuperview()
+        }
         
         thunButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
@@ -261,6 +279,24 @@ final class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        refreshControl.rx.controlEvent(.valueChanged)
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _ in
+                self.animationView.isHidden = false
+                self.animationView.play()
+                DispatchQueue.global().async {
+                    self.viewModel.fetchHotThunList()
+                    self.viewModel.fetchNewThunList()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.animationView.isHidden = true
+                        self.animationView.stop()
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
         leftBarItem.rx.tap
             .withUnretained(self)
             .asDriver(onErrorDriveWith: .empty())
