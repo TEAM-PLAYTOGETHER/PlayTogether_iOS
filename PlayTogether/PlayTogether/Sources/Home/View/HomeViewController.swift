@@ -27,6 +27,7 @@ final class HomeViewController: BaseViewController {
         $0.setTitleColor(.ptGreen, for: .normal)
         $0.setImage(.ptImage(.showIcon), for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 20)
+        $0.contentHorizontalAlignment = .left
         $0.semanticContentAttribute = .forceRightToLeft
     }
     private let rightBarItem = UIButton().then {
