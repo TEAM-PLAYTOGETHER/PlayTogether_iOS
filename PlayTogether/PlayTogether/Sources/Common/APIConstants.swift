@@ -35,5 +35,5 @@ struct APIConstants {
     static let getStationList = "/getKwrdFndSubwaySttnList"
     
     // user
-    static let registerUserInfo = "/user/signup"
+    static let updateUserInfo = "/user/signup"
 }

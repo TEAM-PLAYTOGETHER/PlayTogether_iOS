@@ -12,6 +12,7 @@ import SwiftUI
 
 class InputGenderBirthYearViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
+    private let viewModel = InputGenderBirthYearViewModel()
     
     private let headerLabel = UILabel().then {
         $0.text = "안전한 번개를 위해\n정보를 입력해주세요"
@@ -236,9 +237,16 @@ class InputGenderBirthYearViewController: BaseViewController {
         confirmButton.rx.tap
             .asDriver()
             .drive(onNext: {[weak self] in
-                guard let year = self?.userBirthYear else { return }
                 guard let gender = self?.userGender else { return }
-                print("DEBUG: user gender: \(gender), year: \(year)")   // TODO: 서버 연동 후 데이터 보내줄 예정
+                guard let year = self?.userBirthYear else { return }
+                
+                let userInfoInput = InputGenderBirthYearViewModel
+                    .updateUserInfoInput(userGender: gender, userBirthYear: year)
+                
+                self?.viewModel.updateUserInfo(userInfoInput) {
+                    guard $0 == true else { return }
+                    self?.navigationController?.pushViewController(OnboardingViewController(), animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
