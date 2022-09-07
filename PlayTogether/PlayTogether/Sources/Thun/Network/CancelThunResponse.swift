@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CancelSubmittedResponse: Decodable {
+struct CancelThunResponse: Decodable {
     let status: Int
     let success: Bool
     let message: String

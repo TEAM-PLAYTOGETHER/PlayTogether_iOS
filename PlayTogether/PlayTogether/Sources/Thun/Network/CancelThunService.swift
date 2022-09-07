@@ -8,32 +8,32 @@
 import Foundation
 import Moya
 
-enum CancelSubmittedService {
-    case detailThunCancelSubmittedRequest(lightId: Int)
+enum CancelThunService {
+    case cancelThunRequest(lightId: Int)
 }
 
-extension CancelSubmittedService: TargetType {
+extension CancelThunService: TargetType {
     var baseURL: URL {
         return URL(string: APIConstants.baseUrl)!
     }
     
     var path: String {
         switch self {
-        case .detailThunCancelSubmittedRequest(let lightId):
-            return "\(APIConstants.postDetailThunCancel)" + "/\(lightId)"
+        case .cancelThunRequest(let lightId):
+            return APIConstants.postDetailThunCancel + "/\(lightId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .detailThunCancelSubmittedRequest:
+        case .cancelThunRequest:
             return .post
         }
     }
     
     var task: Task {
         switch self {
-        case .detailThunCancelSubmittedRequest:
+        case .cancelThunRequest:
             return .requestPlain
         }
     }

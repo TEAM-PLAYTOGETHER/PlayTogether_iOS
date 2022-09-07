@@ -9,9 +9,9 @@ import UIKit
 import SnapKit
 import Then
 
-class SubmittedDetailThunTableViewCell: UITableViewCell {
+class DetailThunMemberTableViewCell: UITableViewCell {
 
-    static let identifier = "SubmittedDetailThunTableViewCell"
+    static let identifier = "DetailThunMemberTableViewCell"
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
@@ -80,7 +80,7 @@ class SubmittedDetailThunTableViewCell: UITableViewCell {
     }
 }
 
-extension SubmittedDetailThunTableViewCell {
+extension DetailThunMemberTableViewCell {
     func setupData(_ name: String) {
         nameLabel.text = name
     }
