@@ -13,16 +13,20 @@ enum popupType {
     case twoButton
 }
 
-protocol PopUpConfirmDelegate: AnyObject {
+protocol OneButtonDelegate: AnyObject {
+    func oneButtonDidTap()
+}
+
+protocol TwoButtonDelegate: AnyObject {
     func firstButtonDidTap()
     func secondButtonDidTap()
-    func oneButtonDidTap()
 }
 
 class PopUpViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
-    weak var delegate: PopUpConfirmDelegate?
+    weak var oneButtonDelegate: OneButtonDelegate?
+    weak var twoButtonDelegate: TwoButtonDelegate?
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
@@ -168,21 +172,21 @@ class PopUpViewController: UIViewController {
             firstButton.rx.tap
                 .bind(onNext: {[weak self] in
                     self?.dismiss(animated: false, completion: {
-                        self?.delegate?.oneButtonDidTap()
+                        self?.oneButtonDelegate?.oneButtonDidTap()
                     })
                 }).disposed(by: disposeBag)
         case .twoButton:
             firstButton.rx.tap
                 .bind(onNext: {[weak self] in
                     self?.dismiss(animated: false, completion: {
-                        self?.delegate?.firstButtonDidTap()
+                        self?.twoButtonDelegate?.firstButtonDidTap()
                     })
                 }).disposed(by: disposeBag)
             
             secondButton.rx.tap
                 .bind(onNext: { [weak self] in
                     self?.dismiss(animated: false, completion: {
-                        self?.delegate?.secondButtonDidTap()
+                        self?.twoButtonDelegate?.secondButtonDidTap()
                     })
                 }).disposed(by: disposeBag)
         }
