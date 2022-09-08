@@ -13,6 +13,7 @@ import RxSwift
 class OpenedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private var viewModel: ThunViewModel?
+    private var superView = UIViewController()
     
     private lazy var tableView = UITableView().then {
         $0.register(
@@ -25,6 +26,10 @@ class OpenedThunViewController: BaseViewController {
     }
     
     private let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
+    
+    func setupSuperView(superView: UIViewController) {
+        self.superView = superView
+    }
     
     func setupViewModel(viewModel: ThunViewModel) {
         self.viewModel = viewModel
@@ -53,10 +58,10 @@ class OpenedThunViewController: BaseViewController {
                    
                    cell.setupData(
                     item.title,
-                    item.date ?? "",
-                    item.time ?? "",
+                    item.date ?? "날짜미정",
+                    item.time ?? "시간미정",
                     item.peopleCnt ?? 0,
-                    item.place ?? "",
+                    item.place ?? "장소미정",
                     item.lightMemberCnt,
                     item.category,
                     item.scpCnt
@@ -64,5 +69,17 @@ class OpenedThunViewController: BaseViewController {
                    return cell
                }
                .disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(ThunResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let viewmodel = self?.viewModel else { return }
+                self?.superView.navigationController?.pushViewController(
+                    OpenedDetailThunViewController(
+                        lightID: $0.lightID,
+                        superViewModel: viewmodel),
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
        }
 }
