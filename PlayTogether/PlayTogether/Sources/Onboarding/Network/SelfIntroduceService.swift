@@ -30,7 +30,7 @@ extension SelfIntroduceService: TargetType {
             return APIConstants.getStationList
             
         case .existingNicknameRequset(let crewID, _):
-            return APIConstants.existingNickname + "/\(crewID)"
+            return APIConstants.existingNickname + "/\(crewID)/nickname"
         }
     }
     
