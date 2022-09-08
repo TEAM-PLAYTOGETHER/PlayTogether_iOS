@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SubmittedDetailThunResponse: Decodable {
+struct DetailThunResponse: Decodable {
     let status: Int
     let success: Bool
     let message: String
@@ -19,7 +19,7 @@ struct DetailThunList: Decodable {
     let category, title: String
     let scpCnt: Int
     let date, time, datumDescription: String?
-    let image: [String]?
+    let image: String?
     let peopleCnt: Int?
     let place: String?
     let lightMemberCnt: Int
@@ -44,13 +44,13 @@ struct DetailThunList: Decodable {
 
 struct Member: Decodable {
     let userID: Int
-    let mbti: String?
-    let gender, name: String
+    let gender: String?
+    let name: String
     let age: Int
 
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
-        case mbti, gender, name, age
+        case gender, name, age
     }
 }
 
