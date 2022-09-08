@@ -120,7 +120,7 @@ class OnboardingViewController: BaseViewController {
                 self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
-        
+      
         nextButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
