@@ -26,10 +26,6 @@ class ReDownloadViewController: BaseViewController {
         $0.textColor = .ptBlack02
     }
     
-//    private lazy var meetingListTableView = UITableView().then {
-//        
-//    }
-    
     private lazy var participationButton = UIButton().then {
         $0.setupBottomButtonUI(title: "입장하기", size: 16)
         $0.isButtonEnableUI(check: false)
