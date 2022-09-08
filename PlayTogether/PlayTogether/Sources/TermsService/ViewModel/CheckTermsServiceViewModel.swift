@@ -33,6 +33,7 @@ final class CheckTermsServiceViewModel {
             return $0 && $1 && $2 && $3
         }.asDriver(onErrorJustReturn: false)
         return AllCheckDriverOutput(allCheck: output)
+    }
     
     func confirmButtonEnalbeCheck() -> ConfirmButtonDriverOutput {
         let output = Observable.combineLatest(
