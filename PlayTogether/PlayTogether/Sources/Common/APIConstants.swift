@@ -11,14 +11,14 @@ struct APIConstants {
     static let subwayBaseUrl = "http://apis.data.go.kr/1613000/SubwayInfoService"
     
     //TODO: 추후 삭제 예정
-    static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzIiwidXNlckxvZ2luSWQiOiJkbHdwd25zMDIiLCJpYXQiOjE2NTkzMzcyMzgsImV4cCI6MTY2MTkyOTIzOCwiaXNzIjoicGxheXRvZ2V0aGVyIn0.SxPA4KTBzKFe7nTVb3lQecUFxaRnMogOutB072Mzb8Y"
-    static let crewID = 56
+    static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE0OSIsImVtYWlsIjoibHNoMzI4MzI4QG5hdmVyLmNvbSIsImlhdCI6MTY2MTkzOTU0MiwiZXhwIjoxNjYyNTQ0MzQyLCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.ZmN8KHwZHqb86Nda5ZyPH2m0ZWPtrImEO0jB9WXxQ2U"
+    static let crewID = 2
     
     static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"
     
     // light
-    static let getHotThunList = "/light/hot"
-    static let getNewThunList = "/light/new"
+    static let getHotThunList = "/light/\(crewID)/hot"
+    static let getNewThunList = "/light/\(crewID)/new"
     static let createThun = "/light/add"
     static let getSubmittedThunList = "/light"
     static let getOpenedThunList = "/light"
@@ -26,7 +26,14 @@ struct APIConstants {
     static let getDetailThunList = "/light/detail"
     static let postDetailThunCancel = "/light/enter"
     static let existingNickname = "/user/crew"
+    static let postLikeThun = "/scrap"
+    static let getExistLikeThun = "/scrap/exist"
+    static let postDeleteThun = "light/remove"
+    static let getExistThun = "light/exist"
     
     // subway
     static let getStationList = "/getKwrdFndSubwaySttnList"
+    
+    // user
+    static let updateUserInfo = "/user/signup"
 }

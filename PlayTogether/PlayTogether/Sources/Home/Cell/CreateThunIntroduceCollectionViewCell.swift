@@ -38,11 +38,11 @@ private extension CreateThunIntroduceCollectionViewCell {
     
     func setupLayout() {
         imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().inset(3)
         }
         
         deleteImageButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(5)
+            $0.top.trailing.equalToSuperview()
         }
     }
 }

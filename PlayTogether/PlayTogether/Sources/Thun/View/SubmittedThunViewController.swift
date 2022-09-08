@@ -71,10 +71,11 @@ class SubmittedThunViewController: BaseViewController {
         tableView.rx.modelSelected(ThunResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
+                guard let viewmodel = self?.viewModel else { return }
                 self?.superView.navigationController?.pushViewController(
                     SubmittedDetailThunViewController(
                         lightID: $0.lightID,
-                        superViewModel: (self?.viewModel)!),
+                        superViewModel: viewmodel),
                     animated: true)
             })
             .disposed(by: disposeBag)

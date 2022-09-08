@@ -15,12 +15,14 @@ extension UIImage {
 }
 
 enum ImageCase: String {
+    case loginCenterIcon = "loginCenterIcon"
     case backIcon = "backIcon"
     case floatingIcon = "floatingIcon"
     case searchIcon = "searchIcon"
     case showIcon = "showIcon"
     case plusIcon = "plus"
     case exitIcon = "exitIcon"
+    case seletedIcon = "selectedIcon"
     
     case homeActive = "homeActive"
     case homeInactive = "homeInactive"
@@ -56,4 +58,19 @@ enum ImageCase: String {
     case navLikeFilledGreenIcon = "navLikeFilledGreenIcon"
     
     case arrowRightIcon = "arrowRightIcon"
+    
+    case kakaoLoginIcon = "kakaoIcon"
+    case appleLoginIcon = "appleIcon"
+    
+    case checkActiveIcon = "checkActiveIcon"
+    case checkInActiveIcon = "checkInActiveIcon"
+    
+    case calendarInActiveIcon = "calendarInActiveIcon"
+    case calendarActiveIcon = "calendarActiveIcon"
+    
+    case settingIcon = "settingIcon"
+    case showIconBlack = "showIconBlack"
+    case introduceLabelIcon = "introduceLabelIcon"
+    case clearIcon = "clearIcon"
+    case optionIcon = "optionIcon"
 }

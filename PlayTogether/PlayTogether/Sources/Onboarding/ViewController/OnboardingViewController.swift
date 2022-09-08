@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RxSwift
 
 class OnboardingViewController: BaseViewController {
+    private lazy var disposeBag = DisposeBag()
+    
     private let progressbar = UIProgressView().then {
-        $0.progress = 0.33
+        $0.progress = 0.25
         $0.progressTintColor = .ptGreen
         $0.backgroundColor = .ptGray03
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -45,17 +48,11 @@ class OnboardingViewController: BaseViewController {
     }
     
     private lazy var nextButton = UIButton().then {
-        $0.setTitle("다음", for: .normal)
-        $0.setTitleColor(.ptGray01, for: .normal)
-        $0.titleLabel?.font = .pretendardSemiBold(size: 16)
-        $0.backgroundColor = .ptGray03
-        $0.layer.borderColor = UIColor.ptGray02.cgColor
-        $0.layer.borderWidth = 1.0
-        $0.layer.cornerRadius = 10
-        $0.clipsToBounds = true
-        $0.isEnabled = false
-        $0.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)    // Rx
+        $0.setupBottomButtonUI(title: "다음", size: 16)
+        $0.isButtonEnableUI(check: false)
     }
+    
+    private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CheckTermsServiceViewController.self, action: nil)
 
     private let viewModel = OnboardingViewModel()
     private lazy var cellIndex = 0
@@ -70,14 +67,9 @@ class OnboardingViewController: BaseViewController {
         configureNaigationvBar()
     }
     
-    @objc private func nextButtonDidTap() {
-        let controller = CreateMeetViewController()
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
     private func configureNaigationvBar() {
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.backgroundColor = .ptBlack01
+        navigationItem.leftBarButtonItem = leftButtonItem
+        navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
     override func setupViews() {
@@ -122,6 +114,19 @@ class OnboardingViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        leftButtonItem.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        nextButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(CreateMeetViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -136,15 +141,14 @@ extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDa
             for: indexPath
         ) as? ChoiceCell else { return UICollectionViewCell() }
         
-        indexPath.row == 0 ? cell.configureCell(["개설", "번개를 열 동아리나 단체를 개설해요!"]) : cell.configureCell(["참여", "개설된 동아리나 단체에 참여해요!"])
+        indexPath.row == 0 ?
+        cell.configureCell("개설", "번개를 열 동아리나 단체를 개설해요!") : cell.configureCell("참여", "개설된 동아리나 단체에 참여해요!")
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        nextButton.isEnabled = true
-        nextButton.setTitleColor(.ptBlack01, for: .normal)
-        nextButton.backgroundColor = .ptGreen
-        nextButton.layer.borderColor = UIColor.ptBlack01.cgColor
+        nextButton.isButtonEnableUI(check: true)
         cellIndex = indexPath.row
     }
 }

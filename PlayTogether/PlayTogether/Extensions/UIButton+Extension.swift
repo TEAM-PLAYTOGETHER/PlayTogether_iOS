@@ -24,6 +24,12 @@ extension UIButton {
         self.layer.borderColor = check ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
     }
     
+    /// 이용약관 버튼 이미지 세팅
+    func setupToggleButtonUI() {
+        self.setImage(.ptImage(.checkInActiveIcon), for: .normal)
+        self.setImage(.ptImage(.checkActiveIcon), for: .selected)
+    }
+    
     /// 버튼에 밑줄
     func setUnderline() {
         guard let title = title(for: .normal) else { return }
