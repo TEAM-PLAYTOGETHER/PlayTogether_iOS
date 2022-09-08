@@ -1,19 +1,20 @@
 //
-//  DetailThunViewController.swift
+//  OpenedDetailThunViewController.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/08/12.
+//  Created by 김수정 on 2022/08/27.
 //
 
 import UIKit
 import RxSwift
 import SnapKit
 import Then
+import RxCocoa
 
-final class SubmittedDetailThunViewController: BaseViewController {
+final class OpenedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
-    private let cancelViewModel = CancelThunViewModel()
+    private let deleteThunViewModel = DeleteThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -26,6 +27,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let navigationBarView = UIView().then {
+        $0.backgroundColor = .ptBlack01
+    }
+    
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
+    
+    private let optionButton = UIButton().then {
+        $0.setImage(.ptImage(.optionIcon), for: .normal)
     }
     
     private let scrollView = UIScrollView().then {
@@ -121,13 +134,6 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.isScrollEnabled = false
     }
     
-    private let alertButton = UIButton().then {
-        $0.setTitle("게시글 신고", for: .normal)
-        $0.setTitleColor(.ptGray01, for: .normal)
-        $0.titleLabel?.font = .pretendardRegular(size: 12)
-        $0.setUnderline()
-    }
-    
     private let grayLineView = UIView().then {
         $0.backgroundColor = .ptGray03
     }
@@ -145,45 +151,45 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.isScrollEnabled = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNaigationvBar()
+    private let editButton = UIButton().then {
+        $0.setTitle("수정", for: .normal)
+        $0.setTitleColor(.ptBlack01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 14)
+        let border = UIView()
+        border.backgroundColor = .ptBlack01
+        border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        border.frame = CGRect(x: 0, y: 0, width: $0.frame.width, height: 1)
+        $0.addSubview(border)
     }
     
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .ptImage(.backIcon),
-            style: .plain,
-            target: self, action: #selector(backButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "신청 취소",
-            style: .plain,
-            target: self,
-            action: #selector(cancelButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem?.tintColor = .ptGreen
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.pretendardRegular(size: 16)], for: .normal)
+    private let deleteButton = UIButton().then {
+        $0.setTitle("삭제", for: .normal)
+        $0.setTitleColor(.ptBlack01, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 14)
     }
     
-    @objc func backButtonDidTap() {
-        self.navigationController?.popViewController(animated: true)
-        self.tabBarController?.tabBar.isHidden = false
+    private lazy var buttonStackView = UIStackView(arrangedSubviews: [editButton,deleteButton]).then {
+        $0.axis = .vertical
+        $0.spacing = 0
+        $0.backgroundColor = .white
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.ptBlack01.cgColor
+        $0.layer.cornerRadius = 5
+        $0.distribution = .fillEqually
+        $0.isHidden = true
     }
-    
-    @objc func cancelButtonDidTap() {
-        let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
-        self.present(popupViewController, animated: false, completion: nil)
-        popupViewController.delegate = self
-    }
-    
+        
     override func setupViews() {
         tabBarController?.tabBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
+        
+        view.addSubview(navigationBarView)
         view.addSubview(scrollView)
+        view.addSubview(buttonStackView)
+        
+        navigationBarView.addSubview(backButton)
+        navigationBarView.addSubview(optionButton)
         
         scrollView.addSubview(contentView)
         
@@ -192,7 +198,6 @@ final class SubmittedDetailThunViewController: BaseViewController {
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
-        contentView.addSubview(alertButton)
         contentView.addSubview(grayLineView)
         contentView.addSubview(memberCntLabel)
         contentView.addSubview(memberTableView)
@@ -209,8 +214,34 @@ final class SubmittedDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        navigationBarView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            let height = UIScreen.main.bounds.height/812 * 44
+            let navigationBarHeight = navigationController?.navigationBar.frame.height
+            $0.height.equalTo(height+navigationBarHeight!)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-16)
+            $0.leading.equalTo(navigationBarView.snp.leading).offset(18)
+        }
+        
+        optionButton.snp.makeConstraints {
+            $0.bottom.equalTo(backButton.snp.bottom)
+            $0.trailing.equalTo(navigationBarView.snp.trailing).offset(-20)
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-54)
+            $0.bottom.equalTo(navigationBarView.snp.bottom).offset(40)
+            $0.width.equalTo((UIScreen.main.bounds.width/375)*113)
+            $0.height.equalTo((UIScreen.main.bounds.height/812)*82)
+        }
+        
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(navigationBarView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
@@ -282,14 +313,9 @@ final class SubmittedDetailThunViewController: BaseViewController {
             }
         }
         
-        alertButton.snp.makeConstraints {
-            $0.top.equalTo(blackView.snp.bottom).offset(15)
-            $0.trailing.equalToSuperview().offset(-33)
-        }
-        
         grayLineView.snp.makeConstraints {
             $0.size.equalTo(CGSize(width: UIScreen.main.bounds.width, height: 8))
-            $0.top.equalTo(alertButton.snp.bottom).offset(40)
+            $0.top.equalTo(blackView.snp.bottom).offset(40)
         }
         
         memberCntLabel.snp.makeConstraints {
@@ -339,7 +365,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
         }
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
-            Observable.of([image])
+            Observable.just([image])
                 .bind(to: self.imageCollectionView.rx.items) {
                     _, row, item -> UICollectionViewCell in
                     guard let cell = self.imageCollectionView.dequeueReusableCell(
@@ -347,7 +373,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunImageCollectionViewCell
                     else { return UICollectionViewCell() }
-                    
+
                     if item.isEmpty {
                         self.imageCollectionView.snp.updateConstraints {
                             $0.top.equalTo(self.textInfoLabel.snp.bottom)
@@ -361,6 +387,40 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 .disposed(by: self.disposeBag)
         }
         
+        backButton.rx.tap
+            .bind { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+                self?.navigationController?.navigationBar.isHidden = false
+                self?.tabBarController?.tabBar.isHidden = false
+            }
+            .disposed(by: disposeBag)
+        
+        optionButton.rx.tap
+            .bind { [weak self] in
+                if self?.buttonStackView.isHidden == true {
+                    self?.buttonStackView.isHidden = false
+                } else {
+                    self?.buttonStackView.isHidden =  true
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        editButton.rx.tap
+            .bind { [weak self] in
+                self?.buttonStackView.isHidden = true
+                print("수정버튼") // TODO: - 수정부분 서버 완료되면 연결할 것
+            }
+            .disposed(by: disposeBag)
+        
+        deleteButton.rx.tap
+            .bind { [weak self] in
+                self?.buttonStackView.isHidden = true
+                let popupViewController = PopUpViewController(title: "게시글을 삭제할까요?", viewType: .twoButton)
+                self?.present(popupViewController, animated: false, completion: nil)
+                popupViewController.delegate = self
+            }
+            .disposed(by: disposeBag)
+        
         imageCollectionView.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
@@ -372,7 +432,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     }
 }
 
-extension SubmittedDetailThunViewController {
+extension OpenedDetailThunViewController {
     func setupData(
         _ title: String,
         _ date: String,
@@ -400,20 +460,21 @@ extension SubmittedDetailThunViewController {
     }
 }
 
-extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
+extension OpenedDetailThunViewController: PopUpConfirmDelegate {
     func oneButtonDidTap() {
-        guard let originData = try? superViewModel?.submittedThunList.value() else { return }
-        superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
+        guard let originData = try? superViewModel?.openedThunList.value() else { return }
+        superViewModel?.openedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
         navigationController?.popToRootViewController(animated: true)
+        navigationController?.navigationBar.isHidden = false
         tabBarController?.tabBar.isHidden = false
     }
     
     func firstButtonDidTap() {}
     
     func secondButtonDidTap() {
-        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
+        deleteThunViewModel.postDeleteThun(lightId: lightId ?? -1) { response in
             let popupViewController = PopUpViewController(
-                title: "신청 취소되었습니다.",
+                title: "게시글이 삭제되었습니다.",
                 viewType: .oneButton
             )
             self.present(popupViewController, animated: false, completion: nil)
@@ -421,5 +482,4 @@ extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
         }
     }
 }
-
 

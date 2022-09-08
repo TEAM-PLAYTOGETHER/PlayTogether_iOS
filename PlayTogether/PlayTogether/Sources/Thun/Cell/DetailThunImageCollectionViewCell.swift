@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SubmittedDetailThunCollectionViewCell: UICollectionViewCell {
+class DetailThunImageCollectionViewCell: UICollectionViewCell {
     
     var imageView = UIImageView().then {
         $0.layer.cornerRadius = 18
@@ -25,7 +25,7 @@ class SubmittedDetailThunCollectionViewCell: UICollectionViewCell {
     }
 }
 
-private extension SubmittedDetailThunCollectionViewCell {
+private extension DetailThunImageCollectionViewCell {
     func setupViews() {
         addSubview(imageView)
     }

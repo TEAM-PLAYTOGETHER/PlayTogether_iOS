@@ -10,10 +10,10 @@ import RxSwift
 import SnapKit
 import Then
 
-final class SubmittedDetailThunViewController: BaseViewController {
+final class LikedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
-    private let cancelViewModel = CancelThunViewModel()
+    private let likeThunViewModel = LikeThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -34,6 +34,15 @@ final class SubmittedDetailThunViewController: BaseViewController {
     }
     
     private let contentView = UIView()
+    
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
+    
+    private let likeButton = UIButton().then {
+        $0.setImage(.ptImage(.navLikeDefaultIcon), for: .normal)
+        $0.setImage(.ptImage(.navLikeFilledGreenIcon), for: .selected)
+    }
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
@@ -85,7 +94,9 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.textColor = .white
     }
     
-    private lazy var labelStackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]).then {
+    private lazy var labelStackView = UIStackView(
+        arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]
+    ).then {
         $0.axis = .vertical
         $0.spacing = 22
     }
@@ -107,7 +118,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
-    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    private lazy var imageCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    ).then {
         let collectionViewLayout = UICollectionViewFlowLayout()
         let width = (UIScreen.main.bounds.width / 375) * 273
         let height = (UIScreen.main.bounds.height / 812) * 91
@@ -116,7 +130,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.collectionViewLayout = collectionViewLayout
         
         $0.backgroundColor = .ptBlack01
-        $0.register(DetailThunImageCollectionViewCell.self, forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell")
+        $0.register(
+            DetailThunImageCollectionViewCell.self,
+            forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell"
+        )
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
     }
@@ -138,51 +155,20 @@ final class SubmittedDetailThunViewController: BaseViewController {
     }
     
     private lazy var memberTableView = UITableView().then {
-        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
+        $0.register(DetailThunMemberTableViewCell.self,
+                    forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
         $0.isScrollEnabled = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNaigationvBar()
-    }
-    
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .ptImage(.backIcon),
-            style: .plain,
-            target: self, action: #selector(backButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "신청 취소",
-            style: .plain,
-            target: self,
-            action: #selector(cancelButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem?.tintColor = .ptGreen
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.pretendardRegular(size: 16)], for: .normal)
-    }
-    
-    @objc func backButtonDidTap() {
-        self.navigationController?.popViewController(animated: true)
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
-    @objc func cancelButtonDidTap() {
-        let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
-        self.present(popupViewController, animated: false, completion: nil)
-        popupViewController.delegate = self
-    }
-    
     override func setupViews() {
-        tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
+        tabBarController?.tabBar.isHidden = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+        
         view.addSubview(scrollView)
         
         scrollView.addSubview(contentView)
@@ -321,6 +307,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
             )
         }
         
+        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
+            self.likeButton.isSelected = $0
+        }
+        
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
             Observable.of(member)
                 .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
@@ -360,6 +350,29 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 }
                 .disposed(by: self.disposeBag)
         }
+    
+        backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if self?.likeThunViewModel.isRemovedLike == true {
+                    guard let originData = try? self?.superViewModel?.likedThunList.value()
+                    else { return }
+                    self?.superViewModel?.likedThunList.onNext(originData.filter {
+                        $0?.lightID != self?.lightId })
+                }
+                self?.navigationController?.popViewController(animated: true)
+                self?.tabBarController?.tabBar.isHidden = false
+            })
+            .disposed(by: disposeBag)
+        
+        likeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
+                    self?.likeButton.isSelected = !$0
+                }
+            })
+            .disposed(by: disposeBag)
         
         imageCollectionView.rx.itemSelected
             .asDriver()
@@ -372,7 +385,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     }
 }
 
-extension SubmittedDetailThunViewController {
+extension LikedDetailThunViewController {
     func setupData(
         _ title: String,
         _ date: String,
@@ -399,27 +412,3 @@ extension SubmittedDetailThunViewController {
         memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
     }
 }
-
-extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
-    func oneButtonDidTap() {
-        guard let originData = try? superViewModel?.submittedThunList.value() else { return }
-        superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
-        navigationController?.popToRootViewController(animated: true)
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    func firstButtonDidTap() {}
-    
-    func secondButtonDidTap() {
-        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
-            let popupViewController = PopUpViewController(
-                title: "신청 취소되었습니다.",
-                viewType: .oneButton
-            )
-            self.present(popupViewController, animated: false, completion: nil)
-            popupViewController.delegate = self
-        }
-    }
-}
-
-

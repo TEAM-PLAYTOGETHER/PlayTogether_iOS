@@ -10,17 +10,17 @@ import RxSwift
 import SnapKit
 import Then
 
-final class SubmittedDetailThunViewController: BaseViewController {
+class EnterDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
+    private let likeThunViewModel = LikeThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let existThunViewModel = ExistThunViewModel()
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int) {
         self.lightId = lightID
-        self.superViewModel = superViewModel
         super.init()
     }
     
@@ -33,7 +33,20 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.showsVerticalScrollIndicator = false
     }
     
+    private let enterButton = UIButton().then {
+        $0.isButtonEnableUI(check: true)
+    }
+    
     private let contentView = UIView()
+    
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
+    
+    private let likeButton = UIButton().then {
+        $0.setImage(.ptImage(.navLikeDefaultIcon), for: .normal)
+        $0.setImage(.ptImage(.navLikeFilledGreenIcon), for: .selected)
+    }
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
@@ -85,7 +98,9 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.textColor = .white
     }
     
-    private lazy var labelStackView = UIStackView(arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]).then {
+    private lazy var labelStackView = UIStackView(
+        arrangedSubviews:[dateLabel,timeLabel,placeLabel,categoryLabel]
+    ).then {
         $0.axis = .vertical
         $0.spacing = 22
     }
@@ -107,7 +122,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.font = .pretendardRegular(size: 14)
     }
     
-    private lazy var imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    private lazy var imageCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    ).then {
         let collectionViewLayout = UICollectionViewFlowLayout()
         let width = (UIScreen.main.bounds.width / 375) * 273
         let height = (UIScreen.main.bounds.height / 812) * 91
@@ -116,7 +134,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.collectionViewLayout = collectionViewLayout
         
         $0.backgroundColor = .ptBlack01
-        $0.register(DetailThunImageCollectionViewCell.self, forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell")
+        $0.register(
+            DetailThunImageCollectionViewCell.self,
+            forCellWithReuseIdentifier: "DetailThunImageCollectionViewCell"
+        )
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
     }
@@ -128,62 +149,14 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.setUnderline()
     }
     
-    private let grayLineView = UIView().then {
-        $0.backgroundColor = .ptGray03
-    }
-    
-    private var memberCntLabel = UILabel().then {
-        $0.textColor = .ptBlack01
-        $0.font = .pretendardBold(size: 16)
-    }
-    
-    private lazy var memberTableView = UITableView().then {
-        $0.register(DetailThunMemberTableViewCell.self, forCellReuseIdentifier: DetailThunMemberTableViewCell.identifier)
-        $0.separatorStyle = .none
-        $0.showsVerticalScrollIndicator = false
-        $0.rowHeight = (UIScreen.main.bounds.height / 812) * 60
-        $0.isScrollEnabled = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNaigationvBar()
-    }
-    
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .ptImage(.backIcon),
-            style: .plain,
-            target: self, action: #selector(backButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "신청 취소",
-            style: .plain,
-            target: self,
-            action: #selector(cancelButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem?.tintColor = .ptGreen
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.pretendardRegular(size: 16)], for: .normal)
-    }
-    
-    @objc func backButtonDidTap() {
-        self.navigationController?.popViewController(animated: true)
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
-    @objc func cancelButtonDidTap() {
-        let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
-        self.present(popupViewController, animated: false, completion: nil)
-        popupViewController.delegate = self
-    }
-    
     override func setupViews() {
-        tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
+        tabBarController?.tabBar.isHidden = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+        
         view.addSubview(scrollView)
+        view.addSubview(enterButton)
         
         scrollView.addSubview(contentView)
         
@@ -193,9 +166,6 @@ final class SubmittedDetailThunViewController: BaseViewController {
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
         contentView.addSubview(alertButton)
-        contentView.addSubview(grayLineView)
-        contentView.addSubview(memberCntLabel)
-        contentView.addSubview(memberTableView)
         
         blackView.addSubview(titleLabel)
         blackView.addSubview(dateLabel)
@@ -210,7 +180,15 @@ final class SubmittedDetailThunViewController: BaseViewController {
     
     override func setupLayouts() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        enterButton.snp.makeConstraints {
+            $0.top.equalTo(scrollView.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(56 * UIScreen.main.bounds.height/812)
         }
         
         contentView.snp.makeConstraints {
@@ -285,22 +263,6 @@ final class SubmittedDetailThunViewController: BaseViewController {
         alertButton.snp.makeConstraints {
             $0.top.equalTo(blackView.snp.bottom).offset(15)
             $0.trailing.equalToSuperview().offset(-33)
-        }
-        
-        grayLineView.snp.makeConstraints {
-            $0.size.equalTo(CGSize(width: UIScreen.main.bounds.width, height: 8))
-            $0.top.equalTo(alertButton.snp.bottom).offset(40)
-        }
-        
-        memberCntLabel.snp.makeConstraints {
-            $0.top.equalTo(grayLineView.snp.bottom).offset(20)
-            $0.leading.trailing.equalTo(blackView)
-        }
-        
-        memberTableView.snp.makeConstraints {
-            $0.top.equalTo(memberCntLabel.snp.bottom).offset(10)
-            $0.leading.trailing.equalTo(blackView)
-            $0.height.equalTo(50)
             $0.bottom.equalToSuperview()
         }
     }
@@ -310,10 +272,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
                 response[0].datumDescription ?? "",
-                response[0].place ?? "장소 미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
@@ -321,21 +283,8 @@ final class SubmittedDetailThunViewController: BaseViewController {
             )
         }
         
-        viewModel.getMemberList(lightId: lightId ?? -1) { member in
-            Observable.of(member)
-                .bind(to: self.memberTableView.rx.items) { _, row, item -> UITableViewCell in
-                    guard let cell = self.memberTableView.dequeueReusableCell(
-                        withIdentifier: "DetailThunMemberTableViewCell",
-                        for: IndexPath(row: row, section: 0)
-                    ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
-                    
-                    self.memberTableView.snp.updateConstraints {
-                        $0.height.equalTo(self.memberTableView.contentSize.height)
-                    }
-                    cell.setupData(item.name)
-                    return cell
-                }
-                .disposed(by: self.disposeBag)
+        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
+            self.likeButton.isSelected = $0
         }
         
         viewModel.getImageList(lightId: lightId ?? -1) { image in
@@ -360,6 +309,22 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 }
                 .disposed(by: self.disposeBag)
         }
+    
+        backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        likeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
+                    self?.likeButton.isSelected = !$0
+                }
+            })
+            .disposed(by: disposeBag)
         
         imageCollectionView.rx.itemSelected
             .asDriver()
@@ -369,10 +334,30 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        enterButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                let popupViewController = PopUpViewController(title: "번개에 참여할까요?", viewType: .twoButton)
+                self?.present(popupViewController, animated: false, completion: nil)
+                popupViewController.delegate = self
+            })
+            .disposed(by: disposeBag)
+        
+        existThunViewModel.getExistThun(lightId: lightId ?? -1) {_ in
+            if self.existThunViewModel.isExistThun == true {
+                self.enterButton.isHidden = true
+                self.enterButton.snp.updateConstraints {
+                    $0.height.equalTo(0)
+                }
+            } else {
+                self.enterButton.isHidden = false
+            }
+        }
     }
 }
 
-extension SubmittedDetailThunViewController {
+extension EnterDetailThunViewController {
     func setupData(
         _ title: String,
         _ date: String,
@@ -396,30 +381,19 @@ extension SubmittedDetailThunViewController {
         categoryLabel.changeFontColor(targetString: "카테고리", color: .ptGreen)
         textInfoLabel.text = description
         nicknameLabel.text = name
-        memberCntLabel.text = "번개 참여자 (\(lightMemberCnt)/\(peopleCnt))"
+        enterButton.setupBottomButtonUI(title: "신청하기 (\(lightMemberCnt)/\(peopleCnt))", size: 16)
     }
 }
 
-extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
-    func oneButtonDidTap() {
-        guard let originData = try? superViewModel?.submittedThunList.value() else { return }
-        superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
-        navigationController?.popToRootViewController(animated: true)
-        tabBarController?.tabBar.isHidden = false
-    }
-    
+extension EnterDetailThunViewController: PopUpConfirmDelegate {
+    func oneButtonDidTap() {}
     func firstButtonDidTap() {}
-    
     func secondButtonDidTap() {
-        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
-            let popupViewController = PopUpViewController(
-                title: "신청 취소되었습니다.",
-                viewType: .oneButton
-            )
-            self.present(popupViewController, animated: false, completion: nil)
-            popupViewController.delegate = self
+        cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
+            self.navigationController?.pushViewController(CompleteThunViewController(
+                lightID: self.lightId ?? -1,
+                completeText: "번개 신청을\n완료했어요!"
+            ),animated: true)
         }
     }
 }
-
-
