@@ -7,8 +7,10 @@
 
 import RxSwift
 import RxCocoa
+import Moya
 
 final class InvitationCodeViewModel {
+    private lazy var disposeBag = DisposeBag()
     
     struct RegularExpressionInput {
         var inviteCodeText: Observable<String>
@@ -27,5 +29,23 @@ final class InvitationCodeViewModel {
         }.asDriver(onErrorJustReturn: false)
         
         return RegularExpressionOutput(inviteCodeCheck: output)
+    }
+    
+    func registerCrew(_ code: String, completion: @escaping (registerCrewResponse) -> Void) {
+        let provider = MoyaProvider<SelfIntroduceService>()
+        
+        provider.rx.request(.registerCrewRequest(crewCode: code))
+            .subscribe { result in
+                switch result {
+                case .success(let response):
+                    print(response)
+                    guard let responseData = try? response.map(registerCrewResponse.self) else { return }
+                    completion(responseData)
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
     }
 }

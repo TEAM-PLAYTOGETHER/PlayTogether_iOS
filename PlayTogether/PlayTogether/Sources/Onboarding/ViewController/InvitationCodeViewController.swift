@@ -13,7 +13,7 @@ class InvitationCodeViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     
     private let progressbar = UIProgressView().then {
-        $0.progress = 0.67
+        $0.progress = 0.5
         $0.progressTintColor = .ptGreen
         $0.backgroundColor = .ptGray03
     }
@@ -115,12 +115,17 @@ class InvitationCodeViewController: BaseViewController {
         participationButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                // TODO: 서버 응답에 따른 처리해줘야함
-//                let popupViewController = PopUpViewController(title: "존재하지 않는 코드입니다", viewType: .oneButton)
-//                self?.present(popupViewController, animated: false, completion: nil)
-                
-                let controller = SelfIntroduceViewController()
-                self?.navigationController?.pushViewController(controller, animated: true)
+                guard let crewCode = self?.inputCodeTextField.text else { return }
+                self?.viewModel.registerCrew(crewCode) {
+                    guard $0.success == true else {
+                        let popupViewController = PopUpViewController(title: $0.message, viewType: .oneButton)
+                        popupViewController.modalPresentationStyle = .overFullScreen
+                        self?.present(popupViewController, animated: false, completion: nil)
+                        return
+                    }
+                    let controller = SelfIntroduceViewController()
+                    self?.navigationController?.pushViewController(controller, animated: true)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -166,4 +171,14 @@ class InvitationCodeViewController: BaseViewController {
                 }
             }).disposed(by: disposeBag)
     }
+}
+
+extension InvitationCodeViewController: PopUpConfirmDelegate {
+    func firstButtonDidTap() {
+        <#code#>
+    }
+    
+    func secondButtonDidTap() { return }
+    
+    func oneButtonDidTap() { return }
 }

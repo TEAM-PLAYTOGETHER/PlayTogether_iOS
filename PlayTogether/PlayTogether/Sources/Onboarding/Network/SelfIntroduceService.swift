@@ -11,16 +11,18 @@ import Foundation
 enum SelfIntroduceService {
     case searchStationRequeset(stationName: String)
     case existingNicknameRequset(crewID: Int, Nickname: String)
+    case registerCrewRequest(crewCode: String)
 }
 
 extension SelfIntroduceService: TargetType {
     var baseURL: URL {
         switch self {
-        case .searchStationRequeset:
+        case .searchStationRequeset, .registerCrewRequest:
             return URL(string: APIConstants.subwayBaseUrl)!
             
         case .existingNicknameRequset:
             return URL(string: APIConstants.baseUrl)!
+            
         }
     }
     
@@ -29,13 +31,22 @@ extension SelfIntroduceService: TargetType {
         case .searchStationRequeset:
             return APIConstants.getStationList
             
+        case .registerCrewRequest:
+            return APIConstants.registerCrew
+            
         case .existingNicknameRequset(let crewID, _):
             return APIConstants.existingNickname + "/\(crewID)"
         }
     }
     
     var method: Moya.Method {
-        return .get
+        switch self {
+        case .existingNicknameRequset, .searchStationRequeset:
+            return .get
+            
+        case .registerCrewRequest:
+            return .post
+        }
     }
     
     var task: Task {
@@ -48,6 +59,12 @@ extension SelfIntroduceService: TargetType {
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             
+        case .registerCrewRequest(let crewCode):
+            let param = [
+                "crewCode" : crewCode
+            ]
+            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
+            
         case .existingNicknameRequset(_, let nickname):
             let param = [
                 "nickname" : nickname
@@ -57,8 +74,19 @@ extension SelfIntroduceService: TargetType {
     }
     
     var headers: [String : String]? {
-        return [
-            "Content-Type": "application/json"
-        ]
+        switch self {
+        case .existingNicknameRequset, .searchStationRequeset:
+            return [
+                "Content-Type": "application/json"
+            ]
+            
+        case .registerCrewRequest:
+            let token = APIConstants.token
+            return [
+                "Content-Type": "application/json",
+                "Authorization": token
+            ]
+        }
+        
     }   
 }
