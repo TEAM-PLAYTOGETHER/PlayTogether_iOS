@@ -38,6 +38,7 @@ final class InvitationCodeViewModel {
             .subscribe { result in
                 switch result {
                 case .success(let response):
+                    // TODO: Status code: 500이라 상황 알아보기
                     print(response)
                     guard let responseData = try? response.map(registerCrewResponse.self) else { return }
                     completion(responseData)

@@ -174,11 +174,9 @@ class InvitationCodeViewController: BaseViewController {
 }
 
 extension InvitationCodeViewController: PopUpConfirmDelegate {
-    func firstButtonDidTap() {
-        <#code#>
-    }
+    func firstButtonDidTap() {}
     
-    func secondButtonDidTap() { return }
+    func secondButtonDidTap() {}
     
-    func oneButtonDidTap() { return }
+    func oneButtonDidTap() {}
 }
