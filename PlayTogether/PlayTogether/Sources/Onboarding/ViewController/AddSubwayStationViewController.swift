@@ -70,6 +70,10 @@ class AddSubwayStationViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.fetchSubwayStationList {
+            print($0)
+        }
     }
     
     private func configureNavbar() {
@@ -168,20 +172,20 @@ class AddSubwayStationViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        let _ = viewModel.stationNameRelay.asObservable()
-            .bind(to: inputSubwayStationTextField.rx.text)
-        
-        viewModel.subwayStationList
-            .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
-                guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
-                    withIdentifier: "SubwayStationListTalbeViewCell",
-                    for: IndexPath(row: row, section: 0)
-                ) as? SubwayStationListTalbeViewCell,
-                      let item = item?.response.body.items.item
-                else { return UITableViewCell() }
-                cell.setupData(item[row].subwayStationName, item[row].subwayRouteName)
-                return cell
-            }
-            .disposed(by: disposeBag)
+//        let _ = viewModel.stationNameRelay.asObservable()
+//            .bind(to: inputSubwayStationTextField.rx.text)
+//        
+//        viewModel.subwayStationList
+//            .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
+//                guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
+//                    withIdentifier: "SubwayStationListTalbeViewCell",
+//                    for: IndexPath(row: row, section: 0)
+//                ) as? SubwayStationListTalbeViewCell,
+//                      let item = item?.response.body.items.item
+//                else { return UITableViewCell() }
+//                cell.setupData(item[row].subwayStationName, item[row].subwayRouteName)
+//                return cell
+//            }
+//            .disposed(by: disposeBag)
     }
 }

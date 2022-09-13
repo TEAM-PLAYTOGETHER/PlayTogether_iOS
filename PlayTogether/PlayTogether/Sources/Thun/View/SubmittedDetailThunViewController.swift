@@ -177,7 +177,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     @objc func cancelButtonDidTap() {
         let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
         self.present(popupViewController, animated: false, completion: nil)
-        popupViewController.delegate = self
+//        popupViewController.delegate = self
     }
     
     override func setupViews() {
@@ -400,26 +400,26 @@ extension SubmittedDetailThunViewController {
     }
 }
 
-extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
-    func oneButtonDidTap() {
-        guard let originData = try? superViewModel?.submittedThunList.value() else { return }
-        superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
-        navigationController?.popToRootViewController(animated: true)
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    func firstButtonDidTap() {}
-    
-    func secondButtonDidTap() {
-        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
-            let popupViewController = PopUpViewController(
-                title: "신청 취소되었습니다.",
-                viewType: .oneButton
-            )
-            self.present(popupViewController, animated: false, completion: nil)
-            popupViewController.delegate = self
-        }
-    }
-}
-
-
+//extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
+//    func oneButtonDidTap() {
+//        guard let originData = try? superViewModel?.submittedThunList.value() else { return }
+//        superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
+//        navigationController?.popToRootViewController(animated: true)
+//        tabBarController?.tabBar.isHidden = false
+//    }
+//
+//    func firstButtonDidTap() {}
+//
+//    func secondButtonDidTap() {
+//        cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
+//            let popupViewController = PopUpViewController(
+//                title: "신청 취소되었습니다.",
+//                viewType: .oneButton
+//            )
+//            self.present(popupViewController, animated: false, completion: nil)
+//            popupViewController.delegate = self
+//        }
+//    }
+//}
+//
+//

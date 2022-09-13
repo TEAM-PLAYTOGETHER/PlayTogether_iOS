@@ -14,7 +14,7 @@ import Foundation
 
 final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
-    var subwayStationList = BehaviorSubject<[StationResponse?]>.init(value: [])
+//    var subwayStationList = BehaviorSubject<SubwayStationResponse?]>.init(value: [])
     var stationNameRelay = BehaviorRelay<String>.init(value: "")
     
     struct RegularExpressionInput {
@@ -37,16 +37,14 @@ final class AddSubwayStationViewModel {
     }
     
     // TODO: 지하철 역 파라미터, String 변환
-    func fetchSubwayStationList(completion: @escaping ([StationsInfo]) -> Void) {
+    func fetchSubwayStationList(completion: @escaping ([SubwayList]) -> Void) {
         let provider = MoyaProvider<SelfIntroduceService>()
-        
-        provider.rx.request(.searchStationRequeset(stationName: stationNameRelay.value))
+        provider.rx.request(.searchStationRequeset)
             .subscribe { result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(StationResponse.self)
-                    guard let item = responseData?.response.body.items.item else { return }
-                    completion(item)
+                    let responseData = try? response.map(SubwayStationResponse.self)
+                    print(responseData)
                     
                 case let .failure(error):
                     print(error.localizedDescription)
