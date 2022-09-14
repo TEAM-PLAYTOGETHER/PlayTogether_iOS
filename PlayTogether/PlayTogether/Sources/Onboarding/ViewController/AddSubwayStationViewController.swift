@@ -51,9 +51,21 @@ class AddSubwayStationViewController: BaseViewController {
         $0.layer.cornerRadius = 10
     }
     
+    private let subwayStationSearchController = UISearchController(
+        searchResultsController: nil
+    ).then {
+        $0.searchBar.placeholder = "지하철역 검색"
+//        $0.searchResultsUpdater = self
+        
+        $0.searchBar.searchTextField.font = .pretendardRegular(size: 14)
+        $0.searchBar.searchTextField.textColor = .ptBlack02
+    }
+    
     private lazy var subwayStationListTalbeView = UITableView().then {
-        $0.backgroundColor = .yellow
-        $0.register(SubwayStationListTalbeViewCell.self, forCellReuseIdentifier: "SubwayStationListTalbeViewCell")
+        $0.backgroundColor = .white
+        $0.rowHeight = 57 * (UIScreen.main.bounds.height / 812)
+        $0.showsVerticalScrollIndicator = false
+        $0.register(SubwayStationListTableViewCell.self, forCellReuseIdentifier: "SubwayStationListTableViewCell")
     }
     
     private lazy var addButton = UIButton().then {
@@ -63,17 +75,11 @@ class AddSubwayStationViewController: BaseViewController {
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
+    private lazy var subwayStationKeyword = [String]()
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavbar()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        viewModel.fetchSubwayStationList {
-            print($0)
-        }
     }
     
     private func configureNavbar() {
@@ -172,20 +178,24 @@ class AddSubwayStationViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-//        let _ = viewModel.stationNameRelay.asObservable()
-//            .bind(to: inputSubwayStationTextField.rx.text)
-//        
-//        viewModel.subwayStationList
-//            .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
-//                guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
-//                    withIdentifier: "SubwayStationListTalbeViewCell",
-//                    for: IndexPath(row: row, section: 0)
-//                ) as? SubwayStationListTalbeViewCell,
-//                      let item = item?.response.body.items.item
-//                else { return UITableViewCell() }
-//                cell.setupData(item[row].subwayStationName, item[row].subwayRouteName)
-//                return cell
-//            }
-//            .disposed(by: disposeBag)
+        // TODO: (1) input을 만들어 viewModel에서 필터된 값을 반환?
+        
+        // TODO: (2) viewModel.subwayStationList bind해주고 해당 배열에서 filter해주기
+        
+        viewModel.subwayStationList
+            .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
+                guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
+                    withIdentifier: "SubwayStationListTableViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? SubwayStationListTableViewCell,
+                      let item = item
+                else { return UITableViewCell() }
+                
+                // TODO: 택스트 글씨에 맞게 아이템 담아주기
+                cell.setupData(item.stationName)
+                
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
 }

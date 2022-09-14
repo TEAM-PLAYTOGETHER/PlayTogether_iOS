@@ -35,13 +35,13 @@ struct Result: Codable {
 }
 
 struct SubwayList: Codable {
-    let stationCD, stationNm, stationNmEng, lineNum: String
+    let stationCD, stationName, stationNameEng, lineNum: String
     let frCode: String
 
     enum CodingKeys: String, CodingKey {
         case stationCD = "STATION_CD"
-        case stationNm = "STATION_NM"
-        case stationNmEng = "STATION_NM_ENG"
+        case stationName = "STATION_NM"
+        case stationNameEng = "STATION_NM_ENG"
         case lineNum = "LINE_NUM"
         case frCode = "FR_CODE"
     }
