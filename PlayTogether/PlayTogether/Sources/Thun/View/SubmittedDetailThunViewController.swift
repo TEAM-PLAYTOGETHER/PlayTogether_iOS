@@ -177,7 +177,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     @objc func cancelButtonDidTap() {
         let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
         self.present(popupViewController, animated: false, completion: nil)
-        popupViewController.delegate = self
+        popupViewController.twoButtonDelegate = self
     }
     
     override func setupViews() {
@@ -400,7 +400,7 @@ extension SubmittedDetailThunViewController {
     }
 }
 
-extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
+extension SubmittedDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = try? superViewModel?.submittedThunList.value() else { return }
         superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
@@ -417,7 +417,7 @@ extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
                 viewType: .oneButton
             )
             self.present(popupViewController, animated: false, completion: nil)
-            popupViewController.delegate = self
+            popupViewController.oneButtonDelegate = self
         }
     }
 }
