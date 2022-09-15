@@ -75,7 +75,8 @@ class AddSubwayStationViewController: BaseViewController {
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
-    private lazy var subwayStationKeyword = [String]()
+    private lazy var subwayStationKeyword = BehaviorRelay<[SubwayList]>(value: [])
+    private lazy var subwayStationData = [SubwayList]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -178,21 +179,17 @@ class AddSubwayStationViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        // TODO: (1) input을 만들어 viewModel에서 필터된 값을 반환?
-        
-        // TODO: (2) viewModel.subwayStationList bind해주고 해당 배열에서 filter해주기
+        viewModel.filterSubwayStationList(input: regularExpressionInput)
         
         viewModel.subwayStationList
             .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
                 guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
                     withIdentifier: "SubwayStationListTableViewCell",
                     for: IndexPath(row: row, section: 0)
-                ) as? SubwayStationListTableViewCell,
-                      let item = item
+                ) as? SubwayStationListTableViewCell
                 else { return UITableViewCell() }
                 
-                // TODO: 택스트 글씨에 맞게 아이템 담아주기
-                cell.setupData(item.stationName)
+                cell.setupData(item)
                 
                 return cell
             }
