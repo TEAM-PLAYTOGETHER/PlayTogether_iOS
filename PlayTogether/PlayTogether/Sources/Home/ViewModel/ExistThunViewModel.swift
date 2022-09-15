@@ -23,4 +23,20 @@ final class ExistThunViewModel {
             }
             .disposed(by: disposeBag)
     }
+    
+    func getExistThunOrganizer(lightId: Int, completion: @escaping (Bool) -> Void) {
+        let provider = MoyaProvider<ExistThunService>()
+        provider.rx.request(.existThunRequest(lightId: lightId))
+            .subscribe { result in
+                switch result {
+                case let .success(response):
+                    let responseData = try? response.map(ExistThunResponse.self)
+                    guard let data = responseData?.data.isOrganizer else { return }
+                    completion(data ? true : false)
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }
