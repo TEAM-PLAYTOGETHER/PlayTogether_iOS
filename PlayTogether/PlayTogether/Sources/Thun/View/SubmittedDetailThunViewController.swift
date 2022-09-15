@@ -367,12 +367,8 @@ final class SubmittedDetailThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) {_ in
-            if self.existThunViewModel.isExistThun {
-                self.cancelButton.isHidden = true
-            } else {
-                self.cancelButton.isHidden = false
-            }
+        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
+            self.cancelButton.isHidden = response ? true : false
         }
     }
 }
