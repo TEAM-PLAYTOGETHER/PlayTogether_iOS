@@ -182,8 +182,7 @@ class CreateMeetViewController: BaseViewController {
                 OnboardingDataModel.shared.meetingTitle = title
                 OnboardingDataModel.shared.introduceMessage = introduce
                 
-                let controller = InvitationCodeViewController()
-                self?.navigationController?.pushViewController(controller, animated: true)
+                self?.navigationController?.pushViewController(SelfIntroduceViewController(), animated: true)
             })
             .disposed(by: disposeBag)
         

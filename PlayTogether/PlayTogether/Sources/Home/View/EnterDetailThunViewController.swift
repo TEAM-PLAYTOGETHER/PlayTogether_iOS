@@ -340,7 +340,7 @@ class EnterDetailThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 let popupViewController = PopUpViewController(title: "번개에 참여할까요?", viewType: .twoButton)
                 self?.present(popupViewController, animated: false, completion: nil)
-                popupViewController.delegate = self
+                popupViewController.twoButtonDelegate = self
             })
             .disposed(by: disposeBag)
         
@@ -385,8 +385,7 @@ extension EnterDetailThunViewController {
     }
 }
 
-extension EnterDetailThunViewController: PopUpConfirmDelegate {
-    func oneButtonDidTap() {}
+extension EnterDetailThunViewController: TwoButtonDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in

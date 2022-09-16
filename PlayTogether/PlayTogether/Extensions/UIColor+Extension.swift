@@ -17,4 +17,5 @@ extension UIColor {
     static let ptGray04 = UIColor(named: "ptGray04") ?? #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 0.73)
     static let ptIncorrect = UIColor(named: "ptIncorrect") ?? #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
     static let ptCorrect = UIColor(named: "ptCorrect") ?? #colorLiteral(red: 0.231372549, green: 0.8862745098, blue: 0, alpha: 1)
+    static let kakaoColor = UIColor(named: "kakaoColor") ?? #colorLiteral(red: 0.9960784314, green: 0.8980392157, blue: 0, alpha: 1)
 }
