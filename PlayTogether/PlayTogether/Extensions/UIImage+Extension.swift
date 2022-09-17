@@ -99,4 +99,5 @@ enum ImageCase: String {
     case westseaLine = "sub_WestSea"
     case wooishinseolLine = "sub_WooiShinseol"
     case woouiLine = "sub_Wooui"
+    case gyeonguiCenterLine = "sub_GyeonguiCenter"
 }

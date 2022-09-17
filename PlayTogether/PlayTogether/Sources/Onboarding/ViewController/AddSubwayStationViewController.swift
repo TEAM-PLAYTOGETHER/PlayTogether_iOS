@@ -51,16 +51,6 @@ class AddSubwayStationViewController: BaseViewController {
         $0.layer.cornerRadius = 10
     }
     
-    private let subwayStationSearchController = UISearchController(
-        searchResultsController: nil
-    ).then {
-        $0.searchBar.placeholder = "지하철역 검색"
-//        $0.searchResultsUpdater = self
-        
-        $0.searchBar.searchTextField.font = .pretendardRegular(size: 14)
-        $0.searchBar.searchTextField.textColor = .ptBlack02
-    }
-    
     private lazy var subwayStationListTalbeView = UITableView().then {
         $0.backgroundColor = .white
         $0.rowHeight = 57 * (UIScreen.main.bounds.height / 812)
@@ -76,7 +66,7 @@ class AddSubwayStationViewController: BaseViewController {
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
     private lazy var subwayStationKeyword = BehaviorRelay<[SubwayList]>(value: [])
-    private lazy var subwayStationData = [SubwayList]()
+    private lazy var subwayStationLineList = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -188,9 +178,14 @@ class AddSubwayStationViewController: BaseViewController {
                     for: IndexPath(row: row, section: 0)
                 ) as? SubwayStationListTableViewCell
                 else { return UITableViewCell() }
-                
-                cell.setupData(item)
-                
+
+                guard self.inputSubwayStationTextField.text?.isEmpty == false else {
+                    self.subwayStationListTalbeView.separatorStyle = .none
+                    return UITableViewCell()
+                }
+                self.subwayStationListTalbeView.separatorStyle = .singleLine
+                let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
+                cell.setupData(matchingString)
                 return cell
             }
             .disposed(by: disposeBag)

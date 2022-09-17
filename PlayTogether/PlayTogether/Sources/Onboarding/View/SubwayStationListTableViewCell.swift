@@ -11,7 +11,7 @@ final class SubwayStationListTableViewCell: UITableViewCell {
     private lazy var title: String = ""
     private lazy var stationType: String = ""
     
-    private lazy var stationTitleLabel = UILabel().then {
+    lazy var stationTitleLabel = UILabel().then {
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
     }
@@ -54,11 +54,7 @@ private extension SubwayStationListTableViewCell {
 }
 
 extension SubwayStationListTableViewCell {
-//    func setupData(_ title: String, _ stationType: String) {
-//        stationTitleLabel.text = title
-//        stationTypeImageView.image = UIImage(named: stationType)
-//    }
-    func setupData(_ title: String) {
-        stationTitleLabel.text = title
+    func setupData(_ title: NSMutableAttributedString) {
+        stationTitleLabel.attributedText = title
     }
 }
