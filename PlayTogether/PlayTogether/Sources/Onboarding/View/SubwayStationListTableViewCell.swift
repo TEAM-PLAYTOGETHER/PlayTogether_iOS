@@ -33,6 +33,7 @@ final class SubwayStationListTableViewCell: UITableViewCell {
 private extension SubwayStationListTableViewCell {
     func setupView() {
         backgroundColor = .white
+        selectionStyle = .none
         
         addSubview(stationTitleLabel)
         addSubview(stationTypeImageView)

@@ -22,9 +22,10 @@ class AddSubwayStationViewController: BaseViewController {
     private let headerLabel = UILabel().then {
         let title = OnboardingDataModel.shared
         $0.text = "선호하는 지하철역을\n알려주세요!"
-        $0.font = .pretendardMedium(size: 22)
+        $0.font = .pretendardRegular(size: 22)
         $0.textColor = .ptBlack01
         $0.numberOfLines = 0
+        $0.addSpacingLabelText($0)
     }
     
     private let subwayStationLabel = UILabel().then {
@@ -56,6 +57,7 @@ class AddSubwayStationViewController: BaseViewController {
         $0.rowHeight = 57 * (UIScreen.main.bounds.height / 812)
         $0.showsVerticalScrollIndicator = false
         $0.register(SubwayStationListTableViewCell.self, forCellReuseIdentifier: "SubwayStationListTableViewCell")
+        $0.separatorInset.left = 0
     }
     
     private lazy var addButton = UIButton().then {
@@ -180,14 +182,22 @@ class AddSubwayStationViewController: BaseViewController {
                 else { return UITableViewCell() }
 
                 guard self.inputSubwayStationTextField.text?.isEmpty == false else {
-                    self.subwayStationListTalbeView.separatorStyle = .none
+                    self.subwayStationListTalbeView.isHidden = true
                     return UITableViewCell()
                 }
-                self.subwayStationListTalbeView.separatorStyle = .singleLine
+                self.subwayStationListTalbeView.isHidden = false
                 let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
                 cell.setupData(matchingString)
                 return cell
             }
+            .disposed(by: disposeBag)
+        
+        subwayStationListTalbeView.rx.modelSelected(String.self)
+            .asDriver()
+            .drive(onNext: { name in
+                // TODO: UIcollection View 추가해주기
+                print("DEBUG: seleted item name is \(name)")
+            })
             .disposed(by: disposeBag)
     }
 }
