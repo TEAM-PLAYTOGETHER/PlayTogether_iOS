@@ -67,9 +67,6 @@ class AddSubwayStationViewController: BaseViewController {
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
-    private lazy var subwayStationKeyword = BehaviorRelay<[SubwayList]>(value: [])
-    private lazy var subwayStationLineList = [String]()
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavbar()
