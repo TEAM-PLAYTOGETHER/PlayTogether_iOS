@@ -17,7 +17,6 @@ import CloudKit
 final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
     var subwayStationList = PublishSubject<[String]>()
-    var lineInfoDict = [String:[String]]()
     private var stationNameArray = [String]()
     
     struct RegularExpressionInput {
@@ -51,15 +50,8 @@ final class AddSubwayStationViewModel {
                 case let .success(response):
                     let responseData = try? response.map(SubwayStationResponse.self)
                     guard let data = responseData?.searchSTNBySubwayLineInfo.row else { return }
-                    
                     for index in 0..<data.count {
                         self?.stationNameArray.append(data[index].stationName)
-                        
-                        if self?.lineInfoDict[data[index].stationName] == nil {
-                            self?.lineInfoDict.updateValue([data[index].lineNum], forKey: data[index].stationName)
-                        } else {
-                            self?.lineInfoDict[data[index].stationName]!.append(data[index].lineNum)
-                        }
                     }
                     
                 case let .failure(error):
