@@ -12,6 +12,7 @@ import RxCocoa
 class SearchThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = SearchThunViewModel()
+    private let isSelected = true
     
     private let backButton = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -21,6 +22,7 @@ class SearchThunViewController: BaseViewController {
         $0.barStyle = .default
         $0.backgroundImage = UIImage()
         $0.placeholder = "검색어를 입력해주세요"
+        $0.searchTextField.clearButtonMode = .never
         $0.searchTextField.backgroundColor = .clear
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.ptGray01.cgColor
@@ -36,7 +38,7 @@ class SearchThunViewController: BaseViewController {
         $0.setTitleColor(.white, for: .selected)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.ptGray02.cgColor
-        $0.layer.cornerRadius = 21
+        $0.layer.cornerRadius = (UIScreen.main.bounds.height / 812) * 21
         $0.backgroundColor = .ptGray04
         $0.titleLabel?.font = .pretendardMedium(size: 12)
     }
@@ -47,7 +49,7 @@ class SearchThunViewController: BaseViewController {
         $0.setTitleColor(.white, for: .selected)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.ptGray02.cgColor
-        $0.layer.cornerRadius = 21
+        $0.layer.cornerRadius = (UIScreen.main.bounds.height / 812) * 21
         $0.backgroundColor = .ptGray04
         $0.titleLabel?.font = .pretendardMedium(size: 12)
     }
@@ -58,7 +60,7 @@ class SearchThunViewController: BaseViewController {
         $0.setTitleColor(.white, for: .selected)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.ptGray02.cgColor
-        $0.layer.cornerRadius = 21
+        $0.layer.cornerRadius = (UIScreen.main.bounds.height / 812) * 21
         $0.backgroundColor = .ptGray04
         $0.titleLabel?.font = .pretendardMedium(size: 12)
     }
@@ -72,10 +74,15 @@ class SearchThunViewController: BaseViewController {
         $0.backgroundColor = .ptGray03
     }
     
+    private let emptyLabel = UILabel().then {
+        $0.text = "검색 결과가 없어요!"
+        $0.font = .pretendardMedium(size: 14)
+        $0.textColor = .ptGray02
+    }
+    
     private lazy var tableView = UITableView().then {
-        $0.register(
-            ThunListTableViewCell.self,
-            forCellReuseIdentifier: ThunListTableViewCell.identifier)
+        $0.register(ThunListTableViewCell.self,
+                    forCellReuseIdentifier: ThunListTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
@@ -96,12 +103,14 @@ class SearchThunViewController: BaseViewController {
         view.addSubview(doButton)
         view.addSubview(buttonStackView)
         view.addSubview(underlineView)
+        view.addSubview(emptyLabel)
         view.addSubview(tableView)
     }
     
     override func setupLayouts() {
         searchBar.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo((UIScreen.main.bounds.height/812)*44)
         }
         
@@ -115,6 +124,10 @@ class SearchThunViewController: BaseViewController {
             $0.top.equalTo(buttonStackView.snp.bottom).offset(14)
             $0.height.equalTo(1)
             $0.leading.trailing.equalTo(buttonStackView)
+        }
+        
+        emptyLabel.snp.makeConstraints {
+            $0.centerY.centerX.equalToSuperview()
         }
 
         tableView.snp.makeConstraints {
@@ -144,7 +157,12 @@ class SearchThunViewController: BaseViewController {
             .bind { [weak self] in
                 guard let self = self else { return }
                 self.searchBar.setImage(.ptImage(.graySearchIcon), for: .search, state: .normal)
+                self.searchBar.searchTextField.textColor = .ptGray01
             }
+            .disposed(by: disposeBag)
+        
+        viewModel.emptyThunList
+            .bind(to: tableView.rx.isHidden)
             .disposed(by: disposeBag)
         
         viewModel.thunList
@@ -165,7 +183,7 @@ class SearchThunViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
-        
+
         eatButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
@@ -229,25 +247,32 @@ class SearchThunViewController: BaseViewController {
     private func getApiInSearchBar() {
         searchBar.rx.text
             .orEmpty
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
+            .map { $0.trimmingCharacters(in: .whitespaces) }
             .subscribe(onNext: { [weak self] query in
                 guard let self = self else { return }
-                if self.eatButton.isSelected {
-                    self.viewModel.searchThunData(query, "먹을래") { response in
-                        self.viewModel.thunList.accept(response)
-                    }
-                } else if self.goButton.isSelected {
-                    self.viewModel.searchThunData(query, "갈래") { response in
-                        self.viewModel.thunList.accept(response)
-                    }
-                } else if self.doButton.isSelected {
-                    self.viewModel.searchThunData(query, "할래") { response in
-                        self.viewModel.thunList.accept(response)
-                    }
+                if !(query.count >= 2) {
+                    self.tableView.isHidden = false
+                    self.viewModel.thunList.onNext([])
                 } else {
-                    self.viewModel.searchThunData(query, "") { response in
-                        self.viewModel.thunList.accept(response)
+                    switch self.isSelected {
+                    case self.eatButton.isSelected:
+                        self.viewModel.searchThunData(query, "먹을래") { response in
+                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
+                                self.viewModel.thunList.onNext(response)}}
+                    case self.goButton.isSelected:
+                        self.viewModel.searchThunData(query, "갈래") { response in
+                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
+                                self.viewModel.thunList.onNext(response)}}
+                    case self.doButton.isSelected:
+                        self.viewModel.searchThunData(query, "할래") { response in
+                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
+                                self.viewModel.thunList.onNext(response)}}
+                    default:
+                        self.viewModel.searchThunData(query, "") { response in
+                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
+                                self.viewModel.thunList.onNext(response)}}
                     }
                 }
             })
