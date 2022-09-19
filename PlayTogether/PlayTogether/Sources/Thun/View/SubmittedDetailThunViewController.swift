@@ -408,9 +408,9 @@ extension SubmittedDetailThunViewController: OneButtonDelegate, TwoButtonDelegat
         navigationController?.popToRootViewController(animated: true)
         tabBarController?.tabBar.isHidden = false
     }
-    
+
     func firstButtonDidTap() {}
-    
+
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
             let popupViewController = PopUpViewController(
