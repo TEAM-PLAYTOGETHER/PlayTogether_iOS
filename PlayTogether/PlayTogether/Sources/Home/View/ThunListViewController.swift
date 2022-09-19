@@ -81,9 +81,6 @@ class ThunListViewController: BaseViewController {
     }
     
     @objc func searchButtonDidTap() {
-        print("searchBtn")
-        let vc = SearchThunViewController()
-        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func configureNaigationvBar() {

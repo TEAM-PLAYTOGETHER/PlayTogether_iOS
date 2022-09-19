@@ -65,7 +65,8 @@ class SearchThunViewController: BaseViewController {
         $0.titleLabel?.font = .pretendardMedium(size: 12)
     }
 
-    private lazy var buttonStackView = UIStackView(arrangedSubviews: [eatButton,goButton,doButton]).then {
+    private lazy var buttonStackView = UIStackView(arrangedSubviews:
+                                                    [eatButton,goButton,doButton]).then {
         $0.spacing = 23
         $0.distribution = .fillEqually
     }
@@ -81,8 +82,8 @@ class SearchThunViewController: BaseViewController {
     }
     
     private lazy var tableView = UITableView().then {
-        $0.register(ThunListTableViewCell.self,
-                    forCellReuseIdentifier: ThunListTableViewCell.identifier)
+        $0.register(ThunListTableViewCell.self, forCellReuseIdentifier:
+                        ThunListTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
@@ -137,7 +138,6 @@ class SearchThunViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        getApiInSearchBar()
         backButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
@@ -159,6 +159,25 @@ class SearchThunViewController: BaseViewController {
                 self.searchBar.setImage(.ptImage(.graySearchIcon), for: .search, state: .normal)
                 self.searchBar.searchTextField.textColor = .ptGray01
             }
+            .disposed(by: disposeBag)
+        
+        searchBar.rx.text
+            .orEmpty
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                guard let self = self else { return }
+                switch self.isSelected {
+                case self.eatButton.isSelected:
+                    self.thunResponseData(query, "먹을래")
+                case self.goButton.isSelected:
+                    self.thunResponseData(query, "갈래")
+                case self.doButton.isSelected:
+                    self.thunResponseData(query, "할래")
+                default:
+                    self.thunResponseData(query, "")
+                }
+            })
             .disposed(by: disposeBag)
         
         viewModel.emptyThunList
@@ -183,19 +202,12 @@ class SearchThunViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
-
+        
         eatButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                switch self.eatButton.isSelected {
-                case true:
-                    self.isSeletedButtonState(self.eatButton, false)
-                case false:
-                    self.isSeletedButtonState(self.eatButton, true)
-                    self.isSeletedButtonState(self.goButton, false)
-                    self.isSeletedButtonState(self.doButton, false)
-                }
+                self.isSelectedButton(self.eatButton, 1, 2)
             })
             .disposed(by: disposeBag)
         
@@ -203,14 +215,7 @@ class SearchThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                switch self.goButton.isSelected {
-                case true:
-                    self.isSeletedButtonState(self.goButton, false)
-                case false:
-                    self.isSeletedButtonState(self.goButton, true)
-                    self.isSeletedButtonState(self.eatButton, false)
-                    self.isSeletedButtonState(self.doButton, false)
-                }
+                self.isSelectedButton(self.goButton, 0, 2)
             })
             .disposed(by: disposeBag)
 
@@ -218,64 +223,53 @@ class SearchThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                switch self.doButton.isSelected {
-                case true:
-                    self.isSeletedButtonState(self.doButton, false)
-                case false:
-                    self.isSeletedButtonState(self.doButton, true)
-                    self.isSeletedButtonState(self.eatButton, false)
-                    self.isSeletedButtonState(self.goButton, false)
-                }
+                self.isSelectedButton(self.doButton, 0, 1)
             })
             .disposed(by: disposeBag)
     }
     
-    private func isSeletedButtonState(_ button: UIButton,_ state: Bool) {
+    private func isButtonState(_ button: UIButton,_ state: Bool) {
         button.isSelected = state
         if state {
             button.backgroundColor = .ptBlack02
             button.layer.borderWidth = 0
-            getApiInSearchBar()
         } else {
             button.layer.borderWidth = 1
             button.layer.borderColor = UIColor.ptGray02.cgColor
             button.backgroundColor = .ptGray04
-            getApiInSearchBar()
         }
     }
     
-    private func getApiInSearchBar() {
-        searchBar.rx.text
-            .orEmpty
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-            .subscribe(onNext: { [weak self] query in
-                guard let self = self else { return }
-                if !(query.count >= 2) {
+    private func isSelectedButton(_ button: UIButton,_ firstIndex: Int,_ secondIndex: Int) {
+        guard let searchText = searchBar.text else { return }
+        guard let buttonCategory = button.titleLabel?.text else { return }
+        let buttons = [eatButton,goButton,doButton]
+        switch button.isSelected {
+        case true:
+            self.isButtonState(button, false)
+            thunResponseData(searchText, "")
+        case false:
+            self.isButtonState(button, true)
+            self.isButtonState(buttons[firstIndex], false)
+            self.isButtonState(buttons[secondIndex], false)
+            thunResponseData(searchText, buttonCategory)
+        }
+    }
+    
+    private func thunResponseData(_ query: String,_ category: String) {
+        if !(query.count >= 2) {
+            self.tableView.isHidden = false
+            self.viewModel.thunList.onNext([])
+        } else {
+            self.viewModel.searchThunData(query, category) { response in
+                switch response.isEmpty {
+                case true:
+                    self.viewModel.emptyThunList.onNext(true)
+                case false:
                     self.tableView.isHidden = false
-                    self.viewModel.thunList.onNext([])
-                } else {
-                    switch self.isSelected {
-                    case self.eatButton.isSelected:
-                        self.viewModel.searchThunData(query, "먹을래") { response in
-                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
-                                self.viewModel.thunList.onNext(response)}}
-                    case self.goButton.isSelected:
-                        self.viewModel.searchThunData(query, "갈래") { response in
-                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
-                                self.viewModel.thunList.onNext(response)}}
-                    case self.doButton.isSelected:
-                        self.viewModel.searchThunData(query, "할래") { response in
-                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
-                                self.viewModel.thunList.onNext(response)}}
-                    default:
-                        self.viewModel.searchThunData(query, "") { response in
-                            if response.isEmpty { self.viewModel.emptyThunList.onNext(true) } else { self.tableView.isHidden = false
-                                self.viewModel.thunList.onNext(response)}}
-                    }
+                    self.viewModel.thunList.onNext(response)
                 }
-            })
-            .disposed(by: disposeBag)
+            }
+        }
     }
 }
