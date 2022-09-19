@@ -11,8 +11,6 @@ import RxCocoa
 import RxRelay
 import Moya
 import RxMoya
-import Foundation
-import CloudKit
 
 final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
@@ -76,11 +74,11 @@ final class AddSubwayStationViewModel {
         let attributeString = NSMutableAttributedString(string: targetText)
         guard let textRange = targetText.range(of: inputString,
                                                options: .caseInsensitive) else { return NSMutableAttributedString(string: "") }
-        textIndex = targetText.distance(from: targetText.startIndex, to: textRange.lowerBound)
-        attributeString.addAttribute(.foregroundColor,
-                                     value: UIColor.link,
-                                     range: NSRange(location: textIndex,
-                                                    length: inputString.count))
+        textIndex = targetText.distance(from: targetText.startIndex,
+                                        to: textRange.lowerBound)
+        attributeString.addAttribute(.foregroundColor, value: UIColor.link,
+                                                       range: NSRange(location: textIndex,
+                                                                      length: inputString.count))
         return attributeString
     }
 }

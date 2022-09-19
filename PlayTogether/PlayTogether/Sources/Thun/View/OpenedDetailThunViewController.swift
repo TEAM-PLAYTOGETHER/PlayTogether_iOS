@@ -417,7 +417,7 @@ final class OpenedDetailThunViewController: BaseViewController {
                 self?.buttonStackView.isHidden = true
                 let popupViewController = PopUpViewController(title: "게시글을 삭제할까요?", viewType: .twoButton)
                 self?.present(popupViewController, animated: false, completion: nil)
-//                popupViewController.delegate = self
+                popupViewController.delegate = self
             }
             .disposed(by: disposeBag)
         
