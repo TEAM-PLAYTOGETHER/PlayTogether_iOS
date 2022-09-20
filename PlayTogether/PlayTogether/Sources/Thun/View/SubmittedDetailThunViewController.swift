@@ -14,6 +14,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
+    private let existThunViewModel = ExistThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -26,6 +27,16 @@ final class SubmittedDetailThunViewController: BaseViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
+    
+    private let cancelButton = UIButton().then {
+        $0.setTitle("신청 취소", for: .normal)
+        $0.setTitleColor(.ptGreen, for: .normal)
+        $0.titleLabel?.font = .pretendardRegular(size: 16)
     }
     
     private let scrollView = UIScrollView().then {
@@ -145,44 +156,11 @@ final class SubmittedDetailThunViewController: BaseViewController {
         $0.isScrollEnabled = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNaigationvBar()
-    }
-    
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .ptImage(.backIcon),
-            style: .plain,
-            target: self, action: #selector(backButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "신청 취소",
-            style: .plain,
-            target: self,
-            action: #selector(cancelButtonDidTap)
-        )
-        navigationItem.rightBarButtonItem?.tintColor = .ptGreen
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.pretendardRegular(size: 16)], for: .normal)
-    }
-    
-    @objc func backButtonDidTap() {
-        self.navigationController?.popViewController(animated: true)
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
-    @objc func cancelButtonDidTap() {
-        let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
-        self.present(popupViewController, animated: false, completion: nil)
-        popupViewController.delegate = self
-    }
-    
     override func setupViews() {
         tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
         view.addSubview(scrollView)
         
         scrollView.addSubview(contentView)
@@ -369,6 +347,29 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.popViewController(animated: true)
+                self.tabBarController?.tabBar.isHidden = false
+            })
+            .disposed(by: disposeBag)
+        
+        cancelButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                let popupViewController = PopUpViewController(title: "신청을 취소할까요?", viewType: .twoButton)
+                self.present(popupViewController, animated: false, completion: nil)
+                popupViewController.twoButtonDelegate = self
+            })
+            .disposed(by: disposeBag)
+        
+        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
+            self.cancelButton.isHidden = response ? true : false
+        }
     }
 }
 
@@ -400,16 +401,16 @@ extension SubmittedDetailThunViewController {
     }
 }
 
-extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
+extension SubmittedDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = try? superViewModel?.submittedThunList.value() else { return }
         superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
         navigationController?.popToRootViewController(animated: true)
         tabBarController?.tabBar.isHidden = false
     }
-    
+
     func firstButtonDidTap() {}
-    
+
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) { response in
             let popupViewController = PopUpViewController(
@@ -417,7 +418,7 @@ extension SubmittedDetailThunViewController: PopUpConfirmDelegate {
                 viewType: .oneButton
             )
             self.present(popupViewController, animated: false, completion: nil)
-            popupViewController.delegate = self
+            popupViewController.oneButtonDelegate = self
         }
     }
 }

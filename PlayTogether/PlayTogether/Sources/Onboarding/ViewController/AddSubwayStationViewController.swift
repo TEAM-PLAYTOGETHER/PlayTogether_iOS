@@ -22,9 +22,10 @@ class AddSubwayStationViewController: BaseViewController {
     private let headerLabel = UILabel().then {
         let title = OnboardingDataModel.shared
         $0.text = "선호하는 지하철역을\n알려주세요!"
-        $0.font = .pretendardMedium(size: 22)
+        $0.font = .pretendardRegular(size: 22)
         $0.textColor = .ptBlack01
         $0.numberOfLines = 0
+        $0.addSpacingLabelText($0)
     }
     
     private let subwayStationLabel = UILabel().then {
@@ -52,8 +53,11 @@ class AddSubwayStationViewController: BaseViewController {
     }
     
     private lazy var subwayStationListTalbeView = UITableView().then {
-        $0.backgroundColor = .yellow
-        $0.register(SubwayStationListTalbeViewCell.self, forCellReuseIdentifier: "SubwayStationListTalbeViewCell")
+        $0.backgroundColor = .white
+        $0.rowHeight = 57 * (UIScreen.main.bounds.height / 812)
+        $0.showsVerticalScrollIndicator = false
+        $0.register(SubwayStationListTableViewCell.self, forCellReuseIdentifier: "SubwayStationListTableViewCell")
+        $0.separatorInset.left = 0
     }
     
     private lazy var addButton = UIButton().then {
@@ -66,10 +70,6 @@ class AddSubwayStationViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavbar()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     private func configureNavbar() {
@@ -168,20 +168,33 @@ class AddSubwayStationViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        let _ = viewModel.stationNameRelay.asObservable()
-            .bind(to: inputSubwayStationTextField.rx.text)
+        viewModel.filterSubwayStationList(input: regularExpressionInput)
         
         viewModel.subwayStationList
             .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
                 guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
-                    withIdentifier: "SubwayStationListTalbeViewCell",
+                    withIdentifier: "SubwayStationListTableViewCell",
                     for: IndexPath(row: row, section: 0)
-                ) as? SubwayStationListTalbeViewCell,
-                      let item = item?.response.body.items.item
+                ) as? SubwayStationListTableViewCell
                 else { return UITableViewCell() }
-                cell.setupData(item[row].subwayStationName, item[row].subwayRouteName)
+
+                guard self.inputSubwayStationTextField.text?.isEmpty == false else {
+                    self.subwayStationListTalbeView.isHidden = true
+                    return UITableViewCell()
+                }
+                self.subwayStationListTalbeView.isHidden = false
+                let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
+                cell.setupData(matchingString)
                 return cell
             }
+            .disposed(by: disposeBag)
+        
+        subwayStationListTalbeView.rx.modelSelected(String.self)
+            .asDriver()
+            .drive(onNext: { name in
+                // TODO: UIcollection View 추가해주기
+                print("DEBUG: seleted item name is \(name)")
+            })
             .disposed(by: disposeBag)
     }
 }
