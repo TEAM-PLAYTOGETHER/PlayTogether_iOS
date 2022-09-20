@@ -95,7 +95,7 @@ class ReportThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 guard !self.completeButton.isSelected else {
-                    print("다음화면으로 넘어가라")
+                    self.navigationController?.pushViewController(ReportCompleteThunViewController(), animated: true)
                     return
                 }
             })

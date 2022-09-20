@@ -85,6 +85,7 @@
 		B6FB28F728C882BA00D5E0FC /* UpdateUserInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */; };
 		B6FB28F928C882D000D5E0FC /* InputGenderBirthYearViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */; };
 		DD0EBE2A28D8802200A50CDB /* ReportThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBE2928D8802200A50CDB /* ReportThunViewController.swift */; };
+		DD0EBE2C28D9D74A00A50CDB /* ReportCompleteThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBE2B28D9D74A00A50CDB /* ReportCompleteThunViewController.swift */; };
 		DD36D39128A4C7FE00C9851A /* ThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39028A4C7FE00C9851A /* ThunListViewController.swift */; };
 		DD36D39328A4C98600C9851A /* EatThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39228A4C98600C9851A /* EatThunListViewController.swift */; };
 		DD36D39528A4C99B00C9851A /* GoThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */; };
@@ -198,6 +199,7 @@
 		B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserInfoService.swift; sourceTree = "<group>"; };
 		B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewModel.swift; sourceTree = "<group>"; };
 		DD0EBE2928D8802200A50CDB /* ReportThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThunViewController.swift; sourceTree = "<group>"; };
+		DD0EBE2B28D9D74A00A50CDB /* ReportCompleteThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCompleteThunViewController.swift; sourceTree = "<group>"; };
 		DD36D39028A4C7FE00C9851A /* ThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunListViewController.swift; sourceTree = "<group>"; };
 		DD36D39228A4C98600C9851A /* EatThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatThunListViewController.swift; sourceTree = "<group>"; };
 		DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewController.swift; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 				DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */,
 				DDB380CC28BD2EAE001826B0 /* SelectImageViewController.swift */,
 				DD0EBE2928D8802200A50CDB /* ReportThunViewController.swift */,
+				DD0EBE2B28D9D74A00A50CDB /* ReportCompleteThunViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -787,6 +790,7 @@
 				DD73C2BA28AA1727001DEC1A /* DetailThunService.swift in Sources */,
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
+				DD0EBE2C28D9D74A00A50CDB /* ReportCompleteThunViewController.swift in Sources */,
 				B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				B6E8851128C05D9C001CAE3D /* ReDownloadViewController.swift in Sources */,
