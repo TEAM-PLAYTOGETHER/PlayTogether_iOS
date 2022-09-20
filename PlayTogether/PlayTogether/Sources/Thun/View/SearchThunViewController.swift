@@ -82,8 +82,10 @@ class SearchThunViewController: BaseViewController {
     }
     
     private lazy var tableView = UITableView().then {
-        $0.register(ThunListTableViewCell.self, forCellReuseIdentifier:
-                        ThunListTableViewCell.identifier)
+        $0.register(
+            ThunListTableViewCell.self,
+            forCellReuseIdentifier:ThunListTableViewCell.identifier
+        )
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
