@@ -382,6 +382,14 @@ final class LikedDetailThunViewController: BaseViewController {
                 self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        alertButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(ReportThunViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
