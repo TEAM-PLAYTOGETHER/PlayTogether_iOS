@@ -12,11 +12,22 @@ struct APIConstants {
     
     //TODO: 추후 삭제 예정
     static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE2OCIsImVtYWlsIjoic2V1bmdoZW9uMzI4QGdtYWlsLmNvbSIsImlhdCI6MTY2MzI0NzQ3NCwiZXhwIjoxNjY0NDU3MDc0LCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.-xmo_D6ojG6BQlu8phsPsSuG71M_A5Ph42PjGEpgUHk"
-    static let crewID = 2
+    static var crewID = 2
+    static var crewName = "아요크루"
+    static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"
+    
+    // home
+    static let getCrewList = "/crew/list"
     
     // light
-    static let getHotThunList = "/light/\(crewID)/hot"
-    static let getNewThunList = "/light/\(crewID)/new"
+    static var getHotThunList = {
+        return "/light/\(crewID)/hot"
+    }
+    
+    static var getNewThunList = {
+        return "/light/\(crewID)/new"
+    }
+    
     static let createThun = "/light/add"
     static let getSubmittedThunList = "/light"
     static let getOpenedThunList = "/light"
