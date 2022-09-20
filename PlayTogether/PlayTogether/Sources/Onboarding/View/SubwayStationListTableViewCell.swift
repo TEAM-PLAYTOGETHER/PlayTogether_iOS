@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class SubwayStationListTalbeViewCell: UITableViewCell {
+final class SubwayStationListTableViewCell: UITableViewCell {
     private lazy var title: String = ""
     private lazy var stationType: String = ""
     
-    private lazy var stationTitleLabel = UILabel().then {
+    lazy var stationTitleLabel = UILabel().then {
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack02
     }
@@ -30,9 +30,10 @@ final class SubwayStationListTalbeViewCell: UITableViewCell {
     }
 }
 
-private extension SubwayStationListTalbeViewCell {
+private extension SubwayStationListTableViewCell {
     func setupView() {
         backgroundColor = .white
+        selectionStyle = .none
         
         addSubview(stationTitleLabel)
         addSubview(stationTypeImageView)
@@ -53,9 +54,8 @@ private extension SubwayStationListTalbeViewCell {
     }
 }
 
-extension SubwayStationListTalbeViewCell {
-    func setupData(_ title: String, _ stationType: String) {
-        stationTitleLabel.text = title
-        stationTypeImageView.image = UIImage(named: stationType)
+extension SubwayStationListTableViewCell {
+    func setupData(_ title: NSMutableAttributedString) {
+        stationTitleLabel.attributedText = title
     }
 }

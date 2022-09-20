@@ -63,11 +63,11 @@
 		B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */; };
 		B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597228C48B9B00776008 /* CheckTermsView.swift */; };
 		B660597628C4A1D400776008 /* CheckTermsServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */; };
-
 		B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */; };
 		B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */; };
 		B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */; };
 		B66EA07C28A7E60B00F1F723 /* SubwayStationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */; };
+		B6720EE328D2EC7A00E34EA1 /* Element+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6720EE228D2EC7A00E34EA1 /* Element+Extension.swift */; };
 		B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */; };
 		B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */; };
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
@@ -179,11 +179,11 @@
 		B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewController.swift; sourceTree = "<group>"; };
 		B660597228C48B9B00776008 /* CheckTermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsView.swift; sourceTree = "<group>"; };
 		B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewModel.swift; sourceTree = "<group>"; };
-
 		B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewController.swift; sourceTree = "<group>"; };
 		B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceService.swift; sourceTree = "<group>"; };
 		B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewModel.swift; sourceTree = "<group>"; };
 		B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationResponse.swift; sourceTree = "<group>"; };
+		B6720EE228D2EC7A00E34EA1 /* Element+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+Extension.swift"; sourceTree = "<group>"; };
 		B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationCollectionViewCell.swift; sourceTree = "<group>"; };
 		B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
@@ -500,6 +500,7 @@
 				40727C1528A1B634007E5835 /* UIResponder+Extension.swift */,
 				B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */,
 				DD73C2BF28B1EB22001DEC1A /* UIImageView+Extension.swift */,
+				B6720EE228D2EC7A00E34EA1 /* Element+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -549,7 +550,6 @@
 			children = (
 				B660596F28C4890700776008 /* View */,
 				B660596E28C4890100776008 /* Controller */,
-
 				B6FB28F528C8826000D5E0FC /* Network */,
 				B660597428C4A1C000776008 /* ViewModel */,
 			);
@@ -560,9 +560,7 @@
 			isa = PBXGroup;
 			children = (
 				B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */,
-
 				B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */,
-
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -579,9 +577,7 @@
 			isa = PBXGroup;
 			children = (
 				B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */,
-
 				B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */,
-
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -593,7 +589,6 @@
 				B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */,
 				B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */,
 				B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */,
-
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -629,31 +624,6 @@
 				B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		B6B4B10428C1B5A0009AA0DB /* LogIn */ = {
-			isa = PBXGroup;
-			children = (
-				B6B7706228C1E16C00645DCB /* View */,
-				B6B4B10528C1B5B3009AA0DB /* Controller */,
-			);
-			path = LogIn;
-			sourceTree = "<group>";
-		};
-		B6B4B10528C1B5B3009AA0DB /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		B6B7706228C1E16C00645DCB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B6B7706028C1E16700645DCB /* LoginButtonView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		DD36D39828A65CF800C9851A /* ViewModel */ = {
@@ -854,6 +824,7 @@
 				B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */,
+				B6720EE328D2EC7A00E34EA1 /* Element+Extension.swift in Sources */,
 				B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */,
 				B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,

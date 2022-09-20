@@ -8,13 +8,11 @@
 struct APIConstants {
     //TODO: 추후 key로 숨길 예정
     static let baseUrl = "http://13.125.232.150:3000/api"
-    static let subwayBaseUrl = "http://apis.data.go.kr/1613000/SubwayInfoService"
+    static let subwayBaseUrl = "http://openapi.seoul.go.kr:8088"
     
     //TODO: 추후 삭제 예정
     static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE2OCIsImVtYWlsIjoic2V1bmdoZW9uMzI4QGdtYWlsLmNvbSIsImlhdCI6MTY2MzI0NzQ3NCwiZXhwIjoxNjY0NDU3MDc0LCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.-xmo_D6ojG6BQlu8phsPsSuG71M_A5Ph42PjGEpgUHk"
     static let crewID = 2
-    
-    static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"
     
     // light
     static let getHotThunList = "/light/\(crewID)/hot"
@@ -32,7 +30,7 @@ struct APIConstants {
     static let getSearchThun = "light/\(crewID)/search"
     
     // subway
-    static let getStationList = "/getKwrdFndSubwaySttnList"
+    static let getStationList = "/46424177746a697338326b714a6755/json/SearchSTNBySubwayLineInfo/1/1000"
     
     // user
     static let updateUserInfo = "/user/signup"
