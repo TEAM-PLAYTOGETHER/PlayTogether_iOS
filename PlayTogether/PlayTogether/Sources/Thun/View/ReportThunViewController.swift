@@ -11,6 +11,17 @@ import RxCocoa
 
 class ReportThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
+    private let viewModel = CancelThunViewModel()
+    var lightId: Int?
+    
+    init(lightID: Int) {
+        self.lightId = lightID
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let backButton = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -49,7 +60,6 @@ class ReportThunViewController: BaseViewController {
     }
     
     override func setupViews() {
-        tabBarController?.tabBar.isHidden = true // TODO: - 이거는 지워주기
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.title = "게시글 신고"
@@ -95,7 +105,11 @@ class ReportThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 guard !self.completeButton.isSelected else {
-                    self.navigationController?.pushViewController(ReportCompleteThunViewController(), animated: true)
+                    self.viewModel.postReportThun(lightId: self.lightId ?? -1, report: self.textView.text) { response in
+                        if response == true {
+                            self.navigationController?.pushViewController(ReportCompleteThunViewController(), animated: true)
+                        }
+                    }
                     return
                 }
             })

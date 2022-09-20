@@ -369,13 +369,14 @@ final class SubmittedDetailThunViewController: BaseViewController {
         
         existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
             self.cancelButton.isHidden = response ? true : false
+            self.alertButton.isHidden = response ? true : false
         }
         
         alertButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(ReportThunViewController(), animated: true)
+                self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
             })
             .disposed(by: disposeBag)
     }

@@ -14,6 +14,7 @@ final class LikedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
+    private let existThunViewModel = ExistThunViewModel()
     private let superViewModel: ThunViewModel?
     var lightId: Int?
     var imageCount: Int?
@@ -383,11 +384,15 @@ final class LikedDetailThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
+            self.alertButton.isHidden = response ? true : false
+        }
+        
         alertButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(ReportThunViewController(), animated: true)
+                self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
             })
             .disposed(by: disposeBag)
     }
