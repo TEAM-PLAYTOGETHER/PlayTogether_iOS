@@ -40,7 +40,6 @@ class AddSubwayStationViewController: BaseViewController {
         $0.textColor = .ptGray01
     }
     
-    // TODO: UITableView HeaderView에 UITextField 및 UICollectionView로 바꿀 예정
     private let inputSubwayStationTextField = UITextField().then {
         $0.setupPlaceholderText(title: "지하철역 검색", color: .ptGray01)
         $0.addLeftPadding()
@@ -50,6 +49,19 @@ class AddSubwayStationViewController: BaseViewController {
         $0.layer.borderWidth = 1.0
         $0.layer.borderColor = UIColor.ptGray03.cgColor
         $0.layer.cornerRadius = 10
+    }
+    
+    private lazy var collectionViewLayout = UICollectionViewFlowLayout().then {
+        let widthSize = UIScreen.main.bounds.width
+        let heightSize = 32 * (UIScreen.main.bounds.height / 812)
+        $0.itemSize = CGSize(width: widthSize, height: heightSize)
+    }
+    
+    private lazy var selectedSubwayStationCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: collectionViewLayout
+    ).then() {
+        $0.backgroundColor = .white
     }
     
     private lazy var subwayStationListTalbeView = UITableView().then {
@@ -66,6 +78,9 @@ class AddSubwayStationViewController: BaseViewController {
     }
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
+    
+    private lazy var userSubwayStationList = [String : CGFloat]()
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -191,9 +206,18 @@ class AddSubwayStationViewController: BaseViewController {
         
         subwayStationListTalbeView.rx.modelSelected(String.self)
             .asDriver()
-            .drive(onNext: { name in
+            .drive(onNext: { [weak self] name in
                 // TODO: UIcollection View 추가해주기
-                print("DEBUG: seleted item name is \(name)")
+                let fontSize = (name as NSString).size(withAttributes: [
+                    NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)
+                ]).width
+                let cellSize = fontSize + 10 + 16 * (UIScreen.main.bounds.width / 375)
+//                print("DEBUG: seleted item name is \(name), font size is \(fontSize), cell size is \(cellSize)")
+                guard (self?.userSubwayStationList.count)! < 2 else {
+                    self?.showToast("최대 2개까지 추가할 수 있어요!")
+                    return
+                }
+                self?.userSubwayStationList.updateValue(cellSize, forKey: name)
             })
             .disposed(by: disposeBag)
     }
