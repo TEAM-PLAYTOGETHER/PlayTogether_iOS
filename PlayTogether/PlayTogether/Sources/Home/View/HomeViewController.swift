@@ -329,6 +329,14 @@ final class HomeViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
+        rightBarItem.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(SearchThunViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         hotCollectionView.rx.modelSelected(HomeResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in

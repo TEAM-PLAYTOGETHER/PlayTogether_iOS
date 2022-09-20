@@ -74,6 +74,9 @@ enum ImageCase: String {
     case clearIcon = "clearIcon"
     case optionIcon = "optionIcon"
     
+    case graySearchIcon = "graySearchIcon"
+    case blackSearchIcon = "blackSearchIcon"
+    
     // Subway Icon
     case firstLine = "sub_line1"
     case secondLine = "sub_line2"
