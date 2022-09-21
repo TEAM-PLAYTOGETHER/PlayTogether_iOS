@@ -128,18 +128,18 @@ class ReportThunViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         textView.rx.didChange
-           .subscribe(onNext: { [weak self] in
-               guard let self = self else { return }
-               let height = (UIScreen.main.bounds.height/812)*440
-               let size = CGSize(width: self.view.frame.width, height: .infinity)
-               let estimateSize = self.textView.sizeThatFits(size)
-               
-               self.textView.constraints.forEach { constraints in
-                   if estimateSize.height >= height {
-                       constraints.constant = estimateSize.height
-                   }
-               }
-           })
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                let height = (UIScreen.main.bounds.height/812)*440
+                let size = CGSize(width: self.view.frame.width, height: .infinity)
+                let estimateSize = self.textView.sizeThatFits(size)
+                
+                if estimateSize.height >= height {
+                    self.textView.snp.updateConstraints {
+                        $0.height.equalTo(estimateSize.height)
+                    }
+                }
+            })
            .disposed(by: disposeBag)
     }
 }
