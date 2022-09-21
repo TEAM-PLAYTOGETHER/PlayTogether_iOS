@@ -50,16 +50,12 @@ final class ThunViewController: BaseViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNaigationvBar()
-    }
-    
     override func setupViews() {
         setupViewModel()
         setupSuperView()
         segmentedControl.addTarget(
             self,action: #selector(segmentedButtonDidTap(control:)), for: .valueChanged)
+        navigationItem.title = "나의 번개"
         view.addSubview(segmentedControl)
         view.addSubview(pageViewController.view)
     }
@@ -69,7 +65,7 @@ final class ThunViewController: BaseViewController {
         
         segmentedControl.snp.makeConstraints {
             let height = (view.frame.height / 812) * 50
-            $0.top.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.size.equalTo(CGSize(width: view.frame.width, height: height))
         }
         
@@ -92,24 +88,8 @@ final class ThunViewController: BaseViewController {
         likedThunViewController.setupSuperView(superView: self)
     }
     
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.title = "나의 번개"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "searchIcon"),
-            style: .plain,
-            target: self,
-            action: #selector(searchButtonDidTap))
-    }
-    
     @objc func segmentedButtonDidTap(control: UnderlineSegmentedControl) {
         currentPage = control.selectedSegmentIndex
-    }
-    
-    @objc func searchButtonDidTap() {
-        print("searchBtn")
     }
 }
 
