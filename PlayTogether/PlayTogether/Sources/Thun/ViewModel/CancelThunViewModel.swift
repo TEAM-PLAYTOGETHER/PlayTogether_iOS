@@ -27,4 +27,20 @@ final class CancelThunViewModel {
             }
             .disposed(by: disposeBag)
     }
+    
+    func postReportThun(lightId: Int, report: String, completion: @escaping (Bool) -> Void) {
+        let provider = MoyaProvider<ReportThunService>()
+        provider.rx.request(.reportThunRequest(lightId: lightId, report: report))
+            .subscribe { result in
+                switch result {
+                case let .success(response):
+                    let responseData = try? response.map(CancelThunResponse.self)
+                    guard let data = responseData?.success else { return }
+                    completion(data)
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }

@@ -94,6 +94,9 @@
 		DD0EBE0028C4D3E200A50CDB /* SearchThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBDFF28C4D3E200A50CDB /* SearchThunViewModel.swift */; };
 		B6FB28F728C882BA00D5E0FC /* UpdateUserInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */; };
 		B6FB28F928C882D000D5E0FC /* InputGenderBirthYearViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */; };
+		DD0EBE2A28D8802200A50CDB /* ReportThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBE2928D8802200A50CDB /* ReportThunViewController.swift */; };
+		DD0EBE2C28D9D74A00A50CDB /* ReportCompleteThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBE2B28D9D74A00A50CDB /* ReportCompleteThunViewController.swift */; };
+		DD0EBE2E28D9E4ED00A50CDB /* ReportThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBE2D28D9E4ED00A50CDB /* ReportThunService.swift */; };
 		DD36D39128A4C7FE00C9851A /* ThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39028A4C7FE00C9851A /* ThunListViewController.swift */; };
 		DD36D39328A4C98600C9851A /* EatThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39228A4C98600C9851A /* EatThunListViewController.swift */; };
 		DD36D39528A4C99B00C9851A /* GoThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */; };
@@ -215,6 +218,9 @@
 		DD0EBDFF28C4D3E200A50CDB /* SearchThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchThunViewModel.swift; sourceTree = "<group>"; };
 		B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserInfoService.swift; sourceTree = "<group>"; };
 		B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewModel.swift; sourceTree = "<group>"; };
+		DD0EBE2928D8802200A50CDB /* ReportThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThunViewController.swift; sourceTree = "<group>"; };
+		DD0EBE2B28D9D74A00A50CDB /* ReportCompleteThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCompleteThunViewController.swift; sourceTree = "<group>"; };
+		DD0EBE2D28D9E4ED00A50CDB /* ReportThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThunService.swift; sourceTree = "<group>"; };
 		DD36D39028A4C7FE00C9851A /* ThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunListViewController.swift; sourceTree = "<group>"; };
 		DD36D39228A4C98600C9851A /* EatThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatThunListViewController.swift; sourceTree = "<group>"; };
 		DD36D39428A4C99B00C9851A /* GoThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewController.swift; sourceTree = "<group>"; };
@@ -688,6 +694,7 @@
 				DDB380CA28BBA8C6001826B0 /* ExistLikeThunResponse.swift */,
 				DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */,
 				DD0EBDFB28C4CA7100A50CDB /* SearchThunService.swift */,
+				DD0EBE2D28D9E4ED00A50CDB /* ReportThunService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -705,6 +712,8 @@
 				DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */,
 				DDB380CC28BD2EAE001826B0 /* SelectImageViewController.swift */,
 				DD0EBDF728C4939400A50CDB /* SearchThunViewController.swift */,
+				DD0EBE2928D8802200A50CDB /* ReportThunViewController.swift */,
+				DD0EBE2B28D9D74A00A50CDB /* ReportCompleteThunViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -826,6 +835,7 @@
 				B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */,
 				4066E49A288B3CF700FC9090 /* CALayer+Extension.swift in Sources */,
 				402A16EA28C4C5F800161820 /* BottomSheetTableViewCell.swift in Sources */,
+				DD0EBE2C28D9D74A00A50CDB /* ReportCompleteThunViewController.swift in Sources */,
 				B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */,
 				409451B328905D7D00F21717 /* HomeResponse.swift in Sources */,
 				B6E8851128C05D9C001CAE3D /* ReDownloadViewController.swift in Sources */,
@@ -851,6 +861,7 @@
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				DDB380CD28BD2EAE001826B0 /* SelectImageViewController.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
+				DD0EBE2E28D9E4ED00A50CDB /* ReportThunService.swift in Sources */,
 				B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */,
@@ -908,6 +919,7 @@
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
 				408EE3E228BAAF290012C642 /* MyPageSubwayLabel.swift in Sources */,
 				B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */,
+				DD0EBE2A28D8802200A50CDB /* ReportThunViewController.swift in Sources */,
 				DD36D3A028A67D0700C9851A /* DetailThunImageCollectionViewCell.swift in Sources */,
 				DDB380E528C1AA8D001826B0 /* ExistThunViewModel.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
