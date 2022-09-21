@@ -56,7 +56,6 @@ class ReportThunViewController: BaseViewController {
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.ptGray03.cgColor
-        $0.delegate = self
     }
     
     override func setupViews() {
@@ -104,13 +103,14 @@ class ReportThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                guard !self.completeButton.isSelected else {
-                    self.viewModel.postReportThun(lightId: self.lightId ?? -1, report: self.textView.text) { response in
-                        if response == true {
-                            self.navigationController?.pushViewController(ReportCompleteThunViewController(), animated: true)
-                        }
+                guard self.completeButton.isSelected else { return }
+                self.viewModel.postReportThun(
+                    lightId: self.lightId ?? -1,
+                    report: self.textView.text
+                ) { response in
+                    if response == true {
+                        self.navigationController?.pushViewController(ReportCompleteThunViewController(), animated: true)
                     }
-                    return
                 }
             })
             .disposed(by: disposeBag)
@@ -126,21 +126,20 @@ class ReportThunViewController: BaseViewController {
                 self.completeButton.isSelected = true
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension ReportThunViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        let height = (UIScreen.main.bounds.height/812)*440
-        let size = CGSize(width: view.frame.width, height: .infinity)
-        let estimateSize = textView.sizeThatFits(size)
         
-        textView.constraints.forEach { constraints in
-            if !(estimateSize.height <= height) {
-                if constraints.firstAttribute == .height {
-                    constraints.constant = estimateSize.height
-                }
-            }
-        }
+        textView.rx.didChange
+           .subscribe(onNext: { [weak self] in
+               guard let self = self else { return }
+               let height = (UIScreen.main.bounds.height/812)*440
+               let size = CGSize(width: self.view.frame.width, height: .infinity)
+               let estimateSize = self.textView.sizeThatFits(size)
+               
+               self.textView.constraints.forEach { constraints in
+                   if estimateSize.height >= height {
+                       constraints.constant = estimateSize.height
+                   }
+               }
+           })
+           .disposed(by: disposeBag)
     }
 }
