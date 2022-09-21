@@ -5,17 +5,17 @@
 //  Created by 이지석 on 2022/08/18.
 //
 
+import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
 import Moya
 import RxMoya
-import Foundation
 
 final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
-    var subwayStationList = BehaviorSubject<[StationResponse?]>.init(value: [])
-    var stationNameRelay = BehaviorRelay<String>.init(value: "")
+    var subwayStationList = PublishSubject<[String]>()
+    private var stationNameArray = [String]()
     
     struct RegularExpressionInput {
         var SubwayStationTitle: Observable<String>
@@ -23,6 +23,10 @@ final class AddSubwayStationViewModel {
     
     struct RegularExpressionOutput {
         var SubwayStationTitleCheck: Driver<Bool>
+    }
+    
+    init() {
+        fetchSubwayStationList()
     }
     
     func RegularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
@@ -36,22 +40,45 @@ final class AddSubwayStationViewModel {
         return RegularExpressionOutput(SubwayStationTitleCheck: output)
     }
     
-    // TODO: 지하철 역 파라미터, String 변환
-    func fetchSubwayStationList(completion: @escaping ([StationsInfo]) -> Void) {
+    func fetchSubwayStationList() {
         let provider = MoyaProvider<SelfIntroduceService>()
-        
-        provider.rx.request(.searchStationRequeset(stationName: stationNameRelay.value))
-            .subscribe { result in
+        provider.rx.request(.searchStationRequeset)
+            .subscribe { [weak self] result in
                 switch result {
                 case let .success(response):
-                    let responseData = try? response.map(StationResponse.self)
-                    guard let item = responseData?.response.body.items.item else { return }
-                    completion(item)
+                    let responseData = try? response.map(SubwayStationResponse.self)
+                    guard let data = responseData?.searchSTNBySubwayLineInfo.row else { return }
+                    for index in 0..<data.count {
+                        self?.stationNameArray.append(data[index].stationName)
+                    }
                     
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
             }
             .disposed(by: disposeBag)
+    }
+    
+    func filterSubwayStationList(input: RegularExpressionInput) {
+        input.SubwayStationTitle
+            .subscribe(onNext: { [weak self] in
+                let text = $0.lowercased()
+                let filterData = self?.stationNameArray.filter { $0.lowercased().hasPrefix(text) }
+                self?.subwayStationList.onNext(filterData!.uniqued())
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func makeAttributeString(_ targetText: String, _ inputString: String) -> NSMutableAttributedString {
+        var textIndex: Int = 0
+        let attributeString = NSMutableAttributedString(string: targetText)
+        guard let textRange = targetText.range(of: inputString,
+                                               options: .caseInsensitive) else { return NSMutableAttributedString(string: "") }
+        textIndex = targetText.distance(from: targetText.startIndex,
+                                        to: textRange.lowerBound)
+        attributeString.addAttribute(.foregroundColor, value: UIColor.link,
+                                                       range: NSRange(location: textIndex,
+                                                                      length: inputString.count))
+        return attributeString
     }
 }
