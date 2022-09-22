@@ -31,6 +31,9 @@ final class PreferredStationCollectionViewCell: UICollectionViewCell {
 
 private extension PreferredStationCollectionViewCell {
     func setupView() {
+        backgroundColor = .ptBlack01
+        layer.cornerRadius = self.frame.height / 2
+        
         addSubview(titleLabel)
         addSubview(cancelButton)
         
