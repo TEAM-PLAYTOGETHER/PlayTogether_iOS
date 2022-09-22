@@ -73,6 +73,7 @@ enum ImageCase: String {
     case introduceLabelIcon = "introduceLabelIcon"
     case clearIcon = "clearIcon"
     case optionIcon = "optionIcon"
+    case cancleIcon = "cancleIcon"
     
     // Subway Icon
     case firstLine = "sub_line1"

@@ -51,18 +51,19 @@ class AddSubwayStationViewController: BaseViewController {
         $0.layer.cornerRadius = 10
     }
     
-    private lazy var collectionViewLayout = UICollectionViewFlowLayout().then {
-        let widthSize = UIScreen.main.bounds.width
-        let heightSize = 32 * (UIScreen.main.bounds.height / 812)
-        $0.itemSize = CGSize(width: widthSize, height: heightSize)
-    }
-    
-    private lazy var selectedSubwayStationCollectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: collectionViewLayout
-    ).then() {
-        $0.backgroundColor = .white
-    }
+//    private lazy var collectionViewLayout = UICollectionViewFlowLayout().then {
+//        let widthSize = UIScreen.main.bounds.width
+//        let heightSize = 32 * (UIScreen.main.bounds.height / 812)
+//        $0.itemSize = CGSize(width: widthSize, height: heightSize)
+//    }
+//
+//    private lazy var selectedSubwayStationCollectionView = UICollectionView(
+//        frame: .zero,
+//        collectionViewLayout: collectionViewLayout
+//    ).then() {
+//        $0.backgroundColor = .white
+//        $0.register(SubwayStationCollectionViewCell.self, forCellWithReuseIdentifier: "SubwayStationCollectionViewCell")
+//    }
     
     private lazy var subwayStationListTalbeView = UITableView().then {
         $0.backgroundColor = .white
@@ -80,7 +81,7 @@ class AddSubwayStationViewController: BaseViewController {
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
     private lazy var userSubwayStationList = [String : CGFloat]()
-    
+    private lazy var test = PublishSubject<[String:CGFloat]>()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -100,6 +101,7 @@ class AddSubwayStationViewController: BaseViewController {
         view.addSubview(subwayStationLabel)
         view.addSubview(noticeSubwayStationLabel)
         view.addSubview(inputSubwayStationTextField)
+//        view.addSubview(selectedSubwayStationCollectionView)
         view.addSubview(subwayStationListTalbeView)
         view.addSubview(addButton)
     }
@@ -132,7 +134,14 @@ class AddSubwayStationViewController: BaseViewController {
             $0.height.equalTo(57 * (UIScreen.main.bounds.height / 812))
         }
         
+//        selectedSubwayStationCollectionView.snp.makeConstraints {
+//            $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(16)
+//            $0.leading.equalToSuperview().inset(20)
+//            $0.bottom.equalTo(subwayStationListTalbeView.snp.top).offset(8)
+//        }
+        
         subwayStationListTalbeView.snp.makeConstraints {
+//            $0.top.equalTo(selectedSubwayStationCollectionView.snp.bottom).offset(8)
             $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(addButton.snp.top).offset(-8)
