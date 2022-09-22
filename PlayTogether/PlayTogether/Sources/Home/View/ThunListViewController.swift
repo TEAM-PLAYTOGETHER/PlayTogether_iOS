@@ -10,7 +10,8 @@ import SnapKit
 import Then
 import RxSwift
 
-class ThunListViewController: BaseViewController {
+final class ThunListViewController: BaseViewController {
+    private let disposeBag = DisposeBag()
     
     init(currentPageIndex: Int, index: Int) {
         super.init()
@@ -22,7 +23,13 @@ class ThunListViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let disposeBag = DisposeBag()
+    private let backButton = UIButton().then {
+        $0.setImage(.ptImage(.backIcon), for: .normal)
+    }
+    
+    private let searchButton = UIButton().then {
+        $0.setImage(.ptImage(.searchIcon), for: .normal)
+    }
     
     private let beforeButton = UIButton().then {
         $0.setImage(.ptImage(.beforeIcon), for: .normal)
@@ -56,10 +63,6 @@ class ThunListViewController: BaseViewController {
         $0.spacing = 20
     }
     
-    private let thunButton = UIButton().then {
-        $0.setImage(.ptImage(.floatingIcon), for: .normal)
-    }
-    
     private let eatThunListViewController = EatThunListViewController()
     private let goThunListViewController = GoThunListViewController()
     private let doThunListViewController = DoThunListViewController()
@@ -75,48 +78,14 @@ class ThunListViewController: BaseViewController {
         [eatThunListViewController, goThunListViewController, doThunListViewController]
     }
     
-    @objc func backButtonDidTap() {
-        navigationController?.popViewController(animated: true)
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    @objc func searchButtonDidTap() {
-    }
-    
-    private func configureNaigationvBar() {
-        let navigationBarController = navigationController?.navigationBar
-        navigationBarController?.isTranslucent = false
-        navigationBarController?.tintColor = .white
-        navigationItem.titleView = stackView
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "backIcon"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "searchIcon"), style: .plain, target: self, action: #selector(searchButtonDidTap))
-    }
-    
-    private func beforeButtonDidTap() {
-        let nextIndex = max(currentPage - 1, 0)
-        currentPage = nextIndex
-        nameArray[currentPage] = nameArray[nextIndex]
-        eatGoDoLabel.text = nameArray[nextIndex]
-    }
-    
-    private func afterButtonDidTap() {
-        let nextIndex = min(currentPage + 1, nameArray.count - 1)
-        currentPage = nextIndex
-        eatGoDoLabel.text = nameArray[nextIndex]
-    }
-    
     override func setupViews() {
-        configureNaigationvBar()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
+        navigationItem.titleView = stackView
         view.addSubview(pageViewController.view)
-        view.addSubview(thunButton)
     }
     
     override func setupLayouts() {
-        thunButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(36)
-        }
-        
         pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.trailing.equalToSuperview()
@@ -125,16 +94,33 @@ class ThunListViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         beforeButton.rx.tap
-            .bind { [weak self] in
-                self?.beforeButtonDidTap()
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                let nextIndex = max(self.currentPage - 1, 0)
+                self.currentPage = nextIndex
+                self.nameArray[self.currentPage] = self.nameArray[nextIndex]
+                self.eatGoDoLabel.text = self.nameArray[nextIndex]
+            })
             .disposed(by: disposeBag)
         
         afterButton.rx.tap
-            .bind { [weak self] in
-                self?.afterButtonDidTap()
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                let nextIndex = min(self.currentPage + 1, self.nameArray.count - 1)
+                self.currentPage = nextIndex
+                self.eatGoDoLabel.text = self.nameArray[nextIndex]
+            })
             .disposed(by: disposeBag)
     }
 }
