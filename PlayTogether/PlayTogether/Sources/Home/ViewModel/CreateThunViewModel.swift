@@ -46,7 +46,7 @@ final class CreateThunViewModel {
         return output
     }
     
-    func createThunRequest(completion: @escaping () -> Void) {
+    func createThunRequest(completion: @escaping ([CreateThun]) -> Void) {
         setupParameter()
         
         let provider = MoyaProvider<CreateThunService>()
@@ -55,8 +55,10 @@ final class CreateThunViewModel {
             params: parameter)
         ).subscribe { result in
             switch result {
-            case .success:
-                completion()
+            case let .success(response):
+                let responseData = try? response.map(CreateThunResponse.self)
+                guard let data = responseData?.data else { return }
+                completion(data)
             case let .failure(error):
                 print(error.localizedDescription)
             }
