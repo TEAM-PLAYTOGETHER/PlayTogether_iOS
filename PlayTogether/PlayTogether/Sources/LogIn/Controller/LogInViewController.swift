@@ -15,7 +15,6 @@ class LogInViewController: BaseViewController {
     
     private let kakaoLoginView = LoginButtonView()
     private let appleLoginView = LoginButtonView()
-    private var userAccessToken: String = ""
     
     private let headerLabel = UILabel().then {
         $0.text = "함께 놀아요\nPLAY TOGETHER!"
@@ -43,6 +42,10 @@ class LogInViewController: BaseViewController {
         $0.backgroundColor = .white
         $0.setUnderline()
     }
+    
+    private var userAccessToken: String = ""
+    private let userFCMToken = UserDefaults.standard.string(forKey: "FCMToken")
+    private let viewModel = LoginViewModel()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -121,16 +124,44 @@ extension LogInViewController: LoginButtonDelegate {
 
 private extension LogInViewController {
     func kakaoLogin() {
+        func requestLogin(accessToken: String, fcmToken: String) {
+            let loginInput = LoginViewModel.loginTokenInput(accessToken: accessToken,
+                                                            fcmToken: fcmToken)
+            viewModel.tryLogin(loginInput) {
+                guard $0.status == 200 else { return }
+                let loggedInUserInfo = $0.data
+                guard loggedInUserInfo.isSignup == true else {
+                    // MARK: 회원가입 X, 온보딩 이동
+                    self.navigationController?.pushViewController(UINavigationController(
+                                                                    rootViewController: OnboardingViewController()),
+                                                                    animated: true)
+                    return
+                }
+                // TODO: 키체인 변경 예정
+                UserDefaults.standard.set(loggedInUserInfo.accessToken, forKey: "accessToken")
+                UserDefaults.standard.set(loggedInUserInfo.refreshToken, forKey: "refreshToken")
+                UserDefaults.standard.set(loggedInUserInfo.userName, forKey: "userName")
+                
+                // MARK: 회원가입 O, 홈 이동
+                
+            }
+        }
+        
         guard UserApi.isKakaoTalkLoginAvailable() == true else {
             UserApi.shared.loginWithKakaoAccount(prompts:[.Login]) { oauthToken, error  in
                 guard let accessToken = oauthToken?.accessToken else { return }
+                guard let fcmToken = self.userFCMToken else { return }
                 self.userAccessToken = accessToken
+                requestLogin(accessToken: accessToken, fcmToken: fcmToken)
             }
             return
         }
+        
         UserApi.shared.loginWithKakaoTalk { oauthToken, error in
             guard let accessToken = oauthToken?.accessToken else { return }
+            guard let fcmToken = self.userFCMToken else { return }
             self.userAccessToken = accessToken
+            requestLogin(accessToken: accessToken, fcmToken: fcmToken)
         }
     }
 }

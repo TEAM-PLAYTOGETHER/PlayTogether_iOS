@@ -78,6 +78,9 @@
 		B6B4131128DD57F2008EAEB2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */; };
 		B6B4131B28DD6523008EAEB2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B6B4131A28DD6523008EAEB2 /* FirebaseAnalytics */; };
 		B6B4131D28DD6523008EAEB2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B6B4131C28DD6523008EAEB2 /* FirebaseMessaging */; };
+		B6B4132128DD6D82008EAEB2 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4132028DD6D82008EAEB2 /* LoginResponse.swift */; };
+		B6B4132328DD6D9F008EAEB2 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4132228DD6D9F008EAEB2 /* LoginService.swift */; };
+		B6B4132628DD6FA3008EAEB2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4132528DD6FA3008EAEB2 /* LoginViewModel.swift */; };
 		B6B4B10328C1AE3C009AA0DB /* FetchMeetingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */; };
 		B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */; };
 		B6B7706128C1E16700645DCB /* LoginButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B7706028C1E16700645DCB /* LoginButtonView.swift */; };
@@ -194,6 +197,9 @@
 		B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationListTableViewCell.swift; sourceTree = "<group>"; };
 		B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B6B4131528DD6254008EAEB2 /* PlayTogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayTogether.entitlements; sourceTree = "<group>"; };
+		B6B4132028DD6D82008EAEB2 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		B6B4132228DD6D9F008EAEB2 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		B6B4132528DD6FA3008EAEB2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMeetingService.swift; sourceTree = "<group>"; };
 		B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		B6B7706028C1E16700645DCB /* LoginButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonView.swift; sourceTree = "<group>"; };
@@ -607,9 +613,28 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		B6B4131F28DD6BFC008EAEB2 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B6B4132228DD6D9F008EAEB2 /* LoginService.swift */,
+				B6B4132028DD6D82008EAEB2 /* LoginResponse.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		B6B4132428DD6F8A008EAEB2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B6B4132528DD6FA3008EAEB2 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		B6B4B10428C1B5A0009AA0DB /* LogIn */ = {
 			isa = PBXGroup;
 			children = (
+				B6B4132428DD6F8A008EAEB2 /* ViewModel */,
+				B6B4131F28DD6BFC008EAEB2 /* Network */,
 				B6B7706228C1E16C00645DCB /* View */,
 				B6B4B10528C1B5B3009AA0DB /* Controller */,
 			);
@@ -790,10 +815,12 @@
 				DDB380E128C1A971001826B0 /* ExistThunResponse.swift in Sources */,
 				DDB380C328BBA219001826B0 /* LikeThunService.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
+				B6B4132628DD6FA3008EAEB2 /* LoginViewModel.swift in Sources */,
 				B68C0D0428C5E3BA00268333 /* BirthYearPickerViewController.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
 				DD73C2C228B209DC001DEC1A /* CancelThunResponse.swift in Sources */,
+				B6B4132128DD6D82008EAEB2 /* LoginResponse.swift in Sources */,
 				B666C9EA28C6472500A1210F /* TermsService.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
@@ -831,6 +858,7 @@
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				DDB380CD28BD2EAE001826B0 /* SelectImageViewController.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
+				B6B4132328DD6D9F008EAEB2 /* LoginService.swift in Sources */,
 				B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */,

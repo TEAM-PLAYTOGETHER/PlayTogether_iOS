@@ -31,6 +31,10 @@ struct APIConstants {
     static let postDeleteThun = "light/remove"
     static let getExistThun = "light/exist"
     
+    // login
+    static let kakaoLogin = "/auth/kakao-login"
+    static let appleLogin = "/auth/apple-login"
+    
     // subway
     static let getStationList = "/getKwrdFndSubwaySttnList"
     

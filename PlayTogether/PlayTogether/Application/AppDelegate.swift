@@ -32,7 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print(String(describing: error?.localizedDescription))
                 return
             }
-            print("DEBUG: User's FCM token: \(String(describing: FCMToken))")
+            // 키체인으로 변경할 예정
+            UserDefaults.standard.set(FCMToken, forKey: "FCMToken")
+            print("DEBUG: FCMToken: \(FCMToken)")
         }
         
         // Navbar
