@@ -131,10 +131,9 @@ private extension LogInViewController {
                 guard $0.status == 200 else { return }
                 let loggedInUserInfo = $0.data
                 guard loggedInUserInfo.isSignup == true else {
-                    // MARK: 회원가입 X, 온보딩 이동
-                    self.navigationController?.pushViewController(UINavigationController(
-                                                                    rootViewController: OnboardingViewController()),
-                                                                    animated: true)
+                    guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                            as? SceneDelegate else { return }
+                    sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
                     return
                 }
                 // TODO: 키체인 변경 예정
@@ -142,8 +141,10 @@ private extension LogInViewController {
                 UserDefaults.standard.set(loggedInUserInfo.refreshToken, forKey: "refreshToken")
                 UserDefaults.standard.set(loggedInUserInfo.userName, forKey: "userName")
                 
-                // MARK: 회원가입 O, 홈 이동
-                
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                        as? SceneDelegate else { return }
+                let rootViewController = TabBarController()
+                sceneDelegate.window?.rootViewController = rootViewController
             }
         }
         

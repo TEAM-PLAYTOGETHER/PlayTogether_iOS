@@ -39,7 +39,6 @@ extension LoginService: TargetType {
     var headers: [String : String]? {
         switch self {
         case .kakaoLoginReuest(let accessToken, let fcmToken):
-            print("Header!! \(accessToken), \(fcmToken)")
             return [
                 "Content-Type": "application/json",
                 "accessToken" : accessToken,
