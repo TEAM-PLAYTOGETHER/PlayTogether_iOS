@@ -8,16 +8,34 @@
 import UIKit
 import KakaoSDKCommon
 import FirebaseCore
+import FirebaseMessaging
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Kakao
         KakaoSDK.initSDK(appKey: "a8d6fdc1b9ff7024913545818b3fa9d2")
-        FirebaseApp.configure()
         
+        // Firebase
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+          
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
+        application.registerForRemoteNotifications()
+        
+        Messaging.messaging().token { token, error in
+            guard let FCMToken = token else {
+                print(String(describing: error?.localizedDescription))
+                return
+            }
+            print("DEBUG: User's FCM token: \(String(describing: FCMToken))")
+        }
+        
+        // Navbar
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .ptBlack01
