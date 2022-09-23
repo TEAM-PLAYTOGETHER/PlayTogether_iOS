@@ -24,8 +24,18 @@ final class PreferredStationCollectionViewCell: UICollectionViewCell {
     }
     
     private lazy var cancelButton = UIButton().then {
-        $0.setTitle("", for: .normal)
-        $0.setImage(.ptImage(.cancleIcon), for: .normal)
+        $0.setImage(.ptImage(.exitIcon), for: .normal)
+        $0.tintColor = .ptGray01
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -38,6 +48,7 @@ private extension PreferredStationCollectionViewCell {
         addSubview(cancelButton)
         
         setupLayout()
+        setupBinding()
     }
     
     func setupLayout() {
@@ -55,8 +66,7 @@ private extension PreferredStationCollectionViewCell {
     
     func setupBinding() {
         cancelButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
+            .bind(onNext: { [weak self] in
                 self?.delegate?.removeStation()
             })
             .disposed(by: disposeBag)

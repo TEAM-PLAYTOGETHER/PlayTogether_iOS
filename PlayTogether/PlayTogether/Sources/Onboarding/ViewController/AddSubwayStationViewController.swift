@@ -51,17 +51,13 @@ class AddSubwayStationViewController: BaseViewController {
         $0.layer.cornerRadius = 10
     }
     
-    private lazy var collectionViewLayout = UICollectionViewFlowLayout().then {
-        let widthSize = 150
-        let heightSize = 32 * (UIScreen.main.bounds.height / 812)
-        $0.itemSize = CGSize(width: widthSize, height: heightSize)
-    }
-
-    private lazy var selectedSubwayStationCollectionView = UICollectionView(
+    private lazy var preferredStationCollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: collectionViewLayout
+        collectionViewLayout: UICollectionViewFlowLayout()
     ).then() {
         $0.backgroundColor = .white
+        $0.delegate = self
+        $0.dataSource = self
         $0.register(PreferredStationCollectionViewCell.self, forCellWithReuseIdentifier: "PreferredStationCollectionViewCell")
     }
     
@@ -80,8 +76,8 @@ class AddSubwayStationViewController: BaseViewController {
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
-    private lazy var userSubwayStationList = [String : CGFloat]()
-    private lazy var test = PublishSubject<[String:CGFloat]>()
+    private lazy var ksub = [String]()
+    private var ksubIndex: Int = 0
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -101,7 +97,7 @@ class AddSubwayStationViewController: BaseViewController {
         view.addSubview(subwayStationLabel)
         view.addSubview(noticeSubwayStationLabel)
         view.addSubview(inputSubwayStationTextField)
-        view.addSubview(selectedSubwayStationCollectionView)
+        view.addSubview(preferredStationCollectionView)
         view.addSubview(subwayStationListTalbeView)
         view.addSubview(addButton)
     }
@@ -134,14 +130,15 @@ class AddSubwayStationViewController: BaseViewController {
             $0.height.equalTo(57 * (UIScreen.main.bounds.height / 812))
         }
         
-        selectedSubwayStationCollectionView.snp.makeConstraints {
+        preferredStationCollectionView.snp.makeConstraints {
             $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(32)
 //            $0.bottom.equalTo(subwayStationListTalbeView.snp.top).offset(8)
         }
         
         subwayStationListTalbeView.snp.makeConstraints {
-            $0.top.equalTo(selectedSubwayStationCollectionView.snp.bottom).offset(8)
+            $0.top.equalTo(preferredStationCollectionView.snp.bottom).offset(8)
 //            $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(addButton.snp.top).offset(-8)
@@ -216,18 +213,57 @@ class AddSubwayStationViewController: BaseViewController {
         subwayStationListTalbeView.rx.modelSelected(String.self)
             .asDriver()
             .drive(onNext: { [weak self] name in
-                // TODO: UIcollection View 추가해주기
-                let fontSize = (name as NSString).size(withAttributes: [
-                    NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)
-                ]).width
-                let cellSize = fontSize + 10 + 16 * (UIScreen.main.bounds.width / 375)
-//                print("DEBUG: seleted item name is \(name), font size is \(fontSize), cell size is \(cellSize)")
-                guard (self?.userSubwayStationList.count)! < 2 else {
+                guard (self?.ksub.count)! < 2 else {
                     self?.showToast("최대 2개까지 추가할 수 있어요!")
                     return
                 }
-                self?.userSubwayStationList.updateValue(cellSize, forKey: name)
+                self?.ksub.append(name)
+                self?.preferredStationCollectionView.reloadData()
+                self?.preferredStationCollectionView.layoutSubviews()
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension AddSubwayStationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return ksub.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "PreferredStationCollectionViewCell",
+            for: indexPath
+        ) as? PreferredStationCollectionViewCell
+        else { return UICollectionViewCell() }
+        
+        cell.delegate = self
+        cell.setupData(ksub[indexPath.row])
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        ksubIndex = indexPath.row
+        print("DEBUG: ksubIndex is \(ksubIndex)")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let fontSize = (ksub[indexPath.row] as NSString).size(
+            withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
+        ).width
+        let cellWidth = fontSize + 34 + 16 * (UIScreen.main.bounds.width / 375)
+        let cellHeight = 32 * (UIScreen.main.bounds.height / 812)
+        
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+}
+
+extension AddSubwayStationViewController: PreferredStationDelegate {
+    func removeStation() {
+        // TODO: 삭제 버튼 누르는 IndexPath.row 알아야 함
+        guard ksub.isEmpty == false else { return }
+        print("DEBUG: ksubIndex is \(ksubIndex)")
+        ksub.remove(at: ksubIndex)
+        preferredStationCollectionView.reloadData()
     }
 }
