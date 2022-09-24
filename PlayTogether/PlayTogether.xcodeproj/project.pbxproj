@@ -63,7 +63,6 @@
 		B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */; };
 		B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597228C48B9B00776008 /* CheckTermsView.swift */; };
 		B660597628C4A1D400776008 /* CheckTermsServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */; };
-
 		B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */; };
 		B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */; };
 		B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */; };
@@ -170,13 +169,13 @@
 		B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewController.swift; sourceTree = "<group>"; };
 		B61C426F28A20CA800913574 /* SelfIntroduceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewController.swift; sourceTree = "<group>"; };
 		B630459D28828D9F0095F694 /* ChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCell.swift; sourceTree = "<group>"; };
+		B6323C0E28DE9E2200FF5C7E /* PlayTogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayTogether.entitlements; sourceTree = "<group>"; };
 		B6397F422887104800046843 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		B640C9172898D4B1006C45BE /* InvitationCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewModel.swift; sourceTree = "<group>"; };
 		B649134628ADD6FF007A5821 /* AddSubwayStationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewModel.swift; sourceTree = "<group>"; };
 		B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewController.swift; sourceTree = "<group>"; };
 		B660597228C48B9B00776008 /* CheckTermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsView.swift; sourceTree = "<group>"; };
 		B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewModel.swift; sourceTree = "<group>"; };
-
 		B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewController.swift; sourceTree = "<group>"; };
 		B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceService.swift; sourceTree = "<group>"; };
 		B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewModel.swift; sourceTree = "<group>"; };
@@ -390,6 +389,7 @@
 		4096A298287F5F3F00F1E27C /* PlayTogether */ = {
 			isa = PBXGroup;
 			children = (
+				B6323C0E28DE9E2200FF5C7E /* PlayTogether.entitlements */,
 				B616A80D2886A20B00E1ABCF /* Utils */,
 				4096A2AD287F5F7C00F1E27C /* Application */,
 				4096A2AF287F5F8B00F1E27C /* Resources */,
@@ -543,7 +543,6 @@
 			children = (
 				B660596F28C4890700776008 /* View */,
 				B660596E28C4890100776008 /* Controller */,
-
 				B6FB28F528C8826000D5E0FC /* Network */,
 				B660597428C4A1C000776008 /* ViewModel */,
 			);
@@ -554,9 +553,7 @@
 			isa = PBXGroup;
 			children = (
 				B660597028C4891C00776008 /* CheckTermsServiceViewController.swift */,
-
 				B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */,
-
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -573,9 +570,7 @@
 			isa = PBXGroup;
 			children = (
 				B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */,
-
 				B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */,
-
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -587,7 +582,6 @@
 				B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */,
 				B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */,
 				B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */,
-
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -623,31 +617,6 @@
 				B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		B6B4B10428C1B5A0009AA0DB /* LogIn */ = {
-			isa = PBXGroup;
-			children = (
-				B6B7706228C1E16C00645DCB /* View */,
-				B6B4B10528C1B5B3009AA0DB /* Controller */,
-			);
-			path = LogIn;
-			sourceTree = "<group>";
-		};
-		B6B4B10528C1B5B3009AA0DB /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		B6B7706228C1E16C00645DCB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B6B7706028C1E16700645DCB /* LoginButtonView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		DD36D39828A65CF800C9851A /* ViewModel */ = {
@@ -1031,9 +1000,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XK2FZR7MVH;
+				DEVELOPMENT_TEAM = Z779U729AH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1046,7 +1016,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PlTo.PlayTogether;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pltoo.playtogether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1059,9 +1029,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XK2FZR7MVH;
+				DEVELOPMENT_TEAM = Z779U729AH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1074,7 +1045,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PlTo.PlayTogether;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pltoo.playtogether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

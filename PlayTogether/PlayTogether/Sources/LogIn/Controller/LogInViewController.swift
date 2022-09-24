@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import KakaoSDKAuth
 import KakaoSDKUser
+import AuthenticationServices
 
 class LogInViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
@@ -115,6 +116,7 @@ extension LogInViewController: LoginButtonDelegate {
     }
     
     func appleButtonDidTap() {
+        appleLogin()
         print("DEBUG: Apple login button did tap!")
     }
 }
@@ -125,12 +127,43 @@ private extension LogInViewController {
             UserApi.shared.loginWithKakaoAccount(prompts:[.Login]) { oauthToken, error  in
                 guard let accessToken = oauthToken?.accessToken else { return }
                 self.userAccessToken = accessToken
+                print("DEBUG: 로그인 성공")
             }
             return
         }
         UserApi.shared.loginWithKakaoTalk { oauthToken, error in
             guard let accessToken = oauthToken?.accessToken else { return }
             self.userAccessToken = accessToken
+            print("DEBUG: 로그인 성공")
         }
+    }
+}
+
+extension LogInViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    private func appleLogin() {
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = self
+        controller.presentationContextProvider = self
+        controller.performRequests()
+    }
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return view.window!
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            let userIdentifier = appleIDCredential.user
+            let token = String(data: appleIDCredential.identityToken!, encoding: .utf8)
+            print("DEBUG: appleIDCredential.identityToken = \(token)")
+            print("DEBUG: userIdentifier = \(userIdentifier)")
+            
+        default: break
+        }
+        
     }
 }
