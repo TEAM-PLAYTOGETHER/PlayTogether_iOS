@@ -90,15 +90,6 @@ class InputGenderBirthYearViewController: BaseViewController {
         $0.tintColor = .clear
     }
     
-    private let doneToolBar = UIToolbar().then {
-        $0.tintColor = .link
-        $0.isUserInteractionEnabled = true
-    }
-    
-    private let doneBarButton = UIBarButtonItem.init(title: "완료",
-                                                     style: .plain,
-                                                     target: InputGenderBirthYearViewController.self,
-                                                     action: nil)
     private var yearList: [Int] = []
     private var userGender: String = "남"
     private var userBirthYear: Int = 0
@@ -223,17 +214,6 @@ class InputGenderBirthYearViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        doneBarButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                guard let selectedIndex = self?.yearPickerView.selectedRow(inComponent: 0) else { return }
-                guard let year = self?.yearList[selectedIndex] else { return }
-                self?.userBirthYear = year
-                self?.birthYearTextField.text = String(describing: year)
-                self?.birthYearTextField.resignFirstResponder()
-            })
-            .disposed(by: disposeBag)
-        
         confirmButton.rx.tap
             .asDriver()
             .drive(onNext: {[weak self] in
@@ -295,10 +275,33 @@ private extension InputGenderBirthYearViewController {
         guard let defaultIndex = yearList.firstIndex(of: 2000) else { return }
         yearPickerView.selectRow(defaultIndex, inComponent: 0, animated: true)
         
-        doneToolBar.sizeToFit()
-        doneToolBar.items = [doneBarButton]
+        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancleButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
+        let acceptButton = UIBarButtonItem(title: "완료", style: .plain, target: nil, action: nil)
         
-        birthYearTextField.inputView = yearPickerView
-        birthYearTextField.inputAccessoryView = doneToolBar
+        acceptButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let selectedIndex = self?.yearPickerView.selectedRow(inComponent: 0) else { return }
+                guard let year = self?.yearList[selectedIndex] else { return }
+                self?.userBirthYear = year
+                self?.birthYearTextField.text = String(describing: year)
+                self?.birthYearTextField.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+        
+        cancleButton.rx.tap
+            .bind { [weak self] in
+                self?.view.endEditing(true)
+            }
+            .disposed(by: disposeBag)
+        
+        let toolBar = UIToolbar().then {
+            $0.sizeToFit()
+            $0.setItems([cancleButton, flexible, acceptButton], animated: false)
+        }
+        
+        birthYearTextField.rx.inputAccessoryView.onNext(toolBar)
+        birthYearTextField.rx.inputView.onNext(yearPickerView)
     }
 }
