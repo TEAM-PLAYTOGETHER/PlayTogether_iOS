@@ -33,7 +33,7 @@
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
         "branch" : "master",
-        "revision" : "f804aba0e2a060997cc87080424cd068ce4be310"
+        "revision" : "65f6cfa0bf6ea502ceada244c5fa912f29669661"
       }
     },
     {
@@ -87,7 +87,7 @@
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
         "branch" : "master",
-        "revision" : "8a68442660d411031888e6e42c4f628933f62401"
+        "revision" : "4cb4e69ed140ce48682b146e18a3a42c536e07d9"
       }
     },
     {
@@ -158,8 +158,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "b8230909dedc640294d7324d37f4c91ad3dcf177",
-        "version" : "1.20.1"
+        "revision" : "88c7d15e1242fdb6ecbafbc7926426a19be1e98a",
+        "version" : "1.20.2"
       }
     },
     {
