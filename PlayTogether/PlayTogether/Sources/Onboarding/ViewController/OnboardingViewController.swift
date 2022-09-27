@@ -51,9 +51,10 @@ class OnboardingViewController: BaseViewController {
         $0.setupBottomButtonUI(title: "다음", size: 16)
         $0.isButtonEnableUI(check: false)
     }
+    
+    private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CheckTermsServiceViewController.self, action: nil)
 
     private let viewModel = OnboardingViewModel()
-    private lazy var cellIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,8 +67,8 @@ class OnboardingViewController: BaseViewController {
     }
     
     private func configureNaigationvBar() {
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.backgroundColor = .ptBlack01
+        navigationItem.leftBarButtonItem = leftButtonItem
+        navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
     override func setupViews() {
@@ -112,10 +113,19 @@ class OnboardingViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        leftButtonItem.rx.tap
+            .asDriver()
+            .drive(onNext: {[weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+      
         nextButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(CreateMeetViewController(), animated: true)
+                guard let isCreate = OnboardingDataModel.shared.isCreated else { return }
+                let controller  = isCreate ? CreateMeetViewController() : InvitationCodeViewController()
+                self?.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -140,6 +150,6 @@ extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         nextButton.isButtonEnableUI(check: true)
-        cellIndex = indexPath.row
+        OnboardingDataModel.shared.isCreated = indexPath.row == 0 ? true : false
     }
 }

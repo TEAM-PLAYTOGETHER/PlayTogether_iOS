@@ -24,19 +24,23 @@ final class CheckTermsServiceViewModel {
     }
     
     func buttonAllStateCheck() -> AllCheckDriverOutput {
-        let output = Observable.combineLatest(ageCheck.asObservable(),
-                                              termsCheck.asObservable(),
-                                              privacyCheck.asObservable(),
-                                              marketingCheck.asObservable()) {
+        let output = Observable.combineLatest(
+            ageCheck.asObservable(),
+            termsCheck.asObservable(),
+            privacyCheck.asObservable(),
+            marketingCheck.asObservable()
+        ) {
             return $0 && $1 && $2 && $3
         }.asDriver(onErrorJustReturn: false)
         return AllCheckDriverOutput(allCheck: output)
     }
     
     func confirmButtonEnalbeCheck() -> ConfirmButtonDriverOutput {
-        let output = Observable.combineLatest(ageCheck.asObservable(),
-                                              termsCheck.asObservable(),
-                                              privacyCheck.asObservable()) {
+        let output = Observable.combineLatest(
+            ageCheck.asObservable(),
+            termsCheck.asObservable(),
+            privacyCheck.asObservable()
+        ) {
             return $0 && $1 && $2
         }.asDriver(onErrorJustReturn: false)
         return ConfirmButtonDriverOutput(confirmButtonState: output)

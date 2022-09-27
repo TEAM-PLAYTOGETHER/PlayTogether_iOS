@@ -340,20 +340,30 @@ class EnterDetailThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 let popupViewController = PopUpViewController(title: "번개에 참여할까요?", viewType: .twoButton)
                 self?.present(popupViewController, animated: false, completion: nil)
-                popupViewController.delegate = self
+                popupViewController.twoButtonDelegate = self
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThun(lightId: lightId ?? -1) {_ in
-            if self.existThunViewModel.isExistThun == true {
+        existThunViewModel.getExistThun(lightId: lightId ?? -1) { response in
+            switch self.existThunViewModel.isExistThun {
+            case true:
                 self.enterButton.isHidden = true
                 self.enterButton.snp.updateConstraints {
                     $0.height.equalTo(0)
                 }
-            } else {
+                self.alertButton.isHidden = response ? true : false
+            case false:
                 self.enterButton.isHidden = false
             }
         }
+        
+        alertButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -385,8 +395,7 @@ extension EnterDetailThunViewController {
     }
 }
 
-extension EnterDetailThunViewController: PopUpConfirmDelegate {
-    func oneButtonDidTap() {}
+extension EnterDetailThunViewController: TwoButtonDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in

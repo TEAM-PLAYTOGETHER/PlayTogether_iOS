@@ -372,9 +372,13 @@ class SelfIntroduceViewController: BaseViewController {
                 guard let nickname = self?.inputNicknameTextField.text,
                       let briefIntroduceText = self?.inputBriefIntroduceTextView.text
                 else { return }
+                // TODO: 선호하는 지하철역 1,2 추가예정
                 OnboardingDataModel.shared.nickName = nickname
                 OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
-                // TODO: 다음 뷰로 넘어가는 기능 추가할 예정
+                
+                guard let isCreate = OnboardingDataModel.shared.isCreated else { return }
+                let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
+                self?.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)
     }
