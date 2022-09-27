@@ -100,6 +100,15 @@
       }
     },
     {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios",
+      "state" : {
+        "branch" : "master",
+        "revision" : "1d7eadb5fa3cfd8e8a8e3103429da75594a4cadf"
+      }
+    },
+    {
       "identity" : "moya",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Moya/Moya",

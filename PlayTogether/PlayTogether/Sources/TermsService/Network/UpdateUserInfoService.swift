@@ -1,8 +1,8 @@
 //
-//  InputUserInfoService.swift
+//  UpdateUserInfoService.swift
 //  PlayTogether
 //
-//  Created by 이지석 on 2022/09/07.
+//  Created by 이지석 on 2022/09/27.
 //
 
 import Moya
@@ -47,3 +47,5 @@ extension UpdateUserInfoService: TargetType {
         ]
     }
 }
+
+
