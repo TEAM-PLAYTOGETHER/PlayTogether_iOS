@@ -77,9 +77,16 @@
 		B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */; };
 		B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */; };
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
+		B68C0D0428C5E3BA00268333 /* BirthYearPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68C0D0328C5E3BA00268333 /* BirthYearPickerViewController.swift */; };
 		B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */; };
 		B6A612FF28A9F36600688DA2 /* CheckNicknameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */; };
 		B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */; };
+		B6B4131128DD57F2008EAEB2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */; };
+		B6B4131B28DD6523008EAEB2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B6B4131A28DD6523008EAEB2 /* FirebaseAnalytics */; };
+		B6B4131D28DD6523008EAEB2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B6B4131C28DD6523008EAEB2 /* FirebaseMessaging */; };
+		B6B4132128DD6D82008EAEB2 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4132028DD6D82008EAEB2 /* LoginResponse.swift */; };
+		B6B4132328DD6D9F008EAEB2 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4132228DD6D9F008EAEB2 /* LoginService.swift */; };
+		B6B4132628DD6FA3008EAEB2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4132528DD6FA3008EAEB2 /* LoginViewModel.swift */; };
 		B6B4B10328C1AE3C009AA0DB /* FetchMeetingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */; };
 		B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */; };
 		B6B7706128C1E16700645DCB /* LoginButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B7706028C1E16700645DCB /* LoginButtonView.swift */; };
@@ -201,9 +208,15 @@
 		B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationCollectionViewCell.swift; sourceTree = "<group>"; };
 		B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		B68C0D0328C5E3BA00268333 /* BirthYearPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthYearPickerViewController.swift; sourceTree = "<group>"; };
 		B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameResponse.swift; sourceTree = "<group>"; };
 		B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationListTableViewCell.swift; sourceTree = "<group>"; };
+		B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B6B4131528DD6254008EAEB2 /* PlayTogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlayTogether.entitlements; sourceTree = "<group>"; };
+		B6B4132028DD6D82008EAEB2 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		B6B4132228DD6D9F008EAEB2 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		B6B4132528DD6FA3008EAEB2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMeetingService.swift; sourceTree = "<group>"; };
 		B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		B6B7706028C1E16700645DCB /* LoginButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonView.swift; sourceTree = "<group>"; };
@@ -265,9 +278,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6B4131D28DD6523008EAEB2 /* FirebaseMessaging in Frameworks */,
 				401B8541287FD5B5003B69D3 /* RxMoya in Frameworks */,
 				402A16F128C4FB3F00161820 /* Lottie in Frameworks */,
 				401B853A287FD57E003B69D3 /* RxCocoa in Frameworks */,
+				B6B4131B28DD6523008EAEB2 /* FirebaseAnalytics in Frameworks */,
 				40B77844287FD51600096802 /* Then in Frameworks */,
 				401B853C287FD57E003B69D3 /* RxSwift in Frameworks */,
 				401B853F287FD5B5003B69D3 /* Moya in Frameworks */,
@@ -424,6 +439,7 @@
 		4096A298287F5F3F00F1E27C /* PlayTogether */ = {
 			isa = PBXGroup;
 			children = (
+				B6B4131528DD6254008EAEB2 /* PlayTogether.entitlements */,
 				B616A80D2886A20B00E1ABCF /* Utils */,
 				4096A2AD287F5F7C00F1E27C /* Application */,
 				4096A2AF287F5F8B00F1E27C /* Resources */,
@@ -466,6 +482,7 @@
 				4096A2A4287F5F4100F1E27C /* LaunchScreen.storyboard */,
 				402A16ED28C4FA5700161820 /* HomeRefreshLottie.json */,
 				4096A2D0287F712800F1E27C /* ColorAssets.xcassets */,
+				B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */,
 				4096A2A7287F5F4100F1E27C /* Info.plist */,
 			);
 			path = Resources;
@@ -541,6 +558,7 @@
 				4096A2BC287F627E00F1E27C /* BaseViewController.swift */,
 				409451B028905AEC00F21717 /* APIConstants.swift */,
 				B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */,
+				B68C0D0328C5E3BA00268333 /* BirthYearPickerViewController.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -581,7 +599,7 @@
 			children = (
 				B660596F28C4890700776008 /* View */,
 				B660596E28C4890100776008 /* Controller */,
-				B6FB28F528C8826000D5E0FC /* Network */,
+				B666C9E828C6471500A1210F /* Network */,
 				B660597428C4A1C000776008 /* ViewModel */,
 			);
 			path = TermsService;
@@ -613,6 +631,13 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		B666C9E828C6471500A1210F /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		B67F2A8E28A4FC88005A82B1 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,9 +649,28 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		B6B4131F28DD6BFC008EAEB2 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B6B4132228DD6D9F008EAEB2 /* LoginService.swift */,
+				B6B4132028DD6D82008EAEB2 /* LoginResponse.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		B6B4132428DD6F8A008EAEB2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B6B4132528DD6FA3008EAEB2 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		B6B4B10428C1B5A0009AA0DB /* LogIn */ = {
 			isa = PBXGroup;
 			children = (
+				B6B4132428DD6F8A008EAEB2 /* ViewModel */,
+				B6B4131F28DD6BFC008EAEB2 /* Network */,
 				B6B7706228C1E16C00645DCB /* View */,
 				B6B4B10528C1B5B3009AA0DB /* Controller */,
 			);
@@ -743,6 +787,8 @@
 				401B8540287FD5B5003B69D3 /* RxMoya */,
 				402A16F028C4FB3F00161820 /* Lottie */,
 				B63905CE28C32AE20066F6D0 /* KakaoSDK */,
+				B6B4131A28DD6523008EAEB2 /* FirebaseAnalytics */,
+				B6B4131C28DD6523008EAEB2 /* FirebaseMessaging */,
 			);
 			productName = PlayTogether;
 			productReference = 4096A296287F5F3F00F1E27C /* PlayTogether.app */;
@@ -779,6 +825,7 @@
 				401B853D287FD5B5003B69D3 /* XCRemoteSwiftPackageReference "Moya" */,
 				402A16EF28C4FB3F00161820 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				B63905CD28C32AE20066F6D0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				B6B4131928DD6523008EAEB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4096A297287F5F3F00F1E27C /* Products */;
 			projectDirPath = "";
@@ -795,6 +842,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4096A2E0287F765F00F1E27C /* Pretendard-Medium.otf in Resources */,
+				B6B4131128DD57F2008EAEB2 /* GoogleService-Info.plist in Resources */,
 				4096A2A6287F5F4100F1E27C /* LaunchScreen.storyboard in Resources */,
 				4096A2DD287F765F00F1E27C /* Pretendard-Bold.otf in Resources */,
 				4096A2DE287F765F00F1E27C /* Pretendard-Regular.otf in Resources */,
@@ -820,6 +868,12 @@
 				DDB380E128C1A971001826B0 /* ExistThunResponse.swift in Sources */,
 				DDB380C328BBA219001826B0 /* LikeThunService.swift in Sources */,
 				404169932886A56C00812B37 /* ThunViewController.swift in Sources */,
+				B6B4132628DD6FA3008EAEB2 /* LoginViewModel.swift in Sources */,
+				B68C0D0428C5E3BA00268333 /* BirthYearPickerViewController.swift in Sources */,
+				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
+				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
+				DD73C2C228B209DC001DEC1A /* CancelThunResponse.swift in Sources */,
+				B6B4132128DD6D82008EAEB2 /* LoginResponse.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
@@ -861,7 +915,7 @@
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				DDB380CD28BD2EAE001826B0 /* SelectImageViewController.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
-				DD0EBE2E28D9E4ED00A50CDB /* ReportThunService.swift in Sources */,
+				B6B4132328DD6D9F008EAEB2 /* LoginService.swift in Sources */,
 				B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */,
@@ -1058,9 +1112,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XK2FZR7MVH;
+				DEVELOPMENT_TEAM = Z779U729AH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1073,7 +1128,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PlTo.PlayTogether;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pltoo.playtogether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1086,9 +1141,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XK2FZR7MVH;
+				DEVELOPMENT_TEAM = Z779U729AH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1101,7 +1157,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PlTo.PlayTogether;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pltoo.playtogether;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1181,6 +1237,14 @@
 				kind = branch;
 			};
 		};
+		B6B4131928DD6523008EAEB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1223,6 +1287,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B63905CD28C32AE20066F6D0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDK;
+		};
+		B6B4131A28DD6523008EAEB2 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B4131928DD6523008EAEB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		B6B4131C28DD6523008EAEB2 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B4131928DD6523008EAEB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

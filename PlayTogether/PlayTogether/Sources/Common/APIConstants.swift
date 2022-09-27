@@ -41,6 +41,10 @@ struct APIConstants {
     static let getSearchThun = "light/\(crewID)/search"
     static let postReportThun = "light/report"
     
+    // login
+    static let kakaoLogin = "/auth/kakao-login"
+    static let appleLogin = "/auth/apple-login"
+    
     // subway
     static let getStationList = "/46424177746a697338326b714a6755/json/SearchSTNBySubwayLineInfo/1/1000"
     
