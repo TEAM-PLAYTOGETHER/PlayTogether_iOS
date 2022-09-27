@@ -276,7 +276,7 @@ private extension InputGenderBirthYearViewController {
         yearPickerView.selectRow(defaultIndex, inComponent: 0, animated: true)
         
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancleButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
         let acceptButton = UIBarButtonItem(title: "완료", style: .plain, target: nil, action: nil)
         
         acceptButton.rx.tap
@@ -290,7 +290,7 @@ private extension InputGenderBirthYearViewController {
             })
             .disposed(by: disposeBag)
         
-        cancleButton.rx.tap
+        cancelButton.rx.tap
             .bind { [weak self] in
                 self?.view.endEditing(true)
             }
@@ -298,7 +298,7 @@ private extension InputGenderBirthYearViewController {
         
         let toolBar = UIToolbar().then {
             $0.sizeToFit()
-            $0.setItems([cancleButton, flexible, acceptButton], animated: false)
+            $0.setItems([cancelButton, flexible, acceptButton], animated: false)
         }
         
         birthYearTextField.rx.inputAccessoryView.onNext(toolBar)
