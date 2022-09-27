@@ -377,7 +377,7 @@ class SelfIntroduceViewController: BaseViewController {
                 OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
                 
                 guard let isCreate = OnboardingDataModel.shared.isCreated else { return }
-                let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
+                let controller = isCreate ? CreatedThunViewController() : ParticipationCompletedViewController()
                 self?.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)

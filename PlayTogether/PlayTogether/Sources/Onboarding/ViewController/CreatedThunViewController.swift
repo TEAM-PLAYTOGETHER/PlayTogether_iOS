@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class OpendThunViewController: BaseViewController {
+class CreatedThunViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let shareInfoView = ShareExtensionView()
     
@@ -95,7 +95,7 @@ class OpendThunViewController: BaseViewController {
 }
 
 
-extension OpendThunViewController: shareExtensionProtocol {
+extension CreatedThunViewController: shareExtensionProtocol {
     func shareButtonDidTap() {
         // TODO: Share Extension 추가 할 예정
         print("DEBUG: share Button Did Tap!")

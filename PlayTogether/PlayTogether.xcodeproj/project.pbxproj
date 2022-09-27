@@ -96,7 +96,7 @@
 		B6E8851128C05D9C001CAE3D /* ReDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */; };
 		B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */; };
 		B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */; };
-		B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */; };
+		B6ECF19128B5D6C4003C80AB /* CreatedThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19028B5D6C4003C80AB /* CreatedThunViewController.swift */; };
 		B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */; };
 		B6FB28F928C882D000D5E0FC /* InputGenderBirthYearViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */; };
 		DD0EBDF828C4939400A50CDB /* SearchThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBDF728C4939400A50CDB /* SearchThunViewController.swift */; };
@@ -226,7 +226,7 @@
 		B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReDownloadViewController.swift; sourceTree = "<group>"; };
 		B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationCompletedViewController.swift; sourceTree = "<group>"; };
 		B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
-		B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpendThunViewController.swift; sourceTree = "<group>"; };
+		B6ECF19028B5D6C4003C80AB /* CreatedThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedThunViewController.swift; sourceTree = "<group>"; };
 		B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserInfoService.swift; sourceTree = "<group>"; };
 		B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewModel.swift; sourceTree = "<group>"; };
@@ -509,7 +509,7 @@
 				B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */,
 				B61C426F28A20CA800913574 /* SelfIntroduceViewController.swift */,
 				B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */,
-				B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */,
+				B6ECF19028B5D6C4003C80AB /* CreatedThunViewController.swift */,
 				B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */,
 				B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */,
 			);
@@ -961,7 +961,7 @@
 				B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */,
 				DD73C2BE28AD5DA7001DEC1A /* DetailThunMemberTableViewCell.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
-				B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */,
+				B6ECF19128B5D6C4003C80AB /* CreatedThunViewController.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */,
