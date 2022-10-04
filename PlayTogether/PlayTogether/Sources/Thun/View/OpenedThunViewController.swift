@@ -56,6 +56,8 @@ class OpenedThunViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        viewModel.fetchMoreDatas.onNext(())
+        
         viewModel.isEmptyThun
             .bind(to: tableView.rx.isHidden)
             .disposed(by: disposeBag)

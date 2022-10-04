@@ -21,7 +21,6 @@ final class LikedThunViewModel {
     
     init () {
         paginationBind()
-        self.fetchLikedThunList(pageSize: maxSize, curpage: currentPageCount) { self.likedThunList.onNext($0) }
     }
     
     private func paginationBind() {
@@ -38,8 +37,15 @@ final class LikedThunViewModel {
         isLoading = true
         
         fetchLikedThunList(pageSize: maxSize, curpage: page) { response in
-            self.handleThunData(data: response)
-            self.isLoading = false
+            if self.currentPageCount == 1 {
+                self.handleThunData(data: response)
+                self.isLoading = false
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.handleThunData(data: response)
+                    self.isLoading = false
+                }
+            }
         }
     }
 

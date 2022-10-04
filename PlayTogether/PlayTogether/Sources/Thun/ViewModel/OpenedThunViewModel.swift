@@ -21,7 +21,6 @@ final class OpenedThunViewModel {
     
     init () {
         paginationBind()
-        self.fetchOpenedThunList(pageSize: maxSize, curpage: currentPageCount) { self.openedThunList.onNext($0) }
     }
     
     private func paginationBind() {
@@ -38,8 +37,15 @@ final class OpenedThunViewModel {
         isLoading = true
         
         fetchOpenedThunList(pageSize: maxSize, curpage: page) { response in
-            self.handleThunData(data: response)
-            self.isLoading = false
+            if self.currentPageCount == 1 {
+                self.handleThunData(data: response)
+                self.isLoading = false
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.handleThunData(data: response)
+                    self.isLoading = false
+                }
+            }
         }
     }
 

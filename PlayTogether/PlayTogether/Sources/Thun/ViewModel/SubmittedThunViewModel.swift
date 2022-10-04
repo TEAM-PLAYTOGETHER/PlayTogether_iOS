@@ -21,7 +21,6 @@ final class SubmittedThunViewModel {
     
     init () {
         paginationBind()
-        self.fetchSubmittedThunList(pageSize: maxSize, curpage: currentPageCount) { self.submittedThunList.onNext($0) }
     }
     
     private func paginationBind() {
@@ -38,8 +37,15 @@ final class SubmittedThunViewModel {
         isLoading = true
         
         fetchSubmittedThunList(pageSize: maxSize, curpage: page) { response in
-            self.handleThunData(data: response)
-            self.isLoading = false
+            if self.currentPageCount == 1 {
+                self.handleThunData(data: response.lightData)
+                self.isLoading = false
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.handleThunData(data: response.lightData)
+                    self.isLoading = false
+                }
+            }
         }
     }
 
@@ -53,7 +59,7 @@ final class SubmittedThunViewModel {
         currentPageCount += 1
     }
     
-    func fetchSubmittedThunList(pageSize: Int, curpage: Int, completion: @escaping([ThunResponseList]) -> Void) {
+    func fetchSubmittedThunList(pageSize: Int, curpage: Int, completion: @escaping(ThunResponseData) -> Void) {
         let provider = MoyaProvider<ThunService>()
         provider.rx.request(.submittedRequest(pageSize: pageSize, curpage: curpage))
             .subscribe { result in
@@ -64,9 +70,7 @@ final class SubmittedThunViewModel {
                     guard let data = responseData?.data else { return }
                     if data.offset == 0 && data.totalCount == 0 {
                         self.isEmptyThun.onNext(true)
-                    } else {
-                        if data.totalCount != 0 { completion(data.lightData) }
-                    }
+                    } else if data.totalCount != 0 { completion(data) }
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
