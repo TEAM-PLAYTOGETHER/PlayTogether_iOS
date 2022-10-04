@@ -79,10 +79,15 @@ final class ThunListViewController: BaseViewController {
     }
     
     override func setupViews() {
+        setupSuperView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
         navigationItem.titleView = stackView
         view.addSubview(pageViewController.view)
+    }
+    
+    private func setupSuperView() {
+        eatThunListViewController.setupSuperView(superView: self)
     }
     
     override func setupLayouts() {

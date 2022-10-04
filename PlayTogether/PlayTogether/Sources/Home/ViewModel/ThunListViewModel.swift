@@ -1,8 +1,85 @@
 //
-//  ThunListViewModel.swift
+//  Thun.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/09/02.
+//  Created by 김수정 on 2022/08/24.
 //
 
-import Foundation
+import UIKit
+import RxSwift
+import Moya
+
+final class ThunListViewModel {
+    private lazy var disposeBag = DisposeBag()
+    var currentPageCount = 1
+    private let maxSize = 5
+    private var isLoading = false
+    let isSortData = ["createdAt", "scpCnt"]
+    var sortIdx = 0
+
+    let fetchMoreDatas = PublishSubject<Void>()
+    var isEmptyThun = BehaviorSubject<Bool>(value: false)
+    var eatGoDoThunList = BehaviorSubject<[ThunResponseList?]>.init(value: Array.init())
+    
+    init () {
+        paginationBind()
+    }
+    
+    private func paginationBind() {
+        fetchMoreDatas.subscribe { [weak self] _ in
+            guard let self = self else { return }
+            self.fetchThunData(page: self.currentPageCount)
+        }
+        .disposed(by: disposeBag)
+    }  
+    
+    func fetchThunData(page: Int) {
+        if isLoading { return }
+        
+        isLoading = true
+        
+        fetchThunList(pageSize: maxSize, curpage: page, category: "먹을래", sort: isSortData[sortIdx]) { response in
+            if self.currentPageCount == 1 {
+                self.handleThunData(data: response)
+                self.isLoading = false
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.handleThunData(data: response)
+                    self.isLoading = false
+                }
+            }
+        }
+    }
+
+    func handleThunData(data: [ThunResponseList]) {
+        if self.currentPageCount == 1, !data.isEmpty {
+            self.eatGoDoThunList.onNext(data)
+        } else if !data.isEmpty {
+            guard let oldData = try? self.eatGoDoThunList.value() else { return }
+            self.eatGoDoThunList.onNext(oldData + data)
+        }
+        currentPageCount += 1
+    }
+    
+    func fetchThunList(pageSize: Int, curpage: Int, category: String, sort: String, completion: @escaping([ThunResponseList]) -> Void) {
+        let provider = MoyaProvider<ThunListService>()
+        provider.rx.request(.eatGoDoRequest(pageSize: maxSize, curpage: currentPageCount, category: category, sort: sort))
+            .subscribe { result in
+                switch result {
+                case let .success(response):
+                    let responseData = try?
+                    response.map(ThunResponse.self)
+                    guard let data = responseData?.data else { return }
+                    if data.offset == 0 && data.totalCount == 0 {
+                        self.isEmptyThun.onNext(true)
+                    } else if data.totalCount != 0 {
+                        completion(data.lightData)
+                    }
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+}
+

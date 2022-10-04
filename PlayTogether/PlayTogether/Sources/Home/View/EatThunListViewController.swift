@@ -11,10 +11,9 @@ import Then
 import RxSwift
 
 class EatThunListViewController: BaseViewController {
-    
     private let disposeBag = DisposeBag()
-    
-    private let cellCnt = 4 // TODO: - 임시로 해둔거고 서버 연결하면 없앨 것
+    private var superView = UIViewController()
+    private var viewModel = ThunListViewModel()
     
     private let titleLabel = UILabel().then {
         $0.text = "같이 먹을래?"
@@ -59,8 +58,108 @@ class EatThunListViewController: BaseViewController {
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
-        $0.dataSource = self
-        $0.delegate = self
+    }
+    
+    override func setupViews() {
+        view.backgroundColor = .white
+        view.addSubview(titleLabel)
+        view.addSubview(stackView)
+        view.addSubview(emptyLabel)
+        view.addSubview(tableView)
+    }
+    
+    override func setupLayouts() {
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(28)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        stackView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-24)
+            $0.centerY.equalTo(titleLabel.snp.centerY)
+            $0.width.equalTo(117 * (UIScreen.main.bounds.width / 375))
+            $0.height.equalTo(24 * (UIScreen.main.bounds.height / 812))
+        }
+        
+        emptyLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview().offset(-60)
+            $0.centerX.equalToSuperview()
+        }
+        
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(28)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+    
+    override func setupBinding() {
+        viewModel.fetchMoreDatas.onNext(())
+        
+        newButton.rx.tap
+            .bind { [weak self] in
+                self?.toggleButtonDidTap(buttonTag: 0)
+                self?.viewModel.sortIdx = 0
+                self?.viewModel.fetchMoreDatas.onNext(())
+            }
+            .disposed(by: disposeBag)
+
+        likeButton.rx.tap
+            .bind { [weak self] in
+                self?.toggleButtonDidTap(buttonTag: 1)
+                self?.viewModel.sortIdx = 1
+                self?.viewModel.fetchMoreDatas.onNext(())
+                print("sortIdx", self?.viewModel.sortIdx)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.isEmptyThun
+            .bind(to: tableView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.eatGoDoThunList
+            .bind(to: self.tableView.rx.items) { _, row, item -> UITableViewCell in
+                guard let cell = self.tableView.dequeueReusableCell(
+                    withIdentifier: "ThunListTableViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? ThunListTableViewCell,
+                      let item = item
+                else { return UITableViewCell() }
+                cell.setupData(
+                    item.title,
+                    item.date ?? "날짜미정",
+                    item.time ?? "시간미정",
+                    item.peopleCnt ?? 0,
+                    item.place ?? "장소미정",
+                    item.lightMemberCnt,
+                    item.category,
+                    item.scpCnt)
+                return cell
+            }
+            .disposed(by: self.disposeBag)
+        
+        tableView.rx.modelSelected(ThunResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let viewmodel = self?.viewModel else { return }
+                self?.superView.navigationController?.pushViewController(
+                    EatDetailThunViewController(
+                        lightID: $0.lightID,
+                        superViewModel: viewmodel),
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offsetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offsetY > (contentHeight - self.tableView.frame.size.height) {
+                    self.viewModel.fetchMoreDatas.onNext(())
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     private func toggleButtonDidTap(buttonTag:Int) {
@@ -84,66 +183,7 @@ class EatThunListViewController: BaseViewController {
         }
     }
     
-    override func setupViews() {
-        view.backgroundColor = .white
-        view.addSubview(titleLabel)
-        view.addSubview(stackView)
-        view.addSubview(tableView)
-        tableView.addSubview(emptyLabel)
-    }
-    
-    override func setupLayouts() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(28)
-            $0.leading.equalToSuperview().offset(20)
-        }
-
-        stackView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-24)
-            $0.centerY.equalTo(titleLabel.snp.centerY)
-            $0.width.equalTo(117 * (UIScreen.main.bounds.width / 375))
-            $0.height.equalTo(24 * (UIScreen.main.bounds.height / 812))
-        }
-        
-        emptyLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview().offset(-60)
-            $0.centerX.equalToSuperview()
-        }
-        
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(28)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
-    override func setupBinding() {
-        newButton.rx.tap
-            .bind { [weak self] in
-                self?.toggleButtonDidTap(buttonTag: 0)
-            }
-            .disposed(by: disposeBag)
-
-        likeButton.rx.tap
-            .bind { [weak self] in
-                self?.toggleButtonDidTap(buttonTag: 1)
-            }
-            .disposed(by: disposeBag)
-    }
-}
-
-extension EatThunListViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if cellCnt == 0 {
-            tableView.isScrollEnabled = false
-            return 0
-        } else {
-            emptyLabel.isHidden = true
-            return cellCnt
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ThunListTableViewCell.identifier, for: indexPath) as? ThunListTableViewCell else { return UITableViewCell() }
-        return cell
+    func setupSuperView(superView: UIViewController) {
+        self.superView = superView
     }
 }
