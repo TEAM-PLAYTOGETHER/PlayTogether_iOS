@@ -15,11 +15,11 @@ final class LikedDetailThunViewController: BaseViewController {
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let superViewModel: LikedThunViewModel?
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int, superViewModel: LikedThunViewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
@@ -358,8 +358,12 @@ final class LikedDetailThunViewController: BaseViewController {
                 if self?.likeThunViewModel.isRemovedLike == true {
                     guard let originData = try? self?.superViewModel?.likedThunList.value()
                     else { return }
-                    self?.superViewModel?.likedThunList.onNext(originData.filter {
-                        $0?.lightID != self?.lightId })
+                    let filterData = originData.filter{ $0?.lightID != self?.lightId }
+                    if filterData.isEmpty {
+                        self?.superViewModel?.isEmptyThun.onNext(true)
+                    } else {
+                        self?.superViewModel?.likedThunList.onNext(filterData)
+                    }
                 }
                 self?.navigationController?.popViewController(animated: true)
                 self?.tabBarController?.tabBar.isHidden = false

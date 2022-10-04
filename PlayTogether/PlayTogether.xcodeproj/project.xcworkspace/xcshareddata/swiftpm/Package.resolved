@@ -10,18 +10,21 @@
       }
     },
     {
-      "identity" : "lottie-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-ios",
-      "state" : {
-        "branch" : "master",
-        "revision" : "314537ec697719fa33a9d48210f4d06a463286d3"
       "identity" : "kakao-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
         "branch" : "master",
         "revision" : "4cb4e69ed140ce48682b146e18a3a42c536e07d9"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3cf8ade4f14cb67fd06ee760e9b579eeb9ea31fb"
       }
     },
     {

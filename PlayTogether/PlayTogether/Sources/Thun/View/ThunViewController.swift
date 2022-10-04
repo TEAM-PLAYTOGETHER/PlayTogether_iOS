@@ -12,7 +12,6 @@ import RxSwift
 
 final class ThunViewController: BaseViewController {
     private let disposeBag = DisposeBag()
-    private let viewModel = ThunViewModel()
     private let submittedThunViewController = SubmittedThunViewController()
     private let openedThunViewController = OpenedThunViewController()
     private let likedThunViewController = LikedThunViewController()
@@ -57,7 +56,6 @@ final class ThunViewController: BaseViewController {
     }
     
     override func setupViews() {
-        setupViewModel()
         setupSuperView()
         segmentedControl.addTarget(
             self,action: #selector(segmentedButtonDidTap(control:)), for: .valueChanged)
@@ -79,12 +77,6 @@ final class ThunViewController: BaseViewController {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    private func setupViewModel() {
-        submittedThunViewController.setupViewModel(viewModel: viewModel)
-        openedThunViewController.setupViewModel(viewModel: viewModel)
-        likedThunViewController.setupViewModel(viewModel: viewModel)
     }
     
     private func setupSuperView() {
