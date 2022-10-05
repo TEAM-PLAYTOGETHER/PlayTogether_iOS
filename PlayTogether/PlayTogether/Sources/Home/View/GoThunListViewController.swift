@@ -9,10 +9,9 @@ import UIKit
 import RxSwift
 
 class GoThunListViewController: BaseViewController {
-
     private let disposeBag = DisposeBag()
-    
-    private let cellCnt = 0 // TODO: - 임시로 해둔거고 서버 연결하면 없앨 것
+    private var superView = UIViewController()
+    private var viewModel = GoThunListViewModel()
     
     private let titleLabel = UILabel().then {
         $0.text = "같이 갈래?"
@@ -57,37 +56,14 @@ class GoThunListViewController: BaseViewController {
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = 110
-        $0.dataSource = self
-        $0.delegate = self
-    }
-    
-    private func toggleButtonDidTap(buttonTag:Int) {
-        switch buttonTag {
-        case 0:
-            newButton.layer.borderWidth = 1
-            newButton.layer.cornerRadius = 5
-            newButton.layer.borderColor = UIColor.ptGray01.cgColor
-            newButton.setTitleColor(.ptGray01, for: .normal)
-            likeButton.layer.borderWidth = 0
-            likeButton.setTitleColor(.ptGray02, for: .normal)
-        case 1:
-            likeButton.layer.borderWidth = 1
-            likeButton.layer.cornerRadius = 5
-            likeButton.layer.borderColor = UIColor.ptGray01.cgColor
-            likeButton.setTitleColor(.ptGray01, for: .normal)
-            newButton.layer.borderWidth = 0
-            newButton.setTitleColor(.ptGray02, for: .normal)
-        default:
-            break
-        }
     }
     
     override func setupViews() {
         view.backgroundColor = .white
         view.addSubview(titleLabel)
         view.addSubview(stackView)
+        view.addSubview(emptyLabel)
         view.addSubview(tableView)
-        tableView.addSubview(emptyLabel)
     }
     
     override func setupLayouts() {
@@ -115,33 +91,106 @@ class GoThunListViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        viewModel.fetchMoreDatas.onNext(())
+        
         newButton.rx.tap
-            .bind { [weak self] in
-                self?.toggleButtonDidTap(buttonTag: 0)
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.toggleButtonDidTap(0)
+            })
             .disposed(by: disposeBag)
 
         likeButton.rx.tap
-            .bind { [weak self] in
-                self?.toggleButtonDidTap(buttonTag: 1)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.toggleButtonDidTap(1)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.isEmptyThun
+            .bind(to: tableView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.eatGoDoThunList
+            .bind(to: self.tableView.rx.items) { _, row, item -> UITableViewCell in
+                guard let cell = self.tableView.dequeueReusableCell(
+                    withIdentifier: "ThunListTableViewCell",
+                    for: IndexPath(row: row, section: 0)
+                ) as? ThunListTableViewCell,
+                      let item = item
+                else { return UITableViewCell() }
+                cell.setupData(
+                    item.title,
+                    item.date ?? "날짜미정",
+                    item.time ?? "시간미정",
+                    item.peopleCnt ?? 0,
+                    item.place ?? "장소미정",
+                    item.lightMemberCnt,
+                    item.category,
+                    item.scpCnt)
+                return cell
+            }
+            .disposed(by: self.disposeBag)
+        
+        tableView.rx.modelSelected(ThunResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let viewmodel = self?.viewModel else { return }
+                self?.superView.navigationController?.pushViewController(
+                    GoDetailThunListViewController(
+                        lightID: $0.lightID,
+                        superViewModel: viewmodel),
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offsetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offsetY > (contentHeight - self.tableView.frame.size.height) {
+                    self.viewModel.fetchMoreDatas.onNext(())
+                }
             }
             .disposed(by: disposeBag)
     }
-}
-
-extension GoThunListViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if cellCnt == 0 {
-            tableView.isScrollEnabled = false
-            return 0
-        } else {
-            emptyLabel.isHidden = true
-            return cellCnt
+    
+    func setupSuperView(superView: UIViewController) {
+        self.superView = superView
+    }
+    
+    private func toggleButtonDidTap(_ buttonTag: Int) {
+        switch buttonTag {
+        case 0:
+            newButton.layer.borderWidth = 1
+            newButton.layer.cornerRadius = 5
+            newButton.layer.borderColor = UIColor.ptGray01.cgColor
+            newButton.setTitleColor(.ptGray01, for: .normal)
+            likeButton.layer.borderWidth = 0
+            likeButton.setTitleColor(.ptGray02, for: .normal)
+            getThunData("createdAt")
+        case 1:
+            likeButton.layer.borderWidth = 1
+            likeButton.layer.cornerRadius = 5
+            likeButton.layer.borderColor = UIColor.ptGray01.cgColor
+            likeButton.setTitleColor(.ptGray01, for: .normal)
+            newButton.layer.borderWidth = 0
+            newButton.setTitleColor(.ptGray02, for: .normal)
+            getThunData("scpCnt")
+        default:
+            break
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ThunListTableViewCell.identifier, for: indexPath) as? ThunListTableViewCell else { return UITableViewCell() }
-        return cell
+    private func getThunData(_ sort: String) {
+        self.viewModel.currentPageCount = 1
+        self.viewModel.fetchThunList(pageSize: self.viewModel.maxSize, curpage: self.viewModel.currentPageCount, category: "갈래", sort: sort) { response in
+            self.viewModel.eatGoDoThunList.accept(response)
+            self.viewModel.isLoading = false
+        }
     }
 }
+

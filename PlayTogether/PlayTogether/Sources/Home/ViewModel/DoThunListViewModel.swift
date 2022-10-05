@@ -8,18 +8,17 @@
 import UIKit
 import RxSwift
 import Moya
+import RxRelay
 
-final class ThunListViewModel {
+final class DoThunListViewModel {
     private lazy var disposeBag = DisposeBag()
     var currentPageCount = 1
-    private let maxSize = 5
-    private var isLoading = false
-    let isSortData = ["createdAt", "scpCnt"]
-    var sortIdx = 0
+    let maxSize = 5
+    var isLoading = false
 
     let fetchMoreDatas = PublishSubject<Void>()
     var isEmptyThun = BehaviorSubject<Bool>(value: false)
-    var eatGoDoThunList = BehaviorSubject<[ThunResponseList?]>.init(value: Array.init())
+    var eatGoDoThunList = BehaviorRelay<[ThunResponseList?]>.init(value: Array.init())
     
     init () {
         paginationBind()
@@ -31,14 +30,14 @@ final class ThunListViewModel {
             self.fetchThunData(page: self.currentPageCount)
         }
         .disposed(by: disposeBag)
-    }  
+    }
     
     func fetchThunData(page: Int) {
         if isLoading { return }
         
         isLoading = true
         
-        fetchThunList(pageSize: maxSize, curpage: page, category: "먹을래", sort: isSortData[sortIdx]) { response in
+        fetchThunList(pageSize: maxSize, curpage: page, category: "할래", sort: "createdAt") { response in
             if self.currentPageCount == 1 {
                 self.handleThunData(data: response)
                 self.isLoading = false
@@ -53,10 +52,10 @@ final class ThunListViewModel {
 
     func handleThunData(data: [ThunResponseList]) {
         if self.currentPageCount == 1, !data.isEmpty {
-            self.eatGoDoThunList.onNext(data)
+            self.eatGoDoThunList.accept(data)
         } else if !data.isEmpty {
-            guard let oldData = try? self.eatGoDoThunList.value() else { return }
-            self.eatGoDoThunList.onNext(oldData + data)
+            let oldData = self.eatGoDoThunList.value
+            self.eatGoDoThunList.accept(oldData + data)
         }
         currentPageCount += 1
     }
@@ -82,4 +81,5 @@ final class ThunListViewModel {
             .disposed(by: disposeBag)
     }
 }
+
 

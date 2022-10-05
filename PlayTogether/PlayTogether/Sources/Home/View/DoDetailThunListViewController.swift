@@ -10,16 +10,16 @@ import RxSwift
 import SnapKit
 import Then
 
-final class EatDetailThunViewController: BaseViewController {
+final class DoDetailThunListViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
-    private let superViewModel: EatThunListViewModel?
+    private let superViewModel: DoThunListViewModel?
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: EatThunListViewModel) {
+    init(lightID: Int, superViewModel: DoThunListViewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
@@ -382,7 +382,7 @@ final class EatDetailThunViewController: BaseViewController {
     }
 }
 
-extension EatDetailThunViewController {
+extension DoDetailThunListViewController {
     func setupData(
         _ title: String,
         _ date: String,
@@ -410,7 +410,7 @@ extension EatDetailThunViewController {
     }
 }
 
-extension EatDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
+extension DoDetailThunListViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = superViewModel?.eatGoDoThunList.value else { return }
         let filterData = originData.filter{ $0?.lightID != self.lightId }
@@ -438,5 +438,7 @@ extension EatDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
         }
     }
 }
+
+
 
 

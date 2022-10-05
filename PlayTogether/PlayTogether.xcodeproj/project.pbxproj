@@ -115,6 +115,10 @@
 		DD80A14A28E75D0900AD01D0 /* OpenedThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14928E75D0900AD01D0 /* OpenedThunViewModel.swift */; };
 		DD80A14C28E75DF600AD01D0 /* LikedThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */; };
 		DD80A14E28EACE6B00AD01D0 /* EatDetailThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14D28EACE6B00AD01D0 /* EatDetailThunViewController.swift */; };
+		DD80A15028ED63A400AD01D0 /* GoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */; };
+		DD80A15228ED63AD00AD01D0 /* DoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */; };
+		DD80A15428ED655F00AD01D0 /* GoDetailThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A15328ED655F00AD01D0 /* GoDetailThunListViewController.swift */; };
+		DD80A15628ED678500AD01D0 /* DoDetailThunListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A15528ED678500AD01D0 /* DoDetailThunListViewController.swift */; };
 		DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */; };
 		DDB380C328BBA219001826B0 /* LikeThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C228BBA219001826B0 /* LikeThunService.swift */; };
 		DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C628BBA248001826B0 /* LikeThunViewModel.swift */; };
@@ -130,7 +134,7 @@
 		DDB380E328C1A992001826B0 /* ExistThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380E228C1A992001826B0 /* ExistThunService.swift */; };
 		DDB380E528C1AA8D001826B0 /* ExistThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380E428C1AA8D001826B0 /* ExistThunViewModel.swift */; };
 		DDB380E728C24A1A001826B0 /* ThunListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380E628C24A1A001826B0 /* ThunListService.swift */; };
-		DDB380EB28C24AA7001826B0 /* ThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380EA28C24AA7001826B0 /* ThunListViewModel.swift */; };
+		DDB380EB28C24AA7001826B0 /* EatThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380EA28C24AA7001826B0 /* EatThunListViewModel.swift */; };
 		DDB380ED28C27C86001826B0 /* CreateThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380EC28C27C86001826B0 /* CreateThunResponse.swift */; };
 		DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B02892536A0042490C /* ThunResponse.swift */; };
 		DDBE87B5289257CA0042490C /* ThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE87B4289257CA0042490C /* ThunService.swift */; };
@@ -244,6 +248,10 @@
 		DD80A14928E75D0900AD01D0 /* OpenedThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenedThunViewModel.swift; sourceTree = "<group>"; };
 		DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedThunViewModel.swift; sourceTree = "<group>"; };
 		DD80A14D28EACE6B00AD01D0 /* EatDetailThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatDetailThunViewController.swift; sourceTree = "<group>"; };
+		DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewModel.swift; sourceTree = "<group>"; };
+		DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoThunListViewModel.swift; sourceTree = "<group>"; };
+		DD80A15328ED655F00AD01D0 /* GoDetailThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoDetailThunListViewController.swift; sourceTree = "<group>"; };
+		DD80A15528ED678500AD01D0 /* DoDetailThunListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoDetailThunListViewController.swift; sourceTree = "<group>"; };
 		DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedDetailThunViewController.swift; sourceTree = "<group>"; };
 		DDB380C228BBA219001826B0 /* LikeThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeThunService.swift; sourceTree = "<group>"; };
 		DDB380C628BBA248001826B0 /* LikeThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeThunViewModel.swift; sourceTree = "<group>"; };
@@ -259,7 +267,7 @@
 		DDB380E228C1A992001826B0 /* ExistThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistThunService.swift; sourceTree = "<group>"; };
 		DDB380E428C1AA8D001826B0 /* ExistThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistThunViewModel.swift; sourceTree = "<group>"; };
 		DDB380E628C24A1A001826B0 /* ThunListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunListService.swift; sourceTree = "<group>"; };
-		DDB380EA28C24AA7001826B0 /* ThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunListViewModel.swift; sourceTree = "<group>"; };
+		DDB380EA28C24AA7001826B0 /* EatThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatThunListViewModel.swift; sourceTree = "<group>"; };
 		DDB380EC28C27C86001826B0 /* CreateThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B02892536A0042490C /* ThunResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunResponse.swift; sourceTree = "<group>"; };
 		DDBE87B4289257CA0042490C /* ThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThunService.swift; sourceTree = "<group>"; };
@@ -378,6 +386,8 @@
 				DDB380DE28C19E5E001826B0 /* EnterDetailThunViewController.swift */,
 				DDB380CE28BE4511001826B0 /* CompleteThunViewController.swift */,
 				DD80A14D28EACE6B00AD01D0 /* EatDetailThunViewController.swift */,
+				DD80A15328ED655F00AD01D0 /* GoDetailThunListViewController.swift */,
+				DD80A15528ED678500AD01D0 /* DoDetailThunListViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -413,7 +423,9 @@
 				409451B728905FDE00F21717 /* HomeViewModel.swift */,
 				4040AC442893096F00C76978 /* CreateThunViewModel.swift */,
 				DDB380E428C1AA8D001826B0 /* ExistThunViewModel.swift */,
-				DDB380EA28C24AA7001826B0 /* ThunListViewModel.swift */,
+				DDB380EA28C24AA7001826B0 /* EatThunListViewModel.swift */,
+				DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */,
+				DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -881,6 +893,7 @@
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				DD0EBE2E28D9E4ED00A50CDB /* ReportThunService.swift in Sources */,
 				B660597128C4891C00776008 /* CheckTermsServiceViewController.swift in Sources */,
+				DD80A15228ED63AD00AD01D0 /* DoThunListViewModel.swift in Sources */,
 				DDBE87B12892536A0042490C /* ThunResponse.swift in Sources */,
 				B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */,
 				B6720EE328D2EC7A00E34EA1 /* Element+Extension.swift in Sources */,
@@ -924,12 +937,14 @@
 				DD73C2BE28AD5DA7001DEC1A /* DetailThunMemberTableViewCell.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
 				B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */,
+				DD80A15428ED655F00AD01D0 /* GoDetailThunListViewController.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */,
 				B6397F432887104800046843 /* UITextField+Extension.swift in Sources */,
 				402A16E528C4AA5D00161820 /* CrewListResponse.swift in Sources */,
 				40AA766728A2B91F0093A3EB /* CreateThunService.swift in Sources */,
+				DD80A15028ED63A400AD01D0 /* GoThunListViewModel.swift in Sources */,
 				408EE3EB28BBE4CA0012C642 /* ProfileView.swift in Sources */,
 				B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */,
 				DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */,
@@ -941,8 +956,9 @@
 				DD0EBE2A28D8802200A50CDB /* ReportThunViewController.swift in Sources */,
 				DD36D3A028A67D0700C9851A /* DetailThunImageCollectionViewCell.swift in Sources */,
 				DDB380E528C1AA8D001826B0 /* ExistThunViewModel.swift in Sources */,
-				DDB380EB28C24AA7001826B0 /* ThunListViewModel.swift in Sources */,
+				DDB380EB28C24AA7001826B0 /* EatThunListViewModel.swift in Sources */,
 				4096A2BD287F627E00F1E27C /* BaseViewController.swift in Sources */,
+				DD80A15628ED678500AD01D0 /* DoDetailThunListViewController.swift in Sources */,
 				408EE3E028BAA8C00012C642 /* MyPageSubwayLabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

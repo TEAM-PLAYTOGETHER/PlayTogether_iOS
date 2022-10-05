@@ -13,7 +13,7 @@ import RxSwift
 class EatThunListViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private var superView = UIViewController()
-    private var viewModel = ThunListViewModel()
+    private var viewModel = EatThunListViewModel()
     
     private let titleLabel = UILabel().then {
         $0.text = "같이 먹을래?"
@@ -97,20 +97,19 @@ class EatThunListViewController: BaseViewController {
         viewModel.fetchMoreDatas.onNext(())
         
         newButton.rx.tap
-            .bind { [weak self] in
-                self?.toggleButtonDidTap(buttonTag: 0)
-                self?.viewModel.sortIdx = 0
-                self?.viewModel.fetchMoreDatas.onNext(())
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.toggleButtonDidTap(0)
+            })
             .disposed(by: disposeBag)
 
         likeButton.rx.tap
-            .bind { [weak self] in
-                self?.toggleButtonDidTap(buttonTag: 1)
-                self?.viewModel.sortIdx = 1
-                self?.viewModel.fetchMoreDatas.onNext(())
-                print("sortIdx", self?.viewModel.sortIdx)
-            }
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.toggleButtonDidTap(1)
+            })
             .disposed(by: disposeBag)
         
         viewModel.isEmptyThun
@@ -162,7 +161,11 @@ class EatThunListViewController: BaseViewController {
             .disposed(by: disposeBag)
     }
     
-    private func toggleButtonDidTap(buttonTag:Int) {
+    func setupSuperView(superView: UIViewController) {
+        self.superView = superView
+    }
+    
+    private func toggleButtonDidTap(_ buttonTag: Int) {
         switch buttonTag {
         case 0:
             newButton.layer.borderWidth = 1
@@ -171,6 +174,7 @@ class EatThunListViewController: BaseViewController {
             newButton.setTitleColor(.ptGray01, for: .normal)
             likeButton.layer.borderWidth = 0
             likeButton.setTitleColor(.ptGray02, for: .normal)
+            getThunData("createdAt")
         case 1:
             likeButton.layer.borderWidth = 1
             likeButton.layer.cornerRadius = 5
@@ -178,12 +182,17 @@ class EatThunListViewController: BaseViewController {
             likeButton.setTitleColor(.ptGray01, for: .normal)
             newButton.layer.borderWidth = 0
             newButton.setTitleColor(.ptGray02, for: .normal)
+            getThunData("scpCnt")
         default:
             break
         }
     }
     
-    func setupSuperView(superView: UIViewController) {
-        self.superView = superView
+    private func getThunData(_ sort: String) {
+        self.viewModel.currentPageCount = 1
+        self.viewModel.fetchThunList(pageSize: self.viewModel.maxSize, curpage: self.viewModel.currentPageCount, category: "먹을래", sort: sort) { response in
+            self.viewModel.eatGoDoThunList.accept(response)
+            self.viewModel.isLoading = false
+        }
     }
 }
