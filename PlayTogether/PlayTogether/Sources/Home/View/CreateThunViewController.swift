@@ -693,8 +693,8 @@ final class CreateThunViewController: BaseViewController {
         rightBarItem.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.viewModel.createThunRequest() {
-                    self?.navigationController?.popViewController(animated: true)
+                self?.viewModel.createThunRequest { response in
+                    self?.navigationController?.pushViewController(CompleteThunViewController(lightID: response[0].id, completeText: "번개 오픈을\n완료했어요!"), animated: true)
                 }
             })
             .disposed(by: disposeBag)

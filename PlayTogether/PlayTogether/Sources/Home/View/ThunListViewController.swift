@@ -81,7 +81,6 @@ class ThunListViewController: BaseViewController {
     }
     
     @objc func searchButtonDidTap() {
-        print("searchBtn")
     }
     
     private func configureNaigationvBar() {

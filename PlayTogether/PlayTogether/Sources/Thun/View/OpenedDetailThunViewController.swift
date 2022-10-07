@@ -417,7 +417,7 @@ final class OpenedDetailThunViewController: BaseViewController {
                 self?.buttonStackView.isHidden = true
                 let popupViewController = PopUpViewController(title: "게시글을 삭제할까요?", viewType: .twoButton)
                 self?.present(popupViewController, animated: false, completion: nil)
-                popupViewController.delegate = self
+                popupViewController.twoButtonDelegate = self
             }
             .disposed(by: disposeBag)
         
@@ -460,7 +460,7 @@ extension OpenedDetailThunViewController {
     }
 }
 
-extension OpenedDetailThunViewController: PopUpConfirmDelegate {
+extension OpenedDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = try? superViewModel?.openedThunList.value() else { return }
         superViewModel?.openedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
@@ -478,7 +478,7 @@ extension OpenedDetailThunViewController: PopUpConfirmDelegate {
                 viewType: .oneButton
             )
             self.present(popupViewController, animated: false, completion: nil)
-            popupViewController.delegate = self
+            popupViewController.oneButtonDelegate = self
         }
     }
 }

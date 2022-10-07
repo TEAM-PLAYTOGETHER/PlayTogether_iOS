@@ -44,13 +44,13 @@ struct DetailThunList: Decodable {
 
 struct Member: Decodable {
     let userID: Int
-    let mbti: String?
-    let gender, name: String
+    let gender: String?
+    let name: String
     let age: Int
 
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
-        case mbti, gender, name, age
+        case gender, name, age
     }
 }
 

@@ -14,7 +14,6 @@ class EnterDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
-    private let superViewModel = ThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
     var lightId: Int?
@@ -273,10 +272,10 @@ class EnterDetailThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
                 response[0].datumDescription ?? "",
-                response[0].place ?? "장소 미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
@@ -315,7 +314,6 @@ class EnterDetailThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
-                self?.tabBarController?.tabBar.isHidden = false
             })
             .disposed(by: disposeBag)
         
@@ -342,20 +340,30 @@ class EnterDetailThunViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 let popupViewController = PopUpViewController(title: "번개에 참여할까요?", viewType: .twoButton)
                 self?.present(popupViewController, animated: false, completion: nil)
-                popupViewController.delegate = self
+                popupViewController.twoButtonDelegate = self
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThun(lightId: lightId ?? -1) {_ in
-            if self.existThunViewModel.isExistThun == true {
+        existThunViewModel.getExistThun(lightId: lightId ?? -1) { response in
+            switch self.existThunViewModel.isExistThun {
+            case true:
                 self.enterButton.isHidden = true
                 self.enterButton.snp.updateConstraints {
                     $0.height.equalTo(0)
                 }
-            } else {
+                self.alertButton.isHidden = response ? true : false
+            case false:
                 self.enterButton.isHidden = false
             }
         }
+        
+        alertButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -387,12 +395,14 @@ extension EnterDetailThunViewController {
     }
 }
 
-extension EnterDetailThunViewController: PopUpConfirmDelegate {
-    func oneButtonDidTap() {}
+extension EnterDetailThunViewController: TwoButtonDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
         cancelViewModel.postCancelThun(lightId: lightId ?? -1) {_ in
-            self.navigationController?.pushViewController(CompleteThunViewController(), animated: true)
+            self.navigationController?.pushViewController(CompleteThunViewController(
+                lightID: self.lightId ?? -1,
+                completeText: "번개 신청을\n완료했어요!"
+            ),animated: true)
         }
     }
 }

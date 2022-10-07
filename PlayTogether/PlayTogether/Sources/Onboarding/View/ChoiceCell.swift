@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class ChoiceCell: UICollectionViewCell {
     private let titleLabel = UILabel().then {
@@ -19,12 +20,13 @@ class ChoiceCell: UICollectionViewCell {
     }
     
     private lazy var iconImageView = UIImageView().then {
-        $0.image = UIImage(named: "icn_select")
+        $0.image = .ptImage(.seletedIcon)
         $0.backgroundColor = .white
         $0.contentMode = .scaleAspectFit
         $0.isHidden = true
     }
     
+    // TODO: Rx Binding 바꿀 예정
     override var isSelected: Bool {
         didSet {
             if isSelected {
@@ -45,29 +47,23 @@ class ChoiceCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setupViews()
-        setupLayouts()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(_ data: [String]) {
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 10
-        contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.ptGray01.cgColor
-        
-        titleLabel.text = data.first
-        subTitleLabel.text = data.last
-    }
-    
     private func setupViews() {
-        contentView.layer.cornerRadius = 10
+        backgroundColor = .white
+        layer.cornerRadius = 10
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.ptGray01.cgColor
         
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(subTitleLabel)
-        contentView.addSubview(iconImageView)
+        addSubview(titleLabel)
+        addSubview(subTitleLabel)
+        addSubview(iconImageView)
+        
+        setupLayouts()
     }
     
     private func setupLayouts() {
@@ -86,5 +82,11 @@ class ChoiceCell: UICollectionViewCell {
             $0.top.bottom.equalToSuperview().inset(19)
         }
     }
-    
+}
+
+extension ChoiceCell {
+    func configureCell(_ title: String, _ subTitle: String) {
+        titleLabel.text = title
+        subTitleLabel.text = subTitle
+    }
 }
