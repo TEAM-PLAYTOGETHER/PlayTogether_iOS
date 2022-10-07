@@ -23,7 +23,7 @@ final class MyPageSubwayLabelView: UIView {
     }
     
     func addStation(stationName: String) {
-        let subwayLabel = MyPageSubwayLabel().then {
+        let subwayLabel = PaddingLabel().then {
             $0.text = stationName
             $0.textColor = .white
             $0.font = .pretendardMedium(size: 12)
@@ -31,7 +31,7 @@ final class MyPageSubwayLabelView: UIView {
             $0.backgroundColor = .ptBlack02
             $0.layer.cornerRadius = 14
             $0.clipsToBounds = true
-            $0.drawText(in: CGRect().inset(by: UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)))
+            $0.drawText(in: CGRect())
         }
         
         stackView.addArrangedSubview(subwayLabel)
