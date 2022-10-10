@@ -8,6 +8,7 @@
 struct APIConstants {
     //TODO: 추후 key로 숨길 예정
     static let baseUrl = "http://13.125.232.150:3000/api"
+    static let socketUrl = "ws://13.125.232.150:3000"
     static let subwayBaseUrl = "http://openapi.seoul.go.kr:8088"
     
     //TODO: 추후 삭제 예정
@@ -42,8 +43,15 @@ struct APIConstants {
     static let getSearchThun = "light/\(crewID)/search"
     static let postReportThun = "light/report"
     
+    // login
+    static let kakaoLogin = "/auth/kakao-login"
+    static let appleLogin = "/auth/apple-login"
+    
     // subway
     static let getStationList = "/46424177746a697338326b714a6755/json/SearchSTNBySubwayLineInfo/1/1000"
+    
+    // message
+    static let chattingList = "/message"
     
     // user
     static let updateUserInfo = "/user/signup"

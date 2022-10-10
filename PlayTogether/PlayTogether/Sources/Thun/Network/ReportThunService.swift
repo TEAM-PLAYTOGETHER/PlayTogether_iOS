@@ -1,8 +1,8 @@
 //
-//  CancelSubmittedService.swift
+//  ReportThunService.swift
 //  PlayTogether
 //
-//  Created by 김수정 on 2022/08/21.
+//  Created by 이지석 on 2022/09/27.
 //
 
 import Foundation
@@ -46,4 +46,5 @@ extension ReportThunService: TargetType {
         ]
     }
 }
+
 
