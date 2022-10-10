@@ -89,7 +89,7 @@ class EatThunListViewController: BaseViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(28)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(40)
         }
     }
     
@@ -140,12 +140,9 @@ class EatThunListViewController: BaseViewController {
         tableView.rx.modelSelected(ThunResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
-                guard let viewmodel = self?.viewModel else { return }
                 self?.superView.navigationController?.pushViewController(
-                    EatDetailThunViewController(
-                        lightID: $0.lightID,
-                        superViewModel: viewmodel),
-                    animated: true)
+                    EnterDetailThunViewController(
+                        lightID: $0.lightID), animated: true)
             })
             .disposed(by: disposeBag)
 

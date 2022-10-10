@@ -78,6 +78,11 @@ final class ThunListViewController: BaseViewController {
         [eatThunListViewController, goThunListViewController, doThunListViewController]
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     override func setupViews() {
         setupSuperView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
@@ -88,6 +93,8 @@ final class ThunListViewController: BaseViewController {
     
     private func setupSuperView() {
         eatThunListViewController.setupSuperView(superView: self)
+        goThunListViewController.setupSuperView(superView: self)
+        doThunListViewController.setupSuperView(superView: self)
     }
     
     override func setupLayouts() {
@@ -104,6 +111,14 @@ final class ThunListViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        searchButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(SearchThunViewController(), animated: true)
             })
             .disposed(by: disposeBag)
         

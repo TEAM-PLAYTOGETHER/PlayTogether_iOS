@@ -366,7 +366,6 @@ final class HomeViewController: BaseViewController {
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 0, index: 0)
                 self?.navigationController?.pushViewController(vc, animated: true)
-                self?.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
         
@@ -374,7 +373,6 @@ final class HomeViewController: BaseViewController {
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 1, index: 1)
                 self?.navigationController?.pushViewController(vc, animated: true)
-                self?.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
         
@@ -382,7 +380,6 @@ final class HomeViewController: BaseViewController {
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 2, index: 2)
                 self?.navigationController?.pushViewController(vc, animated: true)
-                self?.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
         
