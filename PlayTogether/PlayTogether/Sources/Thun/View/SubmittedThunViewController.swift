@@ -13,7 +13,15 @@ import RxSwift
 class SubmittedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private var superView = UIViewController()
-    private var viewModel: ThunViewModel?
+    private var viewModel = SubmittedThunViewModel()
+    
+    private let emptyLabel = UILabel().then {
+        $0.text = "아직 신청한 번개가 없어요!\n관심 있는 번개를 신청해 보세요"
+        $0.numberOfLines = 0
+        $0.font = .pretendardMedium(size: 14)
+        $0.textColor = .ptGray02
+        $0.textAlignment = .center
+    }
     
     private lazy var tableView = UITableView().then {
         $0.register(
@@ -30,23 +38,30 @@ class SubmittedThunViewController: BaseViewController {
         self.superView = superView
     }
     
-    func setupViewModel(viewModel: ThunViewModel) {
-        self.viewModel = viewModel
-    }
-    
     override func setupViews() {
+        view.addSubview(emptyLabel)
         view.addSubview(tableView)
         tableView.tableHeaderView = headerView
     }
     
     override func setupLayouts() {
+        emptyLabel.snp.makeConstraints {
+            $0.centerY.centerX.equalToSuperview()
+        }
+        
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
     
     override func setupBinding() {
-        viewModel?.submittedThunList
+        viewModel.fetchMoreDatas.onNext(())
+        
+        viewModel.isEmptyThun
+            .bind(to: tableView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.submittedThunList
             .bind(to: self.tableView.rx.items) { _, row, item -> UITableViewCell in
                 guard let cell = self.tableView.dequeueReusableCell(
                     withIdentifier: "ThunListTableViewCell",
@@ -54,7 +69,7 @@ class SubmittedThunViewController: BaseViewController {
                 ) as? ThunListTableViewCell,
                       let item = item
                 else { return UITableViewCell() }
-                
+
                 cell.setupData(
                     item.title,
                     item.date ?? "날짜미정",
@@ -78,6 +93,17 @@ class SubmittedThunViewController: BaseViewController {
                         superViewModel: viewmodel),
                     animated: true)
             })
+            .disposed(by: disposeBag)
+        
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offsetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offsetY > (contentHeight - self.tableView.frame.size.height) {
+                    self.viewModel.fetchMoreDatas.onNext(())
+                }
+            }
             .disposed(by: disposeBag)
     }
 }

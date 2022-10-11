@@ -9,9 +9,9 @@ import Foundation
 import Moya
 
 enum ThunService {
-    case submittedRequest
-    case openedRequest
-    case likedRequest
+    case submittedRequest(pageSize: Int, curpage: Int)
+    case openedRequest(pageSize: Int, curpage: Int)
+    case likedRequest(pageSize: Int, curpage: Int)
 }
 
 extension ThunService: TargetType {
@@ -34,7 +34,26 @@ extension ThunService: TargetType {
     }
     
     var task: Task {
-        return .requestPlain
+        switch self {
+        case .submittedRequest(let pageSize, let curpage):
+            let params = [
+                "pageSize": pageSize,
+                "curpage": curpage
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+        case .openedRequest(let pageSize, let curpage):
+            let params = [
+                "pageSize": pageSize,
+                "curpage": curpage
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+        case .likedRequest(let pageSize, let curpage):
+            let params = [
+                "pageSize": pageSize,
+                "curpage": curpage
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+        }
     }
     
     var headers: [String : String]? {

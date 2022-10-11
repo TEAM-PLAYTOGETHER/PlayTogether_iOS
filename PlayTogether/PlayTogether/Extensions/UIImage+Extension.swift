@@ -67,11 +67,13 @@ enum ImageCase: String {
     
     case calendarInActiveIcon = "calendarInActiveIcon"
     case calendarActiveIcon = "calendarActiveIcon"
-    
     case settingIcon = "settingIcon"
     case showIconBlack = "showIconBlack"
     case introduceLabelIcon = "introduceLabelIcon"
     case clearIcon = "clearIcon"
+    
+    case sendInActiveIcon = "sendInActiveIcon"
+    case sendActiveIcon = "sendActiveIcon"
     case optionIcon = "optionIcon"
     
     case graySearchIcon = "graySearchIcon"

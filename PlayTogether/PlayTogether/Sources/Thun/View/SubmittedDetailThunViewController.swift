@@ -15,11 +15,11 @@ final class SubmittedDetailThunViewController: BaseViewController {
     private let viewModel = DetailThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let superViewModel: SubmittedThunViewModel?
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int, superViewModel: SubmittedThunViewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
@@ -369,7 +369,16 @@ final class SubmittedDetailThunViewController: BaseViewController {
         
         existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
             self.cancelButton.isHidden = response ? true : false
+            self.alertButton.isHidden = response ? true : false
         }
+        
+        alertButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -404,6 +413,13 @@ extension SubmittedDetailThunViewController {
 extension SubmittedDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = try? superViewModel?.submittedThunList.value() else { return }
+        let filterData = originData.filter{ $0?.lightID != self.lightId }
+        if filterData.isEmpty {
+            self.superViewModel?.isEmptyThun.onNext(true)
+        } else {
+            self.superViewModel?.submittedThunList.onNext(filterData)
+        }
+        
         superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
         navigationController?.popToRootViewController(animated: true)
         tabBarController?.tabBar.isHidden = false

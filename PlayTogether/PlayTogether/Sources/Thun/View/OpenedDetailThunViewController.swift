@@ -15,11 +15,11 @@ final class OpenedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let deleteThunViewModel = DeleteThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let superViewModel: OpenedThunViewModel?
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int, superViewModel: OpenedThunViewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
@@ -463,6 +463,13 @@ extension OpenedDetailThunViewController {
 extension OpenedDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = try? superViewModel?.openedThunList.value() else { return }
+        let filterData = originData.filter{ $0?.lightID != self.lightId }
+        if filterData.isEmpty {
+            self.superViewModel?.isEmptyThun.onNext(true)
+        } else {
+            self.superViewModel?.openedThunList.onNext(filterData)
+        }
+        
         superViewModel?.openedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
         navigationController?.popToRootViewController(animated: true)
         navigationController?.navigationBar.isHidden = false

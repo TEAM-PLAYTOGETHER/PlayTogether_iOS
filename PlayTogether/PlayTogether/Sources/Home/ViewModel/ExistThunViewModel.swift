@@ -13,10 +13,10 @@ final class ExistThunViewModel {
                 switch result {
                 case let .success(response):
                     let responseData = try? response.map(ExistThunResponse.self)
-                    guard let data = responseData?.message else { return }
-                    let isExist = data == "해당 번개에 참여중이 아닙니다." ? false : true
+                    guard let data = responseData else { return }
+                    let isExist = data.message == "해당 번개에 참여중이 아닙니다." ? false : true
                     self?.isExistThun = isExist
-                    completion(isExist)
+                    completion(data.data.isOrganizer ? true : false)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
