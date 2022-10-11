@@ -12,7 +12,7 @@ struct APIConstants {
     static let subwayBaseUrl = "http://openapi.seoul.go.kr:8088"
     
     //TODO: 추후 삭제 예정
-    static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE2OCIsImVtYWlsIjoic2V1bmdoZW9uMzI4QGdtYWlsLmNvbSIsImlhdCI6MTY2MzI0NzQ3NCwiZXhwIjoxNjY0NDU3MDc0LCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.-xmo_D6ojG6BQlu8phsPsSuG71M_A5Ph42PjGEpgUHk"
+    static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE2OCIsImVtYWlsIjoic2V1bmdoZW9uMzI4QGdtYWlsLmNvbSIsImlhdCI6MTY2NDQ0MDAzNSwiZXhwIjoxNjk1OTk3NjM1LCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.ljT7GMJhM1iKx7G34vVdD_s6AWax0nQHao1Rvne3t6Q"
     static var crewID = 2
     static var crewName = "아요크루"
     static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"
@@ -39,6 +39,7 @@ struct APIConstants {
     static let getExistLikeThun = "/scrap/exist"
     static let postDeleteThun = "light/remove"
     static let getExistThun = "light/exist"
+    static let getEatGoDoThunList = "light/\(crewID)"
     static let getSearchThun = "light/\(crewID)/search"
     static let postReportThun = "light/report"
     
