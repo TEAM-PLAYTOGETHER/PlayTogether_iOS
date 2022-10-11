@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
-        "branch" : "master",
-        "revision" : "65f6cfa0bf6ea502ceada244c5fa912f29669661"
+        "revision" : "7e80c25b51c2ffa238879b07fbfc5baa54bb3050",
+        "version" : "9.6.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "22907832079d808e82f1182b21af58ef3880666f",
-        "version" : "7.8.0"
+        "revision" : "68ea347bdb1a69e2d2ae2e25cd085b6ef92f64cb",
+        "version" : "7.9.0"
       }
     },
     {
@@ -87,7 +87,7 @@
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
         "branch" : "master",
-        "revision" : "4cb4e69ed140ce48682b146e18a3a42c536e07d9"
+        "revision" : "c503b3b0f60bf1b788cc3e71eab28648a838861c"
       }
     },
     {
@@ -105,7 +105,7 @@
       "location" : "https://github.com/airbnb/lottie-ios",
       "state" : {
         "branch" : "master",
-        "revision" : "1d7eadb5fa3cfd8e8a8e3103429da75594a4cadf"
+        "revision" : "54aa8747da6998a94c1e901dd70013b70e804333"
       }
     },
     {
@@ -150,7 +150,7 @@
       "location" : "https://github.com/ReactiveX/RxSwift",
       "state" : {
         "branch" : "main",
-        "revision" : "e0ab8c4e18baf6679a65b325155923276b832687"
+        "revision" : "ab09f6966d5a14ffe6a7b960cc414ac85468b60b"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/socketio/socket.io-client-swift",
       "state" : {
-        "branch" : "master",
-        "revision" : "a1ed825835a2d8c2555938e96557ccc05e4bebf3"
+        "revision" : "af5ce97b755d964235348d96f6db5cbdcbe334a5",
+        "version" : "16.0.1"
       }
     },
     {
@@ -178,6 +178,9 @@
       "state" : {
         "revision" : "df8d82047f6654d8e4b655d1b1525c64e1059d21",
         "version" : "4.0.4"
+      }
+    },
+    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",

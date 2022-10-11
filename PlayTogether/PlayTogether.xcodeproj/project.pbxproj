@@ -1054,7 +1054,6 @@
 				40EE01C328BFD44600DE46C8 /* ChattingRoomViewController.swift in Sources */,
 				B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */,
 				DD0EBE0028C4D3E200A50CDB /* SearchThunViewModel.swift in Sources */,
-				404169972886A67400812B37 /* ChatViewController.swift in Sources */,
 				4096A2B5287F602500F1E27C /* OnboardingViewModel.swift in Sources */,
 				404CA62C28C236D400A444A1 /* RoomDataModel.swift in Sources */,
 				DDF2C4092887AA5600C10F67 /* ThunListTableViewCell.swift in Sources */,
@@ -1357,6 +1356,11 @@
 		40EE01B528BF71A400DE46C8 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.0.1;
+			};
+		};
 		B63905CD28C32AE20066F6D0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -1369,8 +1373,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1415,6 +1419,7 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 40EE01B528BF71A400DE46C8 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
+		};
 		B63905CE28C32AE20066F6D0 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B63905CD28C32AE20066F6D0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
