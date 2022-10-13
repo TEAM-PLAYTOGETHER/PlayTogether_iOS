@@ -16,7 +16,7 @@ class OpenedThunViewController: BaseViewController {
     private var superView = UIViewController()
     
     private let emptyLabel = UILabel().then {
-        $0.text = "아직 오픈한 번개가 없어요!\n관심 있는 번개를 오픈해 보세요"
+        $0.text = "아직 오픈한 번개가 없어요!\n새로운 번개를 오픈해 보세요"
         $0.numberOfLines = 0
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptGray02
