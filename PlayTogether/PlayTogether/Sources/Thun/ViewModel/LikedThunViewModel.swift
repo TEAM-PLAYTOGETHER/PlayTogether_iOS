@@ -11,9 +11,9 @@ import Moya
 
 final class LikedThunViewModel {
     private lazy var disposeBag = DisposeBag()
-    private var currentPageCount = 1
-    private var maxSize = 5
-    private var isLoading = false
+    var currentPageCount = 1
+    var maxSize = 5
+    var isLoading = false
 
     let fetchMoreDatas = PublishSubject<Void>()
     var isEmptyThun = BehaviorSubject<Bool>(value: false)

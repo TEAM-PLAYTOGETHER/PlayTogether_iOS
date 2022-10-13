@@ -48,7 +48,7 @@ final class ThunViewController: BaseViewController {
             )
         }
     }
-    
+
     override func setupViews() {
         setupSuperView()
         segmentedControl.addTarget(

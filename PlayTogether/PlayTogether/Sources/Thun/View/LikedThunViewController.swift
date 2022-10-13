@@ -39,6 +39,15 @@ class LikedThunViewController: BaseViewController {
         self.superView = superView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.currentPageCount = 1
+        viewModel.fetchLikedThunList(pageSize: self.viewModel.maxSize, curpage: viewModel.currentPageCount) { response in
+            self.viewModel.likedThunList.onNext(response)
+            self.viewModel.isLoading = false
+        }
+    }
+    
     override func setupViews() {
         view.addSubview(emptyLabel)
         view.addSubview(tableView)

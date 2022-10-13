@@ -38,6 +38,15 @@ class SubmittedThunViewController: BaseViewController {
         self.superView = superView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.currentPageCount = 1
+        viewModel.fetchSubmittedThunList(pageSize: self.viewModel.maxSize, curpage: viewModel.currentPageCount) { response in
+            self.viewModel.submittedThunList.onNext(response.lightData)
+            self.viewModel.isLoading = false
+        }
+    }
+    
     override func setupViews() {
         view.addSubview(emptyLabel)
         view.addSubview(tableView)
@@ -55,8 +64,6 @@ class SubmittedThunViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        viewModel.fetchMoreDatas.onNext(())
-        
         viewModel.isEmptyThun
             .bind(to: tableView.rx.isHidden)
             .disposed(by: disposeBag)
