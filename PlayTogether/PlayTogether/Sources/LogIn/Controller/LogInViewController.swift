@@ -9,13 +9,13 @@ import UIKit
 import RxSwift
 import KakaoSDKAuth
 import KakaoSDKUser
+import AuthenticationServices
 
 class LogInViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     
     private let kakaoLoginView = LoginButtonView()
     private let appleLoginView = LoginButtonView()
-    private var userAccessToken: String = ""
     
     private let headerLabel = UILabel().then {
         $0.text = "함께 놀아요\nPLAY TOGETHER!"
@@ -43,6 +43,10 @@ class LogInViewController: BaseViewController {
         $0.backgroundColor = .white
         $0.setUnderline()
     }
+    
+    private var userAccessToken: String = ""
+    private let userFCMToken = UserDefaults.standard.string(forKey: "FCMToken")
+    private let viewModel = LoginViewModel()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -115,22 +119,79 @@ extension LogInViewController: LoginButtonDelegate {
     }
     
     func appleButtonDidTap() {
-        print("DEBUG: Apple login button did tap!")
+        appleLogin()
     }
 }
 
+extension LogInViewController {
+    func requestLogin(accessToken: String, fcmToken: String) {
+        let loginInput = LoginViewModel.loginTokenInput(accessToken: accessToken,
+                                                        fcmToken: fcmToken)
+        viewModel.tryLogin(loginInput) {
+            guard $0.status == 200 else { return }
+            let loggedInUserInfo = $0.data
+            guard loggedInUserInfo.isSignup == true else {
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                        as? SceneDelegate else { return }
+                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+                return
+            }
+            // TODO: 키체인 변경 예정
+            UserDefaults.standard.set(loggedInUserInfo.accessToken, forKey: "accessToken")
+            UserDefaults.standard.set(loggedInUserInfo.refreshToken, forKey: "refreshToken")
+            UserDefaults.standard.set(loggedInUserInfo.userName, forKey: "userName")
+            
+            guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                    as? SceneDelegate else { return }
+            let rootViewController = TabBarController()
+            sceneDelegate.window?.rootViewController = rootViewController
+        }
+    }
+}
+
+// MARK: Kakao Login
 private extension LogInViewController {
     func kakaoLogin() {
         guard UserApi.isKakaoTalkLoginAvailable() == true else {
             UserApi.shared.loginWithKakaoAccount(prompts:[.Login]) { oauthToken, error  in
                 guard let accessToken = oauthToken?.accessToken else { return }
+                guard let fcmToken = self.userFCMToken else { return }
                 self.userAccessToken = accessToken
+                self.requestLogin(accessToken: accessToken, fcmToken: fcmToken)
             }
             return
         }
+        
         UserApi.shared.loginWithKakaoTalk { oauthToken, error in
             guard let accessToken = oauthToken?.accessToken else { return }
+            guard let fcmToken = self.userFCMToken else { return }
             self.userAccessToken = accessToken
+            self.requestLogin(accessToken: accessToken, fcmToken: fcmToken)
+        }
+    }
+}
+
+// MARK: Apple Login
+extension LogInViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    private func appleLogin() {
+        let controller = ASAuthorizationController(authorizationRequests: [ASAuthorizationAppleIDProvider().createRequest()])
+        controller.delegate = self
+        controller.presentationContextProvider = self
+        controller.performRequests()
+    }
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return view.window!
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            let token = String(data: appleIDCredential.identityToken!, encoding: .utf8)
+            // TODO: 로그인 API 추후 연동 예정
+            print("DEBUG: apple login token  → \(token)")
+            
+        default: break
         }
     }
 }

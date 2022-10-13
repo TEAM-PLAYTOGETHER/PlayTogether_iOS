@@ -15,11 +15,11 @@ final class SubmittedDetailThunViewController: BaseViewController {
     private let viewModel = DetailThunViewModel()
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let superViewModel: SubmittedThunViewModel?
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int, superViewModel: SubmittedThunViewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
@@ -413,6 +413,13 @@ extension SubmittedDetailThunViewController {
 extension SubmittedDetailThunViewController: OneButtonDelegate, TwoButtonDelegate {
     func oneButtonDidTap() {
         guard let originData = try? superViewModel?.submittedThunList.value() else { return }
+        let filterData = originData.filter{ $0?.lightID != self.lightId }
+        if filterData.isEmpty {
+            self.superViewModel?.isEmptyThun.onNext(true)
+        } else {
+            self.superViewModel?.submittedThunList.onNext(filterData)
+        }
+        
         superViewModel?.submittedThunList.onNext(originData.filter { $0?.lightID != self.lightId })
         navigationController?.popToRootViewController(animated: true)
         tabBarController?.tabBar.isHidden = false
