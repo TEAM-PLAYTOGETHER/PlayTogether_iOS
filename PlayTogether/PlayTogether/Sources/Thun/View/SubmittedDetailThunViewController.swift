@@ -389,6 +389,13 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
             })
             .disposed(by: disposeBag)
+        
+        memberTableView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
