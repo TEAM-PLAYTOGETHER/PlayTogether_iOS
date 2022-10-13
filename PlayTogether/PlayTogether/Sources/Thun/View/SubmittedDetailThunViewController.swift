@@ -48,13 +48,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
     
     private var circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
-        $0.layer.cornerRadius = ((UIScreen.main.bounds.height/812)*40)/2
-        $0.clipsToBounds = true
     }
     
     private let nicknameLabel = UILabel().then {
         $0.font = .pretendardBold(size: 14)
         $0.textColor = .ptBlack01
+    }
+    
+    private lazy var profileStackView = UIStackView(arrangedSubviews:[circleImageView,nicknameLabel]).then {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile(sender:)))
+        $0.spacing = 5
+        $0.isUserInteractionEnabled = true
+        $0.addGestureRecognizer(tap)
     }
     
     private let messageButton = UIButton().then {
@@ -169,6 +174,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
+        contentView.addSubview(profileStackView)
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
@@ -202,14 +208,12 @@ final class SubmittedDetailThunViewController: BaseViewController {
         }
         
         circleImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
             $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(circleImageView.snp.trailing).offset(5)
-            $0.centerY.equalTo(circleImageView.snp.centerY)
+        profileStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         messageButton.snp.makeConstraints {
@@ -219,8 +223,8 @@ final class SubmittedDetailThunViewController: BaseViewController {
         }
         
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(circleImageView.snp.bottom).offset(20)
-            $0.leading.equalTo(circleImageView.snp.leading)
+            $0.top.equalTo(profileStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(profileStackView.snp.leading)
             $0.trailing.equalTo(messageButton.snp.trailing).offset(7)
             $0.height.equalTo(1)
         }
@@ -396,6 +400,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    @objc func didTapProfile (sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
     }
 }
 
