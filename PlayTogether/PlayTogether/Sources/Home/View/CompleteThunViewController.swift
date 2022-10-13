@@ -237,7 +237,9 @@ final class CompleteThunViewController: BaseViewController {
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
                     
-                    cell.setupData(item.name)
+                    if let profileImage = item.profileImage {
+                        cell.setupData(item.name, profileImage)
+                    }
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }

@@ -50,6 +50,8 @@ final class OpenedDetailThunViewController: BaseViewController {
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
+        $0.layer.cornerRadius = ((UIScreen.main.bounds.height/812)*40)/2
+        $0.clipsToBounds = true
     }
     
     private let nicknameLabel = UILabel().then {
@@ -214,6 +216,9 @@ final class OpenedDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        let width = UIScreen.main.bounds.width/375
+        let height = UIScreen.main.bounds.height/812
+        
         navigationBarView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
@@ -252,7 +257,7 @@ final class OpenedDetailThunViewController: BaseViewController {
         circleImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
+            $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
         nicknameLabel.snp.makeConstraints {
@@ -345,6 +350,9 @@ final class OpenedDetailThunViewController: BaseViewController {
                 response[0].peopleCnt ?? 0,
                 response[0].lightMemberCnt
             )
+            if let organizerImage = response[0].organizer[0].profileImage {
+                self.circleImageView.loadProfileImage(url: organizerImage)
+            }
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -358,7 +366,9 @@ final class OpenedDetailThunViewController: BaseViewController {
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
-                    cell.setupData(item.name)
+                    if let profileImage = item.profileImage {
+                        cell.setupData(item.name, profileImage)
+                    }
                     return cell
                 }
                 .disposed(by: self.disposeBag)

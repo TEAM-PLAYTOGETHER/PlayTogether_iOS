@@ -44,12 +44,14 @@ struct DetailThunList: Decodable {
 
 struct Member: Decodable {
     let userID: Int
+    let profileImage: String?
     let gender: String?
     let name: String
     let age: Int
 
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
+        case profileImage = "profile_image"
         case gender, name, age
     }
 }
@@ -57,9 +59,11 @@ struct Member: Decodable {
 struct Organizer: Decodable {
     let organizerID: Int
     let name: String
+    let profileImage: String?
 
     enum CodingKeys: String, CodingKey {
         case organizerID = "organizer_id"
+        case profileImage = "profile_image"
         case name
     }
 }

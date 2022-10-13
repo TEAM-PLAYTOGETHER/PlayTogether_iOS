@@ -50,6 +50,8 @@ class EnterDetailThunViewController: BaseViewController {
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
+        $0.layer.cornerRadius = ((UIScreen.main.bounds.height/812)*40)/2
+        $0.clipsToBounds = true
     }
     
     private let nicknameLabel = UILabel().then {
@@ -179,6 +181,9 @@ class EnterDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        let width = UIScreen.main.bounds.width/375
+        let height = UIScreen.main.bounds.height/812
+        
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
@@ -199,7 +204,7 @@ class EnterDetailThunViewController: BaseViewController {
         circleImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
+            $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
         nicknameLabel.snp.makeConstraints {
@@ -281,6 +286,9 @@ class EnterDetailThunViewController: BaseViewController {
                 response[0].peopleCnt ?? 0,
                 response[0].lightMemberCnt
             )
+            if let organizerImage = response[0].organizer[0].profileImage {
+                self.circleImageView.loadProfileImage(url: organizerImage)
+            }
         }
         
         likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
