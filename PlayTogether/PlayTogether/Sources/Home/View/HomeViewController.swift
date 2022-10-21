@@ -16,7 +16,7 @@ final class HomeViewController: BaseViewController {
     private lazy var refreshControl = UIRefreshControl().then {
         $0.tintColor = .clear
     }
-    private lazy var animationView = AnimationView(name: "HomeRefreshLottie").then {
+    private lazy var animationView = LottieAnimationView(name: "HomeRefreshLottie").then {
         $0.stop()
         $0.contentMode = .scaleAspectFit
         $0.isHidden = true
@@ -280,22 +280,29 @@ final class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        var lottieAnimationBinder: Binder<Void> {
+            .init(self) { owner, _ in
+                owner.animationView.isHidden = true
+                owner.animationView.stop()
+                owner.refreshControl.endRefreshing()
+            }
+        }
+        
         refreshControl.rx.controlEvent(.valueChanged)
             .withUnretained(self)
-            .asDriver(onErrorDriveWith: .empty())
-            .drive(onNext: { _ in
-                self.animationView.isHidden = false
-                self.animationView.play()
-                DispatchQueue.global().async {
-                    self.viewModel.fetchHotThunList()
-                    self.viewModel.fetchNewThunList()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.animationView.isHidden = true
-                        self.animationView.stop()
-                        self.refreshControl.endRefreshing()
-                    }
-                }
-            })
+            .subscribe(on: MainScheduler.instance)
+            .map { owner, _ in
+                owner.animationView.isHidden = false
+                owner.animationView.play()
+            }
+            .withUnretained(self)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
+            .map { owner, _ in
+                owner.viewModel.fetchNewThunList()
+                owner.viewModel.fetchHotThunList()
+            }
+            .delay(.seconds(1), scheduler: MainScheduler.instance)
+            .bind(to: lottieAnimationBinder)
             .disposed(by: disposeBag)
         
         leftBarItem.rx.tap
@@ -327,7 +334,9 @@ final class HomeViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item.title, item.category, item.nowMemberCount,
-                               item.totalMemberCount ?? 0, item.date ?? "날짜미정", item.place ?? "장소미정", item.time ?? "시간미정")
+                               item.totalMemberCount ?? 0, item.date ?? "날짜미정",
+                               item.place ?? "장소미정", item.time ?? "시간미정"
+                )
                 return cell
             }
             .disposed(by: self.disposeBag)
@@ -351,14 +360,19 @@ final class HomeViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item.title, item.category, item.nowMemberCount,
-                               item.totalMemberCount ?? 0, item.date ?? "날짜미정", item.place ?? "장소미정", item.time ?? "시간미정")
+                               item.totalMemberCount ?? 0, item.date ?? "날짜미정",
+                               item.place ?? "장소미정", item.time ?? "시간미정"
+                )
                 return cell
             }
             .disposed(by: self.disposeBag)
         
         thunButton.rx.tap
             .bind { [weak self] in
-                self?.navigationController?.pushViewController(CreateThunViewController(), animated: true)
+                self?.navigationController?.pushViewController(
+                    CreateThunViewController(),
+                    animated: true
+                )
             }
             .disposed(by: disposeBag)
         
@@ -387,7 +401,10 @@ final class HomeViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(SearchThunViewController(), animated: true)
+                self.navigationController?.pushViewController(
+                    SearchThunViewController(),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
         
@@ -395,8 +412,9 @@ final class HomeViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(
-                        lightID: $0.lightID), animated: true)
+                    EnterDetailThunViewController(lightID: $0.lightID),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
         
@@ -404,8 +422,9 @@ final class HomeViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(
-                        lightID: $0.lightID), animated: true)
+                    EnterDetailThunViewController(lightID: $0.lightID),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
     }
