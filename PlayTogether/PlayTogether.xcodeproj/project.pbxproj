@@ -76,6 +76,9 @@
 		B6720EE328D2EC7A00E34EA1 /* Element+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6720EE228D2EC7A00E34EA1 /* Element+Extension.swift */; };
 		B6721DAB28E2B679008B37FB /* UpdateUserInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6721DAA28E2B679008B37FB /* UpdateUserInfoService.swift */; };
 		B6721DAD28E2B737008B37FB /* ReportThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6721DAC28E2B737008B37FB /* ReportThunService.swift */; };
+		B6721DB628E2B9C7008B37FB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6721DB528E2B9C7008B37FB /* ShareViewController.swift */; };
+		B6721DB928E2B9C7008B37FB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6721DB728E2B9C7008B37FB /* MainInterface.storyboard */; };
+		B6721DBD28E2B9C7008B37FB /* CodeShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B6721DB328E2B9C7008B37FB /* CodeShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B67F2A9028A509FC005A82B1 /* SubwayStationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */; };
 		B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */; };
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
@@ -143,6 +146,30 @@
 		DDF2C4092887AA5600C10F67 /* ThunListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2C4082887AA5600C10F67 /* ThunListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B6721DBB28E2B9C7008B37FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4096A28E287F5F3F00F1E27C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6721DB228E2B9C7008B37FB;
+			remoteInfo = CodeShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B6721DC128E2B9C7008B37FB /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B6721DBD28E2B9C7008B37FB /* CodeShareExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		402A16E428C4AA5D00161820 /* CrewListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewListResponse.swift; sourceTree = "<group>"; };
 		402A16E628C4C1BE00161820 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +234,10 @@
 		B6720EE228D2EC7A00E34EA1 /* Element+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Element+Extension.swift"; sourceTree = "<group>"; };
 		B6721DAA28E2B679008B37FB /* UpdateUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserInfoService.swift; sourceTree = "<group>"; };
 		B6721DAC28E2B737008B37FB /* ReportThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThunService.swift; sourceTree = "<group>"; };
+		B6721DB328E2B9C7008B37FB /* CodeShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CodeShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6721DB528E2B9C7008B37FB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		B6721DB828E2B9C7008B37FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		B6721DBA28E2B9C7008B37FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationCollectionViewCell.swift; sourceTree = "<group>"; };
 		B686DE092894FB6700CACEC9 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
@@ -289,6 +320,13 @@
 				401B853F287FD5B5003B69D3 /* Moya in Frameworks */,
 				40B77847287FD53200096802 /* SnapKit in Frameworks */,
 				B63905CF28C32AE20066F6D0 /* KakaoSDK in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6721DB028E2B9C7008B37FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +463,7 @@
 			isa = PBXGroup;
 			children = (
 				4096A298287F5F3F00F1E27C /* PlayTogether */,
+				B6721DB428E2B9C7008B37FB /* CodeShareExtension */,
 				4096A297287F5F3F00F1E27C /* Products */,
 				B6721DA328E2B172008B37FB /* Recovered References */,
 			);
@@ -434,6 +473,7 @@
 			isa = PBXGroup;
 			children = (
 				4096A296287F5F3F00F1E27C /* PlayTogether.app */,
+				B6721DB328E2B9C7008B37FB /* CodeShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -649,6 +689,16 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		B6721DB428E2B9C7008B37FB /* CodeShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				B6721DB528E2B9C7008B37FB /* ShareViewController.swift */,
+				B6721DB728E2B9C7008B37FB /* MainInterface.storyboard */,
+				B6721DBA28E2B9C7008B37FB /* Info.plist */,
+			);
+			path = CodeShareExtension;
+			sourceTree = "<group>";
+		};
 		B67F2A8E28A4FC88005A82B1 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -775,10 +825,12 @@
 				4096A292287F5F3F00F1E27C /* Sources */,
 				4096A293287F5F3F00F1E27C /* Frameworks */,
 				4096A294287F5F3F00F1E27C /* Resources */,
+				B6721DC128E2B9C7008B37FB /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B6721DBC28E2B9C7008B37FB /* PBXTargetDependency */,
 			);
 			name = PlayTogether;
 			packageProductDependencies = (
@@ -797,6 +849,23 @@
 			productReference = 4096A296287F5F3F00F1E27C /* PlayTogether.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B6721DB228E2B9C7008B37FB /* CodeShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6721DBE28E2B9C7008B37FB /* Build configuration list for PBXNativeTarget "CodeShareExtension" */;
+			buildPhases = (
+				B6721DAF28E2B9C7008B37FB /* Sources */,
+				B6721DB028E2B9C7008B37FB /* Frameworks */,
+				B6721DB128E2B9C7008B37FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CodeShareExtension;
+			productName = CodeShareExtension;
+			productReference = B6721DB328E2B9C7008B37FB /* CodeShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -809,6 +878,9 @@
 				TargetAttributes = {
 					4096A295287F5F3F00F1E27C = {
 						CreatedOnToolsVersion = 13.4;
+					};
+					B6721DB228E2B9C7008B37FB = {
+						CreatedOnToolsVersion = 13.4.1;
 					};
 				};
 			};
@@ -835,6 +907,7 @@
 			projectRoot = "";
 			targets = (
 				4096A295287F5F3F00F1E27C /* PlayTogether */,
+				B6721DB228E2B9C7008B37FB /* CodeShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -853,6 +926,14 @@
 				4096A2D1287F712800F1E27C /* ColorAssets.xcassets in Resources */,
 				402A16EE28C4FA5700161820 /* HomeRefreshLottie.json in Resources */,
 				4096A2A3287F5F4100F1E27C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6721DB128E2B9C7008B37FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6721DB928E2B9C7008B37FB /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -985,7 +1066,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B6721DAF28E2B9C7008B37FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6721DB628E2B9C7008B37FB /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B6721DBC28E2B9C7008B37FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6721DB228E2B9C7008B37FB /* CodeShareExtension */;
+			targetProxy = B6721DBB28E2B9C7008B37FB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4096A2A4287F5F4100F1E27C /* LaunchScreen.storyboard */ = {
@@ -994,6 +1091,14 @@
 				4096A2A5287F5F4100F1E27C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B6721DB728E2B9C7008B37FB /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B6721DB828E2B9C7008B37FB /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1114,6 +1219,7 @@
 		4096A2AB287F5F4100F1E27C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
@@ -1143,6 +1249,7 @@
 		4096A2AC287F5F4100F1E27C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
@@ -1169,6 +1276,58 @@
 			};
 			name = Release;
 		};
+		B6721DBF28E2B9C7008B37FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z779U729AH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CodeShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CodeShareExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pltoo.playtogether.CodeShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6721DC028E2B9C7008B37FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z779U729AH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CodeShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CodeShareExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pltoo.playtogether.CodeShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1186,6 +1345,15 @@
 			buildConfigurations = (
 				4096A2AB287F5F4100F1E27C /* Debug */,
 				4096A2AC287F5F4100F1E27C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6721DBE28E2B9C7008B37FB /* Build configuration list for PBXNativeTarget "CodeShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6721DBF28E2B9C7008B37FB /* Debug */,
+				B6721DC028E2B9C7008B37FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
