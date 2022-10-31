@@ -56,8 +56,7 @@ class CheckMemberInfoViewController: BaseViewController {
         $0.distribution = .fillEqually
         $0.isHidden = true
     }
-    
-    // TODO: 변경 예정
+
     private let profileView = ProfileView(
         frame: .zero,
         crew: "SOPT",
