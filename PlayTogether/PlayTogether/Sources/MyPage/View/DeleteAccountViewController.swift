@@ -10,6 +10,7 @@ import RxSwift
 
 final class DeleteAccountViewController: BaseViewController {
     private let disposeBag = DisposeBag()
+    private let viewModel = SettingViewModel()
     
     private let backButton = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -82,11 +83,11 @@ final class DeleteAccountViewController: BaseViewController {
 extension DeleteAccountViewController: TwoButtonDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
-        print("버튼 눌림")
-        // 서버 연동하면 됌
-        // 이동 경로 어케해야할지 물어보기
-        // 현재: 루트 뷰컨으로 팝하고 로그인 뷰로 푸시하기
-        navigationController?.popToRootViewController(animated: true)
-        navigationController?.pushViewController(LogInViewController(), animated: true)
+        viewModel.deleteAccount { response in
+            guard response != true else {
+                self.navigationController?.popToRootViewController(animated: true)
+                return
+            }
+        }
     }
 }
