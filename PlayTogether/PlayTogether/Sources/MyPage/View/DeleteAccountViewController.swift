@@ -83,9 +83,12 @@ final class DeleteAccountViewController: BaseViewController {
 extension DeleteAccountViewController: TwoButtonDelegate {
     func firstButtonDidTap() {}
     func secondButtonDidTap() {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                as? SceneDelegate else { return }
+        let rootViewController = LogInViewController()
         viewModel.deleteAccount { response in
             guard response != true else {
-                self.navigationController?.popToRootViewController(animated: true)
+                sceneDelegate.window?.rootViewController = rootViewController
                 return
             }
         }
