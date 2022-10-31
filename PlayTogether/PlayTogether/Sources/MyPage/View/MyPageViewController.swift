@@ -90,5 +90,13 @@ final class MyPageViewController: BaseViewController {
                 return cell
             }
             .disposed(by: self.disposeBag)
+        
+        rightBarItem.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(SettingViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }

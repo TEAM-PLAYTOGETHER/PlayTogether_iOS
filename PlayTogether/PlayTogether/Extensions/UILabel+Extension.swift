@@ -25,4 +25,13 @@ extension UILabel {
         attributedString.addAttributes([.font: font, .foregroundColor: color], range: range)
         attributedText = attributedString
     }
+    
+    /// 특정 글자색과 폰트사이즈 변경
+    func changeFontColorSize(targetString: String, color: UIColor, font: UIFont) {
+        let fullText = text ?? ""
+        let attributedString = NSMutableAttributedString(string: fullText)
+        let range = (fullText as NSString).range(of: targetString)
+        attributedString.addAttributes([.font: font, .foregroundColor: color], range: range)
+        attributedText = attributedString
+    }
 }
