@@ -56,4 +56,7 @@ struct APIConstants {
     // user
     static let updateUserInfo = "/user/signup"
     static let existingNickname = "/user/crew"
+    
+    // auth
+    static let deleteAccount = "/auth/withdraw"
 }
