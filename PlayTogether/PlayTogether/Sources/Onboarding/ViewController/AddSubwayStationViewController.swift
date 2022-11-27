@@ -89,9 +89,10 @@ class AddSubwayStationViewController: BaseViewController {
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
-    private lazy var ksub = [String]()
-    private var selectedSubwayStation = BehaviorRelay<[String]>(value: [])
-    private var ksubIndex: Int = 0
+    private lazy var selectedSubwayStations = [String]()
+    private var selectedSubwayStationRelay = BehaviorRelay<[String]>(value: [])
+    private var selectedSubwayStationsIndex: Int = 0
+    private var collectionViewHeight: CGFloat = 0
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -227,23 +228,23 @@ class AddSubwayStationViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] name in
                 guard let self = self else { return }
-                guard self.ksub.count < 2 else {
+                guard self.selectedSubwayStations.count < 2 else {
                     self.showToast("최대 2개까지 추가할 수 있어요!")
                     return
                 }
                 
-                guard self.ksub.contains(name) == false else {
+                guard self.selectedSubwayStations.contains(name) == false else {
                     self.showToast("이미 추가한 역이에요!")
                     return
                 }
                 
-                self.ksub.append(name)
-                self.selectedSubwayStation.accept(self.ksub)
+                self.selectedSubwayStations.append(name)
+                self.selectedSubwayStationRelay.accept(self.selectedSubwayStations)
                 self.preferredStationCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        selectedSubwayStation
+        selectedSubwayStationRelay
             .asDriver()
             .drive(onNext: { [weak self] data in
                 print("DEBUG: selectedSubwayStation data is \(data)")
@@ -267,7 +268,7 @@ class AddSubwayStationViewController: BaseViewController {
 
 extension AddSubwayStationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ksub.count
+        return selectedSubwayStations.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -278,36 +279,39 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         else { return UICollectionViewCell() }
         
         cell.delegate = self
-        cell.setupData(ksub[indexPath.row])
+        cell.setupData(selectedSubwayStations[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        ksubIndex = indexPath.row
-        print("DEBUG: ksubIndex is \(ksubIndex)")
+        selectedSubwayStationsIndex = indexPath.row
+        print("DEBUG: ksubIndex is \(selectedSubwayStationsIndex)")
+        // TODO: - Delegate, Dictionary 처리로 삭제해주기
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let fontSize = (ksub[indexPath.row] as NSString).size(
+        let fontWidth = (selectedSubwayStations[indexPath.row] as NSString).size(
             withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
         ).width
-        let cellWidth = fontSize + 34 + 16 * (UIScreen.main.bounds.width / 375)
-        let cellHeight = 32 * (UIScreen.main.bounds.height / 812)
+        let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)
         
-        return CGSize(width: cellWidth, height: cellHeight)
+        collectionViewHeight = (selectedSubwayStations[indexPath.row] as NSString).size(
+            withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
+        ).height + CGFloat(16)
+        selectedSubwayStationsIndex = indexPath.row
+        
+        return CGSize(width: cellWidth, height: collectionViewHeight)
     }
 }
 
 extension AddSubwayStationViewController: PreferredStationDelegate {
     func removeStation() {
         // TODO: 삭제 버튼 누르는 IndexPath.row 알아야 함
-        var collectionViewHeight: CGFloat = 0
-        guard ksub.isEmpty == false else { return }
-        print("DEBUG: ksubIndex is \(ksubIndex)")
-        ksub.remove(at: ksubIndex)
-        selectedSubwayStation.accept(ksub)
+        guard selectedSubwayStations.isEmpty == false else { return }
+        selectedSubwayStations.remove(at: selectedSubwayStationsIndex)
+        selectedSubwayStationRelay.accept(selectedSubwayStations)
         
-        switch selectedSubwayStation.value.count {
+        switch selectedSubwayStationRelay.value.count {
         case 0:
             collectionViewHeight = 0
             
