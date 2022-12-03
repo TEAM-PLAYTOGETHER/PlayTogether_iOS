@@ -52,9 +52,8 @@ class AddSubwayStationViewController: BaseViewController {
     }
     
     private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout().then {
-        $0.scrollDirection = .vertical
-        $0.minimumLineSpacing = 10.0
-        $0.minimumInteritemSpacing = 0
+        $0.scrollDirection = .horizontal
+        $0.minimumInteritemSpacing = 10.0
     }
     
     private lazy var preferredStationCollectionView = UICollectionView(
@@ -91,7 +90,6 @@ class AddSubwayStationViewController: BaseViewController {
     
     private lazy var selectedSubwayStations = [String]()
     private var selectedSubwayStationRelay = BehaviorRelay<[String]>(value: [])
-    private var selectedSubwayStationsIndex: Int = 0
     private var collectionViewHeight: CGFloat = 0
     
     override func viewWillAppear(_ animated: Bool) {
@@ -146,14 +144,13 @@ class AddSubwayStationViewController: BaseViewController {
         }
         
         preferredStationCollectionView.snp.makeConstraints {
-            $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(16)
+            $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(0)
-            $0.bottom.equalTo(subwayStationListTalbeView.snp.top).offset(8)
         }
         
         subwayStationListTalbeView.snp.makeConstraints {
-            $0.top.equalTo(preferredStationCollectionView.snp.bottom).offset(8)
+            $0.top.equalTo(preferredStationCollectionView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(addButton.snp.top).offset(-8)
         }
@@ -248,13 +245,13 @@ class AddSubwayStationViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] data in
                 guard let self = self else { return }
-                
-                self.collectionViewHeight = data.count == 0 ?
-                0 : 32 * (UIScreen.main.bounds.height / 812) + 8
+                self.collectionViewHeight = data.count == 0 ? 0 : 32
+                self.addButton.isButtonEnableUI(check: !(data.count == 0))
                 
                 self.preferredStationCollectionView.snp.updateConstraints {
                     $0.height.equalTo(self.collectionViewHeight)
                 }
+                self.preferredStationCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
     }
@@ -265,15 +262,6 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
     func cellCancelAction(_ sender: UIButton) {
         selectedSubwayStations.remove(at: sender.tag)
         selectedSubwayStationRelay.accept(selectedSubwayStations)
-        
-        collectionViewHeight = selectedSubwayStationRelay.value.count == 0 ?
-        0 : 32 * (UIScreen.main.bounds.height / 812) + 8
-        
-        preferredStationCollectionView.snp.updateConstraints {
-            $0.height.equalTo(collectionViewHeight)
-        }
-        
-        preferredStationCollectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -307,11 +295,6 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         ).width
         let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)
         
-        collectionViewHeight = (selectedSubwayStations[indexPath.row] as NSString).size(
-            withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
-        ).height + CGFloat(16)
-        selectedSubwayStationsIndex = indexPath.row
-        
-        return CGSize(width: cellWidth, height: collectionViewHeight)
+        return CGSize(width: cellWidth, height: 32)
     }
 }
