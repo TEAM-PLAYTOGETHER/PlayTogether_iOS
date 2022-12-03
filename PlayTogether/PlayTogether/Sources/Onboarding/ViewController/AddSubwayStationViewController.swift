@@ -260,7 +260,7 @@ class AddSubwayStationViewController: BaseViewController {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 OnboardingDataModel.shared.preferredSubway = self.selectedSubwayStations
-                self?.navigationController?.popViewController(animated: true)
+                self.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
     }
