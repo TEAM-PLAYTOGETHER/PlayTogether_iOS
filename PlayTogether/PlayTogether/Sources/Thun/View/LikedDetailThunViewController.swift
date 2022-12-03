@@ -14,11 +14,12 @@ final class LikedDetailThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
     private let likeThunViewModel = LikeThunViewModel()
-    private let superViewModel: ThunViewModel?
+    private let existThunViewModel = ExistThunViewModel()
+    private let superViewModel: LikedThunViewModel?
     var lightId: Int?
     var imageCount: Int?
     
-    init(lightID: Int, superViewModel: ThunViewModel) {
+    init(lightID: Int, superViewModel: LikedThunViewModel) {
         self.lightId = lightID
         self.superViewModel = superViewModel
         super.init()
@@ -357,8 +358,12 @@ final class LikedDetailThunViewController: BaseViewController {
                 if self?.likeThunViewModel.isRemovedLike == true {
                     guard let originData = try? self?.superViewModel?.likedThunList.value()
                     else { return }
-                    self?.superViewModel?.likedThunList.onNext(originData.filter {
-                        $0?.lightID != self?.lightId })
+                    let filterData = originData.filter{ $0?.lightID != self?.lightId }
+                    if filterData.isEmpty {
+                        self?.superViewModel?.isEmptyThun.onNext(true)
+                    } else {
+                        self?.superViewModel?.likedThunList.onNext(filterData)
+                    }
                 }
                 self?.navigationController?.popViewController(animated: true)
                 self?.tabBarController?.tabBar.isHidden = false
@@ -380,6 +385,18 @@ final class LikedDetailThunViewController: BaseViewController {
                 let nextVC = SelectImageViewController(lightID: self?.lightId ?? -1, indexPath: indexPath.row, imageCount: self?.imageCount ?? 0)
                 nextVC.modalPresentationStyle = .fullScreen
                 self?.present(nextVC, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
+            self.alertButton.isHidden = response ? true : false
+        }
+        
+        alertButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
             })
             .disposed(by: disposeBag)
     }

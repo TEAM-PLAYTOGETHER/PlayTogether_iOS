@@ -5,6 +5,7 @@
 //  Created by 한상진 on 2022/07/19.
 //
 
+import Lottie
 import RxSwift
 import UIKit
 
@@ -12,11 +13,21 @@ final class HomeViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = HomeViewModel()
     
+    private lazy var refreshControl = UIRefreshControl().then {
+        $0.tintColor = .clear
+    }
+    private lazy var animationView = LottieAnimationView(name: "HomeRefreshLottie").then {
+        $0.stop()
+        $0.contentMode = .scaleAspectFit
+        $0.isHidden = true
+    }
+    
     private let leftBarItem = UIButton().then {
-        $0.setTitle("SOPT", for: .normal) // TODO: 추후 삭제 예정
+        $0.setTitle(APIConstants.crewName, for: .normal)
         $0.setTitleColor(.ptGreen, for: .normal)
         $0.setImage(.ptImage(.showIcon), for: .normal)
         $0.titleLabel?.font = .pretendardBold(size: 20)
+        $0.contentHorizontalAlignment = .left
         $0.semanticContentAttribute = .forceRightToLeft
     }
     private let rightBarItem = UIButton().then {
@@ -147,9 +158,11 @@ final class HomeViewController: BaseViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarItem)
         
         view.addSubview(scrollView)
-        view.addSubview(thunButton)
         scrollView.addSubview(contentView)
+        refreshControl.addSubview(animationView)
+        scrollView.refreshControl = refreshControl
         
+        view.addSubview(thunButton)
         contentView.addSubview(categoryLabel)
         contentView.addSubview(eatButton)
         contentView.addSubview(eatLabel)
@@ -168,6 +181,12 @@ final class HomeViewController: BaseViewController {
     
     override func setupLayouts() {
         guard let tabBarHeight = tabBarController?.tabBar.frame.height else { return }
+        
+        animationView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.size.equalTo(UIScreen.main.bounds.width * 0.133)
+            $0.centerX.equalToSuperview()
+        }
         
         thunButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
@@ -261,8 +280,48 @@ final class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        var lottieAnimationBinder: Binder<Void> {
+            .init(self) { owner, _ in
+                owner.animationView.isHidden = true
+                owner.animationView.stop()
+                owner.refreshControl.endRefreshing()
+            }
+        }
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .withUnretained(self)
+            .subscribe(on: MainScheduler.instance)
+            .map { owner, _ in
+                owner.animationView.isHidden = false
+                owner.animationView.play()
+            }
+            .withUnretained(self)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
+            .map { owner, _ in
+                owner.viewModel.fetchNewThunList()
+                owner.viewModel.fetchHotThunList()
+            }
+            .delay(.seconds(1), scheduler: MainScheduler.instance)
+            .bind(to: lottieAnimationBinder)
+            .disposed(by: disposeBag)
+        
+        leftBarItem.rx.tap
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _ in
+                let bottomSheet = BottomSheetViewController(crewData: self.viewModel.crewList)
+                bottomSheet.delegate = self
+                bottomSheet.setup(parentViewController: self)
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.isEmptyHotThun
-            .bind(to: hotCollectionView.rx.isHidden)
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _, isEmpty in
+                self.hotCollectionView.isHidden = isEmpty
+                self.hotEmptyView.isHidden = !isEmpty
+            })
             .disposed(by: disposeBag)
         
         viewModel.hotThunList
@@ -275,13 +334,20 @@ final class HomeViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item.title, item.category, item.nowMemberCount,
-                               item.totalMemberCount ?? 0, item.date ?? "날짜미정", item.place ?? "장소미정", item.time ?? "시간미정")
+                               item.totalMemberCount ?? 0, item.date ?? "날짜미정",
+                               item.place ?? "장소미정", item.time ?? "시간미정"
+                )
                 return cell
             }
             .disposed(by: self.disposeBag)
         
         viewModel.isEmptyNewThun
-            .bind(to: newCollectionView.rx.isHidden)
+            .withUnretained(self)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { _, isEmpty in
+                self.newCollectionView.isHidden = isEmpty
+                self.newEmptyView.isHidden = !isEmpty
+            })
             .disposed(by: disposeBag)
         
         viewModel.newThunList
@@ -294,14 +360,19 @@ final class HomeViewController: BaseViewController {
                 else { return UICollectionViewCell() }
                 
                 cell.setupData(item.title, item.category, item.nowMemberCount,
-                               item.totalMemberCount ?? 0, item.date ?? "날짜미정", item.place ?? "장소미정", item.time ?? "시간미정")
+                               item.totalMemberCount ?? 0, item.date ?? "날짜미정",
+                               item.place ?? "장소미정", item.time ?? "시간미정"
+                )
                 return cell
             }
             .disposed(by: self.disposeBag)
         
         thunButton.rx.tap
             .bind { [weak self] in
-                self?.navigationController?.pushViewController(CreateThunViewController(), animated: true)
+                self?.navigationController?.pushViewController(
+                    CreateThunViewController(),
+                    animated: true
+                )
             }
             .disposed(by: disposeBag)
         
@@ -309,7 +380,6 @@ final class HomeViewController: BaseViewController {
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 0, index: 0)
                 self?.navigationController?.pushViewController(vc, animated: true)
-                self?.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
         
@@ -317,7 +387,6 @@ final class HomeViewController: BaseViewController {
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 1, index: 1)
                 self?.navigationController?.pushViewController(vc, animated: true)
-                self?.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
         
@@ -325,16 +394,27 @@ final class HomeViewController: BaseViewController {
             .bind { [weak self] in
                 let vc = ThunListViewController(currentPageIndex: 2, index: 2)
                 self?.navigationController?.pushViewController(vc, animated: true)
-                self?.tabBarController?.tabBar.isHidden = true
             }
+            .disposed(by: disposeBag)
+        
+        rightBarItem.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(
+                    SearchThunViewController(),
+                    animated: true
+                )
+            })
             .disposed(by: disposeBag)
         
         hotCollectionView.rx.modelSelected(HomeResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(
-                        lightID: $0.lightID), animated: true)
+                    EnterDetailThunViewController(lightID: $0.lightID),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
         
@@ -342,9 +422,20 @@ final class HomeViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(
-                        lightID: $0.lightID), animated: true)
+                    EnterDetailThunViewController(lightID: $0.lightID),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension HomeViewController: BottomSheetDelegate {
+    func selectCrew(name: String) {
+        leftBarItem.setTitle(name, for: .normal)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
+        
+        viewModel.fetchHotThunList()
+        viewModel.fetchNewThunList()
     }
 }

@@ -7,12 +7,11 @@
 
 import UIKit
 
-final class MyPageSubwayLabel: UILabel {
+final class PaddingLabel: UILabel {
     private var padding = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
     
-    convenience init(padding: UIEdgeInsets) {
-        self.init()
-        self.padding = padding
+    func setupPadding(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
+        self.padding = UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
     }
     
     override func drawText(in rect: CGRect) {

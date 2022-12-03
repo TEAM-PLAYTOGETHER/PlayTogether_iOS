@@ -16,8 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
-//        window?.rootViewController = TabBarController()
-        window?.rootViewController = UINavigationController(rootViewController: AddSubwayStationViewController())
+        window?.rootViewController = TabBarController()
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

@@ -39,7 +39,7 @@ private extension MyPageMenuTableViewCell {
     
     func setupLayouts() {
         menuTitleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(35)
+            $0.leading.equalToSuperview().offset(24)
             $0.centerY.equalToSuperview()
         }
     }

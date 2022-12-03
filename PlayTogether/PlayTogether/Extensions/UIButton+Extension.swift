@@ -40,4 +40,15 @@ extension UIButton {
         )
         setAttributedTitle(attributedString, for: .normal)
     }
+    
+    /// 탈퇴 버튼
+    func setupDeleteButtonUI(title: String, size: CGFloat) {
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = .pretendardSemiBold(size: size)
+        self.layer.borderWidth = 1.0
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
+        self.setTitleColor(.ptIncorrect, for: .normal)
+        self.layer.borderColor = UIColor.ptIncorrect.cgColor
+    }
 }
