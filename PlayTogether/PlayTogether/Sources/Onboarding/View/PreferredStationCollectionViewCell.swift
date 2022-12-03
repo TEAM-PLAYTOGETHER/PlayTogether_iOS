@@ -8,14 +8,8 @@
 import UIKit
 import RxSwift
 
-protocol PreferredStationDelegate: AnyObject {
-    func removeStation()
-}
-
 final class PreferredStationCollectionViewCell: UICollectionViewCell {
     private lazy var disposeBag = DisposeBag()
-    
-    weak var delegate: PreferredStationDelegate?
     
     private lazy var titleLabel = UILabel().then {
         $0.text = ""
@@ -23,7 +17,7 @@ final class PreferredStationCollectionViewCell: UICollectionViewCell {
         $0.textColor = .ptGreen
     }
     
-    private lazy var cancelButton = UIButton().then {
+    lazy var cancelButton = UIButton().then {
         $0.setImage(.ptImage(.exitIcon), for: .normal)
         $0.tintColor = .ptGray01
     }
@@ -48,7 +42,6 @@ private extension PreferredStationCollectionViewCell {
         addSubview(cancelButton)
         
         setupLayout()
-        setupBinding()
     }
     
     func setupLayout() {
@@ -63,18 +56,11 @@ private extension PreferredStationCollectionViewCell {
             $0.centerY.equalToSuperview().inset(8)
         }
     }
-    
-    func setupBinding() {
-        cancelButton.rx.tap
-            .bind(onNext: { [weak self] in
-                self?.delegate?.removeStation()
-            })
-            .disposed(by: disposeBag)
-    }
 }
 
 extension PreferredStationCollectionViewCell {
-    func setupData(_ title: String) {
+    func setupData(_ title: String, _ tag: Int) {
         titleLabel.text = title
+        cancelButton.tag = tag
     }
 }

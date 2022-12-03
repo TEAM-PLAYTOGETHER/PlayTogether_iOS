@@ -247,28 +247,37 @@ class AddSubwayStationViewController: BaseViewController {
         selectedSubwayStationRelay
             .asDriver()
             .drive(onNext: { [weak self] data in
-                print("DEBUG: selectedSubwayStation data is \(data)")
-                var collectionViewHeight: CGFloat = 0
-                switch data.count {
-                case 0:
-                    collectionViewHeight = 0
-                    
-                default:
-                    collectionViewHeight = 32 * (UIScreen.main.bounds.height / 812) + 8
-                }
+                guard let self = self else { return }
                 
-                self?.preferredStationCollectionView.snp.updateConstraints {
-                    $0.height.equalTo(collectionViewHeight)
-                }
+                self.collectionViewHeight = data.count == 0 ?
+                0 : 32 * (UIScreen.main.bounds.height / 812) + 8
                 
+                self.preferredStationCollectionView.snp.updateConstraints {
+                    $0.height.equalTo(self.collectionViewHeight)
+                }
             })
             .disposed(by: disposeBag)
     }
 }
 
 extension AddSubwayStationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    @objc
+    func cellCancelAction(_ sender: UIButton) {
+        selectedSubwayStations.remove(at: sender.tag)
+        selectedSubwayStationRelay.accept(selectedSubwayStations)
+        
+        collectionViewHeight = selectedSubwayStationRelay.value.count == 0 ?
+        0 : 32 * (UIScreen.main.bounds.height / 812) + 8
+        
+        preferredStationCollectionView.snp.updateConstraints {
+            $0.height.equalTo(collectionViewHeight)
+        }
+        
+        preferredStationCollectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return selectedSubwayStations.count
+        return selectedSubwayStationRelay.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -278,15 +287,18 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         ) as? PreferredStationCollectionViewCell
         else { return UICollectionViewCell() }
         
-        cell.delegate = self
-        cell.setupData(selectedSubwayStations[indexPath.row])
+        let row = indexPath.row
+        cell.setupData(
+            selectedSubwayStationRelay.value[row],
+            row
+        )
+        cell.cancelButton.addTarget(
+            self,
+            action: #selector(cellCancelAction),
+            for: .touchUpInside
+        )
+        
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedSubwayStationsIndex = indexPath.row
-        print("DEBUG: ksubIndex is \(selectedSubwayStationsIndex)")
-        // TODO: - Delegate, Dictionary 처리로 삭제해주기
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -301,27 +313,5 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         selectedSubwayStationsIndex = indexPath.row
         
         return CGSize(width: cellWidth, height: collectionViewHeight)
-    }
-}
-
-extension AddSubwayStationViewController: PreferredStationDelegate {
-    func removeStation() {
-        // TODO: 삭제 버튼 누르는 IndexPath.row 알아야 함
-        guard selectedSubwayStations.isEmpty == false else { return }
-        selectedSubwayStations.remove(at: selectedSubwayStationsIndex)
-        selectedSubwayStationRelay.accept(selectedSubwayStations)
-        
-        switch selectedSubwayStationRelay.value.count {
-        case 0:
-            collectionViewHeight = 0
-            
-        default:
-            collectionViewHeight = 32 * (UIScreen.main.bounds.height / 812) + 8
-        }
-        
-        preferredStationCollectionView.snp.updateConstraints {
-            $0.height.equalTo(collectionViewHeight)
-        }
-        preferredStationCollectionView.reloadData()
     }
 }
