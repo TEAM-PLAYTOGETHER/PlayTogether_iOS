@@ -127,9 +127,9 @@ class SelfIntroduceViewController: BaseViewController {
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: SelfIntroduceViewController.self, action: nil)
     
-    // TODO: 지하철역 추가했는지 여부 체크 추가 할 예정
-    private var isEnableNickname1 = BehaviorRelay<Bool>(value: false)
-    private var isFillBriefIntroduceText1 = BehaviorRelay<Bool>(value: false)
+    private var isEnableNickname = BehaviorRelay<Bool>(value: false)
+    private var isFillBriefIntroduceText = BehaviorRelay<Bool>(value: false)
+    private var registerUserStations = BehaviorRelay<[String]>(value: [])
     private var ableNickname: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
@@ -274,7 +274,7 @@ class SelfIntroduceViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let nickname = self?.inputNicknameTextField.text else { return }
                 self?.viewModel.checkNickname(102, nickname) {  // TODO: 추후 동아리 번호 받아올 예정
-                    self?.isEnableNickname1.accept($0)
+                    self?.isEnableNickname.accept($0)
                     self?.noticeExistingNicknameLabel.isHidden = false
                     self?.noticeExistingNicknameLabel.text = $0 ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
                     self?.noticeExistingNicknameLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
@@ -306,7 +306,7 @@ class SelfIntroduceViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard $0 == self?.ableNickname else {
                     self?.noticeExistingNicknameLabel.isHidden = true
-                    self?.isEnableNickname1.accept(false)
+                    self?.isEnableNickname.accept(false)
                     guard $0.count > 10 else { return }
                     self?.inputNicknameTextField.text = String(self?.inputNicknameTextField.text?.dropLast() ?? "")
                     return
@@ -320,10 +320,10 @@ class SelfIntroduceViewController: BaseViewController {
                 guard $0.count > 0,
                       self?.inputBriefIntroduceTextView.textColor == .ptBlack01
                 else {
-                    self?.isFillBriefIntroduceText1.accept(false)
+                    self?.isFillBriefIntroduceText.accept(false)
                     return
                 }
-                self?.isFillBriefIntroduceText1.accept(true)
+                self?.isFillBriefIntroduceText.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -344,7 +344,7 @@ class SelfIntroduceViewController: BaseViewController {
                     self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray03.cgColor
                     self?.inputBriefIntroduceTextView.text = "간단 소개 입력"
                     self?.inputBriefIntroduceTextView.textColor = .ptGray01
-                    self?.isFillBriefIntroduceText1.accept(false)
+                    self?.isFillBriefIntroduceText.accept(false)
                     return
                 }
                 self?.inputBriefIntroduceTextView.textColor = .ptBlack01
@@ -352,35 +352,58 @@ class SelfIntroduceViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        Driver.combineLatest(isEnableNickname1.asDriver(), isFillBriefIntroduceText1.asDriver()) { $0 && $1 }
+        Driver.combineLatest(
+            isEnableNickname.asDriver(),
+            isFillBriefIntroduceText.asDriver(),
+            registerUserStations.asDriver()
+        ) { $0 && $1 && !$2.isEmpty }
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                $0 ? self.changeNextButtonUI(self.nextButton, true) : self.changeNextButtonUI(self.nextButton, false)
+                self.changeNextButtonUI(self.nextButton, $0)
             })
             .disposed(by: disposeBag)
         
         addPreferredSubwayStationButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(AddSubwayStationViewController(), animated: true)
+                let controller = AddSubwayStationViewController()
+                controller.delegate = self
+                self?.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)
         
         nextButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                guard let nickname = self?.inputNicknameTextField.text,
-                      let briefIntroduceText = self?.inputBriefIntroduceTextView.text
+                guard let self = self,
+                      let nickname = self.inputNicknameTextField.text,
+                      let briefIntroduceText = self.inputBriefIntroduceTextView.text,
+                      let isCreate = OnboardingDataModel.shared.isCreated
                 else { return }
-                // TODO: 선호하는 지하철역 1,2 추가예정
+                
                 OnboardingDataModel.shared.nickName = nickname
                 OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
+                OnboardingDataModel.shared.preferredSubway = self.registerUserStations.value
                 
-                guard let isCreate = OnboardingDataModel.shared.isCreated else { return }
                 let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
-                self?.navigationController?.pushViewController(controller, animated: true)
+                self.viewModel.registerUserProfile(
+                    33,           // TODO: 추후 동아리 번호 받아올 예정
+                    nickname,
+                    briefIntroduceText,
+                    self.registerUserStations.value.first!,
+                    self.registerUserStations.value.last
+                ) {
+                    guard $0 == true else { return }
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
 }
 
+
+extension SelfIntroduceViewController: AddSubwayStationDelegate {
+    func registerSubwayStation(_ stations: [String]) {
+        registerUserStations.accept(stations)
+    }
+}

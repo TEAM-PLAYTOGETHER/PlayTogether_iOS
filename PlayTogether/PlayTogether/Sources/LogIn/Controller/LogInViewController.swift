@@ -123,8 +123,12 @@ extension LogInViewController: LoginButtonDelegate {
     }
 }
 
-extension LogInViewController {
-    func requestLogin(accessToken: String, fcmToken: String) {
+private extension LogInViewController {
+    func requestLogin(accessToken: String?, fcmToken: String?) {
+        guard let accessToken = accessToken,
+              let fcmToken = fcmToken
+        else { return }
+
         let loginInput = LoginViewModel.loginTokenInput(accessToken: accessToken,
                                                         fcmToken: fcmToken)
         viewModel.tryLogin(loginInput) {
@@ -133,7 +137,9 @@ extension LogInViewController {
             guard loggedInUserInfo.isSignup == true else {
                 guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
                         as? SceneDelegate else { return }
-                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+                sceneDelegate.window?.rootViewController = UINavigationController(
+                    rootViewController: CheckTermsServiceViewController()
+                )
                 return
             }
             // TODO: 키체인 변경 예정
@@ -154,19 +160,19 @@ private extension LogInViewController {
     func kakaoLogin() {
         guard UserApi.isKakaoTalkLoginAvailable() == true else {
             UserApi.shared.loginWithKakaoAccount(prompts:[.Login]) { oauthToken, error  in
-                guard let accessToken = oauthToken?.accessToken else { return }
-                guard let fcmToken = self.userFCMToken else { return }
-                self.userAccessToken = accessToken
-                self.requestLogin(accessToken: accessToken, fcmToken: fcmToken)
+                self.requestLogin(
+                    accessToken: oauthToken?.accessToken,
+                    fcmToken: self.userFCMToken
+                )
             }
             return
         }
         
         UserApi.shared.loginWithKakaoTalk { oauthToken, error in
-            guard let accessToken = oauthToken?.accessToken else { return }
-            guard let fcmToken = self.userFCMToken else { return }
-            self.userAccessToken = accessToken
-            self.requestLogin(accessToken: accessToken, fcmToken: fcmToken)
+            self.requestLogin(
+                accessToken: oauthToken?.accessToken,
+                fcmToken: self.userFCMToken
+            )
         }
     }
 }
@@ -188,8 +194,10 @@ extension LogInViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             let token = String(data: appleIDCredential.identityToken!, encoding: .utf8)
-            // TODO: 로그인 API 추후 연동 예정
-            print("DEBUG: apple login token  → \(token)")
+            self.requestLogin(
+                accessToken: token,
+                fcmToken: self.userFCMToken
+            )
             
         default: break
         }

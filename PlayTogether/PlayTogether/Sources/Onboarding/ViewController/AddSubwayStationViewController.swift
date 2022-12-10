@@ -9,6 +9,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol AddSubwayStationDelegate {
+    func registerSubwayStation(_ stations: [String])
+}
+
 class AddSubwayStationViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel = AddSubwayStationViewModel()
@@ -91,6 +95,7 @@ class AddSubwayStationViewController: BaseViewController {
     private lazy var selectedSubwayStations = [String]()
     private var selectedSubwayStationRelay = BehaviorRelay<[String]>(value: [])
     private var collectionViewHeight: CGFloat = 0
+    var delegate: AddSubwayStationDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -260,6 +265,7 @@ class AddSubwayStationViewController: BaseViewController {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 OnboardingDataModel.shared.preferredSubway = self.selectedSubwayStations
+                self.delegate?.registerSubwayStation(self.selectedSubwayStations)
                 self.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
