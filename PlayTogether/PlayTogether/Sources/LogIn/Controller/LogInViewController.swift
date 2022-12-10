@@ -137,7 +137,9 @@ private extension LogInViewController {
             guard loggedInUserInfo.isSignup == true else {
                 guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
                         as? SceneDelegate else { return }
-                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+                sceneDelegate.window?.rootViewController = UINavigationController(
+                    rootViewController: CheckTermsServiceViewController()
+                )
                 return
             }
             // TODO: 키체인 변경 예정
