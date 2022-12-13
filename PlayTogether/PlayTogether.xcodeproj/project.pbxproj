@@ -94,6 +94,7 @@
 		B686DE0C2895045200CACEC9 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */; };
 		B68C0D0428C5E3BA00268333 /* BirthYearPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68C0D0328C5E3BA00268333 /* BirthYearPickerViewController.swift */; };
 		B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */; };
+		B69C591728DC00A5009517AF /* PreferredStationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69C591628DC00A5009517AF /* PreferredStationCollectionViewCell.swift */; };
 		B6A612FF28A9F36600688DA2 /* CheckNicknameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */; };
 		B6AA809A28B0AE2200F29B59 /* SubwayStationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */; };
 		B6B4131128DD57F2008EAEB2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */; };
@@ -106,6 +107,7 @@
 		B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */; };
 		B6B7706128C1E16700645DCB /* LoginButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B7706028C1E16700645DCB /* LoginButtonView.swift */; };
 		B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */; };
+		B6DFD6DC294448C700561872 /* SelfIntroduceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DFD6DB294448C700561872 /* SelfIntroduceResponse.swift */; };
 		B6E8851128C05D9C001CAE3D /* ReDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */; };
 		B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */; };
 		B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */; };
@@ -137,6 +139,12 @@
 		DD80A14C28E75DF600AD01D0 /* LikedThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */; };
 		DD80A15028ED63A400AD01D0 /* GoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */; };
 		DD80A15228ED63AD00AD01D0 /* DoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */; };
+		DDAE9D77290296830021FBEA /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9D76290296830021FBEA /* SettingViewController.swift */; };
+		DDAE9DB9290A2DCF0021FBEA /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */; };
+		DDAE9DBB290E591C0021FBEA /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */; };
+		DDAE9DC0290E9B860021FBEA /* DeleteAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DBF290E9B860021FBEA /* DeleteAccountService.swift */; };
+		DDAE9DC2290F91650021FBEA /* ManageAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */; };
+		DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */; };
 		DDB380C328BBA219001826B0 /* LikeThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C228BBA219001826B0 /* LikeThunService.swift */; };
 		DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C628BBA248001826B0 /* LikeThunViewModel.swift */; };
 		DDB380C928BBA8B6001826B0 /* ExistLikeThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */; };
@@ -243,6 +251,7 @@
 		B686DE0B2895045200CACEC9 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		B68C0D0328C5E3BA00268333 /* BirthYearPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthYearPickerViewController.swift; sourceTree = "<group>"; };
 		B68DA3B2289AAB110006E9E8 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		B69C591628DC00A5009517AF /* PreferredStationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredStationCollectionViewCell.swift; sourceTree = "<group>"; };
 		B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameResponse.swift; sourceTree = "<group>"; };
 		B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationListTableViewCell.swift; sourceTree = "<group>"; };
 		B6B4131028DD57F2008EAEB2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -254,6 +263,7 @@
 		B6B4B10628C1B5C7009AA0DB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		B6B7706028C1E16700645DCB /* LoginButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonView.swift; sourceTree = "<group>"; };
 		B6C543FD28939E2B00E86736 /* CreateMeetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewModel.swift; sourceTree = "<group>"; };
+		B6DFD6DB294448C700561872 /* SelfIntroduceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceResponse.swift; sourceTree = "<group>"; };
 		B6E8851028C05D9C001CAE3D /* ReDownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReDownloadViewController.swift; sourceTree = "<group>"; };
 		B6ECF18A28B5BAB9003C80AB /* ParticipationCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationCompletedViewController.swift; sourceTree = "<group>"; };
 		B6ECF18E28B5C795003C80AB /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
@@ -286,6 +296,12 @@
 		DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedThunViewModel.swift; sourceTree = "<group>"; };
 		DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewModel.swift; sourceTree = "<group>"; };
 		DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoThunListViewModel.swift; sourceTree = "<group>"; };
+		DDAE9D76290296830021FBEA /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
+		DDAE9DBF290E9B860021FBEA /* DeleteAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountService.swift; sourceTree = "<group>"; };
+		DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController.swift; sourceTree = "<group>"; };
+		DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedDetailThunViewController.swift; sourceTree = "<group>"; };
 		DDB380C228BBA219001826B0 /* LikeThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeThunService.swift; sourceTree = "<group>"; };
 		DDB380C628BBA248001826B0 /* LikeThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeThunViewModel.swift; sourceTree = "<group>"; };
 		DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistLikeThunService.swift; sourceTree = "<group>"; };
@@ -379,6 +395,7 @@
 		404169952886A66A00812B37 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				DDAE9DBC290E9B120021FBEA /* Network */,
 				408EE3E328BAB1590012C642 /* View */,
 				408EE3E728BAB2430012C642 /* ViewModel */,
 				408EE3E428BAB1610012C642 /* Cell */,
@@ -401,6 +418,9 @@
 				404169982886A68600812B37 /* MyPageViewController.swift */,
 				408EE3DF28BAA8C00012C642 /* MyPageSubwayLabelView.swift */,
 				408EE3EA28BBE4CA0012C642 /* ProfileView.swift */,
+				DDAE9D76290296830021FBEA /* SettingViewController.swift */,
+				DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */,
+				DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -417,6 +437,7 @@
 			isa = PBXGroup;
 			children = (
 				408EE3E828BAB2510012C642 /* MyPageViewModel.swift */,
+				DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -686,6 +707,7 @@
 				B67F2A8F28A509FC005A82B1 /* SubwayStationCollectionViewCell.swift */,
 				B6AA809928B0AE2200F29B59 /* SubwayStationListTableViewCell.swift */,
 				B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */,
+				B69C591628DC00A5009517AF /* PreferredStationCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -750,6 +772,7 @@
 				B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */,
 				B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */,
 				B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */,
+				B6DFD6DB294448C700561872 /* SelfIntroduceResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -811,6 +834,14 @@
 				DD0EBDFF28C4D3E200A50CDB /* SearchThunViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DDAE9DBC290E9B120021FBEA /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				DDAE9DBF290E9B860021FBEA /* DeleteAccountService.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		DDBE87AE289253130042490C /* Cell */ = {
@@ -978,6 +1009,7 @@
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				DD73C2C628B3B44E001DEC1A /* CancelThunViewModel.swift in Sources */,
 				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
+				DDAE9DBB290E591C0021FBEA /* DeleteAccountViewController.swift in Sources */,
 				DDB380D528C08E73001826B0 /* DeleteThunViewModel.swift in Sources */,
 				402A16EC28C4D49100161820 /* CompleteURLLoggerPlugin.swift in Sources */,
 				DDB380ED28C27C86001826B0 /* CreateThunResponse.swift in Sources */,
@@ -1011,6 +1043,7 @@
 				B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
 				DD73C2C428B20A0C001DEC1A /* CancelThunService.swift in Sources */,
+				DDAE9DC2290F91650021FBEA /* ManageAccountViewController.swift in Sources */,
 				DD0EBDF828C4939400A50CDB /* SearchThunViewController.swift in Sources */,
 				DD73C2C028B1EB22001DEC1A /* UIImageView+Extension.swift in Sources */,
 				409451AF28905A9000F21717 /* HomeService.swift in Sources */,
@@ -1020,6 +1053,7 @@
 				B660597628C4A1D400776008 /* CheckTermsServiceViewModel.swift in Sources */,
 				4096A29A287F5F3F00F1E27C /* AppDelegate.swift in Sources */,
 				40F7FE2828BF497A00B58A4C /* ChattingListTableViewCell.swift in Sources */,
+				DDAE9DC0290E9B860021FBEA /* DeleteAccountService.swift in Sources */,
 				DDB380CD28BD2EAE001826B0 /* SelectImageViewController.swift in Sources */,
 				40EDB680288495F600996AA0 /* UIImage+Extension.swift in Sources */,
 				B6B4132328DD6D9F008EAEB2 /* LoginService.swift in Sources */,
@@ -1030,6 +1064,7 @@
 				B6720EE328D2EC7A00E34EA1 /* Element+Extension.swift in Sources */,
 				B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */,
 				40B15BFB28C04C8E00E2CB82 /* MessageListResponse.swift in Sources */,
+				B6DFD6DC294448C700561872 /* SelfIntroduceResponse.swift in Sources */,
 				B6ECF18F28B5C795003C80AB /* UILabel+Extension.swift in Sources */,
 				4096A29C287F5F3F00F1E27C /* SceneDelegate.swift in Sources */,
 				B61C427028A20CA800913574 /* SelfIntroduceViewController.swift in Sources */,
@@ -1068,11 +1103,13 @@
 				4040AC432893093F00C76978 /* CreateThunViewController.swift in Sources */,
 				DD36D39728A4C9A800C9851A /* DoThunListViewController.swift in Sources */,
 				DD36D39328A4C98600C9851A /* EatThunListViewController.swift in Sources */,
+				DDAE9DB9290A2DCF0021FBEA /* SettingViewModel.swift in Sources */,
 				B6B7706128C1E16700645DCB /* LoginButtonView.swift in Sources */,
 				B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */,
 				DD73C2BE28AD5DA7001DEC1A /* DetailThunMemberTableViewCell.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
 				B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */,
+				B69C591728DC00A5009517AF /* PreferredStationCollectionViewCell.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
 				B6397F432887104800046843 /* UITextField+Extension.swift in Sources */,
@@ -1083,6 +1120,7 @@
 				408EE3EB28BBE4CA0012C642 /* ProfileView.swift in Sources */,
 				B686DE0A2894FB6700CACEC9 /* InvitationCodeViewController.swift in Sources */,
 				DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */,
+				DDAE9D77290296830021FBEA /* SettingViewController.swift in Sources */,
 				402A16E728C4C1BE00161820 /* BottomSheetViewController.swift in Sources */,
 				DDB380D328C08DEB001826B0 /* DeleteThunService.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,

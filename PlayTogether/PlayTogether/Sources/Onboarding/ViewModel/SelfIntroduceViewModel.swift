@@ -13,6 +13,7 @@ import RxMoya
 
 final class SelfIntroduceViewModel {
     private lazy var disposeBag = DisposeBag()
+    private let provider = MoyaProvider<SelfIntroduceService>()
     
     struct checkNicknameInput {
         var crewID: Int
@@ -20,7 +21,6 @@ final class SelfIntroduceViewModel {
     }
     
     func checkNickname(_ crewId: Int, _ nickName: String, completion: @escaping (Bool) -> Void) {
-        let provider = MoyaProvider<SelfIntroduceService>()
         provider.rx.request(.existingNicknameRequset(crewID: crewId, Nickname: nickName))
             .subscribe { result in
                 switch result {
@@ -33,5 +33,33 @@ final class SelfIntroduceViewModel {
                 }
             }
             .disposed(by: disposeBag)
+    }
+    
+    func registerUserProfile(
+        _ crewId: Int,
+        _ nickName: String,
+        _ description: String,
+        _ firstSubway: String,
+        _ secondSubway: String? = nil,
+        completion: @escaping (Bool) -> Void) {
+        provider.rx.request(
+            .registerUserSubwayStations(
+                crewID: crewId,
+                nickName: nickName,
+                description: description,
+                firstSubway: firstSubway,
+                secondSubway: secondSubway)
+        ).subscribe { result in
+            switch result {
+            case .success(let response):
+                guard let responseData = try? response.map(SelfIntroduceResponse.self)
+                else { return }
+                completion(responseData.status == 200)
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        .disposed(by: disposeBag)
     }
 }
