@@ -59,13 +59,6 @@ final class OpenedDetailThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
-    private let messageButton = UIButton().then {
-        $0.setTitle("쪽지", for: .normal)
-        $0.backgroundColor = .ptBlack02
-        $0.titleLabel?.font = .pretendardMedium(size: 12)
-        $0.layer.cornerRadius = 14
-    }
-    
     private let underLineView = UIView().then {
         $0.backgroundColor = .ptGray03
     }
@@ -197,7 +190,6 @@ final class OpenedDetailThunViewController: BaseViewController {
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
-        contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
         contentView.addSubview(grayLineView)
@@ -265,16 +257,10 @@ final class OpenedDetailThunViewController: BaseViewController {
             $0.centerY.equalTo(circleImageView.snp.centerY)
         }
         
-        messageButton.snp.makeConstraints {
-            $0.centerY.equalTo(nicknameLabel.snp.centerY)
-            $0.trailing.equalToSuperview().offset(-27)
-            $0.size.equalTo(CGSize(width: 52, height: 26))
-        }
-        
         underLineView.snp.makeConstraints {
             $0.top.equalTo(circleImageView.snp.bottom).offset(20)
             $0.leading.equalTo(circleImageView.snp.leading)
-            $0.trailing.equalTo(messageButton.snp.trailing).offset(7)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(1)
         }
         
@@ -366,9 +352,13 @@ final class OpenedDetailThunViewController: BaseViewController {
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
+                    
                     if let profileImage = item.profileImage {
                         cell.setupData(item.name, profileImage)
+                    } else {
+                        cell.setupNameData(item.name)
                     }
+                    
                     return cell
                 }
                 .disposed(by: self.disposeBag)
