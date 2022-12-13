@@ -59,6 +59,13 @@ final class OpenedDetailThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
+    private lazy var profileStackView = UIStackView(arrangedSubviews:[circleImageView,nicknameLabel]).then {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile(sender:)))
+        $0.spacing = 5
+        $0.isUserInteractionEnabled = true
+        $0.addGestureRecognizer(tap)
+    }
+    
     private let underLineView = UIView().then {
         $0.backgroundColor = .ptGray03
     }
@@ -190,6 +197,7 @@ final class OpenedDetailThunViewController: BaseViewController {
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
+        contentView.addSubview(profileStackView)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
         contentView.addSubview(grayLineView)
@@ -247,19 +255,17 @@ final class OpenedDetailThunViewController: BaseViewController {
         }
         
         circleImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
             $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(circleImageView.snp.trailing).offset(5)
-            $0.centerY.equalTo(circleImageView.snp.centerY)
+        profileStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(circleImageView.snp.bottom).offset(20)
-            $0.leading.equalTo(circleImageView.snp.leading)
+            $0.top.equalTo(profileStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(profileStackView.snp.leading)
             $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(1)
         }
@@ -429,6 +435,17 @@ final class OpenedDetailThunViewController: BaseViewController {
                 self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        memberTableView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    @objc func didTapProfile (sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
     }
 }
 

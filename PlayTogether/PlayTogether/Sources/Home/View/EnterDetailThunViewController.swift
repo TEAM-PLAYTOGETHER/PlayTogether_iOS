@@ -59,6 +59,13 @@ class EnterDetailThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
+    private lazy var profileStackView = UIStackView(arrangedSubviews:[circleImageView,nicknameLabel]).then {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile(sender:)))
+        $0.spacing = 5
+        $0.isUserInteractionEnabled = true
+        $0.addGestureRecognizer(tap)
+    }
+    
     private let messageButton = UIButton().then {
         $0.setTitle("쪽지", for: .normal)
         $0.backgroundColor = .ptBlack02
@@ -164,6 +171,7 @@ class EnterDetailThunViewController: BaseViewController {
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
+        contentView.addSubview(profileStackView)
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
@@ -202,14 +210,12 @@ class EnterDetailThunViewController: BaseViewController {
         }
         
         circleImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
             $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(circleImageView.snp.trailing).offset(5)
-            $0.centerY.equalTo(circleImageView.snp.centerY)
+        profileStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         messageButton.snp.makeConstraints {
@@ -219,8 +225,8 @@ class EnterDetailThunViewController: BaseViewController {
         }
         
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(circleImageView.snp.bottom).offset(20)
-            $0.leading.equalTo(circleImageView.snp.leading)
+            $0.top.equalTo(profileStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(profileStackView.snp.leading)
             $0.trailing.equalTo(messageButton.snp.trailing).offset(7)
             $0.height.equalTo(1)
         }
@@ -359,6 +365,10 @@ class EnterDetailThunViewController: BaseViewController {
                 self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    @objc func didTapProfile (sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
     }
 }
 
