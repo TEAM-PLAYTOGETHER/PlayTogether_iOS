@@ -87,4 +87,8 @@ extension DetailThunMemberTableViewCell {
         nameLabel.text = name
         circleImageView.loadProfileImage(url: profileImage)
     }
+    
+    func setupNameData(_ name: String) {
+        nameLabel.text = name
+    }
 }
