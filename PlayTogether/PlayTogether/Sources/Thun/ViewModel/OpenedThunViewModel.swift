@@ -71,7 +71,9 @@ final class OpenedThunViewModel {
                     if data.offset == 0 && data.totalCount == 0 {
                         self.isEmptyThun.onNext(true)
                     } else {
-                        if data.totalCount != 0 { completion(data.lightData) }
+                        if data.totalCount != 0 {
+                            self.isEmptyThun.onNext(false)
+                            completion(data.lightData) }
                     }
                 case let .failure(error):
                     print(error.localizedDescription)

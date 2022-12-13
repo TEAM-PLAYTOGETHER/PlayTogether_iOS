@@ -14,6 +14,8 @@ class LikedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private var viewModel = LikedThunViewModel()
     private var superView = UIViewController()
+    private var existViewModel = ExistThunViewModel()
+    private var submittedviewModel = SubmittedThunViewModel()
     
     private let emptyLabel = UILabel().then {
         $0.text = "아직 찜한 번개가 없어요!\n관심 있는 번개를 찜 해보세요"
@@ -80,29 +82,54 @@ class LikedThunViewController: BaseViewController {
                          let item = item
                    else { return UITableViewCell() }
                    
-                   cell.setupData(
-                    item.title,
-                    item.date ?? "날짜미정",
-                    item.time ?? "시간미정",
-                    item.peopleCnt ?? 0,
-                    item.place ?? "장소미정",
-                    item.lightMemberCnt,
-                    item.category,
-                    item.scpCnt
-                   )
+                   switch item.isOpened {
+                   case true:
+                       cell.setupData(
+                           item.title,
+                           item.date ?? "날짜미정",
+                           item.time ?? "시간미정",
+                           item.peopleCnt ?? 0,
+                           item.place ?? "장소미정",
+                           item.lightMemberCnt,
+                           item.category,
+                           item.scpCnt)
+                       cell.isUserInteractionEnabled = true
+                   case false:
+                       cell.setupClosedData(
+                           item.title,
+                           item.date ?? "날짜미정",
+                           item.time ?? "시간미정",
+                           item.peopleCnt ?? 0,
+                           item.place ?? "장소미정",
+                           item.lightMemberCnt,
+                           item.category,
+                           item.scpCnt)
+                       cell.isUserInteractionEnabled = false
+                   }
                    return cell
                }
                .disposed(by: disposeBag)
         
+        // MARK: - 본인이 만든 번개는 찜할 수 없으니 해당 번개에 참여중인지, 아닌지만 판단해서 뷰 띄워줌
         tableView.rx.modelSelected(ThunResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
-                guard let viewmodel = self?.viewModel else { return }
-                self?.superView.navigationController?.pushViewController(
-                    LikedDetailThunViewController(
-                        lightID: $0.lightID,
-                        superViewModel: viewmodel),
-                    animated: true)
+                let lightId = $0.lightID
+                self?.existViewModel.getExistThun(lightId: lightId, completion: { response in
+                    guard let viewmodel = self?.submittedviewModel else { return }
+                    switch response {
+                    case true:
+                        self?.superView.navigationController?.pushViewController(
+                            SubmittedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: viewmodel),
+                            animated: true)
+                    case false:
+                        self?.superView.navigationController?.pushViewController(
+                            EnterDetailThunViewController(lightID: lightId),
+                            animated: true)
+                    }
+                })
             })
             .disposed(by: disposeBag)
         

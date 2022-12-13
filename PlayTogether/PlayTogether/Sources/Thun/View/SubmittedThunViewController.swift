@@ -14,6 +14,8 @@ class SubmittedThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private var superView = UIViewController()
     private var viewModel = SubmittedThunViewModel()
+    private var openedViewModel = OpenedThunViewModel()
+    private var existViewModel = ExistThunViewModel()
     
     private let emptyLabel = UILabel().then {
         $0.text = "아직 신청한 번개가 없어요!\n관심 있는 번개를 신청해 보세요"
@@ -29,7 +31,7 @@ class SubmittedThunViewController: BaseViewController {
             forCellReuseIdentifier: ThunListTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
-        $0.rowHeight = 110
+        $0.rowHeight = (UIScreen.main.bounds.height/812) * 110
     }
     
     private let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
@@ -42,7 +44,7 @@ class SubmittedThunViewController: BaseViewController {
         super.viewWillAppear(animated)
         viewModel.currentPageCount = 1
         viewModel.fetchSubmittedThunList(pageSize: self.viewModel.maxSize, curpage: viewModel.currentPageCount) { response in
-            self.viewModel.submittedThunList.onNext(response.lightData)
+            self.viewModel.submittedThunList.onNext(response)
             self.viewModel.isLoading = false
         }
     }
@@ -76,16 +78,31 @@ class SubmittedThunViewController: BaseViewController {
                 ) as? ThunListTableViewCell,
                       let item = item
                 else { return UITableViewCell() }
-
-                cell.setupData(
-                    item.title,
-                    item.date ?? "날짜미정",
-                    item.time ?? "시간미정",
-                    item.peopleCnt ?? 0,
-                    item.place ?? "장소미정",
-                    item.lightMemberCnt,
-                    item.category,
-                    item.scpCnt)
+                
+                switch item.isOpened {
+                case true:
+                    cell.setupData(
+                        item.title,
+                        item.date ?? "날짜미정",
+                        item.time ?? "시간미정",
+                        item.peopleCnt ?? 0,
+                        item.place ?? "장소미정",
+                        item.lightMemberCnt,
+                        item.category,
+                        item.scpCnt)
+                    cell.isUserInteractionEnabled = true
+                case false:
+                    cell.setupClosedData(
+                        item.title,
+                        item.date ?? "날짜미정",
+                        item.time ?? "시간미정",
+                        item.peopleCnt ?? 0,
+                        item.place ?? "장소미정",
+                        item.lightMemberCnt,
+                        item.category,
+                        item.scpCnt)
+                    cell.isUserInteractionEnabled = false
+                }
                 return cell
             }
             .disposed(by: self.disposeBag)
@@ -94,11 +111,25 @@ class SubmittedThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let viewmodel = self?.viewModel else { return }
-                self?.superView.navigationController?.pushViewController(
-                    SubmittedDetailThunViewController(
-                        lightID: $0.lightID,
-                        superViewModel: viewmodel),
-                    animated: true)
+                guard let openviewmodel = self?.openedViewModel else { return }
+                let lightId = $0.lightID
+                self?.existViewModel.getExistThunOrganizer(lightId: lightId) { response in
+                    switch response {
+                    case "내가 만든 번개에 참여중 입니다.":
+                        self?.superView.navigationController?.pushViewController(
+                            OpenedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: openviewmodel),
+                            animated: true)
+                    case "내가 만든 번개는 아니지만, 해당 번개에 참여중입니다.":
+                        self?.superView.navigationController?.pushViewController(
+                            SubmittedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: viewmodel),
+                            animated: true)
+                    default: break
+                    }
+                }
             })
             .disposed(by: disposeBag)
         

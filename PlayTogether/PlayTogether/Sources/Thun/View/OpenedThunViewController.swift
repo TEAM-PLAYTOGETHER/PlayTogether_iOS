@@ -80,16 +80,30 @@ class OpenedThunViewController: BaseViewController {
                          let item = item
                    else { return UITableViewCell() }
                    
-                   cell.setupData(
-                    item.title,
-                    item.date ?? "날짜미정",
-                    item.time ?? "시간미정",
-                    item.peopleCnt ?? 0,
-                    item.place ?? "장소미정",
-                    item.lightMemberCnt,
-                    item.category,
-                    item.scpCnt
-                   )
+                   switch item.isOpened {
+                   case true:
+                       cell.setupData(
+                           item.title,
+                           item.date ?? "날짜미정",
+                           item.time ?? "시간미정",
+                           item.peopleCnt ?? 0,
+                           item.place ?? "장소미정",
+                           item.lightMemberCnt,
+                           item.category,
+                           item.scpCnt)
+                       cell.isUserInteractionEnabled = true
+                   case false:
+                       cell.setupClosedData(
+                           item.title,
+                           item.date ?? "날짜미정",
+                           item.time ?? "시간미정",
+                           item.peopleCnt ?? 0,
+                           item.place ?? "장소미정",
+                           item.lightMemberCnt,
+                           item.category,
+                           item.scpCnt)
+                       cell.isUserInteractionEnabled = false
+                   }
                    return cell
                }
                .disposed(by: disposeBag)

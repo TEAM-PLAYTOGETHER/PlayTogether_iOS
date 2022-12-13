@@ -112,9 +112,28 @@ extension ThunListTableViewCell {
     ){
         let dateStr = date.replacingOccurrences(of: "-", with: ".")
         titleLabel.text = title
+        titleLabel.textColor = .ptGreen
         subTitleLabel.text = "\(dateStr) \(place) \(time)"
+        subTitleLabel.textColor = .white
         personnelLabel.text = "인원 \(lightMemberCnt) / \(peopleCnt)"
         tagLabel.text = "\(category)"
         likeButton.setTitle("\(scpCnt)", for: .normal)
+        likeButton.setTitleColor(.white, for: .normal)
+    }
+    
+    func setupClosedData(
+        _ title: String,_ date: String,_ time: String,
+        _ peopleCnt: Int,_ place: String,_ lightMemberCnt: Int,_ category: String,_ scpCnt: Int
+    ){
+        let dateStr = date.replacingOccurrences(of: "-", with: ".")
+        titleLabel.text = "모집 마감된 번개입니다!"
+        titleLabel.textColor = .ptGray04
+        subTitleLabel.text = "\(dateStr) \(place) \(time) (마감)"
+        subTitleLabel.textColor = .ptGray03
+        personnelLabel.text = "인원 \(lightMemberCnt) / \(peopleCnt)"
+        tagLabel.text = "\(category)"
+        likeButton.setTitle("\(scpCnt)", for: .normal)
+        likeButton.setTitleColor(.ptGray02, for: .normal)
+        likeButton.setImage(.ptImage(.likeFilledGrayIcon), for: .normal)
     }
 }
