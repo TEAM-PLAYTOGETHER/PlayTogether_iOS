@@ -352,19 +352,6 @@ class EnterDetailThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThun(lightId: lightId ?? -1) { response in
-            switch self.existThunViewModel.isExistThun {
-            case true:
-                self.enterButton.isHidden = true
-                self.enterButton.snp.updateConstraints {
-                    $0.height.equalTo(0)
-                }
-                self.alertButton.isHidden = response ? true : false
-            case false:
-                self.enterButton.isHidden = false
-            }
-        }
-        
         alertButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
