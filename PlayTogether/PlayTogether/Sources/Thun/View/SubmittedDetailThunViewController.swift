@@ -16,6 +16,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
     private let superViewModel: SubmittedThunViewModel?
+    private let likeThunViewModel = LikeThunViewModel()
     var lightId: Int?
     var imageCount: Int?
     
@@ -29,14 +30,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let cancelButton = UIButton().then {
+        $0.isButtonEnableUI(check: true)
+        $0.setupBottomButtonUI(title: "신청 취소하기", size: 16)
+    }
+    
     private let backButton = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
     }
     
-    private let cancelButton = UIButton().then {
-        $0.setTitle("신청 취소", for: .normal)
-        $0.setTitleColor(.ptGreen, for: .normal)
-        $0.titleLabel?.font = .pretendardRegular(size: 16)
+    private let likeButton = UIButton().then {
+        $0.setImage(.ptImage(.navLikeDefaultIcon), for: .normal)
+        $0.setImage(.ptImage(.navLikeFilledGreenIcon), for: .selected)
     }
     
     private let scrollView = UIScrollView().then {
@@ -167,8 +172,9 @@ final class SubmittedDetailThunViewController: BaseViewController {
         tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
         view.addSubview(scrollView)
+        view.addSubview(cancelButton)
         
         scrollView.addSubview(contentView)
         
@@ -199,7 +205,15 @@ final class SubmittedDetailThunViewController: BaseViewController {
         let height = UIScreen.main.bounds.height/812
         
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        cancelButton.snp.makeConstraints {
+            $0.top.equalTo(scrollView.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(56 * UIScreen.main.bounds.height/812)
         }
         
         contentView.snp.makeConstraints {
@@ -324,7 +338,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
                     }
                     if let profileImage = item.profileImage {
                         cell.setupData(item.name, profileImage)
+                    } else {
+                        cell.setupNameData(item.name)
                     }
+                    
                     return cell
                 }
                 .disposed(by: self.disposeBag)
@@ -381,10 +398,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
-            self.cancelButton.isHidden = response ? true : false
-            self.alertButton.isHidden = response ? true : false
+        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
+            self.likeButton.isSelected = $0
         }
+        
+        likeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
+                    self?.likeButton.isSelected = !$0
+                }
+            })
+            .disposed(by: disposeBag)
         
         alertButton.rx.tap
             .asDriver()
