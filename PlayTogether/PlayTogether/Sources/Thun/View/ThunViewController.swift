@@ -49,6 +49,11 @@ final class ThunViewController: BaseViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     override func setupViews() {
         setupSuperView()
         segmentedControl.addTarget(

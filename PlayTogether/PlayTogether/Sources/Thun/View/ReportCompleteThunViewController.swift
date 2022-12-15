@@ -32,6 +32,11 @@ class ReportCompleteThunViewController: BaseViewController {
         $0.isButtonEnableUI(check: true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     override func setupViews() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: exiteButton)
