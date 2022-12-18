@@ -83,6 +83,8 @@
 		B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597228C48B9B00776008 /* CheckTermsView.swift */; };
 		B660597628C4A1D400776008 /* CheckTermsServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */; };
 		B661EA4728C4FDC7001E328D /* InputGenderBirthYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */; };
+		B669C91A294EAC0500958276 /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B669C919294EAC0500958276 /* OnboardingService.swift */; };
+		B669C91C294EAC1400958276 /* OnboardingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B669C91B294EAC1400958276 /* OnboardingResponse.swift */; };
 		B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */; };
 		B66EA07A28A7E5C800F1F723 /* SelfIntroduceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */; };
 		B66EA07C28A7E60B00F1F723 /* SubwayStationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */; };
@@ -240,6 +242,8 @@
 		B660597228C48B9B00776008 /* CheckTermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsView.swift; sourceTree = "<group>"; };
 		B660597528C4A1D400776008 /* CheckTermsServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTermsServiceViewModel.swift; sourceTree = "<group>"; };
 		B661EA4628C4FDC7001E328D /* InputGenderBirthYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewController.swift; sourceTree = "<group>"; };
+		B669C919294EAC0500958276 /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
+		B669C91B294EAC1400958276 /* OnboardingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingResponse.swift; sourceTree = "<group>"; };
 		B66EA07728A7DE7400F1F723 /* SelfIntroduceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceService.swift; sourceTree = "<group>"; };
 		B66EA07928A7E5C800F1F723 /* SelfIntroduceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroduceViewModel.swift; sourceTree = "<group>"; };
 		B66EA07B28A7E60B00F1F723 /* SubwayStationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStationResponse.swift; sourceTree = "<group>"; };
@@ -773,6 +777,8 @@
 				B6A612FE28A9F36600688DA2 /* CheckNicknameResponse.swift */,
 				B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */,
 				B6DFD6DB294448C700561872 /* SelfIntroduceResponse.swift */,
+				B669C919294EAC0500958276 /* OnboardingService.swift */,
+				B669C91B294EAC1400958276 /* OnboardingResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1036,6 +1042,7 @@
 				40EE01C528BFD46700DE46C8 /* ChattingRoomViewModel.swift in Sources */,
 				B6C543FE28939E2B00E86736 /* CreateMeetViewModel.swift in Sources */,
 				40EE01BE28BFC66B00DE46C8 /* ChattingRoomListResponse.swift in Sources */,
+				B669C91A294EAC0500958276 /* OnboardingService.swift in Sources */,
 				40EE01B928BF723100DE46C8 /* SocketIOManger.swift in Sources */,
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */,
@@ -1109,6 +1116,7 @@
 				B68DA3B3289AAB110006E9E8 /* PopUpViewController.swift in Sources */,
 				DD73C2BE28AD5DA7001DEC1A /* DetailThunMemberTableViewCell.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
+				B669C91C294EAC1400958276 /* OnboardingResponse.swift in Sources */,
 				B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */,
 				B69C591728DC00A5009517AF /* PreferredStationCollectionViewCell.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,

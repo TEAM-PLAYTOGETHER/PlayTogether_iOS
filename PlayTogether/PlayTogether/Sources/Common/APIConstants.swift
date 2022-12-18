@@ -42,6 +42,7 @@ struct APIConstants {
     static let getEatGoDoThunList = "light/\(crewID)"
     static let getSearchThun = "light/\(crewID)/search"
     static let postReportThun = "light/report"
+    static let crewList = "/crew/list"
     
     // login
     static let kakaoLogin = "/auth/kakao-login"

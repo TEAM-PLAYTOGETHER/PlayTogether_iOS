@@ -9,8 +9,6 @@ import UIKit
 import RxSwift
 
 class OnboardingViewController: BaseViewController {
-    private lazy var disposeBag = DisposeBag()
-    
     private let progressbar = UIProgressView().then {
         $0.progress = 0.25
         $0.progressTintColor = .ptGreen
@@ -55,15 +53,15 @@ class OnboardingViewController: BaseViewController {
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: CheckTermsServiceViewController.self, action: nil)
 
     private let viewModel = OnboardingViewModel()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    private lazy var disposeBag = DisposeBag()
+    var isRedownloadUser: Bool = false
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         configureNaigationvBar()
+        guard isRedownloadUser else { return }
+        
     }
     
     private func configureNaigationvBar() {
@@ -133,7 +131,7 @@ class OnboardingViewController: BaseViewController {
 
 extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return isRedownloadUser ? 2 :
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
