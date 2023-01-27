@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "8dd85aee02e39dd280c75eef88ffdb86eed4b07b",
-        "version" : "5.6.2"
+        "revision" : "78424be314842833c04bc3bef5b72e85fff99204",
+        "version" : "5.6.4"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
         "branch" : "master",
-        "revision" : "8a68442660d411031888e6e42c4f628933f62401"
+        "revision" : "e1fc9d3edee8aa1a79da4c332d4442529df47f4b"
       }
     },
     {
@@ -42,7 +42,7 @@
       "location" : "https://github.com/ReactiveX/RxSwift",
       "state" : {
         "branch" : "main",
-        "revision" : "e0ab8c4e18baf6679a65b325155923276b832687"
+        "revision" : "91a36920b1ec069004fef9dc41b7c5dbcaa5fffe"
       }
     },
     {
@@ -51,7 +51,7 @@
       "location" : "https://github.com/SnapKit/SnapKit",
       "state" : {
         "branch" : "develop",
-        "revision" : "07c5d1f6044701d97e94dc11157259e8811977be"
+        "revision" : "58320fe80522414bf3a7e24c88123581dc586752"
       }
     },
     {
