@@ -71,6 +71,7 @@
 		40EE01C728BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE01C628BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift */; };
 		40F7FE2828BF497A00B58A4C /* ChattingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */; };
 		48C57D10299494420026BD79 /* CreateMeetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C57D0F299494420026BD79 /* CreateMeetService.swift */; };
+		48C57D12299496580026BD79 /* CreateMeetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C57D11299496580026BD79 /* CreateMeetResponse.swift */; };
 		B6105B7F28AC8E9000DB4BAC /* AddSubwayStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */; };
 		B616A80F2886A21C00E1ABCF /* OnboardingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */; };
 		B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */; };
@@ -230,6 +231,7 @@
 		40EE01C628BFD4B500DE46C8 /* ChattingRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingRoomTableViewCell.swift; sourceTree = "<group>"; };
 		40F7FE2728BF497A00B58A4C /* ChattingListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListTableViewCell.swift; sourceTree = "<group>"; };
 		48C57D0F299494420026BD79 /* CreateMeetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetService.swift; sourceTree = "<group>"; };
+		48C57D11299496580026BD79 /* CreateMeetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetResponse.swift; sourceTree = "<group>"; };
 		B6105B7E28AC8E9000DB4BAC /* AddSubwayStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubwayStationViewController.swift; sourceTree = "<group>"; };
 		B616A80E2886A21C00E1ABCF /* OnboardingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataModel.swift; sourceTree = "<group>"; };
 		B616A8142886A96300E1ABCF /* CreateMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeetViewController.swift; sourceTree = "<group>"; };
@@ -776,6 +778,7 @@
 				B6B4B10228C1AE3C009AA0DB /* FetchMeetingService.swift */,
 				B6DFD6DB294448C700561872 /* SelfIntroduceResponse.swift */,
 				48C57D0F299494420026BD79 /* CreateMeetService.swift */,
+				48C57D11299496580026BD79 /* CreateMeetResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1015,6 +1018,7 @@
 				408EE3E928BAB2510012C642 /* MyPageViewModel.swift in Sources */,
 				DDAE9DBB290E591C0021FBEA /* DeleteAccountViewController.swift in Sources */,
 				DDB380D528C08E73001826B0 /* DeleteThunViewModel.swift in Sources */,
+				48C57D12299496580026BD79 /* CreateMeetResponse.swift in Sources */,
 				402A16EC28C4D49100161820 /* CompleteURLLoggerPlugin.swift in Sources */,
 				DDB380ED28C27C86001826B0 /* CreateThunResponse.swift in Sources */,
 				40727C1628A1B635007E5835 /* UIResponder+Extension.swift in Sources */,
