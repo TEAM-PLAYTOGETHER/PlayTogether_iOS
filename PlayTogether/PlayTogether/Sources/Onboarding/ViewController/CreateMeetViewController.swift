@@ -177,6 +177,11 @@ class CreateMeetViewController: BaseViewController {
         nextButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
+                guard OnboardingDataModel.shared.madeCrew == false else {
+                    self?.navigationController?.pushViewController(SelfIntroduceViewController(), animated: true)
+                    return
+                }
+                
                 guard let title = self?.titleTextField.text,
                       let introduce = self?.introduceTextField.text
                 else { return }
@@ -190,10 +195,11 @@ class CreateMeetViewController: BaseViewController {
                     jwt: UserDefaults.standard.string(forKey: "accessToken") ?? ""
                 )
                 self?.viewModel.createMeetRequest(requestInput) { response in
-                    print("DEBUG: from ViewController → \(response)")
+                    OnboardingDataModel.shared.crewId = response.data?.id
+                    OnboardingDataModel.shared.madeCrew = response.success
+                    self?.navigationController?.pushViewController(SelfIntroduceViewController(), animated: true)
                 }
-                
-                self?.navigationController?.pushViewController(SelfIntroduceViewController(), animated: true)
+                // FIXME: 동아리 만드는 오류 팝업 띄어주기 에러 참조
             })
             .disposed(by: disposeBag)
         

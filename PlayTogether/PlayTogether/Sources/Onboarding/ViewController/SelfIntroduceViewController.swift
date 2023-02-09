@@ -387,7 +387,7 @@ class SelfIntroduceViewController: BaseViewController {
                 
                 let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
                 self.viewModel.registerUserProfile(
-                    33,           // TODO: 추후 동아리 번호 받아올 예정
+                    OnboardingDataModel.shared.crewId ?? -1,
                     nickname,
                     briefIntroduceText,
                     self.registerUserStations.value.first!,
