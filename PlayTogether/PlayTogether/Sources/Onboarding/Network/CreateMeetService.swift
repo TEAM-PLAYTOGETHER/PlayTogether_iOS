@@ -32,7 +32,7 @@ extension CreateMeetService: TargetType {
                 "crewName": crewName,
                 "description": description
             ]
-            return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
+            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
         }
         
     }
