@@ -142,6 +142,11 @@ private extension LogInViewController {
         ) {
             guard $0.status == 200 else { return }
             let loggedInUserInfo = $0.data
+            
+            UserDefaults.standard.set(loggedInUserInfo?.accessToken, forKey: "accessToken")
+            UserDefaults.standard.set(loggedInUserInfo?.refreshToken, forKey: "refreshToken")
+            UserDefaults.standard.set(loggedInUserInfo?.userName, forKey: "userName")
+            
             guard loggedInUserInfo?.isSignup == true else {
                 guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
                         as? SceneDelegate else { return }
@@ -150,10 +155,6 @@ private extension LogInViewController {
                 )
                 return
             }
-            // TODO: 키체인 변경 예정
-            UserDefaults.standard.set(loggedInUserInfo?.accessToken, forKey: "accessToken")
-            UserDefaults.standard.set(loggedInUserInfo?.refreshToken, forKey: "refreshToken")
-            UserDefaults.standard.set(loggedInUserInfo?.userName, forKey: "userName")
             
             guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
                     as? SceneDelegate else { return }

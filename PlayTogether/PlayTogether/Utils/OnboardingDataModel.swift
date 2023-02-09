@@ -16,5 +16,8 @@ class OnboardingDataModel {
     var introduceSelfMessage: String?
     var preferredSubway: [String]?
     
+    var crewId: Int?
+    var madeCrew: Bool?
+    
     private init() {}
 }
