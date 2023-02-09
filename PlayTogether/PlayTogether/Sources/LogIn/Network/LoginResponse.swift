@@ -9,7 +9,7 @@ struct LoginResponse: Codable {
     let status: Int
     let success: Bool
     let message: String
-    let data: LoginUserInfo
+    let data: LoginUserInfo?
 }
 
 struct LoginUserInfo: Codable {

@@ -10,7 +10,7 @@ import Foundation
 
 enum LoginService {
     case kakaoLoginReuest(accessToken: String, fcmToken: String)
-    case appleLoginReuset
+    case appleLoginReuset(accessToken: String, fcmToken: String)
 }
 
 extension LoginService: TargetType {
@@ -45,11 +45,11 @@ extension LoginService: TargetType {
                 "fcmToken": fcmToken
             ]
             
-        case .appleLoginReuset:
+        case .appleLoginReuset(let accessToken, let fcmToken):
             return [
                 "Content-Type": "application/json",
-                "accessToken" : "",
-                "fcmToken": ""
+                "accessToken" : accessToken,
+                "fcmToken": fcmToken
             ]
         }
     }
