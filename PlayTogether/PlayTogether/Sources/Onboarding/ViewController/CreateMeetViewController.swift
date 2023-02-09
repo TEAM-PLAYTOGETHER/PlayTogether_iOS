@@ -177,10 +177,21 @@ class CreateMeetViewController: BaseViewController {
         nextButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                guard let title = self?.titleTextField.text else { return }
-                guard let introduce = self?.introduceTextField.text else { return }
+                guard let title = self?.titleTextField.text,
+                      let introduce = self?.introduceTextField.text
+                else { return }
+                
                 OnboardingDataModel.shared.meetingTitle = title
                 OnboardingDataModel.shared.introduceMessage = introduce
+                
+                let requestInput = CreateMeetViewModel.CreateMeetInput(
+                    crewName: title,
+                    description: introduce,
+                    jwt: UserDefaults.standard.string(forKey: "accessToken") ?? ""
+                )
+                self?.viewModel.createMeetRequest(requestInput) { response in
+                    print("DEBUG: from ViewController → \(response)")
+                }
                 
                 self?.navigationController?.pushViewController(SelfIntroduceViewController(), animated: true)
             })
