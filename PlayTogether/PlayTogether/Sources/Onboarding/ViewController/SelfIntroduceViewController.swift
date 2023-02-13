@@ -107,9 +107,11 @@ class SelfIntroduceViewController: BaseViewController {
     }
     
     private lazy var layout = UICollectionViewFlowLayout().then {
-        let width = 123 * (UIScreen.main.bounds.width / 375)    // TODO: 지하철 데이터를 받아오면 해당 width 동적으로 처리할 예정
-        let height = 32 * (UIScreen.main.bounds.height / 812)
-        $0.itemSize = CGSize(width: width, height: height)
+//        let width = 123 * (UIScreen.main.bounds.width / 375)    // TODO: 지하철 데이터를 받아오면 해당 width 동적으로 처리할 예정
+//        let height = 32 * (UIScreen.main.bounds.height / 812)
+//        $0.itemSize = CGSize(width: width, height: height)
+        $0.scrollDirection = .horizontal
+        $0.minimumInteritemSpacing = 10.0
     }
 
     private lazy var subwayStationCollectionView = UICollectionView(
@@ -117,7 +119,12 @@ class SelfIntroduceViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
+        $0.contentInset = .zero
         $0.register(SubwayStationCollectionViewCell.self, forCellWithReuseIdentifier: "SubwayStationCollectionViewCell")
+        $0.register(PreferredStationCollectionViewCell.self, forCellWithReuseIdentifier: "PreferredStationCollectionViewCell")
+        
+        $0.delegate = self
+        $0.dataSource = self
     }
     
     private lazy var nextButton = UIButton().then {
@@ -129,7 +136,7 @@ class SelfIntroduceViewController: BaseViewController {
     
     private var isEnableNickname = BehaviorRelay<Bool>(value: false)
     private var isFillBriefIntroduceText = BehaviorRelay<Bool>(value: false)
-    private var registerUserStations = BehaviorRelay<[String]>(value: [])
+    private var registerUserStations = BehaviorRelay<[String]>(value: ["선택 사항 없음"])
     private var ableNickname: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
@@ -390,8 +397,8 @@ class SelfIntroduceViewController: BaseViewController {
                     OnboardingDataModel.shared.crewId ?? -1,
                     nickname,
                     briefIntroduceText,
-                    self.registerUserStations.value.first!,
-                    self.registerUserStations.value.last
+                    self.registerUserStations.value.first ?? "",
+                    self.registerUserStations.value.last ?? ""
                 ) {
                     guard $0 == true else { return }
                     self.navigationController?.pushViewController(controller, animated: true)
@@ -404,6 +411,43 @@ class SelfIntroduceViewController: BaseViewController {
 
 extension SelfIntroduceViewController: AddSubwayStationDelegate {
     func registerSubwayStation(_ stations: [String]) {
-        registerUserStations.accept(stations)
+        // FIXME: - 이전 데이터를 유지시킬지 확인하기
+        registerUserStations.accept(stations.isEmpty ? ["선택 사항 없음"] : stations)
+        subwayStationCollectionView.reloadData()
+    }
+}
+
+extension SelfIntroduceViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return registerUserStations.value.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard !registerUserStations.value.contains("선택 사항 없음") else {
+            let emptyCell = self.subwayStationCollectionView.dequeueReusableCell(
+                withReuseIdentifier: "SubwayStationCollectionViewCell",
+                for: indexPath
+            ) as! SubwayStationCollectionViewCell
+            emptyCell.isUserInteractionEnabled = false
+            return emptyCell
+        }
+        
+        let row = indexPath.row
+        let cell = self.subwayStationCollectionView.dequeueReusableCell(
+            withReuseIdentifier: "PreferredStationCollectionViewCell",
+            for: indexPath
+        ) as! PreferredStationCollectionViewCell
+        cell.setupData(registerUserStations.value[row], row)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let fontWidth = (registerUserStations.value[indexPath.row] as NSString).size(
+            withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
+        ).width
+        let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)
+        
+        return CGSize(width: cellWidth, height: 32)
     }
 }
