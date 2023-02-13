@@ -260,7 +260,7 @@ class SelfIntroduceViewController: BaseViewController {
         subwayStationCollectionView.snp.makeConstraints {
             $0.top.equalTo(preferredSubwayStationLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalTo(nextButton.snp.top).offset(75)
+            $0.height.equalTo(32)
         }
         
         nextButton.snp.makeConstraints {
