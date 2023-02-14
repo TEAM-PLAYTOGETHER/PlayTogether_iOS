@@ -15,7 +15,9 @@ import RxMoya
 final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
     var subwayStationList = PublishSubject<[String]>()
+    var subwayStationInfoList = PublishSubject<[SubwayList]>()
     private var stationNameArray = [String]()
+    private var stationsInfoArray = [SubwayList]()
     
     struct RegularExpressionInput {
         var SubwayStationTitle: Observable<String>
@@ -50,6 +52,7 @@ final class AddSubwayStationViewModel {
                     guard let data = responseData?.searchSTNBySubwayLineInfo.row else { return }
                     for index in 0..<data.count {
                         self?.stationNameArray.append(data[index].stationName)
+                        self?.stationsInfoArray.append(data[index])
                     }
                     
                 case let .failure(error):
@@ -65,6 +68,9 @@ final class AddSubwayStationViewModel {
                 let text = $0.lowercased()
                 let filterData = self?.stationNameArray.filter { $0.lowercased().hasPrefix(text) }
                 self?.subwayStationList.onNext(filterData!.uniqued())
+                
+                let infoFilterData = self?.stationsInfoArray.filter { $0.stationName.lowercased().hasPrefix(text) }
+                self?.subwayStationInfoList.onNext(infoFilterData ?? [SubwayList]())
             })
             .disposed(by: disposeBag)
     }
