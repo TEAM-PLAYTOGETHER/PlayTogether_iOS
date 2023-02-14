@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sub_인천2.png",
+      "filename" : "sub_인천2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "sub_인천2@2x.png",
+      "filename" : "sub_인천2@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "sub_인천2@3x.png",
+      "filename" : "sub_인천2@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

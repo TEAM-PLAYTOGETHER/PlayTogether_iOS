@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sub_우이신설.png",
+      "filename" : "sub_우이신설.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "sub_우이신설@2x.png",
+      "filename" : "sub_우이신설@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "sub_우이신설@3x.png",
+      "filename" : "sub_우이신설@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sub_공항.png",
+      "filename" : "sub_공항.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "sub_공항@2x.png",
+      "filename" : "sub_공항@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "sub_공항@3x.png",
+      "filename" : "sub_공항@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

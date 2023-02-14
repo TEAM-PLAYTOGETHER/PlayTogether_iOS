@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sub_경강.png",
+      "filename" : "sub_경강.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "sub_경강@2x.png",
+      "filename" : "sub_경강@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "sub_경강@3x.png",
+      "filename" : "sub_경강@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
