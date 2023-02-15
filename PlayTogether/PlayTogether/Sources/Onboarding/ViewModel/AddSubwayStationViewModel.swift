@@ -15,7 +15,6 @@ import RxMoya
 final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
     var subwayStationList = PublishSubject<[String]>()
-    var subwayStationInfoList = PublishSubject<[SubwayList]>()
     private var stationNameArray = [String]()
     private var stationsInfoArray = [SubwayList]()
     
@@ -68,9 +67,6 @@ final class AddSubwayStationViewModel {
                 let text = $0.lowercased()
                 let filterData = self?.stationNameArray.filter { $0.lowercased().hasPrefix(text) }
                 self?.subwayStationList.onNext(filterData!.uniqued())
-                
-                let infoFilterData = self?.stationsInfoArray.filter { $0.stationName.lowercased().hasPrefix(text) }
-                self?.subwayStationInfoList.onNext(infoFilterData ?? [SubwayList]())
             })
             .disposed(by: disposeBag)
     }
@@ -82,9 +78,12 @@ final class AddSubwayStationViewModel {
                                                options: .caseInsensitive) else { return NSMutableAttributedString(string: "") }
         textIndex = targetText.distance(from: targetText.startIndex,
                                         to: textRange.lowerBound)
-        attributeString.addAttribute(.foregroundColor, value: UIColor.link,
-                                                       range: NSRange(location: textIndex,
-                                                                      length: inputString.count))
+        attributeString.addAttribute(
+            .foregroundColor,
+            value: UIColor.link,
+            range: NSRange(location: textIndex,
+                           length: inputString.count)
+        )
         return attributeString
     }
 }

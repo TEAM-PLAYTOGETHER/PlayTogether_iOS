@@ -207,26 +207,7 @@ class AddSubwayStationViewController: BaseViewController {
         
         viewModel.filterSubwayStationList(input: regularExpressionInput)
         
-//        viewModel.subwayStationList
-//            .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
-//                guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
-//                    withIdentifier: "SubwayStationListTableViewCell",
-//                    for: IndexPath(row: row, section: 0)
-//                ) as? SubwayStationListTableViewCell
-//                else { return UITableViewCell() }
-//
-//                guard self.inputSubwayStationTextField.text?.isEmpty == false else {
-//                    self.subwayStationListTalbeView.isHidden = true
-//                    return UITableViewCell()
-//                }
-//                self.subwayStationListTalbeView.isHidden = false
-//                let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
-//                cell.setupData(matchingString)
-//                return cell
-//            }
-//            .disposed(by: disposeBag)
-        
-        viewModel.subwayStationInfoList
+        viewModel.subwayStationList
             .bind(to: self.subwayStationListTalbeView.rx.items) { _, row, item -> UITableViewCell in
                 guard let cell = self.subwayStationListTalbeView.dequeueReusableCell(
                     withIdentifier: "SubwayStationListTableViewCell",
@@ -239,14 +220,9 @@ class AddSubwayStationViewController: BaseViewController {
                     return UITableViewCell()
                 }
                 self.subwayStationListTalbeView.isHidden = false
-                let matchingString = self.viewModel.makeAttributeString(
-                    item.stationName,
-                    self.inputSubwayStationTextField.text!
-                )
-                cell.setupData(
-                    matchingString,
-                    item.lineNum
-                )
+                let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
+                cell.setupData(matchingString)
+                
                 return cell
             }
             .disposed(by: disposeBag)
