@@ -49,7 +49,7 @@ private extension SubwayStationListTableViewCell {
         
         stationTypeImageView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(12)
-            $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(20)
         }
     }
 }

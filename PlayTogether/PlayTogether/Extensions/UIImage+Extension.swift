@@ -96,11 +96,11 @@ enum ImageCase: String {
     case gimpogoldLine = "sub_GimpoGold"
     case gyeongchunLine = "sub_Gyeongchun"
     case gyeonggangLine = "sub_Gyeonggang"
+    
     case incheon1Line = "sub_Incheon1"
     case incheon2Line = "sub_Incheon2"
     case shinbundangLine = "sub_Shinbundang"
     case sinlimLine = "sub_Sinlim"
-    case suinbundangLine = "sub_Suinbundang"
     case uijeongbuLine = "sub_Uijeongbu"
     case westseaLine = "sub_WestSea"
     case wooishinseolLine = "sub_WooiShinseol"

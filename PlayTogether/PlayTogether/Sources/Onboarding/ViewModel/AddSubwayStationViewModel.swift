@@ -16,6 +16,7 @@ final class AddSubwayStationViewModel {
     private lazy var disposeBag = DisposeBag()
     var subwayStationList = PublishSubject<[String]>()
     private var stationNameArray = [String]()
+    private var stationsInfoArray = [SubwayList]()
     
     struct RegularExpressionInput {
         var SubwayStationTitle: Observable<String>
@@ -50,6 +51,7 @@ final class AddSubwayStationViewModel {
                     guard let data = responseData?.searchSTNBySubwayLineInfo.row else { return }
                     for index in 0..<data.count {
                         self?.stationNameArray.append(data[index].stationName)
+                        self?.stationsInfoArray.append(data[index])
                     }
                     
                 case let .failure(error):
@@ -76,9 +78,12 @@ final class AddSubwayStationViewModel {
                                                options: .caseInsensitive) else { return NSMutableAttributedString(string: "") }
         textIndex = targetText.distance(from: targetText.startIndex,
                                         to: textRange.lowerBound)
-        attributeString.addAttribute(.foregroundColor, value: UIColor.link,
-                                                       range: NSRange(location: textIndex,
-                                                                      length: inputString.count))
+        attributeString.addAttribute(
+            .foregroundColor,
+            value: UIColor.link,
+            range: NSRange(location: textIndex,
+                           length: inputString.count)
+        )
         return attributeString
     }
 }
