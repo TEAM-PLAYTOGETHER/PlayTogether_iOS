@@ -72,9 +72,9 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         ) as? MyPageMenuTableViewCell else { return UITableViewCell() }
         
         switch indexPath.section {
-        case 0: cell.setupCell(menuName: viewModel.firstMenuList[indexPath.row])
-        case 1: cell.setupCell(menuName: viewModel.secondMenuList[indexPath.row])
-        case 2: cell.setupCell(menuName: viewModel.thirdMenuList[indexPath.row])
+        case 0: cell.setupCell(menuName: viewModel.firstSectionList[indexPath.row])
+        case 1: cell.setupCell(menuName: viewModel.secondSectionList[indexPath.row])
+        case 2: cell.setupCell(menuName: viewModel.thirdSectionList[indexPath.row])
         default: break
         }
         return cell
@@ -101,6 +101,11 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 1 {
                 navigationController?.pushViewController(ManageAccountViewController(), animated: true)
             }
+        case 1:
+            guard let url = URL(string: viewModel.url[indexPath.row]) else {return}
+            UIApplication.shared.open(url, options: [:])
+        case 2:
+            if indexPath.row == 0 {}
         default: break
         }
     }
