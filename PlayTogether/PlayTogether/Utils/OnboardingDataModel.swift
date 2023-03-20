@@ -17,7 +17,7 @@ class OnboardingDataModel {
     var preferredSubway: [String]?
     
     var crewId: Int?
-    var madeCrew: Bool?
+    var madeCrew: Bool = false
     
     private init() {}
 }
