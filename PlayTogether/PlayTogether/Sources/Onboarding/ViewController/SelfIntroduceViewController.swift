@@ -281,6 +281,8 @@ class SelfIntroduceViewController: BaseViewController {
         existingNicknameButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
+                self?.view.endEditing(true)
+                
                 guard let nickname = self?.inputNicknameTextField.text,
                       let crewId = OnboardingDataModel.shared.crewId
                 else { return }
