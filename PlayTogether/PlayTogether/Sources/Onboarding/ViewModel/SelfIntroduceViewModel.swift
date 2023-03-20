@@ -25,9 +25,7 @@ final class SelfIntroduceViewModel {
             .subscribe { result in
                 switch result {
                 case .success(let response):
-                    print(response)
-                    let statusCode = response.statusCode
-                    statusCode == 200 ? completion(true) : completion(false)
+                    completion(response.statusCode == 200)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
