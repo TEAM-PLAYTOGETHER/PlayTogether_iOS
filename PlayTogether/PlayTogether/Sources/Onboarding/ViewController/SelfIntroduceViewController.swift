@@ -369,7 +369,7 @@ class SelfIntroduceViewController: BaseViewController {
             isEnableNickname.asDriver(),
             isFillBriefIntroduceText.asDriver(),
             registerUserStationsRelay.asDriver()
-        ) { $0 && $1 && !$2.isEmpty }
+        ) { $0 && $1 && !$2.contains("선택 사항 없음") && $2.count > 0 }
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.changeNextButtonUI(self.nextButton, $0)
