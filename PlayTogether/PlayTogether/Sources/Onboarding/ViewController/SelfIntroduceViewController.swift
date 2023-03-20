@@ -281,8 +281,10 @@ class SelfIntroduceViewController: BaseViewController {
         existingNicknameButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                guard let nickname = self?.inputNicknameTextField.text else { return }
-                self?.viewModel.checkNickname(102, nickname) {  // TODO: 추후 동아리 번호 받아올 예정
+                guard let nickname = self?.inputNicknameTextField.text,
+                      let crewId = OnboardingDataModel.shared.crewId
+                else { return }
+                self?.viewModel.checkNickname(crewId, nickname) {
                     self?.isEnableNickname.accept($0)
                     self?.noticeExistingNicknameLabel.isHidden = false
                     self?.noticeExistingNicknameLabel.text = $0 ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
