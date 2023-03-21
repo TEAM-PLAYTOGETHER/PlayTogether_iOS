@@ -144,28 +144,12 @@ class SelfIntroduceViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureNavbar()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    private func configureNavbar() {
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
-    private func changeNextButtonUI(_ button: UIButton , _ status: Bool) {
-        guard status == true else {
-            button.isEnabled = false
-            button.backgroundColor = .ptGray03
-            button.layer.borderColor = UIColor.ptGray02.cgColor
-            return
-        }
-        button.isEnabled = true
-        button.backgroundColor = .ptGreen
-        button.layer.borderColor = UIColor.ptBlack01.cgColor
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     override func setupViews() {
@@ -368,9 +352,8 @@ class SelfIntroduceViewController: BaseViewController {
         
         Driver.combineLatest(
             isEnableNickname.asDriver(),
-            isFillBriefIntroduceText.asDriver(),
-            registerUserStationsRelay.asDriver()
-        ) { $0 && $1 && !$2.contains("선택 사항 없음") && $2.count > 0 }
+            isFillBriefIntroduceText.asDriver()
+        ) { $0 && $1 }
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.changeNextButtonUI(self.nextButton, $0)
@@ -409,6 +392,21 @@ class SelfIntroduceViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
     }
+}
+
+// MARK: - Custom helper
+private extension SelfIntroduceViewController {
+    func changeNextButtonUI(_ button: UIButton , _ status: Bool) {
+        guard status == true else {
+            button.isEnabled = false
+            button.backgroundColor = .ptGray03
+            button.layer.borderColor = UIColor.ptGray02.cgColor
+            return
+        }
+        button.isEnabled = true
+        button.backgroundColor = .ptGreen
+        button.layer.borderColor = UIColor.ptBlack01.cgColor
+    }
     
     func createMeetRequest(_ response: Single<Response>) {
         response.subscribe(onSuccess: { [weak self] response in
@@ -429,6 +427,7 @@ class SelfIntroduceViewController: BaseViewController {
 }
 
 
+// MARK: - Etc delegate
 extension SelfIntroduceViewController: AddSubwayStationDelegate {
     func registerSubwayStation(_ stations: [String]) {
         registerUserStationsArray = (stations.isEmpty ? ["선택 사항 없음"] : stations)
