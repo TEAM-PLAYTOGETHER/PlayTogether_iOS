@@ -38,26 +38,16 @@ final class SelfIntroduceViewModel {
         _ nickName: String,
         _ description: String,
         _ firstSubway: String,
-        _ secondSubway: String? = nil,
-        completion: @escaping (Bool) -> Void) {
-        provider.rx.request(
+        _ secondSubway: String? = nil
+    ) -> Single<Response> {
+        let singleResponse: Single<Response> = provider.rx.request(
             .registerUserSubwayStations(
                 crewID: crewId,
                 nickName: nickName,
                 description: description,
                 firstSubway: firstSubway,
                 secondSubway: secondSubway)
-        ).subscribe { result in
-            switch result {
-            case .success(let response):
-                guard let responseData = try? response.map(SelfIntroduceResponse.self)
-                else { return }
-                completion(responseData.status == 200)
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        .disposed(by: disposeBag)
+        )
+        return singleResponse
     }
 }
