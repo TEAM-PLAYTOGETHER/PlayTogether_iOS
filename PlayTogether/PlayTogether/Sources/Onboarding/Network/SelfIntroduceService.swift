@@ -15,7 +15,7 @@ enum SelfIntroduceService {
         crewID: Int,
         nickName: String,
         description: String,
-        firstSubway: String,
+        firstSubway: String? = nil,
         secondSubway: String? = nil
     )
 }
@@ -69,20 +69,30 @@ extension SelfIntroduceService: TargetType {
             return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
             
         case .registerUserSubwayStations(_, let nickName, let description, let firstSubway, let secondSubway):
-            guard let secondSubway = secondSubway else {
-                let param: [String : Any] = [
-                    "nickname" : nickName,
-                    "description" : description,
-                    "firstSubway" : firstSubway
-                ]
+            var param: [String:Any] = [
+                "nickname" : nickName,
+                "description" : description
+            ]
+            
+            guard let firstSubway = firstSubway else {
                 return .requestParameters(parameters: param, encoding: JSONEncoding.default)
             }
-            let param: [String : Any] = [
+            param = [
+                "nickname" : nickName,
+                "description" : description,
+                "firstSubway" : firstSubway
+            ]
+
+            guard let secondSubway = secondSubway else {
+                return .requestParameters(parameters: param, encoding: JSONEncoding.default)
+            }
+            param = [
                 "nickname" : nickName,
                 "description" : description,
                 "firstSubway" : firstSubway,
                 "secondSubway" : secondSubway
             ]
+            
             return .requestParameters(parameters: param, encoding: JSONEncoding.default)
         }
     }
