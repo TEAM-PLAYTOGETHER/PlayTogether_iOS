@@ -41,13 +41,20 @@ extension SelfIntroduceService: TargetType {
             return APIConstants.existingNickname + "/\(crewID)/nickname"
             
         case .registerUserSubwayStations(let crewID, _, _, _, _):
-            return APIConstants.putRegisterUserSubway + "\(crewID)"
+            return APIConstants.putRegisterUserSubway + "/\(crewID)"
             
         }
     }
     
     var method: Moya.Method {
-        return .get
+        switch self {
+        case .searchStationRequeset,
+             .existingNicknameRequset:
+            return .get
+            
+        case .registerUserSubwayStations:
+            return .put
+        }
     }
     
     var task: Task {
@@ -62,19 +69,38 @@ extension SelfIntroduceService: TargetType {
             return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
             
         case .registerUserSubwayStations(_, let nickName, let description, let firstSubway, let secondSubway):
+            guard let secondSubway = secondSubway else {
+                let param: [String : Any] = [
+                    "nickname" : nickName,
+                    "description" : description,
+                    "firstSubway" : firstSubway
+                ]
+                return .requestParameters(parameters: param, encoding: JSONEncoding.default)
+            }
             let param: [String : Any] = [
                 "nickname" : nickName,
                 "description" : description,
                 "firstSubway" : firstSubway,
-                "secondSubway" : secondSubway as Any
+                "secondSubway" : secondSubway
             ]
-            return .requestParameters(parameters: param, encoding: URLEncoding.queryString)
+            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
         }
     }
     
     var headers: [String : String]? {
-        return [
-            "Content-Type": "application/json"
-        ]
+        switch self {
+        case .searchStationRequeset,
+                .existingNicknameRequset:
+            return [
+                "Content-Type": "application/json"
+            ]
+            
+        case .registerUserSubwayStations:
+            let jwt = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+            return [
+                "Content-Type": "application/json",
+                "Authorization" : jwt
+            ]
+        }
     }   
 }
