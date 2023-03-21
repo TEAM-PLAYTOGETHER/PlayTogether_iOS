@@ -37,7 +37,7 @@ final class SelfIntroduceViewModel {
         _ crewId: Int,
         _ nickName: String,
         _ description: String,
-        _ firstSubway: String,
+        _ firstSubway: String? = nil,
         _ secondSubway: String? = nil
     ) -> Single<Response> {
         let singleResponse: Single<Response> = provider.rx.request(
