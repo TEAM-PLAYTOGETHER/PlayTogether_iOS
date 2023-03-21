@@ -82,6 +82,13 @@ class OpendThunViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        leftButtonItem.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         startButton.rx.tap
             .asDriver()
             .drive(onNext: { _ in
