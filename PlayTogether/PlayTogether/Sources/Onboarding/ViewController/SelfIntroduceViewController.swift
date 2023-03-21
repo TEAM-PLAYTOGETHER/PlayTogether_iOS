@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Moya
 
 class SelfIntroduceViewController: BaseViewController {
     private let disposeBag = DisposeBag()
@@ -390,27 +391,40 @@ class SelfIntroduceViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self,
                       let nickname = self.inputNicknameTextField.text,
-                      let briefIntroduceText = self.inputBriefIntroduceTextView.text,
-                      let isCreate = OnboardingDataModel.shared.isCreated
+                      let briefIntroduceText = self.inputBriefIntroduceTextView.text
                 else { return }
                 
                 OnboardingDataModel.shared.nickName = nickname
                 OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
                 OnboardingDataModel.shared.preferredSubway = self.registerUserStationsRelay.value
                 
-                let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
-                self.viewModel.registerUserProfile(
+                let singleResponse = self.viewModel.registerUserProfile(
                     OnboardingDataModel.shared.crewId ?? -1,
                     nickname,
                     briefIntroduceText,
                     self.registerUserStationsRelay.value.first ?? "",
                     self.registerUserStationsRelay.value.last ?? ""
-                ) {
-                    guard $0 == true else { return }
-                    self.navigationController?.pushViewController(controller, animated: true)
-                }
+                )
+                self.createMeetRequest(singleResponse)
             })
             .disposed(by: disposeBag)
+    }
+    
+    func createMeetRequest(_ response: Single<Response>) {
+        response.subscribe(onSuccess: { [weak self] response in
+            let responseData = try? response.map(SelfIntroduceResponse.self)
+            guard responseData?.status == 200 else {
+                self?.showToast(responseData?.message ?? "")
+                return
+            }
+            let isCreate: Bool = OnboardingDataModel.shared.isCreated ?? false
+            let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
+            self?.navigationController?.pushViewController(controller, animated:  true)
+            
+        }, onFailure: { [weak self] error in
+            self?.showToast(error.localizedDescription)
+        })
+        .disposed(by: disposeBag)
     }
 }
 
