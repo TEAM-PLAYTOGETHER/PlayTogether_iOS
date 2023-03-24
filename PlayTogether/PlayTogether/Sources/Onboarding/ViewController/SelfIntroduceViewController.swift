@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import Moya
 
 final class SelfIntroduceViewController: BaseViewController {
     private let disposeBag = DisposeBag()
@@ -405,13 +404,12 @@ private extension SelfIntroduceViewController {
         OnboardingDataModel.shared.preferredSubway = registerUserStationsRelay.value
     }
     
-    func createMeetRequest(_ observable: Observable<Response>) {
+    func createMeetRequest(_ observable: Observable<SelfIntroduceResponse>) {
         observable
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, response in
-                let responseData = try? response.map(SelfIntroduceResponse.self)
-                guard responseData?.status == 200 else {
-                    owner.showToast(responseData?.message ?? "")
+                guard response.status == 200 else {
+                    owner.showToast(response.message)
                     return
                 }
                 

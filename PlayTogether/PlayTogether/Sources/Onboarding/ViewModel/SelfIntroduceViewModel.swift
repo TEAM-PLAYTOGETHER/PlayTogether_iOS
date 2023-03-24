@@ -35,7 +35,7 @@ final class SelfIntroduceViewModel {
         _ description: String,
         _ firstSubway: String? = nil,
         _ secondSubway: String? = nil
-    ) -> Observable<Response> {
+    ) -> Observable<SelfIntroduceResponse> {
         return provider.rx.request(
             .registerUserSubwayStations(
                 crewID: OnboardingDataModel.shared.crewId ?? -1,
@@ -45,5 +45,6 @@ final class SelfIntroduceViewModel {
                 secondSubway: secondSubway
             ))
         .asObservable()
+        .map(SelfIntroduceResponse.self)
     }
 }
