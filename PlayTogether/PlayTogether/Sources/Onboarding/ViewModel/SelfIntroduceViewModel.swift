@@ -15,39 +15,35 @@ final class SelfIntroduceViewModel {
     private lazy var disposeBag = DisposeBag()
     private let provider = MoyaProvider<SelfIntroduceService>()
     
-    struct checkNicknameInput {
-        var crewID: Int
-        var nickname: Observable<String>
+    struct CheckNicknameInput {
+        var nickname: String
     }
     
-    func checkNickname(_ crewId: Int, _ nickName: String, completion: @escaping (Bool) -> Void) {
-        provider.rx.request(.existingNicknameRequset(crewID: crewId, Nickname: nickName))
-            .subscribe { result in
-                switch result {
-                case .success(let response):
-                    completion(response.statusCode == 200)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-            .disposed(by: disposeBag)
+    func checkNickname(_ input: CheckNicknameInput) -> Driver<Bool> {
+        return provider.rx.request(.existingNicknameRequset(
+            crewID: OnboardingDataModel.shared.crewId ?? -1,
+            Nickname: input.nickname
+        ))
+        .map { response in
+            return response.statusCode == 200
+        }
+        .asDriver(onErrorJustReturn: false)
     }
     
     func registerUserProfile(
-        _ crewId: Int,
         _ nickName: String,
         _ description: String,
         _ firstSubway: String? = nil,
         _ secondSubway: String? = nil
-    ) -> Single<Response> {
-        let singleResponse: Single<Response> = provider.rx.request(
+    ) -> Observable<Response> {
+        return provider.rx.request(
             .registerUserSubwayStations(
-                crewID: crewId,
+                crewID: OnboardingDataModel.shared.crewId ?? -1,
                 nickName: nickName,
                 description: description,
                 firstSubway: firstSubway,
-                secondSubway: secondSubway)
-        )
-        return singleResponse
+                secondSubway: secondSubway
+            ))
+        .asObservable()
     }
 }

@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import Moya
 
-class SelfIntroduceViewController: BaseViewController {
+final class SelfIntroduceViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel = SelfIntroduceViewModel()
     
@@ -134,13 +134,14 @@ class SelfIntroduceViewController: BaseViewController {
     
     private var isEnableNickname = BehaviorRelay<Bool>(value: false)
     private var isFillBriefIntroduceText = BehaviorRelay<Bool>(value: false)
-    private var registerUserStationsArray = [String]() {
-        didSet {
-            subwayStationCollectionView.reloadData()
-        }
-    }
     private var registerUserStationsRelay = BehaviorRelay<[String]>(value: ["선택 사항 없음"])
     private var ableNickname: String = ""
+    private var inputNickNameTextFieldText: String {
+        return inputNicknameTextField.text ?? ""
+    }
+    private var inputBriefIntroduceTextViewText: String {
+        return inputBriefIntroduceTextView.text ?? ""
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -258,171 +259,168 @@ class SelfIntroduceViewController: BaseViewController {
     override func setupBinding() {
         leftButtonItem.rx.tap
             .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
+            .drive(with: self, onNext: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
         
         existingNicknameButton.rx.tap
             .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.view.endEditing(true)
+            .flatMapLatest { [weak self] _ -> Driver<Bool> in
+                guard let self = self else { return .just(false) }
                 
-                guard let nickname = self?.inputNicknameTextField.text,
-                      let crewId = OnboardingDataModel.shared.crewId
-                else { return }
-                self?.viewModel.checkNickname(crewId, nickname) {
-                    self?.isEnableNickname.accept($0)
-                    self?.noticeExistingNicknameLabel.isHidden = false
-                    self?.noticeExistingNicknameLabel.text = $0 ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
-                    self?.noticeExistingNicknameLabel.textColor = $0 ? .ptCorrect : .ptIncorrect
-                    guard $0 == true else { return }
-                    self?.ableNickname = nickname
-                }
+                let input = SelfIntroduceViewModel.CheckNicknameInput(
+                    nickname: self.inputNickNameTextFieldText
+                )
+                return self.viewModel.checkNickname(input)
+                    .asDriver(onErrorJustReturn: false)
+            }
+            .drive(with: self, onNext: { owner, exists in
+                owner.isEnableNickname.accept(exists)
+                owner.noticeExistingNicknameLabel.isHidden = false
+                owner.noticeExistingNicknameLabel.text = exists ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
+                owner.noticeExistingNicknameLabel.textColor = exists ? .ptCorrect : .ptIncorrect
+                
+                guard exists == true else { return }
+                owner.ableNickname = owner.inputNickNameTextFieldText
             })
             .disposed(by: disposeBag)
         
         inputNicknameTextField.rx.controlEvent(.touchDown)
             .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.inputNicknameTextField.layer.borderColor = UIColor.ptBlack02.cgColor
-            })
+            .map { UIColor.ptBlack02.cgColor }
+            .drive(inputNicknameTextField.layer.rx.borderColor)
             .disposed(by: disposeBag)
 
         inputNicknameTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
             .asDriver()
-            .drive(onNext: { [weak self] in
-                guard let textCount = self?.inputNicknameTextField.text?.count else { return }
-                self?.inputNicknameTextField.layer.borderColor =
-                        textCount > 0 ?
-                        UIColor.ptGray02.cgColor : UIColor.ptGray01.cgColor
+            .drive(with: self, onNext: { owner, _ in
+                let textCount: Int = owner.inputNickNameTextFieldText.count
+                owner.inputNicknameTextField.layer.borderColor = textCount > 0 ?
+                    UIColor.ptGray02.cgColor : UIColor.ptGray01.cgColor
             })
             .disposed(by: disposeBag)
         
         inputNicknameTextField.rx.text.orEmpty
             .asDriver()
-            .drive(onNext: { [weak self] in
-                guard $0 == self?.ableNickname else {
-                    self?.noticeExistingNicknameLabel.isHidden = true
-                    self?.isEnableNickname.accept(false)
-                    guard $0.count > 10 else { return }
-                    self?.inputNicknameTextField.text = String(self?.inputNicknameTextField.text?.dropLast() ?? "")
-                    return
-                }
+            .drive(with: self, onNext: { owner, text in
+                guard text != owner.ableNickname else { return }
+                
+                owner.noticeExistingNicknameLabel.isHidden = true
+                owner.isEnableNickname.accept(false)
+                
+                guard text.count > 10 else { return }
+                owner.inputNicknameTextField.text = String(owner.inputNicknameTextField.text?.dropLast() ?? "")
             })
             .disposed(by: disposeBag)
         
         inputBriefIntroduceTextView.rx.text.orEmpty
             .asDriver()
-            .drive(onNext: { [weak self] in
-                guard $0.count > 0,
-                      self?.inputBriefIntroduceTextView.textColor == .ptBlack01
-                else {
-                    self?.isFillBriefIntroduceText.accept(false)
-                    return
-                }
-                self?.isFillBriefIntroduceText.accept(true)
-            })
+            .map { [weak self] text in
+                return text.count > 0 && self?.inputBriefIntroduceTextView.textColor == .ptBlack01
+            }
+            .drive(isFillBriefIntroduceText)
             .disposed(by: disposeBag)
         
         inputBriefIntroduceTextView.rx.didBeginEditing
             .asDriver()
-            .drive(onNext: { [weak self] in
-                guard self?.inputBriefIntroduceTextView.textColor == .ptGray01 else { return }
-                self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptBlack02.cgColor
-                self?.inputBriefIntroduceTextView.textColor = .ptBlack01
-                self?.inputBriefIntroduceTextView.text = nil
+            .drive(with: self, onNext: { owner, _ in
+                guard owner.inputBriefIntroduceTextView.textColor == .ptGray01 else { return }
+                owner.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptBlack02.cgColor
+                owner.inputBriefIntroduceTextView.textColor = .ptBlack01
+                owner.inputBriefIntroduceTextView.text = nil
             })
             .disposed(by: disposeBag)
         
         inputBriefIntroduceTextView.rx.didEndEditing
             .asDriver()
-            .drive(onNext: { [weak self] in
-                guard self?.inputBriefIntroduceTextView.text.isEmpty == false else {
-                    self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray03.cgColor
-                    self?.inputBriefIntroduceTextView.text = "간단 소개 입력"
-                    self?.inputBriefIntroduceTextView.textColor = .ptGray01
-                    self?.isFillBriefIntroduceText.accept(false)
-                    return
+            .drive(with: self, onNext: { owner, _ in
+                let textIsEmpty: Bool = owner.inputBriefIntroduceTextViewText.isEmpty
+                if textIsEmpty {
+                    owner.inputBriefIntroduceTextView.text = "간단 소개 입력"
+                    owner.isFillBriefIntroduceText.accept(textIsEmpty)
                 }
-                self?.inputBriefIntroduceTextView.textColor = .ptBlack01
-                self?.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptGray01.cgColor
+                owner.inputBriefIntroduceTextView.textColor = textIsEmpty ? .ptGray01 : .ptBlack01
+                owner.inputBriefIntroduceTextView.layer.borderColor = textIsEmpty ?
+                    UIColor.ptGray03.cgColor : UIColor.ptGray01.cgColor
             })
             .disposed(by: disposeBag)
         
+        registerUserStationsRelay
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.subwayStationCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        var buttonUIBinder: Binder<Bool> {
+            .init(self, binding: { owner, status in
+                owner.changeNextButtonUI(status)
+            })
+        }
         Driver.combineLatest(
             isEnableNickname.asDriver(),
             isFillBriefIntroduceText.asDriver()
         ) { $0 && $1 }
-            .drive(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.changeNextButtonUI(self.nextButton, $0)
-            })
+            .drive(buttonUIBinder)
             .disposed(by: disposeBag)
         
         addPreferredSubwayStationButton.rx.tap
             .asDriver()
-            .drive(onNext: { [weak self] in
+            .drive(with: self, onNext: { owner, _ in
                 let controller = AddSubwayStationViewController()
-                controller.delegate = self
-                self?.navigationController?.pushViewController(controller, animated: true)
+                controller.delegate = owner
+                owner.navigationController?.pushViewController(controller, animated: true)
             })
             .disposed(by: disposeBag)
         
+        let nextButtonOnNext: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            
+            self.createMeetRequest(
+                self.viewModel.registerUserProfile(
+                    self.inputNickNameTextFieldText,
+                    self.inputBriefIntroduceTextViewText
+                )
+            )
+        }
         nextButton.rx.tap
             .asDriver()
-            .drive(onNext: { [weak self] in
-                guard let self = self,
-                      let nickname = self.inputNicknameTextField.text,
-                      let briefIntroduceText = self.inputBriefIntroduceTextView.text
-                else { return }
-                
-                OnboardingDataModel.shared.nickName = nickname
-                OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
-                OnboardingDataModel.shared.preferredSubway = self.registerUserStationsRelay.value
-                
-                let singleResponse = self.viewModel.registerUserProfile(
-                    OnboardingDataModel.shared.crewId ?? -1,
-                    nickname,
-                    briefIntroduceText,
-                    self.registerUserStationsRelay.value.first ?? "",
-                    self.registerUserStationsRelay.value.last ?? ""
-                )
-                self.createMeetRequest(singleResponse)
-            })
+            .drive(onNext: nextButtonOnNext)
             .disposed(by: disposeBag)
     }
 }
 
 // MARK: - Custom helper
 private extension SelfIntroduceViewController {
-    func changeNextButtonUI(_ button: UIButton , _ status: Bool) {
-        guard status == true else {
-            button.isEnabled = false
-            button.backgroundColor = .ptGray03
-            button.layer.borderColor = UIColor.ptGray02.cgColor
-            return
-        }
-        button.isEnabled = true
-        button.backgroundColor = .ptGreen
-        button.layer.borderColor = UIColor.ptBlack01.cgColor
+    func changeNextButtonUI(_ isEnable: Bool) {
+        nextButton.isEnabled = isEnable
+        nextButton.backgroundColor = isEnable ? .ptGreen : .ptGray03
+        nextButton.layer.borderColor = isEnable ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
     }
     
-    func createMeetRequest(_ response: Single<Response>) {
-        response.subscribe(onSuccess: { [weak self] response in
-            let responseData = try? response.map(SelfIntroduceResponse.self)
-            guard responseData?.status == 200 else {
-                self?.showToast(responseData?.message ?? "")
-                return
-            }
-            let isCreate: Bool = OnboardingDataModel.shared.isCreated ?? false
-            let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
-            self?.navigationController?.pushViewController(controller, animated:  true)
-            
-        }, onFailure: { [weak self] error in
-            self?.showToast(error.localizedDescription)
-        })
-        .disposed(by: disposeBag)
+    func onboadingDataModelBinding() {
+        OnboardingDataModel.shared.nickName = inputNickNameTextFieldText
+        OnboardingDataModel.shared.introduceSelfMessage = inputBriefIntroduceTextViewText
+        OnboardingDataModel.shared.preferredSubway = registerUserStationsRelay.value
+    }
+    
+    func createMeetRequest(_ observable: Observable<Response>) {
+        observable
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, response in
+                let responseData = try? response.map(SelfIntroduceResponse.self)
+                guard responseData?.status == 200 else {
+                    owner.showToast(responseData?.message ?? "")
+                    return
+                }
+                
+                owner.onboadingDataModelBinding()
+                let isCreate: Bool = OnboardingDataModel.shared.isCreated ?? false
+                let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
+                owner.navigationController?.pushViewController(controller, animated:  true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -430,16 +428,16 @@ private extension SelfIntroduceViewController {
 // MARK: - Etc delegate
 extension SelfIntroduceViewController: AddSubwayStationDelegate {
     func registerSubwayStation(_ stations: [String]) {
-        registerUserStationsArray = (stations.isEmpty ? ["선택 사항 없음"] : stations)
-        registerUserStationsRelay.accept(registerUserStationsArray)
+        registerUserStationsRelay.accept(stations.isEmpty ? ["선택 사항 없음"] : stations)
     }
 }
 
 extension SelfIntroduceViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     @objc
     func cellCancelAction(_ sender: UIButton) {
-        registerUserStationsArray.remove(at: sender.tag)
-        registerUserStationsRelay.accept(registerUserStationsArray)
+        var removeForStations: [String] = registerUserStationsRelay.value
+        removeForStations.remove(at: sender.tag)
+        registerUserStationsRelay.accept(removeForStations)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
