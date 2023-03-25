@@ -14,7 +14,7 @@ class OnboardingDataModel {
     var inviteCode: String?
     var nickName: String?
     var introduceSelfMessage: String?
-    var preferredSubway: [String]?
+    var preferredSubway: [String?]?
     
     var crewId: Int?
     var madeCrew: Bool = false

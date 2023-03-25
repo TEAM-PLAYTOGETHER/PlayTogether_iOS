@@ -10,13 +10,13 @@ import Foundation
 
 enum SelfIntroduceService {
     case searchStationRequeset
-    case existingNicknameRequset(crewID: Int, Nickname: String)
+    case existingNicknameRequset(crewID: Int, nickName: String)
     case registerUserSubwayStations(
         crewID: Int,
         nickName: String,
         description: String,
-        firstSubway: String? = nil,
-        secondSubway: String? = nil
+        firstSubway: String?,
+        secondSubway: String?
     )
 }
 

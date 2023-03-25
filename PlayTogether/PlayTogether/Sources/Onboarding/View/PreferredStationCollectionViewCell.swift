@@ -9,15 +9,13 @@ import UIKit
 import RxSwift
 
 final class PreferredStationCollectionViewCell: UICollectionViewCell {
-    private lazy var disposeBag = DisposeBag()
-    
-    private lazy var titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = ""
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptGreen
     }
     
-    lazy var cancelButton = UIButton().then {
+    private let cancelButton = UIButton().then {
         $0.setImage(.ptImage(.exitIcon), for: .normal)
         $0.tintColor = .ptGray01
     }
@@ -26,6 +24,15 @@ final class PreferredStationCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setupView()
+        setupLayout()
+    }
+
+    var cancelButtonTapObservable: Observable<String> {
+        cancelButton.rx.tap
+            .asObservable()
+            .map { [weak self] in
+                self?.titleLabel.text ?? ""
+            }
     }
     
     required init?(coder: NSCoder) {
@@ -40,8 +47,6 @@ private extension PreferredStationCollectionViewCell {
         
         addSubview(titleLabel)
         addSubview(cancelButton)
-        
-        setupLayout()
     }
     
     func setupLayout() {

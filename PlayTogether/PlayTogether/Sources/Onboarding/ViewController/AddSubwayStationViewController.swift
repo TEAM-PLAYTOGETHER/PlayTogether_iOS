@@ -9,8 +9,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol AddSubwayStationDelegate {
-    func registerSubwayStation(_ stations: [String])
+protocol AddSubwayStationDelegate: AnyObject {
+    func registerSubwayStation(_ stations: [String?])
 }
 
 class AddSubwayStationViewController: BaseViewController {
@@ -95,7 +95,7 @@ class AddSubwayStationViewController: BaseViewController {
     private lazy var selectedSubwayStations = [String]()
     private var selectedSubwayStationRelay = BehaviorRelay<[String]>(value: [])
     private var collectionViewHeight: CGFloat = 0
-    var delegate: AddSubwayStationDelegate?
+    weak var delegate: AddSubwayStationDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -296,11 +296,11 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
             selectedSubwayStationRelay.value[row],
             row
         )
-        cell.cancelButton.addTarget(
-            self,
-            action: #selector(cellCancelAction),
-            for: .touchUpInside
-        )
+//        cell.cancelButton.addTarget(
+//            self,
+//            action: #selector(cellCancelAction),
+//            for: .touchUpInside
+//        )
         
         return cell
     }

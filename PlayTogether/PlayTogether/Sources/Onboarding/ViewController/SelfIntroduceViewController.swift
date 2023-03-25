@@ -20,8 +20,8 @@ final class SelfIntroduceViewController: BaseViewController {
     }
     
     private let headerLabel = UILabel().then {
-        let title = OnboardingDataModel.shared
-        $0.text = "\(title.meetingTitle ?? "테스트 동아리")에서\n나는 어떤 사람인가요?"
+        let title = OnboardingDataModel.shared.meetingTitle
+        $0.text = "\(title ?? "테스트 동아리")에서\n나는 어떤 사람인가요?"
         $0.font = .pretendardMedium(size: 22)
         $0.textColor = .ptBlack01
         $0.numberOfLines = 0
@@ -33,15 +33,16 @@ final class SelfIntroduceViewController: BaseViewController {
         $0.font = .pretendardBold(size: 14)
     }
     
-    private lazy var existingNicknameButton = UIButton().then {
-        $0.backgroundColor = .ptBlack01
+    private let nickNameCheckButton = UIButton().then {
+        $0.backgroundColor = .ptGray03
         $0.setTitle("중복확인", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .pretendardMedium(size: 12)
+        $0.isEnabled = false
         $0.layer.cornerRadius = 5
     }
     
-    private let inputNicknameTextField = UITextField().then {
+    private let nickNameTextField = UITextField().then {
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptBlack01
         $0.setupPlaceholderText(title: "닉네임 입력", color: .ptGray01)
@@ -52,8 +53,8 @@ final class SelfIntroduceViewController: BaseViewController {
         $0.layer.borderColor = UIColor.ptGray03.cgColor
     }
     
-    private let noticeNicknameLabel = UILabel().then {
-        $0.text = "10자 이내(공백 제외) 한글,영문,숫자,특수문자"
+    private let noticeNickNameLabel = UILabel().then {
+        $0.text = "2 ~ 10자(공백 불가) 한글, 영문, 숫자, 언더바(_) 사용 가능"
         $0.textColor = .ptGray02
         $0.font = .pretendardMedium(size: 12)
     }
@@ -75,7 +76,7 @@ final class SelfIntroduceViewController: BaseViewController {
         $0.font = .pretendardMedium(size: 10)
     }
     
-    private let inputBriefIntroduceTextView = UITextView().then {
+    private let briefIntroduceTextView = UITextView().then {
         $0.text = "간단 소개 입력"
         $0.font = .pretendardRegular(size: 14)
         $0.textColor = .ptGray01
@@ -99,7 +100,7 @@ final class SelfIntroduceViewController: BaseViewController {
         $0.font = .pretendardMedium(size: 10)
     }
     
-    private lazy var addPreferredSubwayStationButton = UIButton().then {
+    private let addPreferredSubwayStationButton = UIButton().then {
         $0.setTitle("추가하기", for: .normal)
         $0.setTitleColor(.ptGray01, for: .normal)
         $0.titleLabel?.font = .pretendardMedium(size: 12)
@@ -117,39 +118,38 @@ final class SelfIntroduceViewController: BaseViewController {
     ).then {
         $0.backgroundColor = .white
         $0.contentInset = .zero
-        $0.register(SubwayStationCollectionViewCell.self, forCellWithReuseIdentifier: "SubwayStationCollectionViewCell")
-        $0.register(PreferredStationCollectionViewCell.self, forCellWithReuseIdentifier: "PreferredStationCollectionViewCell")
+        $0.register(
+            SubwayStationCollectionViewCell.self,
+            forCellWithReuseIdentifier: "SubwayStationCollectionViewCell"
+        )
+        $0.register(
+            PreferredStationCollectionViewCell.self,
+            forCellWithReuseIdentifier: "PreferredStationCollectionViewCell"
+        )
         
         $0.delegate = self
         $0.dataSource = self
     }
     
-    private lazy var nextButton = UIButton().then {
+    private let nextButton = UIButton().then {
         $0.setupBottomButtonUI(title: "다음", size: 15)
         $0.isButtonEnableUI(check: false)
     }
     
-    private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: SelfIntroduceViewController.self, action: nil)
-    
-    private var isEnableNickname = BehaviorRelay<Bool>(value: false)
-    private var isFillBriefIntroduceText = BehaviorRelay<Bool>(value: false)
-    private var registerUserStationsRelay = BehaviorRelay<[String]>(value: ["선택 사항 없음"])
-    private var ableNickname: String = ""
-    private var inputNickNameTextFieldText: String {
-        return inputNicknameTextField.text ?? ""
-    }
-    private var inputBriefIntroduceTextViewText: String {
-        return inputBriefIntroduceTextView.text ?? ""
-    }
+    private let leftButtonItem = UIBarButtonItem(
+        image: UIImage.ptImage(.backIcon),
+        style: .plain,
+        target: SelfIntroduceViewController.self,
+        action: nil
+    )
+
+    private let subwayRelay = BehaviorRelay<[String?]>(value: [nil, nil])
+    private let isPassedNickNameCheck = PublishSubject<Bool>()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .white
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     override func setupViews() {
@@ -158,13 +158,13 @@ final class SelfIntroduceViewController: BaseViewController {
         view.addSubview(progressbar)
         view.addSubview(headerLabel)
         view.addSubview(nickNameLabel)
-        view.addSubview(inputNicknameTextField)
-        view.addSubview(existingNicknameButton)
-        view.addSubview(noticeNicknameLabel)
+        view.addSubview(nickNameTextField)
+        view.addSubview(nickNameCheckButton)
+        view.addSubview(noticeNickNameLabel)
         view.addSubview(noticeExistingNicknameLabel)
         view.addSubview(briefIntroductionLabel)
         view.addSubview(briefIntroductionSubLabel)
-        view.addSubview(inputBriefIntroduceTextView)
+        view.addSubview(briefIntroduceTextView)
         view.addSubview(preferredSubwayStationLabel)
         view.addSubview(preferredSubwayStationSubLabel)
         view.addSubview(addPreferredSubwayStationButton)
@@ -189,25 +189,25 @@ final class SelfIntroduceViewController: BaseViewController {
             $0.top.equalTo(headerLabel.snp.bottom).offset(36)
         }
         
-        noticeNicknameLabel.snp.makeConstraints {
+        noticeNickNameLabel.snp.makeConstraints {
             $0.centerY.equalTo(nickNameLabel.snp.centerY)
             $0.leading.equalTo(nickNameLabel.snp.trailing).offset(6)
         }
         
-        inputNicknameTextField.snp.makeConstraints {
+        nickNameTextField.snp.makeConstraints {
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(57 * (UIScreen.main.bounds.height / 812))
         }
         
         noticeExistingNicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(inputNicknameTextField.snp.bottom).offset(10)
+            $0.top.equalTo(nickNameTextField.snp.bottom).offset(10)
             $0.leading.equalToSuperview().inset(24)
         }
         
-        existingNicknameButton.snp.makeConstraints {
-            $0.centerY.equalTo(inputNicknameTextField)
-            $0.trailing.equalTo(inputNicknameTextField.snp.trailing).inset(16)
+        nickNameCheckButton.snp.makeConstraints {
+            $0.centerY.equalTo(nickNameTextField)
+            $0.trailing.equalTo(nickNameTextField.snp.trailing).inset(16)
             $0.width.equalTo(67 * (UIScreen.main.bounds.width / 375))
         }
         
@@ -221,14 +221,14 @@ final class SelfIntroduceViewController: BaseViewController {
             $0.leading.equalTo(briefIntroductionLabel.snp.trailing).offset(6)
         }
         
-        inputBriefIntroduceTextView.snp.makeConstraints {
+        briefIntroduceTextView.snp.makeConstraints {
             $0.top.equalTo(briefIntroductionLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(100 * (UIScreen.main.bounds.height / 812))
         }
         
         preferredSubwayStationLabel.snp.makeConstraints {
-            $0.top.equalTo(inputBriefIntroduceTextView.snp.bottom).offset(36)
+            $0.top.equalTo(briefIntroduceTextView.snp.bottom).offset(36)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -256,194 +256,186 @@ final class SelfIntroduceViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        leftButtonItem.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        existingNicknameButton.rx.tap
-            .asDriver()
-            .flatMapLatest { [weak self] _ -> Driver<Bool> in
-                guard let self = self else { return .just(false) }
-                
-                let input = SelfIntroduceViewModel.CheckNicknameInput(
-                    nickname: self.inputNickNameTextFieldText
-                )
-                return self.viewModel.checkNickname(input)
-                    .asDriver(onErrorJustReturn: false)
-            }
-            .drive(with: self, onNext: { owner, exists in
-                owner.isEnableNickname.accept(exists)
+        let input = SelfIntroduceViewModel.Input(
+            tapNickNameButton: nickNameCheckButton.rx.tap,
+            tapNextButton: nextButton.rx.tap,
+            nickNameInput: nickNameTextField.rx.text.orEmpty.asObservable(),
+            descriptionInput: briefIntroduceTextView.rx.text.orEmpty.asObservable(),
+            subwayInput: subwayRelay.asObservable()
+        )
+
+        let output = viewModel.transform(input)
+
+        output.checkNickNameOutput
+            .asSignal(onErrorJustReturn: false)
+            .emit(with: self, onNext: { owner, isEnable in
                 owner.noticeExistingNicknameLabel.isHidden = false
-                owner.noticeExistingNicknameLabel.text = exists ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
-                owner.noticeExistingNicknameLabel.textColor = exists ? .ptCorrect : .ptIncorrect
-                
-                guard exists == true else { return }
-                owner.ableNickname = owner.inputNickNameTextFieldText
+                owner.noticeExistingNicknameLabel.text = isEnable ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다"
+                owner.noticeExistingNicknameLabel.textColor = isEnable ? .ptCorrect : .ptIncorrect
+                owner.isPassedNickNameCheck.onNext(isEnable)
             })
-            .disposed(by: disposeBag)
-        
-        inputNicknameTextField.rx.controlEvent(.touchDown)
-            .asDriver()
-            .map { UIColor.ptBlack02.cgColor }
-            .drive(inputNicknameTextField.layer.rx.borderColor)
             .disposed(by: disposeBag)
 
-        inputNicknameTextField.rx.controlEvent([.editingDidEnd, .editingDidEndOnExit])
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                let textCount: Int = owner.inputNickNameTextFieldText.count
-                owner.inputNicknameTextField.layer.borderColor = textCount > 0 ?
-                    UIColor.ptGray02.cgColor : UIColor.ptGray01.cgColor
-            })
-            .disposed(by: disposeBag)
-        
-        inputNicknameTextField.rx.text.orEmpty
-            .asDriver()
-            .drive(with: self, onNext: { owner, text in
-                guard text != owner.ableNickname else { return }
-                
-                owner.noticeExistingNicknameLabel.isHidden = true
-                owner.isEnableNickname.accept(false)
-                
-                guard text.count > 10 else { return }
-                owner.inputNicknameTextField.text = String(owner.inputNicknameTextField.text?.dropLast() ?? "")
-            })
-            .disposed(by: disposeBag)
-        
-        inputBriefIntroduceTextView.rx.text.orEmpty
-            .asDriver()
-            .map { [weak self] text in
-                return text.count > 0 && self?.inputBriefIntroduceTextView.textColor == .ptBlack01
+        output.registUserProfileOutput
+            .withUnretained(self)
+            .filter { owner, response in
+                let isSuccess = response.status == 200
+                if !isSuccess { owner.showToast(response.message) }
+
+                return isSuccess
             }
-            .drive(isFillBriefIntroduceText)
-            .disposed(by: disposeBag)
-        
-        inputBriefIntroduceTextView.rx.didBeginEditing
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                guard owner.inputBriefIntroduceTextView.textColor == .ptGray01 else { return }
-                owner.inputBriefIntroduceTextView.layer.borderColor = UIColor.ptBlack02.cgColor
-                owner.inputBriefIntroduceTextView.textColor = .ptBlack01
-                owner.inputBriefIntroduceTextView.text = nil
-            })
-            .disposed(by: disposeBag)
-        
-        inputBriefIntroduceTextView.rx.didEndEditing
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                let textIsEmpty: Bool = owner.inputBriefIntroduceTextViewText.isEmpty
-                if textIsEmpty {
-                    owner.inputBriefIntroduceTextView.text = "간단 소개 입력"
-                    owner.isFillBriefIntroduceText.accept(textIsEmpty)
-                }
-                owner.inputBriefIntroduceTextView.textColor = textIsEmpty ? .ptGray01 : .ptBlack01
-                owner.inputBriefIntroduceTextView.layer.borderColor = textIsEmpty ?
-                    UIColor.ptGray03.cgColor : UIColor.ptGray01.cgColor
-            })
-            .disposed(by: disposeBag)
-        
-        registerUserStationsRelay
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                owner.subwayStationCollectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
-        
-        var buttonUIBinder: Binder<Bool> {
-            .init(self, binding: { owner, status in
-                owner.changeNextButtonUI(status)
-            })
-        }
-        Driver.combineLatest(
-            isEnableNickname.asDriver(),
-            isFillBriefIntroduceText.asDriver()
-        ) { $0 && $1 }
-            .drive(buttonUIBinder)
-            .disposed(by: disposeBag)
-        
-        addPreferredSubwayStationButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                let controller = AddSubwayStationViewController()
-                controller.delegate = owner
-                owner.navigationController?.pushViewController(controller, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        let nextButtonOnNext: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            
-            self.createMeetRequest(
-                self.viewModel.registerUserProfile(
-                    self.inputNickNameTextFieldText,
-                    self.inputBriefIntroduceTextViewText
-                )
-            )
-        }
-        nextButton.rx.tap
-            .asDriver()
-            .drive(onNext: nextButtonOnNext)
-            .disposed(by: disposeBag)
-    }
-}
+            .asSignal(onErrorSignalWith: .empty())
+            .emit(with: self, onNext: { owner, _ in
+                OnboardingDataModel.shared.nickName = owner.nickNameTextField.text ?? ""
+                OnboardingDataModel.shared.introduceSelfMessage = owner.briefIntroduceTextView.text
+                OnboardingDataModel.shared.preferredSubway = owner.subwayRelay.value
 
-// MARK: - Custom helper
-private extension SelfIntroduceViewController {
-    func changeNextButtonUI(_ isEnable: Bool) {
-        nextButton.isEnabled = isEnable
-        nextButton.backgroundColor = isEnable ? .ptGreen : .ptGray03
-        nextButton.layer.borderColor = isEnable ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
-    }
-    
-    func onboadingDataModelBinding() {
-        OnboardingDataModel.shared.nickName = inputNickNameTextFieldText
-        OnboardingDataModel.shared.introduceSelfMessage = inputBriefIntroduceTextViewText
-        OnboardingDataModel.shared.preferredSubway = registerUserStationsRelay.value
-    }
-    
-    func createMeetRequest(_ observable: Observable<SelfIntroduceResponse>) {
-        observable
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, response in
-                guard response.status == 200 else {
-                    owner.showToast(response.message)
-                    return
-                }
-                
-                owner.onboadingDataModelBinding()
                 let isCreate: Bool = OnboardingDataModel.shared.isCreated ?? false
                 let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
                 owner.navigationController?.pushViewController(controller, animated:  true)
             })
             .disposed(by: disposeBag)
+
+        leftButtonItem.rx.tap
+            .asSignal()
+            .emit(with: self, onNext: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        nickNameTextField.rx.controlEvent(.touchDown)
+            .asSignal()
+            .map { UIColor.ptBlack02.cgColor }
+            .emit(to: nickNameTextField.layer.rx.borderColor)
+            .disposed(by: disposeBag)
+
+        nickNameTextField.rx.controlEvent(.editingDidEnd)
+            .withUnretained(self)
+            .asSignal(onErrorSignalWith: .empty())
+            .map { owner, _ in
+                let count = owner.nickNameTextField.text?.count ?? 0
+                return count > 0 ? UIColor.ptBlack02.cgColor : UIColor.ptGray03.cgColor
+            }
+            .emit(to: nickNameTextField.layer.rx.borderColor)
+            .disposed(by: disposeBag)
+
+        nickNameTextField.rx.text.orEmpty
+            .map(changeValidNickName)
+            .map(setupNickNameCheckButton)
+            .bind(to: nickNameTextField.rx.text)
+            .disposed(by: disposeBag)
+        
+        briefIntroduceTextView.rx.didBeginEditing
+            .withUnretained(self)
+            .filter { owner, _ in owner.briefIntroduceTextView.textColor == .ptGray01 }
+            .asSignal(onErrorSignalWith: .empty())
+            .emit(with: self, onNext: { owner, _ in
+                owner.briefIntroduceTextView.layer.borderColor = UIColor.ptBlack02.cgColor
+                owner.briefIntroduceTextView.textColor = .ptBlack01
+                owner.briefIntroduceTextView.text = nil
+            })
+            .disposed(by: disposeBag)
+        
+        briefIntroduceTextView.rx.didEndEditing
+            .withUnretained(self)
+            .map { owner, _ in owner.briefIntroduceTextView.text.isEmpty }
+            .asSignal(onErrorJustReturn: true)
+            .emit(with: self, onNext: { owner, textIsEmpty in
+                if textIsEmpty { owner.briefIntroduceTextView.text = "간단 소개 입력" }
+                owner.briefIntroduceTextView.textColor = textIsEmpty ? .ptGray01 : .ptBlack01
+                owner.briefIntroduceTextView.layer.borderColor = textIsEmpty ?
+                    UIColor.ptGray03.cgColor : UIColor.ptGray01.cgColor
+            })
+            .disposed(by: disposeBag)
+
+        Observable.combineLatest(
+            isPassedNickNameCheck.asObservable(),
+            briefIntroduceTextView.rx.text.orEmpty.asObservable()
+        )
+        .map { $0 && !$1.isEmpty && $1 != "간단 소개 입력" }
+        .asSignal(onErrorJustReturn: false)
+        .emit(with: self, onNext: { owner, isEnable in
+            owner.nextButton.isEnabled = isEnable
+            owner.nextButton.backgroundColor = isEnable ? .ptGreen : .ptGray03
+            owner.nextButton.layer.borderColor = isEnable ? UIColor.ptBlack01.cgColor : UIColor.ptGray02.cgColor
+        })
+        .disposed(by: disposeBag)
+        
+        addPreferredSubwayStationButton.rx.tap
+            .asSignal()
+            .emit(with: self, onNext: { owner, _ in
+                let viewController = AddSubwayStationViewController()
+                viewController.delegate = owner
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        subwayRelay
+            .asSignal(onErrorJustReturn: [nil, nil])
+            .emit(with: self, onNext: { owner, _ in
+                owner.subwayStationCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
+// MARK: - Private
+private extension SelfIntroduceViewController {
+    func changeValidNickName(_ text: String) -> String {
+        noticeExistingNicknameLabel.isHidden = true
+        isPassedNickNameCheck.onNext(false)
+        guard let lastText = text.last else { return text }
+
+        let regularExpression = String(lastText).range(
+            of: "^[ㄱ-ㅎ가-힣a-zA-Z0-9\\_]$",
+            options: .regularExpression
+        )
+
+        if lastText == " " || text.count > 10 || regularExpression == nil {
+            noticeNickNameLabel.textColor = .ptIncorrect
+            return String(text.dropLast())
+        }
+
+        noticeNickNameLabel.textColor = .ptGray02
+        return text
+      }
+
+    func setupNickNameCheckButton(_ text: String) -> String {
+        let isEnable = text.count >= 2
+        nickNameCheckButton.backgroundColor = isEnable ? .ptBlack01 : .ptGray03
+        nickNameCheckButton.isEnabled = isEnable
+
+        return text
+    }
+}
 
 // MARK: - Etc delegate
 extension SelfIntroduceViewController: AddSubwayStationDelegate {
-    func registerSubwayStation(_ stations: [String]) {
-        registerUserStationsRelay.accept(stations.isEmpty ? ["선택 사항 없음"] : stations)
+    func registerSubwayStation(_ stations: [String?]) {
+        var stations = stations
+        if stations.count == 1 { stations.append(nil) }
+
+        subwayRelay.accept(stations)
     }
 }
 
-extension SelfIntroduceViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    @objc
-    func cellCancelAction(_ sender: UIButton) {
-        var removeForStations: [String] = registerUserStationsRelay.value
-        removeForStations.remove(at: sender.tag)
-        registerUserStationsRelay.accept(removeForStations)
+extension SelfIntroduceViewController
+: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        let dataSource = subwayRelay.value.compactMap {($0)}
+        return dataSource.isEmpty ? 1 : dataSource.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return registerUserStationsRelay.value.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard !registerUserStationsRelay.value.contains("선택 사항 없음") else {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let dataSource = subwayRelay.value.compactMap {($0)}
+
+        guard !dataSource.isEmpty else {
             let emptyCell = self.subwayStationCollectionView.dequeueReusableCell(
                 withReuseIdentifier: "SubwayStationCollectionViewCell",
                 for: indexPath
@@ -457,22 +449,38 @@ extension SelfIntroduceViewController: UICollectionViewDelegate, UICollectionVie
             withReuseIdentifier: "PreferredStationCollectionViewCell",
             for: indexPath
         ) as! PreferredStationCollectionViewCell
-        
-        cell.setupData(
-            registerUserStationsRelay.value[row],
-            row
-        )
-        cell.cancelButton.addTarget(
-            self,
-            action: #selector(cellCancelAction),
-            for: .touchUpInside
-        )
+
+        cell.setupData(dataSource[row], row)
+
+        cell.cancelButtonTapObservable
+            .bind(with: self, onNext: { owner, textString in
+                var stations = owner.subwayRelay.value
+                guard let removeIndex = stations.firstIndex(of: textString) else { return }
+
+                stations.remove(at: removeIndex)
+                stations.append(nil)
+                owner.subwayRelay.accept(stations)
+            })
+            .disposed(by: disposeBag)
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let fontWidth = (registerUserStationsRelay.value[indexPath.row] as NSString).size(
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        var textString = subwayRelay.value[indexPath.row]
+
+        if textString == nil {
+            guard indexPath.row == 0 else { return .zero }
+            textString = "선택 사항 없음"
+        }
+
+        guard let textString = textString else { return .zero }
+
+        let fontWidth = (textString as NSString).size(
             withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
         ).width
         let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)

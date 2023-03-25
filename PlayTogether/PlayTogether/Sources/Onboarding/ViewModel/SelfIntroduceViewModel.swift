@@ -7,7 +7,6 @@
 
 import RxSwift
 import RxCocoa
-import RxRelay
 import Moya
 import RxMoya
 
@@ -15,36 +14,56 @@ final class SelfIntroduceViewModel {
     private lazy var disposeBag = DisposeBag()
     private let provider = MoyaProvider<SelfIntroduceService>()
     
-    struct CheckNicknameInput {
-        var nickname: String
+    struct Input {
+        var tapNickNameButton: ControlEvent<Void>
+        var tapNextButton: ControlEvent<Void>
+        var nickNameInput: Observable<String>
+        var descriptionInput: Observable<String>
+        var subwayInput: Observable<[String?]>
     }
-    
-    func checkNickname(_ input: CheckNicknameInput) -> Driver<Bool> {
-        return provider.rx.request(.existingNicknameRequset(
-            crewID: OnboardingDataModel.shared.crewId ?? -1,
-            Nickname: input.nickname
-        ))
-        .map { response in
-            return response.statusCode == 200
-        }
-        .asDriver(onErrorJustReturn: false)
+
+    struct Output {
+        var checkNickNameOutput: Observable<Bool>
+        var registUserProfileOutput: Observable<SelfIntroduceResponse>
     }
-    
-    func registerUserProfile(
-        _ nickName: String,
-        _ description: String,
-        _ firstSubway: String? = nil,
-        _ secondSubway: String? = nil
-    ) -> Observable<SelfIntroduceResponse> {
-        return provider.rx.request(
-            .registerUserSubwayStations(
-                crewID: OnboardingDataModel.shared.crewId ?? -1,
-                nickName: nickName,
-                description: description,
-                firstSubway: firstSubway,
-                secondSubway: secondSubway
-            ))
-        .asObservable()
-        .map(SelfIntroduceResponse.self)
+
+    func transform(_ input: Input) -> Output {
+        let isEnableNickName = input.tapNickNameButton
+            .withLatestFrom(input.nickNameInput)
+            .withUnretained(self)
+            .flatMap { owner, nickName in
+                owner.provider.rx.request(.existingNicknameRequset(
+                    crewID: OnboardingDataModel.shared.crewId ?? -1,
+                    nickName: nickName
+                ))
+            }
+            .map { $0.statusCode == 200 }
+            .asObservable()
+
+        let isSuccessRegistUserProfile = input.tapNextButton
+            .flatMap {
+                Observable.combineLatest(
+                    input.nickNameInput,
+                    input.descriptionInput,
+                    input.subwayInput
+                ).asObservable()
+            }
+            .withUnretained(self)
+            .flatMap { owner, combineValues in
+                owner.provider.rx.request(.registerUserSubwayStations(
+                    crewID: OnboardingDataModel.shared.crewId ?? -1,
+                    nickName: combineValues.0,
+                    description: combineValues.1,
+                    firstSubway: combineValues.2[0],
+                    secondSubway: combineValues.2[1]
+                ))
+            }
+            .map(SelfIntroduceResponse.self)
+            .asObservable()
+
+        return .init(
+            checkNickNameOutput: isEnableNickName,
+            registUserProfileOutput: isSuccessRegistUserProfile
+        )
     }
 }
