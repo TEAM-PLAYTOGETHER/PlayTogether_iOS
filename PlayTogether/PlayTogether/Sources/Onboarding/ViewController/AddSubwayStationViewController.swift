@@ -222,6 +222,7 @@ class AddSubwayStationViewController: BaseViewController {
                 self.subwayStationListTalbeView.isHidden = false
                 let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
                 cell.setupData(matchingString)
+                
                 return cell
             }
             .disposed(by: disposeBag)

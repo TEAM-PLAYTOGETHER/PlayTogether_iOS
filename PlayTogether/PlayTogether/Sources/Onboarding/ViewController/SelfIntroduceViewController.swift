@@ -107,9 +107,8 @@ class SelfIntroduceViewController: BaseViewController {
     }
     
     private lazy var layout = UICollectionViewFlowLayout().then {
-        let width = 123 * (UIScreen.main.bounds.width / 375)    // TODO: 지하철 데이터를 받아오면 해당 width 동적으로 처리할 예정
-        let height = 32 * (UIScreen.main.bounds.height / 812)
-        $0.itemSize = CGSize(width: width, height: height)
+        $0.scrollDirection = .horizontal
+        $0.minimumInteritemSpacing = 10.0
     }
 
     private lazy var subwayStationCollectionView = UICollectionView(
@@ -117,7 +116,12 @@ class SelfIntroduceViewController: BaseViewController {
         collectionViewLayout: layout
     ).then {
         $0.backgroundColor = .white
+        $0.contentInset = .zero
         $0.register(SubwayStationCollectionViewCell.self, forCellWithReuseIdentifier: "SubwayStationCollectionViewCell")
+        $0.register(PreferredStationCollectionViewCell.self, forCellWithReuseIdentifier: "PreferredStationCollectionViewCell")
+        
+        $0.delegate = self
+        $0.dataSource = self
     }
     
     private lazy var nextButton = UIButton().then {
@@ -129,7 +133,12 @@ class SelfIntroduceViewController: BaseViewController {
     
     private var isEnableNickname = BehaviorRelay<Bool>(value: false)
     private var isFillBriefIntroduceText = BehaviorRelay<Bool>(value: false)
-    private var registerUserStations = BehaviorRelay<[String]>(value: [])
+    private var registerUserStationsArray = [String]() {
+        didSet {
+            subwayStationCollectionView.reloadData()
+        }
+    }
+    private var registerUserStationsRelay = BehaviorRelay<[String]>(value: ["선택 사항 없음"])
     private var ableNickname: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
@@ -251,7 +260,7 @@ class SelfIntroduceViewController: BaseViewController {
         subwayStationCollectionView.snp.makeConstraints {
             $0.top.equalTo(preferredSubwayStationLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalTo(nextButton.snp.top).offset(75)
+            $0.height.equalTo(32)
         }
         
         nextButton.snp.makeConstraints {
@@ -355,7 +364,7 @@ class SelfIntroduceViewController: BaseViewController {
         Driver.combineLatest(
             isEnableNickname.asDriver(),
             isFillBriefIntroduceText.asDriver(),
-            registerUserStations.asDriver()
+            registerUserStationsRelay.asDriver()
         ) { $0 && $1 && !$2.isEmpty }
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
@@ -383,15 +392,15 @@ class SelfIntroduceViewController: BaseViewController {
                 
                 OnboardingDataModel.shared.nickName = nickname
                 OnboardingDataModel.shared.introduceSelfMessage = briefIntroduceText
-                OnboardingDataModel.shared.preferredSubway = self.registerUserStations.value
+                OnboardingDataModel.shared.preferredSubway = self.registerUserStationsRelay.value
                 
                 let controller = isCreate ? OpendThunViewController() : ParticipationCompletedViewController()
                 self.viewModel.registerUserProfile(
-                    33,           // TODO: 추후 동아리 번호 받아올 예정
+                    OnboardingDataModel.shared.crewId ?? -1,
                     nickname,
                     briefIntroduceText,
-                    self.registerUserStations.value.first!,
-                    self.registerUserStations.value.last
+                    self.registerUserStationsRelay.value.first ?? "",
+                    self.registerUserStationsRelay.value.last ?? ""
                 ) {
                     guard $0 == true else { return }
                     self.navigationController?.pushViewController(controller, animated: true)
@@ -404,6 +413,57 @@ class SelfIntroduceViewController: BaseViewController {
 
 extension SelfIntroduceViewController: AddSubwayStationDelegate {
     func registerSubwayStation(_ stations: [String]) {
-        registerUserStations.accept(stations)
+        registerUserStationsArray = (stations.isEmpty ? ["선택 사항 없음"] : stations)
+        registerUserStationsRelay.accept(registerUserStationsArray)
+    }
+}
+
+extension SelfIntroduceViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    @objc
+    func cellCancelAction(_ sender: UIButton) {
+        registerUserStationsArray.remove(at: sender.tag)
+        registerUserStationsRelay.accept(registerUserStationsArray)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return registerUserStationsRelay.value.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard !registerUserStationsRelay.value.contains("선택 사항 없음") else {
+            let emptyCell = self.subwayStationCollectionView.dequeueReusableCell(
+                withReuseIdentifier: "SubwayStationCollectionViewCell",
+                for: indexPath
+            ) as! SubwayStationCollectionViewCell
+            emptyCell.isUserInteractionEnabled = false
+            return emptyCell
+        }
+        
+        let row = indexPath.row
+        let cell = self.subwayStationCollectionView.dequeueReusableCell(
+            withReuseIdentifier: "PreferredStationCollectionViewCell",
+            for: indexPath
+        ) as! PreferredStationCollectionViewCell
+        
+        cell.setupData(
+            registerUserStationsRelay.value[row],
+            row
+        )
+        cell.cancelButton.addTarget(
+            self,
+            action: #selector(cellCancelAction),
+            for: .touchUpInside
+        )
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let fontWidth = (registerUserStationsRelay.value[indexPath.row] as NSString).size(
+            withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
+        ).width
+        let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)
+        
+        return CGSize(width: cellWidth, height: 32)
     }
 }

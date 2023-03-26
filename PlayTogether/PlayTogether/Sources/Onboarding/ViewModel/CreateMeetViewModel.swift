@@ -7,8 +7,10 @@
 
 import RxSwift
 import RxCocoa
+import Moya
 
 final class CreateMeetViewModel {
+    private lazy var disposeBag = DisposeBag()
     
     struct Input {
         var checkMeetingTitle: Observable<Bool>
@@ -27,6 +29,12 @@ final class CreateMeetViewModel {
         var nextButtonEnableCheck: Driver<Bool>
     }
     
+    struct CreateMeetInput {
+        var crewName: String
+        var description: String
+        var jwt: String
+    }
+    
     func regularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
         let output = input.meetingTitleText.map {
             let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-핳\\s]*$"
@@ -41,5 +49,24 @@ final class CreateMeetViewModel {
             return $0 && !$1.isEmpty
         }.asDriver(onErrorJustReturn: false)
         return nextButtonEnableOutput(nextButtonEnableCheck: output)
+    }
+    
+    func createMeetRequest(_ input: CreateMeetInput, _ completion: @escaping (CreateMeetResponse) -> (Void)) {
+        let provider = MoyaProvider<CreateMeetService>()
+        provider.rx.request(.createMeetRequest(
+            crewName: input.crewName,
+            description: input.description,
+            jwt: input.jwt
+        )).subscribe{ result in
+            switch result {
+            case .success(let response):
+                guard let responseData = try? response.map(CreateMeetResponse.self) else { return }
+                completion(responseData)
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        .disposed(by: disposeBag)
     }
 }

@@ -11,6 +11,11 @@ import KakaoSDKAuth
 import KakaoSDKUser
 import AuthenticationServices
 
+enum SocialLoginType {
+    case KakaoLogin
+    case AppleLogin
+}
+
 class LogInViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     
@@ -124,17 +129,25 @@ extension LogInViewController: LoginButtonDelegate {
 }
 
 private extension LogInViewController {
-    func requestLogin(accessToken: String?, fcmToken: String?) {
+    func requestLogin(accessToken: String?, fcmToken: String?, type: SocialLoginType) {
         guard let accessToken = accessToken,
               let fcmToken = fcmToken
         else { return }
 
         let loginInput = LoginViewModel.loginTokenInput(accessToken: accessToken,
                                                         fcmToken: fcmToken)
-        viewModel.tryLogin(loginInput) {
+        viewModel.socialLoginRequest(
+            input: loginInput,
+            type: type
+        ) {
             guard $0.status == 200 else { return }
             let loggedInUserInfo = $0.data
-            guard loggedInUserInfo.isSignup == true else {
+            
+            UserDefaults.standard.set(loggedInUserInfo?.accessToken, forKey: "accessToken")
+            UserDefaults.standard.set(loggedInUserInfo?.refreshToken, forKey: "refreshToken")
+            UserDefaults.standard.set(loggedInUserInfo?.userName, forKey: "userName")
+            
+            guard loggedInUserInfo?.isSignup == true else {
                 guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
                         as? SceneDelegate else { return }
                 sceneDelegate.window?.rootViewController = UINavigationController(
@@ -142,10 +155,6 @@ private extension LogInViewController {
                 )
                 return
             }
-            // TODO: 키체인 변경 예정
-            UserDefaults.standard.set(loggedInUserInfo.accessToken, forKey: "accessToken")
-            UserDefaults.standard.set(loggedInUserInfo.refreshToken, forKey: "refreshToken")
-            UserDefaults.standard.set(loggedInUserInfo.userName, forKey: "userName")
             
             guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
                     as? SceneDelegate else { return }
@@ -162,7 +171,8 @@ private extension LogInViewController {
             UserApi.shared.loginWithKakaoAccount(prompts:[.Login]) { oauthToken, error  in
                 self.requestLogin(
                     accessToken: oauthToken?.accessToken,
-                    fcmToken: self.userFCMToken
+                    fcmToken: self.userFCMToken,
+                    type: .KakaoLogin
                 )
             }
             return
@@ -171,7 +181,8 @@ private extension LogInViewController {
         UserApi.shared.loginWithKakaoTalk { oauthToken, error in
             self.requestLogin(
                 accessToken: oauthToken?.accessToken,
-                fcmToken: self.userFCMToken
+                fcmToken: self.userFCMToken,
+                type: .KakaoLogin
             )
         }
     }
@@ -196,7 +207,8 @@ extension LogInViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             let token = String(data: appleIDCredential.identityToken!, encoding: .utf8)
             self.requestLogin(
                 accessToken: token,
-                fcmToken: self.userFCMToken
+                fcmToken: self.userFCMToken,
+                type: .AppleLogin
             )
             
         default: break
