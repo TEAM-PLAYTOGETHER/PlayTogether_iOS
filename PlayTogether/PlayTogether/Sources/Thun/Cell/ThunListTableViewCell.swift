@@ -119,6 +119,7 @@ extension ThunListTableViewCell {
         tagLabel.text = "\(category)"
         likeButton.setTitle("\(scpCnt)", for: .normal)
         likeButton.setTitleColor(.white, for: .normal)
+        likeButton.setImage(.ptImage(.likeFilledGreenIcon), for: .normal)
     }
     
     func setupClosedData(
