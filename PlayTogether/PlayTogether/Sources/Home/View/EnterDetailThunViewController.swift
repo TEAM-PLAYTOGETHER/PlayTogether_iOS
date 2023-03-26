@@ -50,11 +50,20 @@ class EnterDetailThunViewController: BaseViewController {
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
+        $0.layer.cornerRadius = ((UIScreen.main.bounds.height/812)*40)/2
+        $0.clipsToBounds = true
     }
     
     private let nicknameLabel = UILabel().then {
         $0.font = .pretendardBold(size: 14)
         $0.textColor = .ptBlack01
+    }
+    
+    private lazy var profileStackView = UIStackView(arrangedSubviews:[circleImageView,nicknameLabel]).then {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile(sender:)))
+        $0.spacing = 5
+        $0.isUserInteractionEnabled = true
+        $0.addGestureRecognizer(tap)
     }
     
     private let messageButton = UIButton().then {
@@ -162,6 +171,7 @@ class EnterDetailThunViewController: BaseViewController {
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
+        contentView.addSubview(profileStackView)
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
@@ -179,6 +189,9 @@ class EnterDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        let width = UIScreen.main.bounds.width/375
+        let height = UIScreen.main.bounds.height/812
+        
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
@@ -197,14 +210,12 @@ class EnterDetailThunViewController: BaseViewController {
         }
         
         circleImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
+            $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(circleImageView.snp.trailing).offset(5)
-            $0.centerY.equalTo(circleImageView.snp.centerY)
+        profileStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         messageButton.snp.makeConstraints {
@@ -214,8 +225,8 @@ class EnterDetailThunViewController: BaseViewController {
         }
         
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(circleImageView.snp.bottom).offset(20)
-            $0.leading.equalTo(circleImageView.snp.leading)
+            $0.top.equalTo(profileStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(profileStackView.snp.leading)
             $0.trailing.equalTo(messageButton.snp.trailing).offset(7)
             $0.height.equalTo(1)
         }
@@ -281,6 +292,9 @@ class EnterDetailThunViewController: BaseViewController {
                 response[0].peopleCnt ?? 0,
                 response[0].lightMemberCnt
             )
+            if let organizerImage = response[0].organizer[0].profileImage {
+                self.circleImageView.loadProfileImage(url: organizerImage)
+            }
         }
         
         likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
@@ -344,19 +358,6 @@ class EnterDetailThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThun(lightId: lightId ?? -1) { response in
-            switch self.existThunViewModel.isExistThun {
-            case true:
-                self.enterButton.isHidden = true
-                self.enterButton.snp.updateConstraints {
-                    $0.height.equalTo(0)
-                }
-                self.alertButton.isHidden = response ? true : false
-            case false:
-                self.enterButton.isHidden = false
-            }
-        }
-        
         alertButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
@@ -364,6 +365,10 @@ class EnterDetailThunViewController: BaseViewController {
                 self.navigationController?.pushViewController(ReportThunViewController(lightID: self.lightId ?? -1), animated: true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    @objc func didTapProfile (sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
     }
 }
 

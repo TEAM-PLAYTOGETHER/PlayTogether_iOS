@@ -4,6 +4,7 @@ import RxSwift
 final class CompleteThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = DetailThunViewModel()
+    private var submittedViewModel = SubmittedThunViewModel()
     var lightId: Int?
     
     init(lightID: Int, completeText: String) {
@@ -209,8 +210,11 @@ final class CompleteThunViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let lightID = self?.lightId else { return }
+                guard let viewmodel = self?.submittedViewModel else { return }
                 self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(lightID: lightID),
+                    SubmittedDetailThunViewController(
+                        lightID: lightID,
+                        superViewModel: viewmodel),
                     animated: true)
             })
             .disposed(by: disposeBag)
@@ -237,16 +241,29 @@ final class CompleteThunViewController: BaseViewController {
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
                     
-                    cell.setupData(item.name)
+                    if let profileImage = item.profileImage {
+                        cell.setupData(item.name, profileImage)
+                    }
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
-                    guard row == member.count-1 else { return cell }
+                    if let profileImage = item.profileImage {
+                        cell.setupData(item.name, profileImage)
+                    } else {
+                        cell.setupNameData(item.name)
+                    }
 
                     return cell
                 }
                 .disposed(by: self.disposeBag)
         }
+        
+        memberTableView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
