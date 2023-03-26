@@ -61,4 +61,5 @@ struct APIConstants {
     
     // auth
     static let deleteAccount = "/auth/withdraw"
+    static let deleteCrew = "/crew"
 }

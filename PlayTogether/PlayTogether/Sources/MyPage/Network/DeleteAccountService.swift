@@ -10,6 +10,7 @@ import Moya
 
 enum DeleteAccountService {
     case deleteAccount
+    case deleteCrew
 }
 
 extension DeleteAccountService: TargetType {
@@ -21,6 +22,8 @@ extension DeleteAccountService: TargetType {
         switch self {
         case .deleteAccount:
             return APIConstants.deleteAccount
+        case .deleteCrew:
+            return APIConstants.deleteCrew
         }
     }
     
@@ -28,12 +31,16 @@ extension DeleteAccountService: TargetType {
         switch self {
         case .deleteAccount:
             return .delete
+        case .deleteCrew:
+            return .delete
         }
     }
     
     var task: Task {
         switch self {
         case .deleteAccount:
+            return .requestPlain
+        case .deleteCrew:
             return .requestPlain
         }
     }

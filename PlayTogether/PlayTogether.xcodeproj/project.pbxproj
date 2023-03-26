@@ -116,6 +116,7 @@
 		B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19028B5D6C4003C80AB /* OpendThunViewController.swift */; };
 		B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */; };
 		B6FB28F928C882D000D5E0FC /* InputGenderBirthYearViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */; };
+		DD0495E429CAF69300B0E2AD /* DeleteCrewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0495E329CAF69300B0E2AD /* DeleteCrewViewController.swift */; };
 		DD0EBDF828C4939400A50CDB /* SearchThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBDF728C4939400A50CDB /* SearchThunViewController.swift */; };
 		DD0EBDFC28C4CA7100A50CDB /* SearchThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBDFB28C4CA7100A50CDB /* SearchThunService.swift */; };
 		DD0EBE0028C4D3E200A50CDB /* SearchThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EBDFF28C4D3E200A50CDB /* SearchThunViewModel.swift */; };
@@ -141,6 +142,7 @@
 		DD80A14C28E75DF600AD01D0 /* LikedThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */; };
 		DD80A15028ED63A400AD01D0 /* GoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */; };
 		DD80A15228ED63AD00AD01D0 /* DoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */; };
+		DDA498AB29D0630300232A4B /* ManageBlockMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA498AA29D0630300232A4B /* ManageBlockMemberViewController.swift */; };
 		DDAE9D77290296830021FBEA /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9D76290296830021FBEA /* SettingViewController.swift */; };
 		DDAE9DB9290A2DCF0021FBEA /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */; };
 		DDAE9DBB290E591C0021FBEA /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */; };
@@ -275,6 +277,7 @@
 		B6ECF19228B5D86E003C80AB /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		B6FB28F628C882BA00D5E0FC /* UpdateUserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserInfoService.swift; sourceTree = "<group>"; };
 		B6FB28F828C882D000D5E0FC /* InputGenderBirthYearViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGenderBirthYearViewModel.swift; sourceTree = "<group>"; };
+		DD0495E329CAF69300B0E2AD /* DeleteCrewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCrewViewController.swift; sourceTree = "<group>"; };
 		DD0EBDF728C4939400A50CDB /* SearchThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchThunViewController.swift; sourceTree = "<group>"; };
 		DD0EBDFB28C4CA7100A50CDB /* SearchThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchThunService.swift; sourceTree = "<group>"; };
 		DD0EBDFF28C4D3E200A50CDB /* SearchThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchThunViewModel.swift; sourceTree = "<group>"; };
@@ -300,6 +303,7 @@
 		DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedThunViewModel.swift; sourceTree = "<group>"; };
 		DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewModel.swift; sourceTree = "<group>"; };
 		DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoThunListViewModel.swift; sourceTree = "<group>"; };
+		DDA498AA29D0630300232A4B /* ManageBlockMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageBlockMemberViewController.swift; sourceTree = "<group>"; };
 		DDAE9D76290296830021FBEA /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
@@ -425,6 +429,8 @@
 				DDAE9D76290296830021FBEA /* SettingViewController.swift */,
 				DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */,
 				DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */,
+				DD0495E329CAF69300B0E2AD /* DeleteCrewViewController.swift */,
+				DDA498AA29D0630300232A4B /* ManageBlockMemberViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1026,6 +1032,7 @@
 				DD73C2C228B209DC001DEC1A /* CancelThunResponse.swift in Sources */,
 				DDF2C4032887A83E00C10F67 /* SubmittedThunViewController.swift in Sources */,
 				B6721DAB28E2B679008B37FB /* UpdateUserInfoService.swift in Sources */,
+				DDA498AB29D0630300232A4B /* ManageBlockMemberViewController.swift in Sources */,
 				DD73C2C828B57174001DEC1A /* SubmittedThunViewModel.swift in Sources */,
 				DD73C2BA28AA1727001DEC1A /* DetailThunService.swift in Sources */,
 				DD80A14C28E75DF600AD01D0 /* LikedThunViewModel.swift in Sources */,
@@ -1118,6 +1125,7 @@
 				DD73C2BE28AD5DA7001DEC1A /* DetailThunMemberTableViewCell.swift in Sources */,
 				B640C9182898D4B1006C45BE /* InvitationCodeViewModel.swift in Sources */,
 				B6ECF19128B5D6C4003C80AB /* OpendThunViewController.swift in Sources */,
+				DD0495E429CAF69300B0E2AD /* DeleteCrewViewController.swift in Sources */,
 				B69C591728DC00A5009517AF /* PreferredStationCollectionViewCell.swift in Sources */,
 				409451B128905AEC00F21717 /* APIConstants.swift in Sources */,
 				DDBE87B5289257CA0042490C /* ThunService.swift in Sources */,
@@ -1286,7 +1294,7 @@
 				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z779U729AH;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1317,7 +1325,7 @@
 				CODE_SIGN_ENTITLEMENTS = PlayTogether/PlayTogether.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z779U729AH;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTogether/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

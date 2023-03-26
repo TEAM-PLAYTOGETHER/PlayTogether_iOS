@@ -33,4 +33,20 @@ final class SettingViewModel {
             }
             .disposed(by: disposeBag)
     }
+    
+    func deleteCrew(completion: @escaping (Bool) -> Void) {
+        let provider = MoyaProvider<DeleteAccountService>()
+        provider.rx.request(.deleteCrew)
+            .subscribe { result in
+                switch result {
+                case let .success(response):
+                    let responseData = try? response.map(CancelThunResponse.self)
+                    guard let data = responseData?.success else { return }
+                    completion(data)
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }
