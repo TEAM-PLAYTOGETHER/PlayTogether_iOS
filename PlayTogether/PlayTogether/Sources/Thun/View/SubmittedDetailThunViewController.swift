@@ -16,6 +16,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     private let cancelViewModel = CancelThunViewModel()
     private let existThunViewModel = ExistThunViewModel()
     private let superViewModel: SubmittedThunViewModel?
+    private let likeThunViewModel = LikeThunViewModel()
     var lightId: Int?
     var imageCount: Int?
     
@@ -29,14 +30,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let cancelButton = UIButton().then {
+        $0.isButtonEnableUI(check: true)
+        $0.setupBottomButtonUI(title: "신청 취소하기", size: 16)
+    }
+    
     private let backButton = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
     }
     
-    private let cancelButton = UIButton().then {
-        $0.setTitle("신청 취소", for: .normal)
-        $0.setTitleColor(.ptGreen, for: .normal)
-        $0.titleLabel?.font = .pretendardRegular(size: 16)
+    private let likeButton = UIButton().then {
+        $0.setImage(.ptImage(.navLikeDefaultIcon), for: .normal)
+        $0.setImage(.ptImage(.navLikeFilledGreenIcon), for: .selected)
     }
     
     private let scrollView = UIScrollView().then {
@@ -46,13 +51,20 @@ final class SubmittedDetailThunViewController: BaseViewController {
     
     private let contentView = UIView()
     
-    private let circleImageView = UIImageView().then {
+    private var circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
     }
     
     private let nicknameLabel = UILabel().then {
         $0.font = .pretendardBold(size: 14)
         $0.textColor = .ptBlack01
+    }
+    
+    private lazy var profileStackView = UIStackView(arrangedSubviews:[circleImageView,nicknameLabel]).then {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile(sender:)))
+        $0.spacing = 5
+        $0.isUserInteractionEnabled = true
+        $0.addGestureRecognizer(tap)
     }
     
     private let messageButton = UIButton().then {
@@ -160,13 +172,15 @@ final class SubmittedDetailThunViewController: BaseViewController {
         tabBarController?.tabBar.isHidden = true
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
         view.addSubview(scrollView)
+        view.addSubview(cancelButton)
         
         scrollView.addSubview(contentView)
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
+        contentView.addSubview(profileStackView)
         contentView.addSubview(messageButton)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
@@ -187,8 +201,19 @@ final class SubmittedDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        let width = UIScreen.main.bounds.width/375
+        let height = UIScreen.main.bounds.height/812
+        
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        cancelButton.snp.makeConstraints {
+            $0.top.equalTo(scrollView.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(56 * UIScreen.main.bounds.height/812)
         }
         
         contentView.snp.makeConstraints {
@@ -197,14 +222,12 @@ final class SubmittedDetailThunViewController: BaseViewController {
         }
         
         circleImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
+            $0.size.equalTo(CGSize(width: width*40, height: height*40))
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(circleImageView.snp.trailing).offset(5)
-            $0.centerY.equalTo(circleImageView.snp.centerY)
+        profileStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         messageButton.snp.makeConstraints {
@@ -214,8 +237,8 @@ final class SubmittedDetailThunViewController: BaseViewController {
         }
         
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(circleImageView.snp.bottom).offset(20)
-            $0.leading.equalTo(circleImageView.snp.leading)
+            $0.top.equalTo(profileStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(profileStackView.snp.leading)
             $0.trailing.equalTo(messageButton.snp.trailing).offset(7)
             $0.height.equalTo(1)
         }
@@ -288,15 +311,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
                 response[0].datumDescription ?? "",
-                response[0].place ?? "장소 미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
                 response[0].lightMemberCnt
             )
+            if let organizerImage = response[0].organizer[0].profileImage {
+                self.circleImageView.loadProfileImage(url: organizerImage)
+            }
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -310,7 +336,12 @@ final class SubmittedDetailThunViewController: BaseViewController {
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
-                    cell.setupData(item.name)
+                    if let profileImage = item.profileImage {
+                        cell.setupData(item.name, profileImage)
+                    } else {
+                        cell.setupNameData(item.name)
+                    }
+                    
                     return cell
                 }
                 .disposed(by: self.disposeBag)
@@ -367,10 +398,18 @@ final class SubmittedDetailThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        existThunViewModel.getExistThunOrganizer(lightId: lightId ?? -1) { response in
-            self.cancelButton.isHidden = response ? true : false
-            self.alertButton.isHidden = response ? true : false
+        likeThunViewModel.getExistLikeThun(lightId: lightId ?? -1) {
+            self.likeButton.isSelected = $0
         }
+        
+        likeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.likeThunViewModel.postLikeThun(lightId: self?.lightId ?? -1) {
+                    self?.likeButton.isSelected = !$0
+                }
+            })
+            .disposed(by: disposeBag)
         
         alertButton.rx.tap
             .asDriver()
@@ -386,6 +425,10 @@ final class SubmittedDetailThunViewController: BaseViewController {
                 self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    @objc func didTapProfile (sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
     }
 }
 

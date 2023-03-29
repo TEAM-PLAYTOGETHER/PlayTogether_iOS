@@ -9,6 +9,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol AddSubwayStationDelegate {
+    func registerSubwayStation(_ stations: [String])
+}
+
 class AddSubwayStationViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel = AddSubwayStationViewModel()
@@ -40,7 +44,6 @@ class AddSubwayStationViewController: BaseViewController {
         $0.textColor = .ptGray01
     }
     
-    // TODO: UITableView HeaderView에 UITextField 및 UICollectionView로 바꿀 예정
     private let inputSubwayStationTextField = UITextField().then {
         $0.setupPlaceholderText(title: "지하철역 검색", color: .ptGray01)
         $0.addLeftPadding()
@@ -52,11 +55,33 @@ class AddSubwayStationViewController: BaseViewController {
         $0.layer.cornerRadius = 10
     }
     
+    private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .horizontal
+        $0.minimumInteritemSpacing = 10.0
+    }
+    
+    private lazy var preferredStationCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: collectionViewFlowLayout
+    ).then() {
+        $0.backgroundColor = .white
+        $0.delegate = self
+        $0.dataSource = self
+        $0.contentInset = .zero
+        $0.register(
+            PreferredStationCollectionViewCell.self, 
+            forCellWithReuseIdentifier: "PreferredStationCollectionViewCell"
+        )
+    }
+    
     private lazy var subwayStationListTalbeView = UITableView().then {
         $0.backgroundColor = .white
         $0.rowHeight = 57 * (UIScreen.main.bounds.height / 812)
         $0.showsVerticalScrollIndicator = false
-        $0.register(SubwayStationListTableViewCell.self, forCellReuseIdentifier: "SubwayStationListTableViewCell")
+        $0.register(
+            SubwayStationListTableViewCell.self,
+            forCellReuseIdentifier: "SubwayStationListTableViewCell"
+        )
         $0.separatorInset.left = 0
     }
     
@@ -66,6 +91,11 @@ class AddSubwayStationViewController: BaseViewController {
     }
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
+    
+    private lazy var selectedSubwayStations = [String]()
+    private var selectedSubwayStationRelay = BehaviorRelay<[String]>(value: [])
+    private var collectionViewHeight: CGFloat = 0
+    var delegate: AddSubwayStationDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -85,6 +115,7 @@ class AddSubwayStationViewController: BaseViewController {
         view.addSubview(subwayStationLabel)
         view.addSubview(noticeSubwayStationLabel)
         view.addSubview(inputSubwayStationTextField)
+        view.addSubview(preferredStationCollectionView)
         view.addSubview(subwayStationListTalbeView)
         view.addSubview(addButton)
     }
@@ -117,8 +148,14 @@ class AddSubwayStationViewController: BaseViewController {
             $0.height.equalTo(57 * (UIScreen.main.bounds.height / 812))
         }
         
-        subwayStationListTalbeView.snp.makeConstraints {
+        preferredStationCollectionView.snp.makeConstraints {
             $0.top.equalTo(inputSubwayStationTextField.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(0)
+        }
+        
+        subwayStationListTalbeView.snp.makeConstraints {
+            $0.top.equalTo(preferredStationCollectionView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(addButton.snp.top).offset(-8)
         }
@@ -185,16 +222,95 @@ class AddSubwayStationViewController: BaseViewController {
                 self.subwayStationListTalbeView.isHidden = false
                 let matchingString = self.viewModel.makeAttributeString(item, self.inputSubwayStationTextField.text!)
                 cell.setupData(matchingString)
+                
                 return cell
             }
             .disposed(by: disposeBag)
         
         subwayStationListTalbeView.rx.modelSelected(String.self)
             .asDriver()
-            .drive(onNext: { name in
-                // TODO: UIcollection View 추가해주기
-                print("DEBUG: seleted item name is \(name)")
+            .drive(onNext: { [weak self] name in
+                guard let self = self else { return }
+                guard self.selectedSubwayStations.count < 2 else {
+                    self.showToast("최대 2개까지 추가할 수 있어요!")
+                    return
+                }
+                
+                guard self.selectedSubwayStations.contains(name) == false else {
+                    self.showToast("이미 추가한 역이에요!")
+                    return
+                }
+                
+                self.selectedSubwayStations.append(name)
+                self.selectedSubwayStationRelay.accept(self.selectedSubwayStations)
+                self.preferredStationCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
+        
+        selectedSubwayStationRelay
+            .asDriver()
+            .drive(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.collectionViewHeight = data.count == 0 ? 0 : 32
+                self.addButton.isButtonEnableUI(check: !(data.count == 0))
+                
+                self.preferredStationCollectionView.snp.updateConstraints {
+                    $0.height.equalTo(self.collectionViewHeight)
+                }
+                self.preferredStationCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        addButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                OnboardingDataModel.shared.preferredSubway = self.selectedSubwayStations
+                self.delegate?.registerSubwayStation(self.selectedSubwayStations)
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension AddSubwayStationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    @objc
+    func cellCancelAction(_ sender: UIButton) {
+        selectedSubwayStations.remove(at: sender.tag)
+        selectedSubwayStationRelay.accept(selectedSubwayStations)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return selectedSubwayStationRelay.value.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "PreferredStationCollectionViewCell",
+            for: indexPath
+        ) as? PreferredStationCollectionViewCell
+        else { return UICollectionViewCell() }
+        
+        let row = indexPath.row
+        cell.setupData(
+            selectedSubwayStationRelay.value[row],
+            row
+        )
+        cell.cancelButton.addTarget(
+            self,
+            action: #selector(cellCancelAction),
+            for: .touchUpInside
+        )
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let fontWidth = (selectedSubwayStations[indexPath.row] as NSString).size(
+            withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
+        ).width
+        let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)
+        
+        return CGSize(width: cellWidth, height: 32)
     }
 }

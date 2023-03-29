@@ -12,6 +12,9 @@ import UIKit
 final class HomeViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = HomeViewModel()
+    private let existViewModel = ExistThunViewModel()
+    private let openedViewModel = OpenedThunViewModel()
+    private let submittedViewModel = SubmittedThunViewModel()
     
     private lazy var refreshControl = UIRefreshControl().then {
         $0.tintColor = .clear
@@ -411,20 +414,60 @@ final class HomeViewController: BaseViewController {
         hotCollectionView.rx.modelSelected(HomeResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(lightID: $0.lightID),
-                    animated: true
-                )
+                guard let viewmodel = self?.submittedViewModel else { return }
+                guard let openviewmodel = self?.openedViewModel else { return }
+                let lightId = $0.lightID
+                self?.existViewModel.getExistThunOrganizer(lightId: lightId) { response in
+                    switch response {
+                    case "내가 만든 번개에 참여중 입니다.":
+                        self?.navigationController?.pushViewController(
+                            OpenedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: openviewmodel),
+                            animated: true)
+                    case "내가 만든 번개는 아니지만, 해당 번개에 참여중입니다.":
+                        self?.navigationController?.pushViewController(
+                            SubmittedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: viewmodel),
+                            animated: true)
+                    case "해당 번개에 참여중이 아닙니다.":
+                        self?.navigationController?.pushViewController(
+                            EnterDetailThunViewController(lightID: lightId),
+                            animated: true)
+                    default: break
+                    }
+                }
             })
             .disposed(by: disposeBag)
         
         newCollectionView.rx.modelSelected(HomeResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(
-                    EnterDetailThunViewController(lightID: $0.lightID),
-                    animated: true
-                )
+                guard let viewmodel = self?.submittedViewModel else { return }
+                guard let openviewmodel = self?.openedViewModel else { return }
+                let lightId = $0.lightID
+                self?.existViewModel.getExistThunOrganizer(lightId: lightId) { response in
+                    switch response {
+                    case "내가 만든 번개에 참여중 입니다.":
+                        self?.navigationController?.pushViewController(
+                            OpenedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: openviewmodel),
+                            animated: true)
+                    case "내가 만든 번개는 아니지만, 해당 번개에 참여중입니다.":
+                        self?.navigationController?.pushViewController(
+                            SubmittedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: viewmodel),
+                            animated: true)
+                    case "해당 번개에 참여중이 아닙니다.":
+                        self?.navigationController?.pushViewController(
+                            EnterDetailThunViewController(lightID: lightId),
+                            animated: true)
+                    default: break
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }

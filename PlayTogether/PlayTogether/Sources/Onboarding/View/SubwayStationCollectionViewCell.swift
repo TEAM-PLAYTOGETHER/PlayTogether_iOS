@@ -9,6 +9,7 @@ import UIKit
 
 final class SubwayStationCollectionViewCell: UICollectionViewCell {
     private lazy var stationNameLabel = UILabel().then {
+        $0.text = "선택 사항 없음"
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptGray02
     }
@@ -58,12 +59,5 @@ private extension SubwayStationCollectionViewCell {
             $0.leading.equalTo(stationNameLabel.snp.trailing).offset(2)
             $0.trailing.equalToSuperview().inset(11.57)
         }
-    }
-}
-
-
-extension SubwayStationCollectionViewCell {
-    func setupData(_ title: String) {
-        stationNameLabel.text = title
     }
 }

@@ -15,7 +15,7 @@ class BaseViewController: UIViewController {
         setupLayouts()
         setupBinding()
     }
-    
+   
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -33,4 +33,35 @@ class BaseViewController: UIViewController {
     func setupLayouts() {}
     
     func setupBinding() {}
+}
+
+extension BaseViewController {
+    func showToast(_ message: String) {
+        let screenBounds = UIScreen.main.bounds
+        let toastLabel = UILabel(
+            frame: CGRect(x: screenBounds.width / 2 - 108.5,
+                          y: screenBounds.height - 112,
+                          width: 217 * (screenBounds.width / 375),
+                          height: 38 * (screenBounds.height / 812))
+        ).then() {
+            $0.text = message
+            $0.textColor = .white
+            $0.textAlignment = .center
+            $0.font = .pretendardMedium(size: 14)
+            $0.backgroundColor = .black.withAlphaComponent(0.7)
+            $0.alpha = 1.0
+            $0.layer.cornerRadius = $0.frame.height / 2
+            $0.clipsToBounds = true
+        }
+        view.addSubview(toastLabel)
+        
+        UIView.animate(withDuration: 2.5,
+                       delay: 0.2,
+                       options: .curveEaseOut,
+                       animations: {
+            toastLabel.alpha = 0.0
+        }, completion: { _ in
+            toastLabel.removeFromSuperview()
+        })
+    }
 }

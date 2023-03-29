@@ -59,6 +59,7 @@ class ReportThunViewController: BaseViewController {
     }
     
     override func setupViews() {
+        showKeyboard()
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.title = "게시글 신고"
@@ -67,6 +68,29 @@ class ReportThunViewController: BaseViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(textView)
+    }
+    
+    private func showKeyboard() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+        }
+        
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
     }
     
     override func setupLayouts() {
@@ -141,5 +165,11 @@ class ReportThunViewController: BaseViewController {
                 }
             })
            .disposed(by: disposeBag)
+        
+        scrollView.rx.willEndDragging
+            .subscribe { [weak self] _ in
+                self?.view.endEditing(true)
+            }
+            .disposed(by: disposeBag)
     }
 }

@@ -8,32 +8,32 @@
 import Foundation
 import Moya
 
-enum DetailThunService {
-    case detailThunRequest(lightId: Int)
+enum DeleteAccountService {
+    case deleteAccount
 }
 
-extension DetailThunService: TargetType {
+extension DeleteAccountService: TargetType {
     var baseURL: URL {
         return URL(string: APIConstants.baseUrl)!
     }
     
     var path: String {
         switch self {
-        case .detailThunRequest(let lightId):
-            return APIConstants.getDetailThunList + "/\(lightId)/detail"
+        case .deleteAccount:
+            return APIConstants.deleteAccount
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .detailThunRequest:
-            return .get
+        case .deleteAccount:
+            return .delete
         }
     }
     
     var task: Task {
         switch self {
-        case .detailThunRequest:
+        case .deleteAccount:
             return .requestPlain
         }
     }
@@ -46,3 +46,4 @@ extension DetailThunService: TargetType {
         ]
     }
 }
+

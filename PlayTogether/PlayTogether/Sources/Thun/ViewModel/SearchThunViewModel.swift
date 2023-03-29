@@ -13,7 +13,7 @@ final class SearchThunViewModel {
     private lazy var disposeBag = DisposeBag()
     var thunList = BehaviorSubject(value: [ThunResponseList]())
     var emptyThunList = BehaviorSubject<Bool>(value: false)
-
+    
     func searchThunData(_ search: String,_ category: String, completion: @escaping ([ThunResponseList]) -> Void) {
         let provider = MoyaProvider<SearchThunService>()
         provider.rx.request(.searchThunRequest(search: search, category: category))

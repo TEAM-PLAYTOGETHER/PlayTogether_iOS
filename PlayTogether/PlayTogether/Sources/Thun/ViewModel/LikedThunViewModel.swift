@@ -11,9 +11,9 @@ import Moya
 
 final class LikedThunViewModel {
     private lazy var disposeBag = DisposeBag()
-    private var currentPageCount = 1
-    private var maxSize = 5
-    private var isLoading = false
+    var currentPageCount = 1
+    var maxSize = 5
+    var isLoading = false
 
     let fetchMoreDatas = PublishSubject<Void>()
     var isEmptyThun = BehaviorSubject<Bool>(value: false)
@@ -71,7 +71,9 @@ final class LikedThunViewModel {
                     if data.offset == 0 && data.totalCount == 0 {
                         self.isEmptyThun.onNext(true)
                     } else {
-                        if data.totalCount != 0 { completion(data.lightData) }
+                        if data.totalCount != 0 {
+                            self.isEmptyThun.onNext(false)
+                            completion(data.lightData) }
                     }
                 case let .failure(error):
                     print(error.localizedDescription)
