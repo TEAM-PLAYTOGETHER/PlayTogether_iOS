@@ -10,6 +10,7 @@ import RxSwift
 
 class CheckMemberInfoViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
+    private var viewModel = DetailMemberInfoViewModel()
     
     private let navigationBarView = UIView().then {
         $0.backgroundColor = .ptBlack01
@@ -56,17 +57,8 @@ class CheckMemberInfoViewController: BaseViewController {
         $0.distribution = .fillEqually
         $0.isHidden = true
     }
-
-    private let profileView = ProfileView(
-        frame: .zero,
-        crew: "SOPT",
-        name: "안드_김세훈이아니라",
-        birth: "1998",
-        gender: "M",
-        profileImage: .ptImage(.doIcon),
-        stationName: ["강남역", "동대문역사문화공원역"],
-        introduce: "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하"
-    )
+    
+    private var profileView = ProfileView(frame: .zero, crew: "zmfn", name: "ddfd", birth: "1998", gender: "M", profileImage: .ptImage(.doIcon), stationName: ["강남역", "동대문역사문화공원역"], introduce: "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하")
     
     private let chatButton = UIButton().then {
         $0.setupBottomButtonUI(title: "문수제비님과 채팅하기", size: 16)
@@ -158,7 +150,7 @@ class CheckMemberInfoViewController: BaseViewController {
         blockButton.rx.tap
             .bind { [weak self] in
                 self?.buttonStackView.isHidden = true
-                print("차단버튼") // TODO: - 수정부분 서버 완료되면 연결할 것
+                print("차단버튼")
             }
             .disposed(by: disposeBag)
         
@@ -168,5 +160,21 @@ class CheckMemberInfoViewController: BaseViewController {
                 print("신고버튼")
             }
             .disposed(by: disposeBag)
+        
+//        viewModel.detailMemberInfo(memberId: 280) { data in
+//            guard let image = Data(base64Encoded: data.profile.profileImage ?? "", options: .ignoreUnknownCharacters) else { return }
+//            self.profileView = ProfileView(
+//                frame: .zero,
+//                crew: data.crewName,
+//                name: data.profile.nickname ?? "이라어리ㅏ어",
+//                birth: data.profile.birth ?? "1998",
+//                gender: data.profile.gender ?? "M",
+//                profileImage: .ptImage(.doIcon),
+//                stationName: [data.profile.firstStation ?? "강남역", data.profile.secondStation ?? "계양역"] ,
+//                introduce: data.profile.description ?? "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하"
+//            )
+//            print("@@@@@@@@@@@@@@@@", data.profile)
+//            print("@@@@@@@@@@@@@@@@", data.crewName)
+//        }
     }
 }

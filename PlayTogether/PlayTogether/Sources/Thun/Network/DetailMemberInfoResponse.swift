@@ -22,13 +22,13 @@ struct DataClass: Decodable {
 struct Profile: Decodable {
     let id: String
     let isDeleted: Bool
-    let nickname, profileDescription, firstStation, secondStation: String
+    let nickname, description, firstStation, secondStation: String?
     let profileImage: String?
-    let gender, birth: String
+    let gender, birth: String?
 
     enum CodingKeys: String, CodingKey {
         case id, isDeleted, nickname
-        case profileDescription = "description"
+        case description
         case firstStation, secondStation, profileImage, gender, birth
     }
 }
