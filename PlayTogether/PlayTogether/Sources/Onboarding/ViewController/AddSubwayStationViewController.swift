@@ -229,21 +229,22 @@ class AddSubwayStationViewController: BaseViewController {
         
         subwayStationListTalbeView.rx.modelSelected(String.self)
             .asDriver()
-            .drive(onNext: { [weak self] name in
-                guard let self = self else { return }
-                guard self.selectedSubwayStations.count < 2 else {
-                    self.showToast("최대 2개까지 추가할 수 있어요!")
+            .drive(with: self, onNext: { owner, title in
+                
+                guard owner.selectedSubwayStationRelay.value.count < 2 else {
+                    owner.showToast("최대 2개까지 추가할 수 있어요!")
                     return
                 }
                 
-                guard self.selectedSubwayStations.contains(name) == false else {
-                    self.showToast("이미 추가한 역이에요!")
+                guard !owner.selectedSubwayStationRelay.value.contains(title) else {
+                    owner.showToast("이미 추가한 역이에요!")
                     return
                 }
                 
-                self.selectedSubwayStations.append(name)
-                self.selectedSubwayStationRelay.accept(self.selectedSubwayStations)
-                self.preferredStationCollectionView.reloadData()
+                owner.selectedSubwayStationRelay.accept(
+                    owner.selectedSubwayStationRelay.value + [title]
+                )
+                owner.preferredStationCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
         
@@ -292,21 +293,28 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         else { return UICollectionViewCell() }
         
         let row = indexPath.row
+        
         cell.setupData(
             selectedSubwayStationRelay.value[row],
             row
         )
-//        cell.cancelButton.addTarget(
-//            self,
-//            action: #selector(cellCancelAction),
-//            for: .touchUpInside
-//        )
+        
+        cell.cancelButtonTapObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, title in
+                var newValue = owner.selectedSubwayStationRelay.value
+                newValue.remove(
+                    at: owner.selectedSubwayStationRelay.value.firstIndex(of: title) ?? 0
+                )
+                owner.selectedSubwayStationRelay.accept(newValue)
+            })
+            .disposed(by: disposeBag)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let fontWidth = (selectedSubwayStations[indexPath.row] as NSString).size(
+        let fontWidth = (selectedSubwayStationRelay.value[indexPath.row] as NSString).size(
             withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
         ).width
         let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)
