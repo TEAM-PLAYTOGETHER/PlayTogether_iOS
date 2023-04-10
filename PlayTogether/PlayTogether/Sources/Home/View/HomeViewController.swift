@@ -405,7 +405,7 @@ final class HomeViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(
-                    SearchThunViewController(),
+                    SearchThunViewController(buttonIndex: 3),
                     animated: true
                 )
             })
