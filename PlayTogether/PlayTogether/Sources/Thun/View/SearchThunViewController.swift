@@ -247,24 +247,31 @@ final class SearchThunViewController: BaseViewController {
             }
             .disposed(by: self.disposeBag)
         
-        // 오픈한 번개일경우 추가하기
         tableView.rx.modelSelected(ThunResponseList.self)
             .asDriver()
             .drive(onNext: { [weak self] in
                 let lightId = $0.lightID
-                self?.existViewModel.getExistThun(lightId: lightId, completion: { response in
+                self?.existViewModel.getExistThunOrganizer(lightId: lightId, completion: { response in
                     guard let viewmodel = self?.submittedViewModel else { return }
+                    guard let openViewmodel = self?.openedViewModel else { return }
                     switch response {
-                    case true:
+                    case "내가 만든 번개에 참여중 입니다." :
+                        self?.navigationController?.pushViewController(
+                            OpenedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: openViewmodel),
+                            animated: true)
+                    case "내가 만든 번개는 아니지만, 해당 번개에 참여중입니다." :
                         self?.navigationController?.pushViewController(
                             SubmittedDetailThunViewController(
                                 lightID: lightId,
                                 superViewModel: viewmodel),
                             animated: true)
-                    case false:
+                    case "해당 번개에 참여중이 아닙니다." :
                         self?.navigationController?.pushViewController(
                             EnterDetailThunViewController(lightID: lightId),
                             animated: true)
+                    default: break
                     }
                 })
             })
