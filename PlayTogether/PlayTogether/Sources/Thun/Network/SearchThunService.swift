@@ -4,7 +4,7 @@ import Foundation
 import Moya
 
 enum SearchThunService {
-    case searchThunRequest(search: String, category: String)
+    case searchThunRequest(pageSize: Int, curpage: Int, search: String, category: String)
 }
 
 extension SearchThunService: TargetType {
@@ -28,11 +28,13 @@ extension SearchThunService: TargetType {
     
     var task: Task {
         switch self {
-        case .searchThunRequest(let search, let category):
+        case .searchThunRequest(let pageSize, let curpage, let search, let category):
             let params = [
+                "pageSize": pageSize,
+                "curpage": curpage,
                 "search": search,
                 "category": category
-            ]
+            ] as [String : Any]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }
     }

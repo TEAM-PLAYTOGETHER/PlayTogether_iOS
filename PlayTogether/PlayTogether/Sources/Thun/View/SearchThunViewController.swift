@@ -9,10 +9,23 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SearchThunViewController: BaseViewController {
+final class SearchThunViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private let viewModel = SearchThunViewModel()
+    private var submittedViewModel = SubmittedThunViewModel()
+    private var openedViewModel = OpenedThunViewModel()
+    private var existViewModel = ExistThunViewModel()
     private let isSelected = true
+    private var buttonIdx = 3
+    
+    init(buttonIndex: Int) {
+        self.buttonIdx = buttonIndex
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let backButton = UIButton().then {
         $0.setImage(.ptImage(.backIcon), for: .normal)
@@ -41,6 +54,9 @@ class SearchThunViewController: BaseViewController {
         $0.layer.cornerRadius = (UIScreen.main.bounds.height / 812) * 21
         $0.backgroundColor = .ptGray04
         $0.titleLabel?.font = .pretendardMedium(size: 12)
+        if self.buttonIdx == 0 {
+            isButtonState($0, true)
+        }
     }
     
     private lazy var goButton = UIButton().then {
@@ -52,6 +68,9 @@ class SearchThunViewController: BaseViewController {
         $0.layer.cornerRadius = (UIScreen.main.bounds.height / 812) * 21
         $0.backgroundColor = .ptGray04
         $0.titleLabel?.font = .pretendardMedium(size: 12)
+        if self.buttonIdx == 1 {
+            isButtonState($0, true)
+        }
     }
 
     private lazy var doButton = UIButton().then {
@@ -63,6 +82,9 @@ class SearchThunViewController: BaseViewController {
         $0.layer.cornerRadius = (UIScreen.main.bounds.height / 812) * 21
         $0.backgroundColor = .ptGray04
         $0.titleLabel?.font = .pretendardMedium(size: 12)
+        if self.buttonIdx == 2 {
+            isButtonState($0, true)
+        }
     }
 
     private lazy var buttonStackView = UIStackView(arrangedSubviews:
@@ -88,7 +110,7 @@ class SearchThunViewController: BaseViewController {
         )
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
-        $0.rowHeight = 110
+        $0.rowHeight = (UIScreen.main.bounds.height/812) * 110
         $0.keyboardDismissMode = .onDrag
     }
     
@@ -169,20 +191,25 @@ class SearchThunViewController: BaseViewController {
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] query in
                 guard let self = self else { return }
+                self.viewModel.query = query
                 switch self.isSelected {
                 case self.eatButton.isSelected:
-                    self.thunResponseData(query, "먹을래")
+                    self.viewModel.category = "먹을래"
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 case self.goButton.isSelected:
-                    self.thunResponseData(query, "갈래")
+                    self.viewModel.category = "갈래"
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 case self.doButton.isSelected:
-                    self.thunResponseData(query, "할래")
+                    self.viewModel.category = "할래"
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 default:
-                    self.thunResponseData(query, "")
+                    self.viewModel.category = ""
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 }
             })
             .disposed(by: disposeBag)
         
-        viewModel.emptyThunList
+        viewModel.isEmptyThun
             .bind(to: tableView.rx.isHidden)
             .disposed(by: disposeBag)
         
@@ -192,18 +219,74 @@ class SearchThunViewController: BaseViewController {
                     withIdentifier: "ThunListTableViewCell",
                     for: IndexPath(row: row, section: 0)
                 ) as? ThunListTableViewCell else { return UITableViewCell() }
-                cell.setupData(
-                    item.title,
-                    item.date ?? "날짜미정",
-                    item.time ?? "시간미정",
-                    item.peopleCnt ?? 0,
-                    item.place ?? "장소미정",
-                    item.lightMemberCnt,
-                    item.category,
-                    item.scpCnt)
+                switch item.isOpened {
+                case true:
+                    cell.setupData(
+                        item.title,
+                        item.date ?? "날짜미정",
+                        item.time ?? "시간미정",
+                        item.peopleCnt ?? 0,
+                        item.place ?? "장소미정",
+                        item.lightMemberCnt,
+                        item.category,
+                        item.scpCnt)
+                    cell.isUserInteractionEnabled = true
+                case false:
+                    cell.setupClosedData(
+                        item.title,
+                        item.date ?? "날짜미정",
+                        item.time ?? "시간미정",
+                        item.peopleCnt ?? 0,
+                        item.place ?? "장소미정",
+                        item.lightMemberCnt,
+                        item.category,
+                        item.scpCnt)
+                    cell.isUserInteractionEnabled = false
+                }
                 return cell
             }
             .disposed(by: self.disposeBag)
+        
+        tableView.rx.modelSelected(ThunResponseList.self)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                let lightId = $0.lightID
+                self?.existViewModel.getExistThunOrganizer(lightId: lightId, completion: { response in
+                    guard let viewmodel = self?.submittedViewModel else { return }
+                    guard let openViewmodel = self?.openedViewModel else { return }
+                    switch response {
+                    case "내가 만든 번개에 참여중 입니다." :
+                        self?.navigationController?.pushViewController(
+                            OpenedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: openViewmodel),
+                            animated: true)
+                    case "내가 만든 번개는 아니지만, 해당 번개에 참여중입니다." :
+                        self?.navigationController?.pushViewController(
+                            SubmittedDetailThunViewController(
+                                lightID: lightId,
+                                superViewModel: viewmodel),
+                            animated: true)
+                    case "해당 번개에 참여중이 아닙니다." :
+                        self?.navigationController?.pushViewController(
+                            EnterDetailThunViewController(lightID: lightId),
+                            animated: true)
+                    default: break
+                    }
+                })
+            })
+            .disposed(by: disposeBag)
+        
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offsetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offsetY > (contentHeight - self.tableView.frame.size.height) {
+                    self.viewModel.fetchMoreDatas.onNext(())
+                }
+            }
+            .disposed(by: disposeBag)
         
         eatButton.rx.tap
             .asDriver()
@@ -245,16 +328,19 @@ class SearchThunViewController: BaseViewController {
     private func isSelectedButton(_ button: UIButton,_ firstIndex: Int,_ secondIndex: Int) {
         guard let searchText = searchBar.text else { return }
         guard let buttonCategory = button.titleLabel?.text else { return }
+        viewModel.query = searchText
+        viewModel.category = buttonCategory
         let buttons = [eatButton,goButton,doButton]
         switch button.isSelected {
         case true:
             self.isButtonState(button, false)
-            thunResponseData(searchText, "")
+            viewModel.category = ""
+            thunResponseData(viewModel.query, viewModel.category)
         case false:
             self.isButtonState(button, true)
             self.isButtonState(buttons[firstIndex], false)
             self.isButtonState(buttons[secondIndex], false)
-            thunResponseData(searchText, buttonCategory)
+            thunResponseData(viewModel.query, viewModel.category)
         }
     }
     
@@ -263,13 +349,15 @@ class SearchThunViewController: BaseViewController {
             self.tableView.isHidden = false
             self.viewModel.thunList.onNext([])
         } else {
-            self.viewModel.searchThunData(query, category) { response in
+            viewModel.currentPageCount = 1
+            self.viewModel.fetchSearchThunList(pageSize: self.viewModel.maxSize, curpage: self.viewModel.currentPageCount, query, category) { response in
                 switch response.isEmpty {
                 case true:
-                    self.viewModel.emptyThunList.onNext(true)
+                    self.viewModel.isEmptyThun.onNext(true)
                 case false:
                     self.tableView.isHidden = false
                     self.viewModel.thunList.onNext(response)
+                    self.viewModel.isLoading = false
                 }
             }
         }
