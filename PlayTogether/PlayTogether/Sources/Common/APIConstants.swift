@@ -12,7 +12,7 @@ struct APIConstants {
     static let subwayBaseUrl = "http://openapi.seoul.go.kr:8088"
     
     //TODO: 추후 삭제 예정
-    static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI4MyIsImVtYWlsIjoidG53amQ2NDk2QG5hdmVyLmNvbSIsImlhdCI6MTY3OTgzNTAyNiwiZXhwIjoxNjc5ODM4NjI2LCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.3y0vjVYhP2VEWKn4NpzCSMJY0FLxIZBkIcCX-lwcuSk"
+    static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI4MCIsImVtYWlsIjoic2V1bmdoZW9uMzI4QGdtYWlsLmNvbSIsImlhdCI6MTY3ODMzNjM2NSwiZXhwIjoxNzA5ODkzOTY1LCJpc3MiOiJwbGF5dG9nZXRoZXIifQ.PQ9kXyAwd0tsB74JhgdRf3yUyNri8NzMXyA9DNLEuuI"
     static var crewID = 133
     static var crewName = "플투테스트"
     static let subwayServiceKey = "Gd9kQKfYBRl%2Bfk8CBPW9CHL5ZFvQUWQiIR6yQ%2F84qRh8HclgviJO9lCOI%2BRHmz%2BPZ9FMdjJWgzn31z8MmVNN2g%3D%3D"

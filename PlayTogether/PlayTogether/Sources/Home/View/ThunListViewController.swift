@@ -118,7 +118,7 @@ final class ThunListViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(SearchThunViewController(), animated: true)
+                self.navigationController?.pushViewController(SearchThunViewController(buttonIndex: self.currentPage), animated: true)
             })
             .disposed(by: disposeBag)
         
