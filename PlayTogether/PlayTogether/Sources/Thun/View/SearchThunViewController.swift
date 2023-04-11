@@ -191,20 +191,25 @@ final class SearchThunViewController: BaseViewController {
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] query in
                 guard let self = self else { return }
+                self.viewModel.query = query
                 switch self.isSelected {
                 case self.eatButton.isSelected:
-                    self.thunResponseData(query, "먹을래")
+                    self.viewModel.category = "먹을래"
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 case self.goButton.isSelected:
-                    self.thunResponseData(query, "갈래")
+                    self.viewModel.category = "갈래"
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 case self.doButton.isSelected:
-                    self.thunResponseData(query, "할래")
+                    self.viewModel.category = "할래"
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 default:
-                    self.thunResponseData(query, "")
+                    self.viewModel.category = ""
+                    self.thunResponseData(self.viewModel.query, self.viewModel.category)
                 }
             })
             .disposed(by: disposeBag)
         
-        viewModel.emptyThunList
+        viewModel.isEmptyThun
             .bind(to: tableView.rx.isHidden)
             .disposed(by: disposeBag)
         
@@ -265,6 +270,17 @@ final class SearchThunViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offsetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offsetY > (contentHeight - self.tableView.frame.size.height) {
+                    self.viewModel.fetchMoreDatas.onNext(())
+                }
+            }
+            .disposed(by: disposeBag)
+        
         eatButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
@@ -305,16 +321,19 @@ final class SearchThunViewController: BaseViewController {
     private func isSelectedButton(_ button: UIButton,_ firstIndex: Int,_ secondIndex: Int) {
         guard let searchText = searchBar.text else { return }
         guard let buttonCategory = button.titleLabel?.text else { return }
+        viewModel.query = searchText
+        viewModel.category = buttonCategory
         let buttons = [eatButton,goButton,doButton]
         switch button.isSelected {
         case true:
             self.isButtonState(button, false)
-            thunResponseData(searchText, "")
+            viewModel.category = ""
+            thunResponseData(viewModel.query, viewModel.category)
         case false:
             self.isButtonState(button, true)
             self.isButtonState(buttons[firstIndex], false)
             self.isButtonState(buttons[secondIndex], false)
-            thunResponseData(searchText, buttonCategory)
+            thunResponseData(viewModel.query, viewModel.category)
         }
     }
     
@@ -323,13 +342,15 @@ final class SearchThunViewController: BaseViewController {
             self.tableView.isHidden = false
             self.viewModel.thunList.onNext([])
         } else {
-            self.viewModel.searchThunData(query, category) { response in
+            viewModel.currentPageCount = 1
+            self.viewModel.fetchSearchThunList(pageSize: self.viewModel.maxSize, curpage: self.viewModel.currentPageCount, query, category) { response in
                 switch response.isEmpty {
                 case true:
-                    self.viewModel.emptyThunList.onNext(true)
+                    self.viewModel.isEmptyThun.onNext(true)
                 case false:
                     self.tableView.isHidden = false
                     self.viewModel.thunList.onNext(response)
+                    self.viewModel.isLoading = false
                 }
             }
         }
