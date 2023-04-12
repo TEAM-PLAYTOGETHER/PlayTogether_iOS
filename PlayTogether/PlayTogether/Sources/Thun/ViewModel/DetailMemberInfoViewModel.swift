@@ -27,5 +27,21 @@ final class DetailMemberInfoViewModel {
             }
             .disposed(by: disposeBag)
     }
+    
+    func blockMember(memberId: Int, completion: @escaping (BlockMember) -> Void) {
+        let provider = MoyaProvider<DetailMemberInfoService>()
+        provider.rx.request(.blockMemberRequest(memberId: memberId))
+            .subscribe { result in
+                switch result {
+                case .success(let response):
+                    let responseData = try? response.map(BlockMemberResponse.self)
+                    guard let data = responseData?.data else { return }
+                    completion(data)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }
 

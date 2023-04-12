@@ -19,6 +19,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
     private let likeThunViewModel = LikeThunViewModel()
     var lightId: Int?
     var imageCount: Int?
+    var memberId: Int?
     
     init(lightID: Int, superViewModel: SubmittedThunViewModel) {
         self.lightId = lightID
@@ -332,7 +333,7 @@ final class SubmittedDetailThunViewController: BaseViewController {
                         withIdentifier: "DetailThunMemberTableViewCell",
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
-                    
+                    self.memberId = member[row].userID
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
@@ -341,7 +342,6 @@ final class SubmittedDetailThunViewController: BaseViewController {
                     } else {
                         cell.setupNameData(item.name)
                     }
-                    
                     return cell
                 }
                 .disposed(by: self.disposeBag)
@@ -422,13 +422,14 @@ final class SubmittedDetailThunViewController: BaseViewController {
         memberTableView.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
-                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+//                self?.navigationController?.pushViewController(CheckMemberInfoViewController(userId: self?.memberId ?? -1), animated: true)
+//                print("@@멤버아뒤", self?.memberId)
             })
             .disposed(by: disposeBag)
     }
     
     @objc func didTapProfile (sender: UITapGestureRecognizer) {
-        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+//        self.navigationController?.pushViewController(CheckMemberInfoViewController(userId: self.memberId ?? -1), animated: true)
     }
 }
 

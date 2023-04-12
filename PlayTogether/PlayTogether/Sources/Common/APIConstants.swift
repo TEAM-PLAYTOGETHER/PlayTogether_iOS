@@ -59,6 +59,7 @@ struct APIConstants {
     static let existingNickname = "/user/crew"
     static let getDetailMemberInfo = "/user/\(crewID)"
     static let putRegisterUserSubway = "/user"
+    static let postBlockMember = "/user/block"
     
     // auth
     static let deleteAccount = "/auth/withdraw"

@@ -11,6 +11,17 @@ import RxSwift
 class CheckMemberInfoViewController: BaseViewController {
     private lazy var disposeBag = DisposeBag()
     private var viewModel = DetailMemberInfoViewModel()
+    private var superViewModel = DetailThunViewModel()
+    private var userID: Int?
+    
+    init(userId: Int) {
+        self.userID = userId
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let navigationBarView = UIView().then {
         $0.backgroundColor = .ptBlack01
@@ -58,7 +69,16 @@ class CheckMemberInfoViewController: BaseViewController {
         $0.isHidden = true
     }
     
-    private var profileView = ProfileView(frame: .zero, crew: "zmfn", name: "ddfd", birth: "1998", gender: "M", profileImage: .ptImage(.doIcon), stationName: ["강남역", "동대문역사문화공원역"], introduce: "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하")
+    private var profileView = ProfileView(
+        frame: .zero,
+        crew: "",
+        name: "ddfd",
+        birth: "1998",
+        gender: "M",
+        profileImage: .ptImage(.doIcon),
+        stationName: ["강남역", "동대문역사문화공원역"],
+        introduce: "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하"
+    )
     
     private let chatButton = UIButton().then {
         $0.setupBottomButtonUI(title: "문수제비님과 채팅하기", size: 16)
@@ -150,18 +170,23 @@ class CheckMemberInfoViewController: BaseViewController {
         blockButton.rx.tap
             .bind { [weak self] in
                 self?.buttonStackView.isHidden = true
-                print("차단버튼")
+                self?.viewModel.detailMemberInfo(memberId: self?.userID ?? -1) { response in
+                    let popupViewController = PopUpViewController(title: "\(response.profile.nickname ?? "-")님을 차단할까요? [내 동아리 관리하기]에서 해제할 수 있습니다!", viewType: .twoButton)
+                    self?.present(popupViewController, animated: false, completion: nil)
+                    popupViewController.twoButtonDelegate = self
+                }
             }
             .disposed(by: disposeBag)
         
         reportButton.rx.tap
             .bind { [weak self] in
                 self?.buttonStackView.isHidden = true
-                print("신고버튼")
+                guard let url = URL(string: "https://forms.gle/7deZ5JgtVqrbTifG8") else { return }
+                UIApplication.shared.open(url, options: [:])
             }
             .disposed(by: disposeBag)
         
-//        viewModel.detailMemberInfo(memberId: 280) { data in
+//        viewModel.detailMemberInfo(memberId: userID ?? -1) { data in
 //            guard let image = Data(base64Encoded: data.profile.profileImage ?? "", options: .ignoreUnknownCharacters) else { return }
 //            self.profileView = ProfileView(
 //                frame: .zero,
@@ -176,5 +201,23 @@ class CheckMemberInfoViewController: BaseViewController {
 //            print("@@@@@@@@@@@@@@@@", data.profile)
 //            print("@@@@@@@@@@@@@@@@", data.crewName)
 //        }
+    }
+}
+
+extension CheckMemberInfoViewController: TwoButtonDelegate {
+    func firstButtonDidTap() {}
+    func secondButtonDidTap() {
+        // 사용자를 차단하면 어케되는지 물어보기
+        // 사용자 리스트를 없애야하는건지? or 그냥 안눌리게 해야하는지 등
+        viewModel.blockMember(memberId: userID ?? -1) { response in
+            guard let originData = try? self.superViewModel.memberList.value() else { return }
+            let filterData = originData.filter{ $0.userID != self.userID }
+            if !(filterData.isEmpty) {
+                self.superViewModel.memberList.onNext(filterData)
+            }
+            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.navigationBar.isHidden = false
+            self.tabBarController?.tabBar.isHidden = false
+        }
     }
 }

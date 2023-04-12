@@ -261,7 +261,7 @@ final class CompleteThunViewController: BaseViewController {
         memberTableView.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
-                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+//                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
             })
             .disposed(by: disposeBag)
     }

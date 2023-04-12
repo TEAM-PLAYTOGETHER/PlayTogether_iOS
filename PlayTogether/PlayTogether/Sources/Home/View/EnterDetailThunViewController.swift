@@ -368,7 +368,7 @@ class EnterDetailThunViewController: BaseViewController {
     }
     
     @objc func didTapProfile (sender: UITapGestureRecognizer) {
-        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+//        self.navigationController?.pushViewController(CheckMemberInfoViewController(userId: <#Int#>), animated: true)
     }
 }
 

@@ -10,6 +10,7 @@ import Moya
 
 enum DetailMemberInfoService {
     case detailMemberInfoRequest(memberId: Int)
+    case blockMemberRequest(memberId: Int)
 }
 
 extension DetailMemberInfoService: TargetType {
@@ -21,6 +22,8 @@ extension DetailMemberInfoService: TargetType {
         switch self {
         case .detailMemberInfoRequest(let memberId):
             return APIConstants.getDetailMemberInfo + "/\(memberId)/profile"
+        case .blockMemberRequest(memberId: let memberId):
+            return APIConstants.postBlockMember + "/\(memberId)"
         }
     }
     
@@ -28,12 +31,16 @@ extension DetailMemberInfoService: TargetType {
         switch self {
         case .detailMemberInfoRequest:
             return .get
+        case .blockMemberRequest:
+            return .post
         }
     }
     
     var task: Task {
         switch self {
         case .detailMemberInfoRequest:
+            return .requestPlain
+        case .blockMemberRequest:
             return .requestPlain
         }
     }

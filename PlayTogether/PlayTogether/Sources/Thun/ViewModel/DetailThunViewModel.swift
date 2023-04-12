@@ -11,6 +11,7 @@ import RxSwift
 
 final class DetailThunViewModel {
     private lazy var disposeBag = DisposeBag()
+    var memberList = BehaviorSubject<[Member]>.init(value: Array.init())
     
     func getDetailThunList(lightId: Int, completion: @escaping ([DetailThunList]) -> Void) {
         let provider = MoyaProvider<DetailThunService>()

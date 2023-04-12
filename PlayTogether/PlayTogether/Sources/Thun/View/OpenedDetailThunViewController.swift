@@ -18,6 +18,7 @@ final class OpenedDetailThunViewController: BaseViewController {
     private let superViewModel: OpenedThunViewModel?
     var lightId: Int?
     var imageCount: Int?
+    var memberId: Int?
     
     init(lightID: Int, superViewModel: OpenedThunViewModel) {
         self.lightId = lightID
@@ -354,6 +355,7 @@ final class OpenedDetailThunViewController: BaseViewController {
                         withIdentifier: "DetailThunMemberTableViewCell",
                         for: IndexPath(row: row, section: 0)
                     ) as? DetailThunMemberTableViewCell else { return UITableViewCell() }
+                    self.memberId = member[0].userID
                     
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
@@ -439,13 +441,15 @@ final class OpenedDetailThunViewController: BaseViewController {
         memberTableView.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
-                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+                self?.viewModel.getMemberList(lightId: self?.lightId ?? -1) { member in
+                    self?.navigationController?.pushViewController(CheckMemberInfoViewController(userId: member[indexPath.row].userID), animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
     
     @objc func didTapProfile (sender: UITapGestureRecognizer) {
-        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(userId: self.memberId ?? -1), animated: true)
     }
 }
 
