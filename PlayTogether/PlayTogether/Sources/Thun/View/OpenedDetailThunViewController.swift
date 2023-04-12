@@ -50,6 +50,8 @@ final class OpenedDetailThunViewController: BaseViewController {
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
+        $0.layer.cornerRadius = ((UIScreen.main.bounds.height/812)*40)/2
+        $0.clipsToBounds = true
     }
     
     private let nicknameLabel = UILabel().then {
@@ -57,11 +59,11 @@ final class OpenedDetailThunViewController: BaseViewController {
         $0.textColor = .ptBlack01
     }
     
-    private let messageButton = UIButton().then {
-        $0.setTitle("쪽지", for: .normal)
-        $0.backgroundColor = .ptBlack02
-        $0.titleLabel?.font = .pretendardMedium(size: 12)
-        $0.layer.cornerRadius = 14
+    private lazy var profileStackView = UIStackView(arrangedSubviews:[circleImageView,nicknameLabel]).then {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapProfile(sender:)))
+        $0.spacing = 5
+        $0.isUserInteractionEnabled = true
+        $0.addGestureRecognizer(tap)
     }
     
     private let underLineView = UIView().then {
@@ -195,7 +197,7 @@ final class OpenedDetailThunViewController: BaseViewController {
         
         contentView.addSubview(circleImageView)
         contentView.addSubview(nicknameLabel)
-        contentView.addSubview(messageButton)
+        contentView.addSubview(profileStackView)
         contentView.addSubview(underLineView)
         contentView.addSubview(blackView)
         contentView.addSubview(grayLineView)
@@ -214,6 +216,9 @@ final class OpenedDetailThunViewController: BaseViewController {
     }
     
     override func setupLayouts() {
+        let width = UIScreen.main.bounds.width/375
+        let height = UIScreen.main.bounds.height/812
+        
         navigationBarView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
@@ -250,26 +255,18 @@ final class OpenedDetailThunViewController: BaseViewController {
         }
         
         circleImageView.snp.makeConstraints {
+            $0.size.equalTo(CGSize(width: width*40, height: height*40))
+        }
+        
+        profileStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
-        }
-        
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(circleImageView.snp.trailing).offset(5)
-            $0.centerY.equalTo(circleImageView.snp.centerY)
-        }
-        
-        messageButton.snp.makeConstraints {
-            $0.centerY.equalTo(nicknameLabel.snp.centerY)
-            $0.trailing.equalToSuperview().offset(-27)
-            $0.size.equalTo(CGSize(width: 52, height: 26))
         }
         
         underLineView.snp.makeConstraints {
-            $0.top.equalTo(circleImageView.snp.bottom).offset(20)
-            $0.leading.equalTo(circleImageView.snp.leading)
-            $0.trailing.equalTo(messageButton.snp.trailing).offset(7)
+            $0.top.equalTo(profileStackView.snp.bottom).offset(20)
+            $0.leading.equalTo(profileStackView.snp.leading)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(1)
         }
         
@@ -336,15 +333,18 @@ final class OpenedDetailThunViewController: BaseViewController {
             let nameResponse = response[0].organizer
             self.setupData(
                 response[0].title,
-                response[0].date ?? "날짜 미정",
-                response[0].time ?? "시간 미정",
+                response[0].date ?? "날짜미정",
+                response[0].time ?? "시간미정",
                 response[0].datumDescription ?? "",
-                response[0].place ?? "장소 미정",
+                response[0].place ?? "장소미정",
                 response[0].category,
                 nameResponse[0].name,
                 response[0].peopleCnt ?? 0,
                 response[0].lightMemberCnt
             )
+            if let organizerImage = response[0].organizer[0].profileImage {
+                self.circleImageView.loadProfileImage(url: organizerImage)
+            }
         }
         
         viewModel.getMemberList(lightId: lightId ?? -1) { member in
@@ -358,7 +358,13 @@ final class OpenedDetailThunViewController: BaseViewController {
                     self.memberTableView.snp.updateConstraints {
                         $0.height.equalTo(self.memberTableView.contentSize.height)
                     }
-                    cell.setupData(item.name)
+                    
+                    if let profileImage = item.profileImage {
+                        cell.setupData(item.name, profileImage)
+                    } else {
+                        cell.setupNameData(item.name)
+                    }
+                    
                     return cell
                 }
                 .disposed(by: self.disposeBag)
@@ -429,6 +435,17 @@ final class OpenedDetailThunViewController: BaseViewController {
                 self?.present(nextVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        memberTableView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                self?.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    @objc func didTapProfile (sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(CheckMemberInfoViewController(), animated: true)
     }
 }
 

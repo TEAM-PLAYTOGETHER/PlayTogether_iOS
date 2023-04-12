@@ -7,7 +7,6 @@
 
 import RxSwift
 import RxCocoa
-import RxRelay
 import Moya
 import RxMoya
 
@@ -15,51 +14,56 @@ final class SelfIntroduceViewModel {
     private lazy var disposeBag = DisposeBag()
     private let provider = MoyaProvider<SelfIntroduceService>()
     
-    struct checkNicknameInput {
-        var crewID: Int
-        var nickname: Observable<String>
+    struct Input {
+        var tapNickNameButton: ControlEvent<Void>
+        var tapNextButton: ControlEvent<Void>
+        var nickNameInput: Observable<String>
+        var descriptionInput: Observable<String>
+        var subwayInput: Observable<[String?]>
     }
-    
-    func checkNickname(_ crewId: Int, _ nickName: String, completion: @escaping (Bool) -> Void) {
-        provider.rx.request(.existingNicknameRequset(crewID: crewId, Nickname: nickName))
-            .subscribe { result in
-                switch result {
-                case .success(let response):
-                    print(response)
-                    let statusCode = response.statusCode
-                    statusCode == 200 ? completion(true) : completion(false)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-            .disposed(by: disposeBag)
+
+    struct Output {
+        var checkNickNameOutput: Observable<Bool>
+        var registUserProfileOutput: Observable<SelfIntroduceResponse>
     }
-    
-    func registerUserProfile(
-        _ crewId: Int,
-        _ nickName: String,
-        _ description: String,
-        _ firstSubway: String,
-        _ secondSubway: String? = nil,
-        completion: @escaping (Bool) -> Void) {
-        provider.rx.request(
-            .registerUserSubwayStations(
-                crewID: crewId,
-                nickName: nickName,
-                description: description,
-                firstSubway: firstSubway,
-                secondSubway: secondSubway)
-        ).subscribe { result in
-            switch result {
-            case .success(let response):
-                guard let responseData = try? response.map(SelfIntroduceResponse.self)
-                else { return }
-                completion(responseData.status == 200)
-                
-            case .failure(let error):
-                print(error.localizedDescription)
+
+    func transform(_ input: Input) -> Output {
+        let isEnableNickName = input.tapNickNameButton
+            .withLatestFrom(input.nickNameInput)
+            .withUnretained(self)
+            .flatMap { owner, nickName in
+                owner.provider.rx.request(.existingNicknameRequset(
+                    crewID: OnboardingDataModel.shared.crewId ?? -1,
+                    nickName: nickName
+                ))
             }
-        }
-        .disposed(by: disposeBag)
+            .map { $0.statusCode == 200 }
+            .asObservable()
+
+        let isSuccessRegistUserProfile = input.tapNextButton
+            .flatMap {
+                Observable.combineLatest(
+                    input.nickNameInput,
+                    input.descriptionInput,
+                    input.subwayInput
+                ).asObservable()
+            }
+            .withUnretained(self)
+            .flatMap { owner, combineValues in
+                owner.provider.rx.request(.registerUserSubwayStations(
+                    crewID: OnboardingDataModel.shared.crewId ?? -1,
+                    nickName: combineValues.0,
+                    description: combineValues.1,
+                    firstSubway: combineValues.2[0],
+                    secondSubway: combineValues.2[1]
+                ))
+            }
+            .map(SelfIntroduceResponse.self)
+            .asObservable()
+
+        return .init(
+            checkNickNameOutput: isEnableNickName,
+            registUserProfileOutput: isSuccessRegistUserProfile
+        )
     }
 }

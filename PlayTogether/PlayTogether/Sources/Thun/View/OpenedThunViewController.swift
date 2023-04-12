@@ -16,7 +16,7 @@ class OpenedThunViewController: BaseViewController {
     private var superView = UIViewController()
     
     private let emptyLabel = UILabel().then {
-        $0.text = "아직 오픈한 번개가 없어요!\n관심 있는 번개를 오픈해 보세요"
+        $0.text = "아직 오픈한 번개가 없어요!\n새로운 번개를 오픈해 보세요"
         $0.numberOfLines = 0
         $0.font = .pretendardMedium(size: 14)
         $0.textColor = .ptGray02
@@ -37,6 +37,15 @@ class OpenedThunViewController: BaseViewController {
     
     func setupSuperView(superView: UIViewController) {
         self.superView = superView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.currentPageCount = 1
+        viewModel.fetchOpenedThunList(pageSize: self.viewModel.maxSize, curpage: viewModel.currentPageCount) { response in
+            self.viewModel.openedThunList.onNext(response)
+            self.viewModel.isLoading = false
+        }
     }
     
     override func setupViews() {
@@ -71,16 +80,30 @@ class OpenedThunViewController: BaseViewController {
                          let item = item
                    else { return UITableViewCell() }
                    
-                   cell.setupData(
-                    item.title,
-                    item.date ?? "날짜미정",
-                    item.time ?? "시간미정",
-                    item.peopleCnt ?? 0,
-                    item.place ?? "장소미정",
-                    item.lightMemberCnt,
-                    item.category,
-                    item.scpCnt
-                   )
+                   switch item.isOpened {
+                   case true:
+                       cell.setupData(
+                           item.title,
+                           item.date ?? "날짜미정",
+                           item.time ?? "시간미정",
+                           item.peopleCnt ?? 0,
+                           item.place ?? "장소미정",
+                           item.lightMemberCnt,
+                           item.category,
+                           item.scpCnt)
+                       cell.isUserInteractionEnabled = true
+                   case false:
+                       cell.setupClosedData(
+                           item.title,
+                           item.date ?? "날짜미정",
+                           item.time ?? "시간미정",
+                           item.peopleCnt ?? 0,
+                           item.place ?? "장소미정",
+                           item.lightMemberCnt,
+                           item.category,
+                           item.scpCnt)
+                       cell.isUserInteractionEnabled = false
+                   }
                    return cell
                }
                .disposed(by: disposeBag)

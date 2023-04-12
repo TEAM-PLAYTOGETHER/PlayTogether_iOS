@@ -15,6 +15,8 @@ class DetailThunMemberTableViewCell: UITableViewCell {
     
     private let circleImageView = UIImageView().then {
         $0.image = .ptImage(.profileIcon)
+        $0.layer.cornerRadius = $0.frame.height/2
+        $0.clipsToBounds = true
     }
     
     private let nameLabel = UILabel().then {
@@ -81,7 +83,12 @@ class DetailThunMemberTableViewCell: UITableViewCell {
 }
 
 extension DetailThunMemberTableViewCell {
-    func setupData(_ name: String) {
+    func setupData(_ name: String,_ profileImage: String) {
+        nameLabel.text = name
+        circleImageView.loadProfileImage(url: profileImage)
+    }
+    
+    func setupNameData(_ name: String) {
         nameLabel.text = name
     }
 }

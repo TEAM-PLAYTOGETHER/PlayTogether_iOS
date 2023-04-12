@@ -20,7 +20,7 @@ extension DetailThunService: TargetType {
     var path: String {
         switch self {
         case .detailThunRequest(let lightId):
-            return APIConstants.getDetailThunList + "/\(lightId)"
+            return APIConstants.getDetailThunList + "/\(lightId)/detail"
         }
     }
     
