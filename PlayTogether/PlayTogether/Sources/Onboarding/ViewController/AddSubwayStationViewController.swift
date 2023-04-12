@@ -9,11 +9,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol AddSubwayStationDelegate {
-    func registerSubwayStation(_ stations: [String])
+protocol AddSubwayStationDelegate: AnyObject {
+    func registerSubwayStation(_ stations: [String?])
 }
 
-class AddSubwayStationViewController: BaseViewController {
+final class AddSubwayStationViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel = AddSubwayStationViewModel()
     
@@ -74,7 +74,7 @@ class AddSubwayStationViewController: BaseViewController {
         )
     }
     
-    private lazy var subwayStationListTalbeView = UITableView().then {
+    private var subwayStationListTalbeView = UITableView().then {
         $0.backgroundColor = .white
         $0.rowHeight = 57 * (UIScreen.main.bounds.height / 812)
         $0.showsVerticalScrollIndicator = false
@@ -85,17 +85,16 @@ class AddSubwayStationViewController: BaseViewController {
         $0.separatorInset.left = 0
     }
     
-    private lazy var addButton = UIButton().then {
+    private var addButton = UIButton().then {
         $0.setupBottomButtonUI(title: "추가하기", size: 15)
         $0.isButtonEnableUI(check: false)
     }
     
     private let leftButtonItem = UIBarButtonItem(image: UIImage.ptImage(.backIcon), style: .plain, target: AddSubwayStationViewController.self, action: nil)
     
-    private lazy var selectedSubwayStations = [String]()
     private var selectedSubwayStationRelay = BehaviorRelay<[String]>(value: [])
     private var collectionViewHeight: CGFloat = 0
-    var delegate: AddSubwayStationDelegate?
+    weak var delegate: AddSubwayStationDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -229,21 +228,26 @@ class AddSubwayStationViewController: BaseViewController {
         
         subwayStationListTalbeView.rx.modelSelected(String.self)
             .asDriver()
-            .drive(onNext: { [weak self] name in
-                guard let self = self else { return }
-                guard self.selectedSubwayStations.count < 2 else {
-                    self.showToast("최대 2개까지 추가할 수 있어요!")
+            .drive(with: self, onNext: { owner, title in
+                
+                guard !owner.selectedSubwayStationRelay.value.contains(title) else {
+                    owner.view.endEditing(true)
+                    owner.showToast("이미 추가한 역이에요!")
                     return
                 }
                 
-                guard self.selectedSubwayStations.contains(name) == false else {
-                    self.showToast("이미 추가한 역이에요!")
+                guard owner.selectedSubwayStationRelay.value.count < 2 else {
+                    owner.view.endEditing(true)
+                    owner.showToast("최대 2개까지 추가할 수 있어요!")
                     return
                 }
                 
-                self.selectedSubwayStations.append(name)
-                self.selectedSubwayStationRelay.accept(self.selectedSubwayStations)
-                self.preferredStationCollectionView.reloadData()
+                var newValue = owner.selectedSubwayStationRelay.value
+                newValue.append(title)
+                owner.selectedSubwayStationRelay.accept(newValue)
+                
+                owner.view.endEditing(true)
+                owner.preferredStationCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
         
@@ -265,8 +269,8 @@ class AddSubwayStationViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                OnboardingDataModel.shared.preferredSubway = self.selectedSubwayStations
-                self.delegate?.registerSubwayStation(self.selectedSubwayStations)
+                OnboardingDataModel.shared.preferredSubway = self.selectedSubwayStationRelay.value
+                self.delegate?.registerSubwayStation(self.selectedSubwayStationRelay.value)
                 self.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
@@ -274,12 +278,6 @@ class AddSubwayStationViewController: BaseViewController {
 }
 
 extension AddSubwayStationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    @objc
-    func cellCancelAction(_ sender: UIButton) {
-        selectedSubwayStations.remove(at: sender.tag)
-        selectedSubwayStationRelay.accept(selectedSubwayStations)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return selectedSubwayStationRelay.value.count
     }
@@ -292,21 +290,27 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         else { return UICollectionViewCell() }
         
         let row = indexPath.row
+        
         cell.setupData(
-            selectedSubwayStationRelay.value[row],
-            row
+            title: selectedSubwayStationRelay.value[row]
         )
-        cell.cancelButton.addTarget(
-            self,
-            action: #selector(cellCancelAction),
-            for: .touchUpInside
-        )
+        
+        cell.cancelButtonTapObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, title in
+                owner.selectedSubwayStationRelay.accept(
+                    owner.selectedSubwayStationRelay.value.filter {
+                        $0 != title
+                    }
+                )
+            })
+            .disposed(by: disposeBag)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let fontWidth = (selectedSubwayStations[indexPath.row] as NSString).size(
+        let fontWidth = (selectedSubwayStationRelay.value[indexPath.row] as NSString).size(
             withAttributes: [NSAttributedString.Key.font: UIFont.pretendardMedium(size: 14)]
         ).width
         let cellWidth = fontWidth + 34 + 16 * (UIScreen.main.bounds.width / 375)

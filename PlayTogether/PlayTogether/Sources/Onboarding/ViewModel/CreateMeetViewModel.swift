@@ -37,7 +37,7 @@ final class CreateMeetViewModel {
     
     func regularExpressionCheck(input: RegularExpressionInput) -> RegularExpressionOutput {
         let output = input.meetingTitleText.map {
-            let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-핳\\s]*$"
+            let pattern = "^[0-9a-zㅏ-ㅣA-Zㄱ-ㅎ가-힣\\s]*$"
             guard let _ = $0.range(of: pattern, options: .regularExpression) else { return false }
             return true
         }.asDriver(onErrorJustReturn: false)

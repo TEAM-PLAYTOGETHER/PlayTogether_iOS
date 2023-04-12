@@ -298,6 +298,7 @@ class CreateMeetViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.isEnableMeetingTitle.accept(true)
+                self?.view.endEditing(true)
             })
             .disposed(by: disposeBag)
         
