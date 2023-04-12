@@ -13,7 +13,7 @@ protocol AddSubwayStationDelegate: AnyObject {
     func registerSubwayStation(_ stations: [String?])
 }
 
-class AddSubwayStationViewController: BaseViewController {
+final class AddSubwayStationViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private let viewModel = AddSubwayStationViewModel()
     
