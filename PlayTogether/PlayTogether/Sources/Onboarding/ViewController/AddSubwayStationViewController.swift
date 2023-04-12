@@ -295,8 +295,7 @@ extension AddSubwayStationViewController: UICollectionViewDataSource, UICollecti
         let row = indexPath.row
         
         cell.setupData(
-            selectedSubwayStationRelay.value[row],
-            row
+            title: selectedSubwayStationRelay.value[row]
         )
         
         cell.cancelButtonTapObservable

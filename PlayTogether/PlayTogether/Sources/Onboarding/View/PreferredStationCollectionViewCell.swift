@@ -64,8 +64,7 @@ private extension PreferredStationCollectionViewCell {
 }
 
 extension PreferredStationCollectionViewCell {
-    func setupData(_ title: String, _ tag: Int) {
+    func setupData(title: String) {
         titleLabel.text = title
-        cancelButton.tag = tag
     }
 }

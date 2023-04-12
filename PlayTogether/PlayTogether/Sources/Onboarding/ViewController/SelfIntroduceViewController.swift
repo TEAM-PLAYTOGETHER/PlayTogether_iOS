@@ -450,7 +450,7 @@ extension SelfIntroduceViewController
             for: indexPath
         ) as! PreferredStationCollectionViewCell
 
-        cell.setupData(dataSource[row], row)
+        cell.setupData(title: dataSource[row])
 
         cell.cancelButtonTapObservable
             .bind(with: self, onNext: { owner, textString in
