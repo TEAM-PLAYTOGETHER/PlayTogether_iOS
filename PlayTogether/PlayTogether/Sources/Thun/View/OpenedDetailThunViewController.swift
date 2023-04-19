@@ -180,6 +180,11 @@ final class OpenedDetailThunViewController: BaseViewController {
         $0.distribution = .fillEqually
         $0.isHidden = true
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
         
     override func setupViews() {
         tabBarController?.tabBar.isHidden = true

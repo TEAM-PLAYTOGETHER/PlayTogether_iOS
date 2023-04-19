@@ -98,5 +98,16 @@ final class MyPageViewController: BaseViewController {
                 self.navigationController?.pushViewController(SettingViewController(), animated: true)
             })
             .disposed(by: disposeBag)
+        
+        menuTableView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                switch indexPath.row {
+                case 1:
+                    self?.navigationController?.pushViewController(ManageCrewViewController(), animated: true)
+                default: break
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
