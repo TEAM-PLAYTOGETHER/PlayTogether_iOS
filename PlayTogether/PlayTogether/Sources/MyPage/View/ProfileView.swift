@@ -47,18 +47,10 @@ final class ProfileView: UIView {
     
     private let myPageSubwayLabelView = MyPageSubwayLabelView()
     
-    init(
-        frame: CGRect,
-        crew: String,
-        name: String,
-        birth: String,
-        gender: String,
-        profileImage: UIImage,
-        stationName: [String],
-        introduce: String
+    override init(
+        frame: CGRect
     ) {
         super.init(frame: frame)
-        setupData(crew, name, birth, gender, profileImage, stationName, introduce)
         setupViews()
         setupLayouts()
     }
@@ -68,7 +60,7 @@ final class ProfileView: UIView {
     }
 }
 
-private extension ProfileView {
+extension ProfileView {
     func setupData(
         _ crew: String,
         _ name: String,
@@ -90,7 +82,7 @@ private extension ProfileView {
         introduceLabel.text = introduce
     }
     
-    func setupViews() {
+    private func setupViews() {
         layer.borderWidth = 1
         layer.borderColor = UIColor.ptBlack01.cgColor
         layer.cornerRadius = 10
@@ -106,7 +98,7 @@ private extension ProfileView {
         cardView.addSubview(introduceLabel)
     }
     
-    func setupLayouts() {
+    private func setupLayouts() {
         crewButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
             $0.leading.equalToSuperview().offset(16)

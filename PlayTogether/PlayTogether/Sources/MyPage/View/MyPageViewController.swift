@@ -18,14 +18,14 @@ final class MyPageViewController: BaseViewController {
     
     // TODO: 변경 예정
     private let profileView = ProfileView(
-        frame: .zero,
-        crew: "SOPT",
-        name: "안드_김세훈이아니라",
-        birth: "1998",
-        gender: "M",
-        profileImage: .ptImage(.doIcon),
-        stationName: ["강남역", "동대문역사문화공원역"],
-        introduce: "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하"
+        frame: .zero
+//        crew: "SOPT",
+//        name: "안드_김세훈이아니라",
+//        birth: "1998",
+//        gender: "M",
+//        profileImage: .ptImage(.doIcon),
+//        stationName: ["강남역", "동대문역사문화공원역"],
+//        introduce: "한줄 소개임 ㅋ 뭐요 왜요 팍시~! 아유.... 하기 싫어! 아아 제 진심이 아니고요 와프입니다? 하하하"
     )
     
     private let devideView = UIView().then {
@@ -95,7 +95,7 @@ final class MyPageViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.navigationController?.pushViewController(SettingViewController(), animated: true)
+                self.navigationController?.pushViewController(CheckMemberInfoViewController(userId: 183), animated: true)
             })
             .disposed(by: disposeBag)
     }
