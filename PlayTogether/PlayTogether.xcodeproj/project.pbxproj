@@ -142,13 +142,14 @@
 		DD80A14C28E75DF600AD01D0 /* LikedThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */; };
 		DD80A15028ED63A400AD01D0 /* GoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */; };
 		DD80A15228ED63AD00AD01D0 /* DoThunListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */; };
+		DD9AC7EE29E6EC26006FA3B3 /* ManageCrewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9AC7ED29E6EC26006FA3B3 /* ManageCrewViewController.swift */; };
+		DD9AC7F029EFBC98006FA3B3 /* BlockMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9AC7EF29EFBC98006FA3B3 /* BlockMemberTableViewCell.swift */; };
 		DDA498AB29D0630300232A4B /* ManageBlockMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA498AA29D0630300232A4B /* ManageBlockMemberViewController.swift */; };
 		DDAE9D77290296830021FBEA /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9D76290296830021FBEA /* SettingViewController.swift */; };
 		DDAE9DB9290A2DCF0021FBEA /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */; };
 		DDAE9DBB290E591C0021FBEA /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */; };
 		DDAE9DC0290E9B860021FBEA /* DeleteAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DBF290E9B860021FBEA /* DeleteAccountService.swift */; };
 		DDAE9DC2290F91650021FBEA /* ManageAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */; };
-		DDB380C128BB9A71001826B0 /* LikedDetailThunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */; };
 		DDB380C328BBA219001826B0 /* LikeThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C228BBA219001826B0 /* LikeThunService.swift */; };
 		DDB380C728BBA248001826B0 /* LikeThunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C628BBA248001826B0 /* LikeThunViewModel.swift */; };
 		DDB380C928BBA8B6001826B0 /* ExistLikeThunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */; };
@@ -303,13 +304,14 @@
 		DD80A14B28E75DF600AD01D0 /* LikedThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedThunViewModel.swift; sourceTree = "<group>"; };
 		DD80A14F28ED63A400AD01D0 /* GoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoThunListViewModel.swift; sourceTree = "<group>"; };
 		DD80A15128ED63AD00AD01D0 /* DoThunListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoThunListViewModel.swift; sourceTree = "<group>"; };
+		DD9AC7ED29E6EC26006FA3B3 /* ManageCrewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCrewViewController.swift; sourceTree = "<group>"; };
+		DD9AC7EF29EFBC98006FA3B3 /* BlockMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMemberTableViewCell.swift; sourceTree = "<group>"; };
 		DDA498AA29D0630300232A4B /* ManageBlockMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageBlockMemberViewController.swift; sourceTree = "<group>"; };
 		DDAE9D76290296830021FBEA /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		DDAE9DB8290A2DCF0021FBEA /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		DDAE9DBF290E9B860021FBEA /* DeleteAccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountService.swift; sourceTree = "<group>"; };
 		DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController.swift; sourceTree = "<group>"; };
-		DDB380C028BB9A71001826B0 /* LikedDetailThunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedDetailThunViewController.swift; sourceTree = "<group>"; };
 		DDB380C228BBA219001826B0 /* LikeThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeThunService.swift; sourceTree = "<group>"; };
 		DDB380C628BBA248001826B0 /* LikeThunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeThunViewModel.swift; sourceTree = "<group>"; };
 		DDB380C828BBA8B6001826B0 /* ExistLikeThunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistLikeThunService.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 				408EE3EA28BBE4CA0012C642 /* ProfileView.swift */,
 				DDAE9D76290296830021FBEA /* SettingViewController.swift */,
 				DDAE9DC1290F91650021FBEA /* ManageAccountViewController.swift */,
+				DD9AC7ED29E6EC26006FA3B3 /* ManageCrewViewController.swift */,
 				DDAE9DBA290E591C0021FBEA /* DeleteAccountViewController.swift */,
 				DD0495E329CAF69300B0E2AD /* DeleteCrewViewController.swift */,
 				DDA498AA29D0630300232A4B /* ManageBlockMemberViewController.swift */,
@@ -439,6 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				408EE3E528BAB16F0012C642 /* MyPageMenuTableViewCell.swift */,
+				DD9AC7EF29EFBC98006FA3B3 /* BlockMemberTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1054,6 +1058,7 @@
 				B616A8152886A96300E1ABCF /* CreateMeetViewController.swift in Sources */,
 				B660597328C48B9B00776008 /* CheckTermsView.swift in Sources */,
 				B6B4B10728C1B5C7009AA0DB /* LogInViewController.swift in Sources */,
+				DD9AC7EE29E6EC26006FA3B3 /* ManageCrewViewController.swift in Sources */,
 				B6ECF19328B5D86E003C80AB /* ShareExtensionView.swift in Sources */,
 				B66EA07828A7DE7400F1F723 /* SelfIntroduceService.swift in Sources */,
 				B630459E28828D9F0095F694 /* ChoiceCell.swift in Sources */,
@@ -1140,6 +1145,7 @@
 				402A16E728C4C1BE00161820 /* BottomSheetViewController.swift in Sources */,
 				DDB380D328C08DEB001826B0 /* DeleteThunService.swift in Sources */,
 				4096A2D8287F745300F1E27C /* UIFont+Extension.swift in Sources */,
+				DD9AC7F029EFBC98006FA3B3 /* BlockMemberTableViewCell.swift in Sources */,
 				40EE01C128BFC7D700DE46C8 /* ChattingListViewModel.swift in Sources */,
 				B6ECF18B28B5BAB9003C80AB /* ParticipationCompletedViewController.swift in Sources */,
 				DD36D3A028A67D0700C9851A /* DetailThunImageCollectionViewCell.swift in Sources */,
